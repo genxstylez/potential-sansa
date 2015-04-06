@@ -1,0 +1,5 @@
+django==1.8
+django-tastypie
+django-bootstrap3
+django-suit
+django-suit-redactor

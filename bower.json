@@ -1,0 +1,8 @@
+{
+  "name": "ology",
+  "version": "0.0.1",
+  "homepage": "https://ology.com",
+  "dependencies": {
+    "bootstrap": "3.3.4"
+  }
+}

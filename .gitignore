@@ -1,0 +1,5 @@
+*.sqlite3
+node_modules
+media
+*.pyc
+__pycache__
