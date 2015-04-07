@@ -34,26 +34,28 @@ export default React.createClass({
             uri: '',
         }
     },
-
-    componentDidMount() {
-        this.getPost(this.props.id, (error, response) => {
+    _getPost(Id) {
+        this.getPost(Id, (error, response) => {
             var post = error ? [] : response.body;
-            if(this.isMounted()) {
-                this.setState({
-                    id: post.id,
-                    zh_title: post.zh_title,
-                    en_title: post.en_title,
-                    content: post.content,
-                    imgs: post.images,
-                    credits: post.credits,
-                    created_at: post.created_at,
-                    last_modified: post.last_modified,
-                    category: post.category.name,
-                    uri: post.resource_uri
-                });
-            };
+            this.setState({
+                id: post.id,
+                zh_title: post.zh_title,
+                en_title: post.en_title,
+                content: post.content,
+                imgs: post.images,
+                credits: post.credits,
+                created_at: post.created_at,
+                last_modified: post.last_modified,
+                category: post.category.name,
+                uri: post.resource_uri
+            });
         });
     },
+    componentDidMount() {
+        this._getPost(this.props.id);
+    },
+
+    componentDidUpdate(prevProps, prevState) {},
 
     handeClickOnCross() {
        if(!this.context.router.goBack()) {
@@ -90,7 +92,7 @@ export default React.createClass({
                 </div>
                 <div className="row">
                     <div className="modal-content">
-                        <div className="pull-left content">
+                        <div className="pull-left content" ref="contentContainer">
                             <p className="title">{this.state.zh_title}</p>
                             <p className="sub-title">{this.state.en_title}</p>
                             <div className="decorations">

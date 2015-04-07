@@ -39896,11 +39896,13 @@ exports['default'] = _React2['default'].createClass({
         this.interval = setInterval(function () {
             _this2._getStarred();
         }, this.pollInterval);
-        setTimeout(function () {
-            $(_this2.refs.bannerContainer.getDOMNode()).scrollbar({
-                horizontal: true
-            });
-        }, 500);
+        if (this.isMounted()) {
+            setTimeout(function () {
+                $(_this2.refs.bannerContainer.getDOMNode()).scrollbar({
+                    horizontal: true
+                });
+            }, 50);
+        }
     },
     componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
         var _this3 = this;
@@ -40341,28 +40343,30 @@ exports['default'] = _React2['default'].createClass({
             last_modified: '',
             uri: '' };
     },
-
-    componentDidMount: function componentDidMount() {
+    _getPost: function _getPost(Id) {
         var _this = this;
 
-        this.getPost(this.props.id, function (error, response) {
+        this.getPost(Id, function (error, response) {
             var post = error ? [] : response.body;
-            if (_this.isMounted()) {
-                _this.setState({
-                    id: post.id,
-                    zh_title: post.zh_title,
-                    en_title: post.en_title,
-                    content: post.content,
-                    imgs: post.images,
-                    credits: post.credits,
-                    created_at: post.created_at,
-                    last_modified: post.last_modified,
-                    category: post.category.name,
-                    uri: post.resource_uri
-                });
-            };
+            _this.setState({
+                id: post.id,
+                zh_title: post.zh_title,
+                en_title: post.en_title,
+                content: post.content,
+                imgs: post.images,
+                credits: post.credits,
+                created_at: post.created_at,
+                last_modified: post.last_modified,
+                category: post.category.name,
+                uri: post.resource_uri
+            });
         });
     },
+    componentDidMount: function componentDidMount() {
+        this._getPost(this.props.id);
+    },
+
+    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {},
 
     handeClickOnCross: function handeClickOnCross() {
         if (!this.context.router.goBack()) {
@@ -40409,7 +40413,7 @@ exports['default'] = _React2['default'].createClass({
                     { className: 'modal-content' },
                     _React2['default'].createElement(
                         'div',
-                        { className: 'pull-left content' },
+                        { className: 'pull-left content', ref: 'contentContainer' },
                         _React2['default'].createElement(
                             'p',
                             { className: 'title' },

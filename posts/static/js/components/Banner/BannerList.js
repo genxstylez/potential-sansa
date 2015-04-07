@@ -32,11 +32,13 @@ export default React.createClass({
          this.interval = setInterval(() => {
             this._getStarred();
         }, this.pollInterval);
-        setTimeout(() => {
-            $(this.refs.bannerContainer.getDOMNode()).scrollbar({
-                horizontal: true
-            });
-        }, 500);
+        if(this.isMounted()) {
+            setTimeout(() => {
+                $(this.refs.bannerContainer.getDOMNode()).scrollbar({
+                    horizontal: true
+                });
+            }, 50);
+        }
     },
     componentDidUpdate(prevProps, prevState){
         setTimeout(() => {
