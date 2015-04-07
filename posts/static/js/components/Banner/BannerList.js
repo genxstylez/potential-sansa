@@ -13,15 +13,18 @@ const Link = Router.Link;
 export default React.createClass({
     mixins: [WebAPIMixin],
     pollInterval: 60000,
-    posts: [],
 
     contextTypes: {
         router: React.PropTypes.func
     },
+    getInitialState() {
+        return {
+            posts: []
+        }
+    },
      _getStarred() {
         this.getStarred((error, response) => {
-            this.posts = error ? [] : response.body.objects;
-            this.forceUpdate();
+            this.setState({posts: error ? [] : response.body.objects});
         });
     },
     componentDidMount() {
@@ -29,9 +32,16 @@ export default React.createClass({
          this.interval = setInterval(() => {
             this._getStarred();
         }, this.pollInterval);
-        $('.banner-outer-container').scrollbar({
-            horizontal: true
-        });
+        setTimeout(() => {
+            $(this.refs.bannerContainer.getDOMNode()).scrollbar({
+                horizontal: true
+            });
+        }, 500);
+    },
+    componentDidUpdate(prevProps, prevState){
+        setTimeout(() => {
+            $(this.refs.bannerContainer.getDOMNode()).scrollbar("resize");
+        }, 100);
     },
     componentWillUnmount() {
         if (_.has(this, 'interval')) {
@@ -39,7 +49,7 @@ export default React.createClass({
         }
     },
     render() {
-        const tileNodes = _.map(this.posts, post => {
+        const tileNodes = _.map(this.state.posts, post => {
             return (
                 <BannerTile 
                     key={post.id} 
@@ -50,7 +60,7 @@ export default React.createClass({
             );
         });
         return (
-            <div className="row banner-outer-container fs-scrollbar-active" ref="bannerContainer">
+            <div className="row banner-outer-container" ref="bannerContainer">
                 <div className="banner-inner-container">
                     {tileNodes}
                 </div>

@@ -39873,17 +39873,20 @@ exports['default'] = _React2['default'].createClass({
 
     mixins: [_WebAPIMixin2['default']],
     pollInterval: 60000,
-    posts: [],
 
     contextTypes: {
         router: _React2['default'].PropTypes.func
+    },
+    getInitialState: function getInitialState() {
+        return {
+            posts: []
+        };
     },
     _getStarred: function _getStarred() {
         var _this = this;
 
         this.getStarred(function (error, response) {
-            _this.posts = error ? [] : response.body.objects;
-            _this.forceUpdate();
+            _this.setState({ posts: error ? [] : response.body.objects });
         });
     },
     componentDidMount: function componentDidMount() {
@@ -39893,9 +39896,18 @@ exports['default'] = _React2['default'].createClass({
         this.interval = setInterval(function () {
             _this2._getStarred();
         }, this.pollInterval);
-        $('.banner-outer-container').scrollbar({
-            horizontal: true
-        });
+        setTimeout(function () {
+            $(_this2.refs.bannerContainer.getDOMNode()).scrollbar({
+                horizontal: true
+            });
+        }, 500);
+    },
+    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+        var _this3 = this;
+
+        setTimeout(function () {
+            $(_this3.refs.bannerContainer.getDOMNode()).scrollbar('resize');
+        }, 100);
     },
     componentWillUnmount: function componentWillUnmount() {
         if (_import2['default'].has(this, 'interval')) {
@@ -39903,7 +39915,7 @@ exports['default'] = _React2['default'].createClass({
         }
     },
     render: function render() {
-        var tileNodes = _import2['default'].map(this.posts, function (post) {
+        var tileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_BannerTile2['default'], {
                 key: post.id,
                 id: post.id,
@@ -39913,7 +39925,7 @@ exports['default'] = _React2['default'].createClass({
         });
         return _React2['default'].createElement(
             'div',
-            { className: 'row banner-outer-container fs-scrollbar-active', ref: 'bannerContainer' },
+            { className: 'row banner-outer-container', ref: 'bannerContainer' },
             _React2['default'].createElement(
                 'div',
                 { className: 'banner-inner-container' },

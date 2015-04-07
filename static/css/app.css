@@ -500,4 +500,8 @@ div.logo img {
     padding-left: 20px;
 }
 
+.banner-outer-container .fs-scrollbar-content {
+    padding: 0px !important;
+}
+
 
