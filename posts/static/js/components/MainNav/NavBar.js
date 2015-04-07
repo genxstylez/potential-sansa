@@ -18,13 +18,18 @@ export default React.createClass({
      */
     mixins: [WebAPIMixin, ScrollListenerMixin],
 
+    getInitialState() {
+        return {
+            categories: [],
+        }
+    },
     /**
      * gets users from web API
      * @private
      */
     _getCategories() {
-        this.getCategories((error, response) => {
-            this.categories= error ? [] : response.body.objects;
+        this.getCategories(null, (error, response) => {
+            this.setState({ categories: error ? [] : response.body.objects });
             this.forceUpdate();
         });
     },
@@ -46,27 +51,33 @@ export default React.createClass({
      */
 
     render() {
-        var classes = classNames({
+        var header_classes = classNames({
             'header': true,
-            'fixed': this.state.scrollTop > 200,
             'col-xs-0': true,
             'col-sm-12': true,
             'col-md-12': true,
             'col-lg-12': true
 
         });
+        var nav_classes = classNames({
+            'row': true,
+            'nav': true,
+            'fixed': this.state.scrollTop > 200,
+        });
         const NavItemNodes = [];
-        for(var i=0; i < this.categories.length; i++) {
-
-            NavItemNodes.push(<NavItem id={this.categories[i].id} name={this.categories[i].name} uri={this.categories[i].resource_uri} />);
-            if (i < this.categories.length -1) {
+        for(var x in this.state.categories) {
+            var category = this.state.categories[x]
+            NavItemNodes.push(
+                <NavItem key={category.id} id={category.id} name={category.name} uri={category.resource_uri} />
+            );
+            if (x < this.state.categories.length -1) {
                 NavItemNodes.push(<span className="circle-divider"/>);
             };
         };
             
         return (
-             <div className="row nav">
-                <div ref="header" className={classes}> 
+             <div className={nav_classes}>
+                <div ref="header" className={header_classes}> 
                     <img className="pull-left search" src="/static/img/search.png"></img>
                     {NavItemNodes}
                     <a href="#" className="pull-right subscribe">Subscribe</a>

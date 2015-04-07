@@ -8,7 +8,7 @@ import WebAPIMixin from '../mixins/WebAPIMixin';
 
 const Link = Router.Link;
 
-var footer_text = "&copy; O'logy Co.,Ltd All rights reserved."
+var footer_text = "&copy; O'logy Co.,Ltd All rights reserved.";
 export default React.createClass({
     render() {
         return (

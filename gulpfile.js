@@ -14,7 +14,8 @@ var source = require('vinyl-source-stream'),
     browserify = require('browserify'),
     babelify = require('babelify'),
     watchify = require('watchify'),
-    envify = require('envify/custom');
+    envify = require('envify/custom'),
+    livereload = require('gulp-livereload');
 
 function handleErrors() {
     var args = Array.prototype.slice.call(arguments);
@@ -32,7 +33,8 @@ function rebundle(bundler, app, production) {
         .pipe(gulpif(!production, source(app + '.js')))
         .pipe(gulpif(production, source(app + '.min.js')))
         .pipe(gulpif(production, streamify(uglify())))
-        .pipe(gulp.dest('./static/js/build/app/' + app + '/'));
+        .pipe(gulp.dest('./static/js/build/app/' + app + '/'))
+        .pipe(livereload());
 }
 
 function buildScript(app, production) {
@@ -77,5 +79,6 @@ gulp.task('build', function () {
 });
 
 gulp.task('watch', function () {
+    livereload.listen();
     return buildScript(gutil.env.app, false);
 });

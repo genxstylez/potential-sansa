@@ -53,12 +53,31 @@ div.logo img {
 .twin {
     margin: 1px;
 }
+.nav {
+    background-color: #f7f7f7;
+}
+.nav.fixed, .sub-nav.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 11;
+    margin: 0px;
+}
+.sub-nav {
+    background: #fff;
+}
+.sub-nav.fixed {
+    top: 47px;
+}
 .header {
     text-align: center;
     margin: 2px 0px;
     height: 47px;
-    background-color: #f7f7f7;
-    padding: 12px 0px;
+    padding: 12px 15px;
+    width: 90%;
+    margin: 0 auto;
+    float: none;
 }
 .header a {
     font-size: 14px;
@@ -68,13 +87,6 @@ div.logo img {
 }
 .header a.active {
     text-decoration: none;
-}
-.header.fixed {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 11;
-    margin: 0px;
 }
 .header .search {
     margin-top: 5px;
@@ -104,6 +116,7 @@ div.logo img {
 .banner-inner-container .banner-tile {
     float: left;
     position: relative;
+    height: 500px;
 }
 .banner-inner-container .banner-tile img {
     height: 100%;
@@ -487,6 +500,4 @@ div.logo img {
     padding-left: 20px;
 }
 
-.sub-nav .header.fixed {
-    top: 47px;
-}
+

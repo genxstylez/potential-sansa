@@ -62,12 +62,12 @@ export default React.createClass({
     render() {
         return (
           <div className="pull-right gallery">
-            <SelectedImg on_deck={this.state.on_deck.img} />
-            <ImgRow>
+            <SelectedImg key="selected6789" on_deck={this.state.on_deck.img} />
+            <ImgRow key="row7766">
               {this.state.imgs.map(function(image) {
                   return (
                     <li onClick={this.handleClick.bind(this, image)}>
-                      <ImgItem path={image.img} />
+                      <ImgItem key={image.id} path={image.img} />
                     </li>
                   )
                 }, this)}

@@ -16,7 +16,8 @@ const masonryOptions = {
 
 export default React.createClass({
     propTypes: {
-        categoryId: React.PropTypes.string
+        categoryId: React.PropTypes.string,
+        subcategoryId: React.PropTypes.string
     },
 
     pollInterval: 60000,
@@ -35,22 +36,22 @@ export default React.createClass({
      * gets posts from web API
      * @private
      */
-    _getPosts(categoryId) {
-        this.getPosts(categoryId, (error, response) => {
+    _getPosts(categoryId, subcategoryId) {
+        this.getPosts(categoryId, subcategoryId, (error, response) => {
             this.posts = error ? [] : response.body.objects;
             this.forceUpdate();
         });
     },
     componentWillReceiveProps(nextProps) {
-        this._getPosts(nextProps.categoryId);
+        this._getPosts(nextProps.categoryId, nextProps.subcategoryId);
     },
     /**
      * React component lifecycle method
      */
     componentDidMount() {
-        this._getPosts(this.props.categoryId);
+        this._getPosts(this.props.categoryId, this.props.subcategoryId);
         this.interval = setInterval(() => {
-            this._getPosts(this.props.categoryId);
+            this._getPosts(this.props.categoryId, this.props.subcategoryId);
         }, this.pollInterval);
     },
 

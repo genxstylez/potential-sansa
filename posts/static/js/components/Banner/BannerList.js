@@ -29,6 +29,9 @@ export default React.createClass({
          this.interval = setInterval(() => {
             this._getStarred();
         }, this.pollInterval);
+        $('.banner-outer-container').scrollbar({
+            horizontal: true
+        });
     },
     componentWillUnmount() {
         if (_.has(this, 'interval')) {
@@ -47,7 +50,7 @@ export default React.createClass({
             );
         });
         return (
-            <div className="row banner-outer-container">
+            <div className="row banner-outer-container fs-scrollbar-active" ref="bannerContainer">
                 <div className="banner-inner-container">
                     {tileNodes}
                 </div>

@@ -7,6 +7,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css">
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
+    <link href="{% static 'thirdparty/scrollbar.css' %}" rel="stylesheet">
     {% block css %}{% endblock %}
 </head>
 <body>
@@ -15,7 +16,9 @@
         <div class="react-container"></div>
     </div>
     <script src="{% url 'js_reverse' %}"></script>
-    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="{% static 'thirdparty/core.js' %}"></script>
+    <script src="{% static 'thirdparty/scrollbar.js' %}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.0/es5-shim.min.js"></script>
     {% block js %}{% endblock %}

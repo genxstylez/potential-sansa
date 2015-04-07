@@ -8,6 +8,7 @@ from posts.models import Category, Credit, Post, Image
 
 
 class AdminPostResource(ModelResource):
+
     class Meta:
         queryset = Post.objects.all()
         resource_name = 'admin_posts'
@@ -18,30 +19,33 @@ class AdminPostResource(ModelResource):
 
 
 class CreditResource(ModelResource):
+
     class Meta:
         queryset = Credit.objects.all()
 
 
 class ImageResource(ModelResource):
+
     class Meta:
         queryset = Image.objects.all()
 
 
 class CategoryResource(ModelResource):
-    parent = fields.ForeignKey('self', 'parent', null=True, blank=True)
+    parent = fields.ForeignKey('self', 'parent', null=True, blank=True, full=True)
 
     class Meta:
         queryset = Category.objects.all()
         resource_name = 'category'
         allowed_methods = ['get']
         filtering = {
-            'parent': ('isnull', )
+            'parent': ('isnull', 'exact')
         }
 
 
 class StarredResource(ModelResource):
-    cover = fields.ToManyField(ImageResource, lambda bundle: Image.objects.filter(post=bundle.obj,
-        is_cover=True), use_in='list', full=True)
+    cover = fields.ToManyField(ImageResource,
+                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True),
+                               use_in='list', full=True)
 
     class Meta:
         queryset = Post.objects.filter(starred=True, published=True)
@@ -52,8 +56,9 @@ class PostResource(ModelResource):
     category = fields.ForeignKey(CategoryResource, 'category', full=True, null=True, blank=True)
     credits = fields.ToManyField(CreditResource, 'credits', full=True, use_in='detail')
     images = fields.ToManyField(ImageResource, 'images', full=True, use_in='detail')
-    cover = fields.ToManyField(ImageResource, lambda bundle: Image.objects.filter(post=bundle.obj,
-        is_cover=True), use_in='list', full=True)
+    cover = fields.ToManyField(ImageResource,
+                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True),
+                               use_in='list', full=True)
 
     class Meta:
         queryset = Post.objects.filter(published=True)
