@@ -2,11 +2,12 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from ology.storage import ology_storage
 
 
 class Category(models.Model):
     name = models.CharField('標題', max_length=20)
-    parent = models.ForeignKey('self', related_name='sub_categories', null=True, blank=True)
+    parent = models.ForeignKey('self', verbose_name='主類別', related_name='sub_categories', null=True, blank=True)
 
     def __unicode__(self):
         if self.parent:
@@ -44,8 +45,12 @@ class Post(models.Model):
 
 
 class Image(models.Model):
+
+    def post_image_path(self, filename):
+        return '{post}/{caption_or_id}'.format(self.post, self.caption or self.id)
+
     post = models.ForeignKey(Post, related_name='images', verbose_name='文章')
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=50)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
-    img = models.ImageField('圖片')
+    img = models.ImageField('圖片', upload_to=post_image_path)  # storage=ology_storage)

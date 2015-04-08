@@ -15,7 +15,7 @@ export default React.createClass({
         zh_title: React.PropTypes.string.isRequired,
         en_title: React.PropTypes.string.isRequired,
         content: React.PropTypes.string.isRequired,
-        cover: React.PropTypes.string.isRequired,
+        cover: React.PropTypes.object.isRequired,
         created_at: React.PropTypes.string.isRequired,
         last_modified: React.PropTypes.string.isRequired,
         uri: React.PropTypes.string.isRequired,
@@ -82,7 +82,7 @@ export default React.createClass({
         };
         return (
             <div className="tile" style={styles.tile} onClick={this.handleClick}>
-                <img src={this.props.cover} style={styles.tileImg}></img>
+                <img src={this.props.cover.img.medium} style={styles.tileImg}></img>
                 <div className="intro" style={styles.tileIntro}>
                     <div className="info" style={styles.tileIntroInfo}>
                         { this.props.category} | {new Date(this.props.created_at).toDateString()}

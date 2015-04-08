@@ -39983,7 +39983,7 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'banner-tile' },
-            _React2['default'].createElement('img', { src: this.props.cover.img }),
+            _React2['default'].createElement('img', { src: this.props.cover.img.large }),
             _React2['default'].createElement(
                 'div',
                 { className: 'title' },
@@ -40555,7 +40555,7 @@ var SelectedImg = _React2['default'].createClass({
             'div',
             { className: 'on_deck' },
             _React2['default'].createElement('span', { className: 'align-helper' }),
-            _React2['default'].createElement('img', { src: this.props.on_deck })
+            _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' })
         );
     }
 });
@@ -40610,15 +40610,15 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'pull-right gallery' },
-            _React2['default'].createElement(SelectedImg, { key: 'selected6789', on_deck: this.state.on_deck.img }),
+            _React2['default'].createElement(SelectedImg, { key: 'selectedImg', on_deck: this.state.on_deck }),
             _React2['default'].createElement(
                 ImgRow,
-                { key: 'row7766' },
+                { key: 'imgRow' },
                 this.state.imgs.map(function (image) {
                     return _React2['default'].createElement(
                         'li',
                         { onClick: this.handleClick.bind(this, image) },
-                        _React2['default'].createElement(ImgItem, { key: image.id, path: image.img })
+                        _React2['default'].createElement(ImgItem, { key: image.id, path: image.img.small })
                     );
                 }, this)
             )
@@ -40734,7 +40734,7 @@ exports['default'] = _React2['default'].createClass({
                 id: post.id,
                 zh_title: post.zh_title,
                 en_title: post.en_title,
-                cover: post.cover[0].img,
+                cover: post.cover[0],
                 created_at: post.created_at,
                 last_modified: post.last_modified,
                 content: post.content,
@@ -40792,7 +40792,7 @@ exports['default'] = _React2['default'].createClass({
         zh_title: _React2['default'].PropTypes.string.isRequired,
         en_title: _React2['default'].PropTypes.string.isRequired,
         content: _React2['default'].PropTypes.string.isRequired,
-        cover: _React2['default'].PropTypes.string.isRequired,
+        cover: _React2['default'].PropTypes.object.isRequired,
         created_at: _React2['default'].PropTypes.string.isRequired,
         last_modified: _React2['default'].PropTypes.string.isRequired,
         uri: _React2['default'].PropTypes.string.isRequired },
@@ -40849,7 +40849,7 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'tile', style: styles.tile, onClick: this.handleClick },
-            _React2['default'].createElement('img', { src: this.props.cover, style: styles.tileImg }),
+            _React2['default'].createElement('img', { src: this.props.cover.img.medium, style: styles.tileImg }),
             _React2['default'].createElement(
                 'div',
                 { className: 'intro', style: styles.tileIntro },

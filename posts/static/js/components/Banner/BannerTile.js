@@ -19,7 +19,7 @@ export default React.createClass({
     render() {
         return (
             <div className="banner-tile">
-                <img src={this.props.cover.img} />
+                <img src={this.props.cover.img.large} />
                 <div className="title">
                     <Link key={this.props.id} to="post" params={{postId: this.props.id}}>
                         {this.props.zh_title}<span className="circle-divider"></span>{this.props.en_title}

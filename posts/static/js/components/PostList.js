@@ -75,7 +75,7 @@ export default React.createClass({
                     id={post.id} 
                     zh_title={post.zh_title}
                     en_title={post.en_title}
-                    cover={post.cover[0].img}
+                    cover={post.cover[0]}
                     created_at={post.created_at}
                     last_modified={post.last_modified}
                     content={post.content}

@@ -46,6 +46,8 @@ INSTALLED_APPS = (
     'ology',
     'posts',
     'tastypie',
+    'django_thumbor',
+    'storages',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,7 +114,6 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'ology.context_processors.js_debug',
 )
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -127,3 +128,23 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
+# THUMBOR
+THUMBOR_SERVER = 'http://localhost:8888'
+
+THUMBOR_MEDIA_URL = 'http://localhost:8000/media'
+
+THUMBOR_SECURITY_KEY = 'ologyrocks'
+
+
+# AWS
+AWS_ACCESS_KEY_ID = 'dddddd'
+AWS_SECRET_ACCESS_KEY = 'ssssdddddd'
+AWS_STORAGE_BUCKET_NAME = 'ology-test'
+AWS_S3_SECURE_URLS = False
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+AWS_HEADERS = {
+    'Expires': 'Thu, 31 Dec 2020 23:59:59 GMT',
+    'Cache-Control': 'max-age=99999',
+}

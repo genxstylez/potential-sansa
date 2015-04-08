@@ -13,7 +13,7 @@ var SelectedImg = React.createClass({
         return (
             <div className="on_deck">
                 <span className="align-helper" />
-                <img src={this.props.on_deck} />
+                <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />
             </div>
         )
     }  
@@ -62,12 +62,12 @@ export default React.createClass({
     render() {
         return (
           <div className="pull-right gallery">
-            <SelectedImg key="selected6789" on_deck={this.state.on_deck.img} />
-            <ImgRow key="row7766">
+            <SelectedImg key="selectedImg" on_deck={this.state.on_deck} />
+            <ImgRow key="imgRow">
               {this.state.imgs.map(function(image) {
                   return (
                     <li onClick={this.handleClick.bind(this, image)}>
-                      <ImgItem key={image.id} path={image.img} />
+                      <ImgItem key={image.id} path={image.img.small} />
                     </li>
                   )
                 }, this)}

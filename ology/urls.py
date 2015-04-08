@@ -4,12 +4,13 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from django.contrib import admin
 from tastypie.api import Api
-from posts.api.resources import CategoryResource, PostResource, StarredResource
+from posts.api.resources import CategoryResource, PostResource, StarredResource, ImageResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(CategoryResource())
 v1_api.register(PostResource())
 v1_api.register(StarredResource())
+v1_api.register(ImageResource())
 
 urlpatterns = [
     # Examples:
