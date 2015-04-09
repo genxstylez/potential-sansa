@@ -26,6 +26,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='image',
             name='img',
-            field=easy_thumbnails.fields.ThumbnailerImageField(upload_to=posts.models.PathObj, verbose_name='\u5716\u7247'),
+            field=easy_thumbnails.fields.ThumbnailerImageField(upload_to=posts.models.post_image_path, verbose_name='\u5716\u7247'),
         ),
     ]

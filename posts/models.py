@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from easy_thumbnails import fields
+from django.utils.deconstruct import deconstructible
 
 
 class Category(models.Model):
@@ -44,10 +45,8 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
 
-class PathObj(object):
-
-    def __call__(self, instance, filename):
-        return '{post}/{filename}'.format(post=instance.post, filename=filename)
+def post_image_path(instance, filename):
+    return '{post}/{filename}'.format(post=instance.post, filename=filename)
 
 
 class Image(models.Model):
@@ -55,7 +54,7 @@ class Image(models.Model):
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=50)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
-    img = fields.ThumbnailerImageField('圖片', upload_to=PathObj)
+    img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path)
 
     def __unicode__(self):
         return '{post} - {id}'.format(post=self.post, id=self.id)
