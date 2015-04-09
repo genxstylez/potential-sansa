@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "genxstyez/potential-sansa:latest",
+    "Name": "genxstyez/potential-sansa",
     "Update": "true"
   },
   "Ports": [
