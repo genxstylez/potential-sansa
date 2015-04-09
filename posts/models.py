@@ -53,4 +53,4 @@ class Image(models.Model):
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=50)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
-    img = models.ImageField('圖片', upload_to=post_image_path)  # storage=ology_storage)
+    img = models.ImageField('圖片', upload_to=post_image_path)

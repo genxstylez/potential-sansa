@@ -11,24 +11,26 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import dj_database_url
+
 import os
+import random
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+ROOT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gcc#b4sdwidz6h)ag)ok=di7$#wsvq+91=xe*e3p)bpoel+8hj'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '{:030x}'.format(random.randrange(16 ** 30)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
-JS_DEBUG = True
+JS_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split()
 
 # Application definition
 
@@ -80,16 +82,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ology.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(env='DATABASE_URL')
 }
+
+if DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
+    DATABASES['default']['OPTIONS'] = {}
+    DATABASES['default']['OPTIONS']['autocommit'] = True
 
 
 # Internationalization
@@ -97,7 +99,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'zh-hant'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
 
@@ -115,32 +117,38 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 )
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.environ.get('DJANGO_STATIC_URL', '/static/')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+STATIC_ROOT = os.path.join(ROOT_PATH, 'assets')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(ROOT_PATH, 'media/')
 
-MEDIA_URL = '/media/'
+MEDIA_URL = os.environ.get('DJANGO_MEDIA_URL', '/media/')
+
+DEFAULT_FILE_STORAGE = 'ology.storage.DefaultStorage'
+
+STATICFILES_STORAGE = 'ology.storage.StaticStorage'
+
 
 # THUMBOR
-THUMBOR_SERVER = 'http://localhost:8888'
+THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', 'http://localhost:8888')
 
-THUMBOR_MEDIA_URL = 'http://localhost:8000/media'
+THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', 'http://localhost:8000/media')
 
-THUMBOR_SECURITY_KEY = 'ologyrocks'
+THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', 'ologyrocks')
 
 
 # AWS
-AWS_ACCESS_KEY_ID = 'dddddd'
-AWS_SECRET_ACCESS_KEY = 'ssssdddddd'
-AWS_STORAGE_BUCKET_NAME = 'ology-test'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'test')
+AWS_MEDIA_STORAGE_BUCKET_NAME = os.environ.get('AWS_MEDIA_STORAGE_BUCKET_NAME', 'ology-media-dev')
+AWS_STATIC_STORAGE_BUCKET_NAME = os.environ.get('AWS_STATIC_STORAGE_BUCKET_NAME', 'ology-static-dev')
+
 AWS_S3_SECURE_URLS = False
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
