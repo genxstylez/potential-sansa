@@ -235,6 +235,7 @@ div.logo img {
     font-size: 11px;
     text-align: justify;
     line-height: 19px;
+    word-wrap: break-word;
 }
 .tile .triangle {
     font-size: 0px;
