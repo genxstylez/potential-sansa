@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import dj_database_url
+import django_cache_url
 
 import os
 import random
@@ -94,6 +95,12 @@ if DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
     DATABASES['default']['OPTIONS']['autocommit'] = True
 
 
+CACHES = {
+    'default': django_cache_url.config(env='DEFAULT_CACHE_URL')
+}
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -144,6 +151,7 @@ THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', 'ologyrocks')
 # AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'test')
+AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')  # CDN address.
 AWS_MEDIA_STORAGE_BUCKET_NAME = os.environ.get('AWS_MEDIA_STORAGE_BUCKET_NAME', 'ology-media-dev')
 AWS_STATIC_STORAGE_BUCKET_NAME = os.environ.get('AWS_STATIC_STORAGE_BUCKET_NAME', 'ology-static-dev')
 

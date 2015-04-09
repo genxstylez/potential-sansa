@@ -46,10 +46,14 @@ class Post(models.Model):
 class Image(models.Model):
 
     def post_image_path(self, filename):
-        return '{post}/{caption_or_id}'.format(self.post, self.caption or self.id)
+        import uuid
+        return '{post}/{caption}'.format(post=self.post, caption=self.caption or unicode(uuid.uuid4())[:6])
 
     post = models.ForeignKey(Post, related_name='images', verbose_name='文章')
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=50)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
     img = models.ImageField('圖片', upload_to=post_image_path)
+
+    def __unicode__(self):
+        return '{post} - {id}'.format(post=self.post, id=self.id)
