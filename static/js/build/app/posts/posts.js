@@ -40356,7 +40356,7 @@ exports['default'] = _React2['default'].createClass({
                 id: post.id,
                 zh_title: post.zh_title,
                 en_title: post.en_title,
-                content: post.content,
+                content: post.articletext,
                 imgs: post.images,
                 credits: post.credits,
                 created_at: post.created_at,
@@ -40744,7 +40744,7 @@ exports['default'] = _React2['default'].createClass({
                 cover: post.cover[0],
                 created_at: post.created_at,
                 last_modified: post.last_modified,
-                content: post.content,
+                content: post.articletext,
                 category: post.category.name,
                 uri: post.resource_uri });
         });

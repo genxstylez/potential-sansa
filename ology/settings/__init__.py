@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_js_reverse',
     'suit_redactor',
+    'suit_ckeditor',
     'ology',
     'posts',
     'tastypie',
@@ -163,7 +164,7 @@ THUMBNAIL_ALIASES = {
     }
 }
 
-THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+THUMBNAIL_DEFAULT_STORAGE = 'ology.storage.DefaultStorage'
 
 # AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')

@@ -41,7 +41,7 @@ export default React.createClass({
                 id: post.id,
                 zh_title: post.zh_title,
                 en_title: post.en_title,
-                content: post.content,
+                content: post.articletext,
                 imgs: post.images,
                 credits: post.credits,
                 created_at: post.created_at,

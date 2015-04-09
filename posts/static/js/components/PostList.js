@@ -78,7 +78,7 @@ export default React.createClass({
                     cover={post.cover[0]}
                     created_at={post.created_at}
                     last_modified={post.last_modified}
-                    content={post.content}
+                    content={post.articletext}
                     category={post.category.name}
                     uri={post.resource_uri} />
             );

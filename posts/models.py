@@ -28,7 +28,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, related_name='posts', verbose_name='類別')
     zh_title = models.CharField('中文標題', max_length=30)
     en_title = models.CharField('英文標題', max_length=30, blank=True)
-    content = models.TextField('內容')
+    articletext = models.TextField('內容')
     credits = models.ManyToManyField(Credit, verbose_name='Credits')
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
@@ -44,16 +44,18 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
 
+class PathObj(object):
+
+    def __call__(self, instance, filename):
+        return '{post}/{filename}'.format(post=instance.post, filename=filename)
+
+
 class Image(models.Model):
-
-    def post_image_path(self, filename):
-        return '{post}/{filename}'.format(post=self.post, filename=filename)
-
     post = models.ForeignKey(Post, related_name='images', verbose_name='文章')
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=50)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
-    img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path)
+    img = fields.ThumbnailerImageField('圖片', upload_to=PathObj)
 
     def __unicode__(self):
         return '{post} - {id}'.format(post=self.post, id=self.id)
