@@ -4,7 +4,7 @@ beat: celery beat -A portal.celery -l info
 wakeonwan: python manage.py wakeonwan --loglevel debug 
 redis: redis-server
 
-gunicorn: gunicorn -b 0.0.0.0:8000 -c config/gunicorn.py "ology.wsgi:get_application()" --log-level info
+gunicorn: gunicorn -b 0.0.0.0:8000 -c config/gunicorn.py "ology.wsgi:get_application()"
 
 static: twistd -n --pidfile= web --path static --port 8100
 media: twistd -n --pidfile= web --path media --port 8200

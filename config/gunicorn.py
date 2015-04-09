@@ -15,7 +15,7 @@ secure_scheme_headers = {
     'X-FORWARDED-PROTO': 'https',
     # 'X-FORWARDED-SSL': 'on',
 }
-preload_app = False
+preload_app = True
 limit_request_line = int(4094 / 4)
 limit_request_fields = int(100 / 2)
 keepalive = 2 * 2

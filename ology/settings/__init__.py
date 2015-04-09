@@ -27,7 +27,7 @@ ROOT_PATH = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__fi
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '{:030x}'.format(random.randrange(16 ** 30)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = False
 
 JS_DEBUG = DEBUG
 
@@ -98,7 +98,7 @@ CACHES = {
     'default': django_cache_url.config(env='DEFAULT_CACHE_URL')
 }
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
