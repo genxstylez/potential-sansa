@@ -28,6 +28,7 @@ export default React.createClass({
             }
         };
         var logo_src = STATIC_URL + "img/logo.png";
+        
         return (
             <div>
                 <div className="row top-black-bar" style={styles.TopBlackBar}></div>
