@@ -80,11 +80,11 @@ export default React.createClass({
         });
 
         var cross_icon = STATIC_URL + "img/cross.png";
-
+        var fb_icon = STATIC_URL + "img/fb.png";
         return (
             <div className="modal">
                 <span className="close">
-                    <img src={cross_icon} onClick={this.handeClickOnCross}></img>
+                    <img src={cross_icon} onClick={this.handeClickOnCross} />
                 </span>
                 <div className="row">
                     <div className="modal-header">
@@ -111,7 +111,7 @@ export default React.createClass({
                             {creditNodes}
                             <div className="share">
                                 <a href="http://facebook.com">
-                                    <img src="/static/img/fb.png" />
+                                    <img src={fb_icon} />
                                 </a>
                             </div>
                         </div>

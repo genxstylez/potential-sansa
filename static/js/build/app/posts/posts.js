@@ -40392,7 +40392,7 @@ exports['default'] = _React2['default'].createClass({
         });
 
         var cross_icon = STATIC_URL + 'img/cross.png';
-
+        var fb_icon = STATIC_URL + 'img/fb.png';
         return _React2['default'].createElement(
             'div',
             { className: 'modal' },
@@ -40456,7 +40456,7 @@ exports['default'] = _React2['default'].createClass({
                             _React2['default'].createElement(
                                 'a',
                                 { href: 'http://facebook.com' },
-                                _React2['default'].createElement('img', { src: '/static/img/fb.png' })
+                                _React2['default'].createElement('img', { src: fb_icon })
                             )
                         )
                     ),
