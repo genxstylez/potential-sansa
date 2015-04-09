@@ -177,3 +177,15 @@ AWS_HEADERS = {
     'Expires': 'Thu, 31 Dec 2020 23:59:59 GMT',
     'Cache-Control': 'max-age=99999',
 }
+
+
+# RAVEN
+# Set your DSN value
+RAVEN_CONFIG = {
+    'dsn': os.environ.get('SENTRY_DSN'),
+}
+
+if os.environ.get('SENTRY_DSN'):
+    INSTALLED_APPS = INSTALLED_APPS + (
+        'raven.contrib.django.raven_compat',
+    )
