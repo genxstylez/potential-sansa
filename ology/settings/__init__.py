@@ -150,7 +150,7 @@ THUMBNAIL_ALIASES = {
 
 # AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', 'test')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY', 'test')
 AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')  # CDN address.
 AWS_MEDIA_STORAGE_BUCKET_NAME = os.environ.get('AWS_MEDIA_STORAGE_BUCKET_NAME', 'ology-media-dev')
 AWS_STATIC_STORAGE_BUCKET_NAME = os.environ.get('AWS_STATIC_STORAGE_BUCKET_NAME', 'ology-static-dev')
