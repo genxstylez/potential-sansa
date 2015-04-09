@@ -40206,12 +40206,8 @@ exports['default'] = _React2['default'].createClass({
                 NavItemNodes.push(_React2['default'].createElement('span', { className: 'circle-divider' }));
             };
         };
-        console.log(STATIC_URL);
         var fb_icon = STATIC_URL + 'img/fb.png';
         var search_icon = STATIC_URL + 'img/search.png';
-
-        console.log(fb_icon);
-        console.log(search_icon);
 
         return _React2['default'].createElement(
             'div',
