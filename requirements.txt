@@ -7,7 +7,8 @@ django-suit==0.2.12
 django-suit-redactor==0.0.2
 django-tastypie==0.12.1
 django-thumbor==0.5
-gevent==1.0.1
+cython
+-e git+https://github.com/jaredhobbs/gevent.git#egg=gevent
 greenlet==0.4.5
 gunicorn==18.0
 dj_database_url==0.3.0
