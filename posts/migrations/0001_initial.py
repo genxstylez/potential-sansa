@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('zh_title', models.CharField(verbose_name='中文標題', max_length=30)),
                 ('slug', models.SlugField(verbose_name='slug', max_length=15)),
                 ('en_title', models.CharField(blank=True, verbose_name='英文標題', max_length=30)),
-                ('content', models.TextField(verbose_name='內容')),
+                ('articletext', models.TextField(verbose_name='內容')),
                 ('last_modified', models.DateTimeField(verbose_name='最後更改', auto_now=True)),
                 ('created_at', models.DateTimeField(verbose_name='建立時間', auto_now_add=True)),
                 ('category', models.ForeignKey(to='posts.Category', verbose_name='類別', related_name='posts')),
