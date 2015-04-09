@@ -82,11 +82,11 @@ export default React.createClass({
         return (
              <div className={nav_classes}>
                 <div ref="header" className={header_classes}> 
-                    <img className="pull-left search" src="/static/img/search.png"></img>
+                    <img className="pull-left search" src={search_icon}></img>
                     {NavItemNodes}
                     <a href="#" className="pull-right subscribe">Subscribe</a>
                     <a href="http://facebook.com" className="pull-right fb">
-                        <img src="/static/img/fb.png"></img>
+                        <img src={fb_icon}></img>
                     </a>
                 </div>
             </div>

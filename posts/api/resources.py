@@ -4,7 +4,6 @@ from tastypie.authentication import (ApiKeyAuthentication, BasicAuthentication,
                                      MultiAuthentication)
 from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ModelResource, fields, ALL_WITH_RELATIONS
-from django_thumbor import generate_url
 from posts.models import Category, Credit, Post, Image
 
 
@@ -34,9 +33,9 @@ class ImageResource(ModelResource):
     def dehydrate(self, bundle):
         bundle.data['img'] = {
             'original': bundle.obj.img.url,
-            'small': generate_url(bundle.obj.img.url, width=150, smart=True),
-            'medium': generate_url(bundle.obj.img.url, width=320, smart=True),
-            'large': generate_url(bundle.obj.img.url, width=640, smart=True)
+            'small': bundle.obj.img['small'].url,
+            'medium': bundle.obj.img['medium'].url,
+            'large': bundle.obj.img['large'].url
         }
         return bundle
 

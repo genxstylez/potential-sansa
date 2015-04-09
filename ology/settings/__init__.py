@@ -45,11 +45,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django_js_reverse',
     'suit_redactor',
-    'bootstrap3',
     'ology',
     'posts',
     'tastypie',
-    'django_thumbor',
+    'easy_thumbnails',
     'storages',
 )
 
@@ -140,13 +139,14 @@ MEDIA_URL = os.environ.get('DJANGO_MEDIA_URL', '/media/')
 DEFAULT_FILE_STORAGE = 'ology.storage.DefaultStorage'
 STATICFILES_STORAGE = 'ology.storage.StaticStorage'
 
-
-# THUMBOR
-THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', 'http://localhost:8888')
-
-THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', 'http://localhost:8000/media')
-
-THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', 'ologyrocks')
+# EASY_THUMBNAILS
+THUMBNAIL_ALIASES = {
+    'posts.Image.img': {
+        'small': {'size': (150, 0), 'crop': 'scale'},
+        'medium': {'size': (320, 0), 'crop': 'scale'},
+        'large': {'size': (640, 0), 'crop': 'scale'}
+    }
+}
 
 # AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')
