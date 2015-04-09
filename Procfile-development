@@ -11,7 +11,7 @@ thumbor: thumbor
 
 shell: python manage.py shell_plus
 migrate: python manage.py syncdb --noinput && python manage.py migrate --noinput
-collectstatic: python manage.py collectstatic --link --noinput
+collectstatic: python manage.py collectstatic --noinput
 test: python manage.py test
 
 package: PACKAGE_NAME="$(git rev-parse --short HEAD).zip"; git archive -o "$PACKAGE_NAME" HEAD && echo $PACKAGE_NAME

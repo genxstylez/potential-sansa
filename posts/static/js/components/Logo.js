@@ -27,11 +27,12 @@ export default React.createClass({
                 width: "222px",
             }
         };
+        var logo_src = STATIC_URL + "img/logo.png";
         return (
             <div>
                 <div className="row top-black-bar" style={styles.TopBlackBar}></div>
                 <div className="row logo" style={styles.logo} onClick={this.handleClick}>
-                    <img style={styles.logoImg} src="/static/img/logo.png"></img>
+                    <img style={styles.logoImg} src={logo_src}></img>
                 </div>
             </div>
         );

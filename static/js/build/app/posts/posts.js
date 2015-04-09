@@ -40084,6 +40084,7 @@ exports['default'] = _React2['default'].createClass({
             logoImg: {
                 width: '222px' }
         };
+        var logo_src = STATIC_URL + 'img/logo.png';
         return _React2['default'].createElement(
             'div',
             null,
@@ -40091,7 +40092,7 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'div',
                 { className: 'row logo', style: styles.logo, onClick: this.handleClick },
-                _React2['default'].createElement('img', { style: styles.logoImg, src: '/static/img/logo.png' })
+                _React2['default'].createElement('img', { style: styles.logoImg, src: logo_src })
             )
         );
     }
@@ -40204,6 +40205,10 @@ exports['default'] = _React2['default'].createClass({
                 NavItemNodes.push(_React2['default'].createElement('span', { className: 'circle-divider' }));
             };
         };
+
+        var fb_icon = STATIC_URL + 'img/fb.png';
+
+        var search_icon = STATIC_URL + 'img/search.png';
 
         return _React2['default'].createElement(
             'div',
@@ -40386,13 +40391,16 @@ exports['default'] = _React2['default'].createClass({
                 role: credit.role,
                 name: credit.name });
         });
+
+        var cross_icon = STATIC_URL + 'img/cross.png';
+
         return _React2['default'].createElement(
             'div',
             { className: 'modal' },
             _React2['default'].createElement(
                 'span',
                 { className: 'close' },
-                _React2['default'].createElement('img', { src: '/static/img/cross.png', onClick: this.handeClickOnCross })
+                _React2['default'].createElement('img', { src: cross_icon, onClick: this.handeClickOnCross })
             ),
             _React2['default'].createElement(
                 'div',

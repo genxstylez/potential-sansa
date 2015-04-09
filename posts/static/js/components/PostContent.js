@@ -78,10 +78,13 @@ export default React.createClass({
                     name={credit.name}/>
             );
         });
+
+        var cross_icon = STATIC_URL + "img/cross.png";
+
         return (
             <div className="modal">
                 <span className="close">
-                    <img src="/static/img/cross.png" onClick={this.handeClickOnCross}></img>
+                    <img src={cross_icon} onClick={this.handeClickOnCross}></img>
                 </span>
                 <div className="row">
                     <div className="modal-header">

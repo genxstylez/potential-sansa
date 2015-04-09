@@ -74,6 +74,10 @@ export default React.createClass({
                 NavItemNodes.push(<span className="circle-divider"/>);
             };
         };
+
+        var fb_icon = STATIC_URL + "img/fb.png";
+
+        var search_icon = STATIC_URL + "img/search.png";
             
         return (
              <div className={nav_classes}>
