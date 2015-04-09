@@ -19,4 +19,4 @@ RUN sed -i 's/PROTOCOL_SSLv3/PROTOCOL_SSLv23/g' /usr/local/lib/python2.7/site-pa
 
 EXPOSE 8010
 
-CMD ["gunicorn", "-b", "0.0.0.0:8000", "-c", "config/gunicorn.py", "ology.wsgi:get_application()", "--log-level", "info"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "-c", "config/gunicorn.py", "ology.wsgi:get_application()"]

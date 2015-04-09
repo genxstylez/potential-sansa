@@ -33,7 +33,9 @@ JS_DEBUG = DEBUG
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split()
 
-ADMINS = ['genxstylez@gmail.com', ]
+ADMINS = (
+    ('Sam Liu', 'genxstylez@gmail.com'),
+)
 
 # Application definition
 
