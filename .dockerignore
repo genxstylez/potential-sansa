@@ -6,3 +6,4 @@ bower.json
 gulpfile.js
 karma*
 package.json
+*.zip
