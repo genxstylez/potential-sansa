@@ -47,8 +47,7 @@ class Post(models.Model):
 class Image(models.Model):
 
     def post_image_path(self, filename):
-        import uuid
-        return '{post}/{caption}'.format(post=self.post, caption=self.caption or unicode(uuid.uuid4())[:6])
+        return '{post}/{filename}'.format(post=self.post, filename=filename)
 
     post = models.ForeignKey(Post, related_name='images', verbose_name='文章')
     is_cover = models.BooleanField('封面照片', default=False)
