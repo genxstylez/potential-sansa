@@ -33,6 +33,8 @@ JS_DEBUG = DEBUG
 
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '*').split()
 
+ADMINS = ['genxstylez@gmail.com', ]
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -138,6 +140,17 @@ MEDIA_URL = os.environ.get('DJANGO_MEDIA_URL', '/media/')
 
 DEFAULT_FILE_STORAGE = 'ology.storage.DefaultStorage'
 STATICFILES_STORAGE = 'ology.storage.StaticStorage'
+
+# EMAIL
+SERVER_EMAIL = 'webmaster@o-logy.com'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
 
 # EASY_THUMBNAILS
 THUMBNAIL_ALIASES = {
