@@ -163,6 +163,8 @@ THUMBNAIL_ALIASES = {
     }
 }
 
+THUMBNAIL_DEFAULT_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
 # AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_KEY', 'test')
