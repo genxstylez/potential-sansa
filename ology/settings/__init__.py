@@ -118,20 +118,19 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
 
 # Static files (CSS, JavaScript, Images)
 
+STATIC_ROOT = os.path.join(ROOT_PATH, '../assets/')
+
 STATIC_URL = os.environ.get('DJANGO_STATIC_URL', '/static/')
 
-STATIC_ROOT = os.path.join(ROOT_PATH, 'assets')
-
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(ROOT_PATH, 'static'),
 )
 
-MEDIA_ROOT = os.path.join(ROOT_PATH, 'media/')
+MEDIA_ROOT = os.path.join(ROOT_PATH, 'media/')  # TODO: change to '../media'
 
 MEDIA_URL = os.environ.get('DJANGO_MEDIA_URL', '/media/')
 
 DEFAULT_FILE_STORAGE = 'ology.storage.DefaultStorage'
-
 STATICFILES_STORAGE = 'ology.storage.StaticStorage'
 
 
@@ -141,7 +140,6 @@ THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', 'http://localhost:8888')
 THUMBOR_MEDIA_URL = os.environ.get('THUMBOR_MEDIA_URL', 'http://localhost:8000/media')
 
 THUMBOR_SECURITY_KEY = os.environ.get('THUMBOR_SECURITY_KEY', 'ologyrocks')
-
 
 # AWS
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', 'test')

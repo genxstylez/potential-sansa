@@ -1,0 +1,5 @@
+procfile: Procfile-development
+concurrency: web=1, thumbor=1 
+port: 8000
+env: .env
+timeout: 1

@@ -1,0 +1,19 @@
+web: python -W ignore manage.py runserver 0.0.0.0:8000
+worker: celery worker -A portal.celery -E -l info --autoscale=4,1 -P gevent --purge --autoreload
+beat: celery beat -A portal.celery -l info
+wakeonwan: python manage.py wakeonwan --loglevel debug 
+redis: redis-server
+
+static: twistd -n --pidfile= web --path static --port 8100
+media: twistd -n --pidfile= web --path media --port 8200
+
+thumbor: thumbor
+
+shell: python manage.py shell_plus
+migrate: python manage.py syncdb --noinput && python manage.py migrate --noinput
+collectstatic: python manage.py collectstatic --link --noinput
+test: python manage.py test
+
+package: PACKAGE_NAME="$(git rev-parse --short HEAD).zip"; git archive -o "$PACKAGE_NAME" HEAD && echo $PACKAGE_NAME
+makemessages: ./scripts/makemessages
+compilemessages: ./scripts/compilemessages

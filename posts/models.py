@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from ology.storage import ology_storage
 
 
 class Category(models.Model):
