@@ -10,6 +10,8 @@ import PostList from '../components/PostList';
 import Footer from '../components/Footer';
 
 export default React.createClass({
+    mixins: [],
+
     contextTypes: {
         router: React.PropTypes.func
     },

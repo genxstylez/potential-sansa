@@ -40255,6 +40255,10 @@ var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
 
+var _ScrollListenerMixin = require('../../ScrollListenerMixin');
+
+var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+
 'use strict';
 
 var Link = _Router2['default'].Link;
@@ -40262,10 +40266,16 @@ var Link = _Router2['default'].Link;
 exports['default'] = _React2['default'].createClass({
     displayName: 'NavItem',
 
+    mixins: [_ScrollListenerMixin2['default']],
+
     propTypes: {
         id: _React2['default'].PropTypes.number.isRequired,
         name: _React2['default'].PropTypes.string.isRequired,
         uri: _React2['default'].PropTypes.string.isRequired
+    },
+
+    handleOnClick: function handleOnClick() {
+        window.scrollTo(0, 600);
     },
 
     render: function render() {
@@ -40278,7 +40288,8 @@ exports['default'] = _React2['default'].createClass({
         };
         return _React2['default'].createElement(
             Link,
-            { key: this.props.id, style: styles.anchor, to: 'category', params: { categoryId: this.props.id } },
+            { key: this.props.id, style: styles.anchor, to: 'category', onClick: this.handleOnClick,
+                params: { categoryId: this.props.id } },
             this.props.name
         );
     }
@@ -40286,7 +40297,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react":213,"react-router":44}],224:[function(require,module,exports){
+},{"../../ScrollListenerMixin":217,"lodash":5,"react":213,"react-router":44}],224:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40667,65 +40678,95 @@ var _MansonryMixin = require('react-masonry-mixin');
 
 var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
 
+var _ScrollListenerMixin = require('../ScrollListenerMixin');
+
+var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+
 'use strict';
 
 var Link = _Router2['default'].Link;
 
-var masonryOptions = {
+var mansonryOptions = {
     transitionDuration: 0
 };
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostList',
 
+    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
+
+    pollInterval: 60000,
+
     propTypes: {
         categoryId: _React2['default'].PropTypes.string,
         subcategoryId: _React2['default'].PropTypes.string
     },
 
-    pollInterval: 60000,
-    /**
-     * @type {object[]}
-     */
-    posts: [],
+    getInitialState: function getInitialState() {
+        return {
+            posts: [],
+            next_page: null,
+            has_next: false,
+            is_loading: false
+        };
+    },
 
-    /**
-     * @type {object[]}
-     */
-    mixins: [_MansonryMixin2['default']('mansonryContainer', masonryOptions), _WebAPIMixin2['default']],
-    // mixins: [WebAPIMixin],
-
-    /**
-     * gets posts from web API
-     * @private
-     */
-    _getPosts: function _getPosts(categoryId, subcategoryId) {
-        var _this = this;
-
-        this.getPosts(categoryId, subcategoryId, function (error, response) {
-            _this.posts = error ? [] : response.body.objects;
-            _this.forceUpdate();
+    buildTiles: function buildTiles(posts) {
+        return posts.map(function (post) {
+            return _React2['default'].createElement(_PostTile2['default'], {
+                key: post.id,
+                id: post.id,
+                zh_title: post.zh_title,
+                en_title: post.en_title,
+                cover: post.cover[0],
+                created_at: post.created_at,
+                last_modified: post.last_modified,
+                content: post.articletext,
+                category: post.category.name,
+                uri: post.resource_uri });
         });
     },
+
+    onPageScroll: function onPageScroll() {
+        var bottomOffset = this.refs.mansonryContainer.getDOMNode().scrollHeight - this.state.scrollTop;
+        if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
+            this.setState({
+                is_loading: true
+            });
+            this._getPosts(this.state.next_page);
+        }
+    },
+
+    _getPosts: function _getPosts(url, categoryId, subcategoryId) {
+        var _this = this;
+
+        this.getPosts(url, categoryId, subcategoryId, function (error, response) {
+            var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next,
+                has_next = response.body.meta.next != null;
+            _this.setState({
+                posts: _this.state.posts.concat(new_elements),
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false
+            });
+        });
+    },
+
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        this._getPosts(nextProps.categoryId, nextProps.subcategoryId);
+        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subscategoryId) {
+            // if category changes, start with a new list of posts
+            this.setState({
+                posts: []
+            });
+            this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
+        }
     },
     /**
      * React component lifecycle method
      */
     componentDidMount: function componentDidMount() {
-        var _this2 = this;
-
-        this._getPosts(this.props.categoryId, this.props.subcategoryId);
-        this.interval = setInterval(function () {
-            _this2._getPosts(_this2.props.categoryId, _this2.props.subcategoryId);
-        }, this.pollInterval);
-    },
-
-    componentWillUnmount: function componentWillUnmount() {
-        if (_import2['default'].has(this, 'interval')) {
-            clearInterval(this.interval);
-        }
+        this._getPosts(null, this.props.categoryId, this.props.subcategoryId);
     },
 
     /**
@@ -40734,9 +40775,8 @@ exports['default'] = _React2['default'].createClass({
      */
 
     render: function render() {
-        var PostTileNodes = _import2['default'].map(this.posts, function (post) {
+        var PostTileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_PostTile2['default'], {
-                ref: 'tile',
                 key: post.id,
                 id: post.id,
                 zh_title: post.zh_title,
@@ -40758,7 +40798,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":231,"./PostTile":228,"lodash":5,"react":213,"react-masonry-mixin":6,"react-router":44}],228:[function(require,module,exports){
+},{"../ScrollListenerMixin":217,"../mixins/WebAPIMixin":231,"./PostTile":228,"lodash":5,"react":213,"react-masonry-mixin":6,"react-router":44}],228:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -41129,15 +41169,18 @@ exports['default'] = {
      * @param {number} id
      * @param {function} cb
      */
-    getPosts: function getPosts(category_id, subcategory_id, cb) {
-        var suffix = '';
-        if (subcategory_id) {
-            suffix = '&category=' + subcategory_id;
-        } else if (category_id) {
-            suffix = '&category__parent=' + category_id;
-        };
-
-        _request2['default'].get('/api/v1/posts/?format=json' + suffix).type('application/json').accept('application/json').end(cb);
+    getPosts: function getPosts(url, category_id, subcategory_id, cb) {
+        console.log(url);
+        if (url == null) {
+            var suffix = '';
+            if (subcategory_id) {
+                suffix = '&category=' + subcategory_id;
+            } else if (category_id) {
+                suffix = '&category__parent=' + category_id;
+            };
+            url = '/api/v1/posts/?format=json' + suffix;
+        }
+        _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
 
     /**
@@ -41232,6 +41275,8 @@ var _Footer2 = _interopRequireWildcard(_Footer);
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'IndexPage',
+
+    mixins: [],
 
     contextTypes: {
         router: _React2['default'].PropTypes.func

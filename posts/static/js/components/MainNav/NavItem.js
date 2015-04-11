@@ -3,14 +3,21 @@
 import React from 'react';
 import _ from 'lodash';
 import Router from 'react-router';
+import ScrollListenerMixin from '../../ScrollListenerMixin';
 
 const Link = Router.Link;
 
 export default React.createClass({
+    mixins: [ScrollListenerMixin],
+
     propTypes: {
         id: React.PropTypes.number.isRequired,
         name: React.PropTypes.string.isRequired,
         uri: React.PropTypes.string.isRequired
+    },
+
+    handleOnClick() {
+        window.scrollTo(0, 600);
     },
 
     render() {
@@ -23,7 +30,8 @@ export default React.createClass({
             }
         };
         return (
-            <Link key={this.props.id} style={styles.anchor} to="category" params={{categoryId: this.props.id}}>{this.props.name}</Link>
+            <Link key={this.props.id} style={styles.anchor} to="category" onClick={this.handleOnClick}
+                params={{categoryId: this.props.id}}>{this.props.name}</Link>
         );
     }
 

@@ -27,15 +27,17 @@ export default {
      * @param {number} id
      * @param {function} cb
      */
-    getPosts(category_id, subcategory_id, cb) {
-        var suffix = "";
-        if(subcategory_id) {
-            suffix = '&category=' + subcategory_id;
-        } else if(category_id) {
-            suffix = '&category__parent=' + category_id;
-        };
-
-        request.get('/api/v1/posts/?format=json' + suffix)
+    getPosts(url, category_id, subcategory_id, cb) {
+        if (url==null) {
+            var suffix = "";
+            if(subcategory_id) {
+                suffix = '&category=' + subcategory_id;
+            } else if(category_id) {
+                suffix = '&category__parent=' + category_id;
+            };
+            url = '/api/v1/posts/?format=json' + suffix
+        }
+        request.get(url)
             .type('application/json')
             .accept('application/json')
             .end(cb);
