@@ -19,18 +19,12 @@ var SelectedImg = React.createClass({
     }  
 });
 
-var ImgItem = React.createClass({
-    render() {
-        return (<img src={this.props.path} />)
-    }
-});
-
 var ImgRow = React.createClass({  
     render () {
         return (
-            <div className="img-row">
+            <ul className="images">
                 {this.props.children}
-            </div>
+            </ul>
         )
     }
 });
@@ -51,6 +45,12 @@ export default React.createClass({
     handleClick(image_url) {
         this.setState({on_deck: image_url});
     },
+    handleLeftArrow() {
+        this.refs.imgRow.getDOMNode().scrollLeft -= 500;
+    },
+    handlerRightArrow() {
+        this.refs.imgRow.getDOMNode().scrollLeft += 500;
+    },
     getInitialState() {
         return {
             on_deck: this.props.on_deck,
@@ -61,15 +61,18 @@ export default React.createClass({
         return (
           <div className="pull-right gallery">
             <SelectedImg key="selectedImg" on_deck={this.state.on_deck} />
-            <ImgRow key="imgRow">
+            <div className="arrow left" onClick={this.handleLeftArrow}>left</div>
+            <ImgRow key="imgRow" ref="imgRow">
               {this.state.imgs.map(function(image) {
                   return (
-                    <div onClick={this.handleClick.bind(this, image)}>
-                      <ImgItem key={image.id} path={image.img.small} />
-                    </div>
+                        <li>
+                            <img key={image.id} src={image.img.small} 
+                                onClick={this.handleClick.bind(this, image)} />
+                        </li>
                   )
                 }, this)}
             </ImgRow>
+            <div className="arrow right" onClick={this.handlerRightArrow}>right</div>
           </div>
         );
     }

@@ -372,23 +372,32 @@ div.logo img {
     letter-spacing: 0.075em;
     margin-bottom: 0px;
 }
-.img-row {
-    height: 90px;
-    width: 100%;
-    position: relative;
-    bottom: 25px;
-    margin-top: 5%;
-}
-.img-row div {
+.gallery .arrow {
     float: left;
-    width: 20%;
+    width: 10%;
+    height: 12px;
     cursor: pointer;
 }
-.img-row div:hover {
+
+ul.images {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    width: 80%;
+    height: 12%;
+    overflow: hidden;
+    float: left;
+}
+ul.images li {
+    display: inline;
+    height: 100%;
+    cursor: pointer;
+}
+ul.images li:hover {
     opacity: .5;
 }
-.img-row div img {
-    max-height: 90px;
+ul.images li img {
+    max-height: 100%;
     max-width: 100%;
 }
 .align-helper {

@@ -40578,21 +40578,13 @@ var SelectedImg = _React2['default'].createClass({
     }
 });
 
-var ImgItem = _React2['default'].createClass({
-    displayName: 'ImgItem',
-
-    render: function render() {
-        return _React2['default'].createElement('img', { src: this.props.path });
-    }
-});
-
 var ImgRow = _React2['default'].createClass({
     displayName: 'ImgRow',
 
     render: function render() {
         return _React2['default'].createElement(
-            'div',
-            { className: 'img-row' },
+            'ul',
+            { className: 'images' },
             this.props.children
         );
     }
@@ -40614,6 +40606,12 @@ exports['default'] = _React2['default'].createClass({
     handleClick: function handleClick(image_url) {
         this.setState({ on_deck: image_url });
     },
+    handleLeftArrow: function handleLeftArrow() {
+        this.refs.imgRow.getDOMNode().scrollLeft -= 500;
+    },
+    handlerRightArrow: function handlerRightArrow() {
+        this.refs.imgRow.getDOMNode().scrollLeft += 500;
+    },
     getInitialState: function getInitialState() {
         return {
             on_deck: this.props.on_deck,
@@ -40626,15 +40624,26 @@ exports['default'] = _React2['default'].createClass({
             { className: 'pull-right gallery' },
             _React2['default'].createElement(SelectedImg, { key: 'selectedImg', on_deck: this.state.on_deck }),
             _React2['default'].createElement(
+                'div',
+                { className: 'arrow left', onClick: this.handleLeftArrow },
+                'left'
+            ),
+            _React2['default'].createElement(
                 ImgRow,
-                { key: 'imgRow' },
+                { key: 'imgRow', ref: 'imgRow' },
                 this.state.imgs.map(function (image) {
                     return _React2['default'].createElement(
-                        'div',
-                        { onClick: this.handleClick.bind(this, image) },
-                        _React2['default'].createElement(ImgItem, { key: image.id, path: image.img.small })
+                        'li',
+                        null,
+                        _React2['default'].createElement('img', { key: image.id, src: image.img.small,
+                            onClick: this.handleClick.bind(this, image) })
                     );
                 }, this)
+            ),
+            _React2['default'].createElement(
+                'div',
+                { className: 'arrow right', onClick: this.handlerRightArrow },
+                'right'
             )
         );
     }
