@@ -40593,11 +40593,7 @@ var ImgRow = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'img-row' },
-            _React2['default'].createElement(
-                'ul',
-                null,
-                this.props.children
-            )
+            this.props.children
         );
     }
 });
@@ -40634,7 +40630,7 @@ exports['default'] = _React2['default'].createClass({
                 { key: 'imgRow' },
                 this.state.imgs.map(function (image) {
                     return _React2['default'].createElement(
-                        'li',
+                        'div',
                         { onClick: this.handleClick.bind(this, image) },
                         _React2['default'].createElement(ImgItem, { key: image.id, path: image.img.small })
                     );
@@ -41170,7 +41166,6 @@ exports['default'] = {
      * @param {function} cb
      */
     getPosts: function getPosts(url, category_id, subcategory_id, cb) {
-        console.log(url);
         if (url == null) {
             var suffix = '';
             if (subcategory_id) {

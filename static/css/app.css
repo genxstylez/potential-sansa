@@ -374,21 +374,22 @@ div.logo img {
 }
 .img-row {
     height: 100px;
-    position: absolute;
+    width: 100%;
+    position: relative;
     bottom: 25px;
+    margin-top: 35px;
 }
-.img-row li {
-  float: left;
-  width: 33.33%;
-  list-style: none;
-  cursor: pointer;
-  padding: .3em;
+.img-row div {
+    float: left;
+    width: 20%;
+    cursor: pointer;
 }
-.img-row li:hover {
-  opacity: .5;
+.img-row div:hover {
+    opacity: .5;
 }
-.img-row li img {
-    max-height: 100px
+.img-row div img {
+    max-height: 100px;
+    max-width: 100%;
 }
 .align-helper {
     display: inline-block;
@@ -396,17 +397,19 @@ div.logo img {
     vertical-align: middle;
 }
 .on_deck{
-  text-align: center;
-  display: inline-block;
-  vertical-align: middle;
-  height: 650px;
-  white-space: nowrap;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    height: 650px;
+    white-space: nowrap;
+    width: 100%;
 }
 .on_deck img {
     max-width: 100%;
     display: inline-block;
     vertical-align: middle;
     max-height: 650px;
+    width: 100%;
 }
 
 .modal .modal-content .content .share {}

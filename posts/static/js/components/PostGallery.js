@@ -29,9 +29,7 @@ var ImgRow = React.createClass({
     render () {
         return (
             <div className="img-row">
-                <ul>
-                    {this.props.children}
-                </ul>
+                {this.props.children}
             </div>
         )
     }
@@ -66,9 +64,9 @@ export default React.createClass({
             <ImgRow key="imgRow">
               {this.state.imgs.map(function(image) {
                   return (
-                    <li onClick={this.handleClick.bind(this, image)}>
+                    <div onClick={this.handleClick.bind(this, image)}>
                       <ImgItem key={image.id} path={image.img.small} />
-                    </li>
+                    </div>
                   )
                 }, this)}
             </ImgRow>
