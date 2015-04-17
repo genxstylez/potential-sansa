@@ -61,7 +61,10 @@ export default React.createClass({
         return (
           <div className="pull-right gallery">
             <SelectedImg key="selectedImg" on_deck={this.state.on_deck} />
-            <div className="arrow left" onClick={this.handleLeftArrow}>left</div>
+            <div className="arrow left" onClick={this.handleLeftArrow}>
+                <span className="align-helper" />
+                <img src={STATIC_URL + "img/left-arrow.png"} />
+            </div>
             <ImgRow key="imgRow" ref="imgRow">
               {this.state.imgs.map(function(image) {
                   return (
@@ -72,7 +75,10 @@ export default React.createClass({
                   )
                 }, this)}
             </ImgRow>
-            <div className="arrow right" onClick={this.handlerRightArrow}>right</div>
+            <div className="arrow right" onClick={this.handlerRightArrow}>
+                <span className="align-helper" />
+                <img src={STATIC_URL + "img/right-arrow.png"} />
+            </div>
           </div>
         );
     }

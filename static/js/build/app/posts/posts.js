@@ -40626,7 +40626,8 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'div',
                 { className: 'arrow left', onClick: this.handleLeftArrow },
-                'left'
+                _React2['default'].createElement('span', { className: 'align-helper' }),
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
             ),
             _React2['default'].createElement(
                 ImgRow,
@@ -40643,7 +40644,8 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'div',
                 { className: 'arrow right', onClick: this.handlerRightArrow },
-                'right'
+                _React2['default'].createElement('span', { className: 'align-helper' }),
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
             )
         );
     }

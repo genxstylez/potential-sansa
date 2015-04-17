@@ -375,8 +375,14 @@ div.logo img {
 .gallery .arrow {
     float: left;
     width: 10%;
-    height: 12px;
+    height: 12%;
     cursor: pointer;
+}
+
+.gallery .arrow img {
+    vertical-align: middle;
+    display: inline-block;
+    height: 13px;
 }
 
 ul.images {
