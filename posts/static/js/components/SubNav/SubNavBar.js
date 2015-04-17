@@ -6,7 +6,7 @@ import Router from 'react-router';
 import classNames from 'classnames';
 import SubNavItem from './SubNavItem';
 import WebAPIMixin from '../../mixins/WebAPIMixin';
-import ScrollListenerMixin from '../../ScrollListenerMixin';
+import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
 
 const Link = Router.Link;
 

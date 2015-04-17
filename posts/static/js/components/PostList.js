@@ -4,9 +4,9 @@ import React from 'react';
 import _ from 'lodash';
 import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';
+import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import PostTile from './PostTile';
 import MansonryMixin from 'react-masonry-mixin';
-import ScrollListenerMixin from '../ScrollListenerMixin';
 
 const Link = Router.Link;
 

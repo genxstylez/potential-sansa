@@ -3,7 +3,7 @@
 import React from 'react';
 import _ from 'lodash';
 import Router from 'react-router';
-import ScrollListenerMixin from '../../ScrollListenerMixin';
+import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
 
 const Link = Router.Link;
 

@@ -15,18 +15,31 @@ export default React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
+    _ScrollDown() {
+        var categoryId = this.context.router.getCurrentParams().categoryId;
+        setTimeout( () => {
+            if (categoryId && $('.tile').length > 0)
+                window.scrollTo(0, 600);
+        }, 500)
+    },
+    componentDidMount() {
+       this._ScrollDown();
+    },
+    componentWillUpdate() {
+       this._ScrollDown();
+    },
     render() {
         var categoryId = this.context.router.getCurrentParams().categoryId;
         var subcategoryId = this.context.router.getCurrentParams().subcategoryId;
 
 
         return (
-            <div>
+            <div ref="container">
                 <Logo />
                 <NavBar />
                 <BannerList />
                 <SubNavBar categoryId={categoryId} />
-                <PostList 
+                <PostList ref="postlist"
                     categoryId={categoryId} 
                     subcategoryId={subcategoryId} />
                 <Footer />

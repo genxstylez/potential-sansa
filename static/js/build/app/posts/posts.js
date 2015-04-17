@@ -39770,70 +39770,6 @@ module.exports = function(arr, fn, initial){
 },{}],217:[function(require,module,exports){
 'use strict';
 
-var win = typeof window !== 'undefined' ? window : false;
-var ViewportMetrics = require('react/lib/ViewportMetrics');
-
-var ScrollListenerMixin = {
-
-  getDefaultProps: function getDefaultProps() {
-    return {
-      endScrollTimeout: 300
-    };
-  },
-
-  getInitialState: function getInitialState() {
-    return {
-      scrollTop: 0,
-      isScrolling: false
-    };
-  },
-
-  componentDidMount: function componentDidMount() {
-    if (win) {
-      win.addEventListener('scroll', this._onPageScroll);
-    }
-  },
-
-  componentWillUnmount: function componentWillUnmount() {
-    if (win) {
-      win.removeEventListener('scroll', this._onPageScroll);
-    }
-  },
-
-  _onPageScrollEnd: function _onPageScrollEnd() {
-    var scrollTop = ViewportMetrics.currentScrollTop;
-    if (scrollTop === this.state.scrollTop) {
-      win.clearTimeout(this._pageScrollTimeout);
-      this.setState({ isScrolling: false });
-
-      if (typeof this.onPageScrollEnd === 'function') {
-        this.onPageScrollEnd(scrollTop);
-      }
-    }
-  },
-
-  _onPageScroll: function _onPageScroll() {
-    var scrollTop = ViewportMetrics.currentScrollTop;
-
-    this.setState({
-      scrollTop: scrollTop,
-      isScrolling: true
-    });
-
-    win.clearTimeout(this._pageScrollTimeout);
-    this._pageScrollTimeout = win.setTimeout(this._onPageScrollEnd, this.props.endScrollTimeout);
-
-    if (typeof this.onPageScroll === 'function') {
-      this.onPageScroll(scrollTop);
-    }
-  }
-};
-
-module.exports = ScrollListenerMixin;
-
-},{"react/lib/ViewportMetrics":162}],218:[function(require,module,exports){
-'use strict';
-
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
 Object.defineProperty(exports, '__esModule', {
@@ -39938,7 +39874,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":231,"./BannerTile":219,"html-truncate":4,"lodash":5,"react":213,"react-router":44}],219:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":231,"./BannerTile":218,"html-truncate":4,"lodash":5,"react":213,"react-router":44}],218:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40000,7 +39936,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":231,"html-truncate":4,"lodash":5,"react":213,"react-router":44}],220:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":231,"html-truncate":4,"lodash":5,"react":213,"react-router":44}],219:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40039,7 +39975,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}],221:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}],220:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40101,7 +40037,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react":213,"react-router":44}],222:[function(require,module,exports){
+},{"lodash":5,"react":213,"react-router":44}],221:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40134,7 +40070,7 @@ var _WebAPIMixin = require('../../mixins/WebAPIMixin');
 
 var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
 
-var _ScrollListenerMixin = require('../../ScrollListenerMixin');
+var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
 
 var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
@@ -40234,7 +40170,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../ScrollListenerMixin":217,"../../mixins/WebAPIMixin":231,"./NavItem":223,"classnames":3,"lodash":5,"react":213,"react-router":44}],223:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":230,"../../mixins/WebAPIMixin":231,"./NavItem":222,"classnames":3,"lodash":5,"react":213,"react-router":44}],222:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40255,7 +40191,7 @@ var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
 
-var _ScrollListenerMixin = require('../../ScrollListenerMixin');
+var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
 
 var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
@@ -40297,7 +40233,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../ScrollListenerMixin":217,"lodash":5,"react":213,"react-router":44}],224:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":230,"lodash":5,"react":213,"react-router":44}],223:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40480,7 +40416,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":231,"./PostCredit":225,"./PostGallery":226,"lodash":5,"react":213,"react-router":44}],225:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":231,"./PostCredit":224,"./PostGallery":225,"lodash":5,"react":213,"react-router":44}],224:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40536,7 +40472,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}],226:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}],225:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40652,7 +40588,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}],227:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}],226:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40677,6 +40613,10 @@ var _WebAPIMixin = require('../mixins/WebAPIMixin');
 
 var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
 
+var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
+
+var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+
 var _PostTile = require('./PostTile');
 
 var _PostTile2 = _interopRequireWildcard(_PostTile);
@@ -40684,10 +40624,6 @@ var _PostTile2 = _interopRequireWildcard(_PostTile);
 var _MansonryMixin = require('react-masonry-mixin');
 
 var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
-
-var _ScrollListenerMixin = require('../ScrollListenerMixin');
-
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
 'use strict';
 
@@ -40805,7 +40741,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../ScrollListenerMixin":217,"../mixins/WebAPIMixin":231,"./PostTile":228,"lodash":5,"react":213,"react-masonry-mixin":6,"react-router":44}],228:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":230,"../mixins/WebAPIMixin":231,"./PostTile":227,"lodash":5,"react":213,"react-masonry-mixin":6,"react-router":44}],227:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40939,7 +40875,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":231,"html-truncate":4,"lodash":5,"react":213,"react-router":44}],229:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":231,"html-truncate":4,"lodash":5,"react":213,"react-router":44}],228:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -40972,7 +40908,7 @@ var _WebAPIMixin = require('../../mixins/WebAPIMixin');
 
 var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
 
-var _ScrollListenerMixin = require('../../ScrollListenerMixin');
+var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
 
 var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
@@ -41084,7 +41020,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../ScrollListenerMixin":217,"../../mixins/WebAPIMixin":231,"./SubNavItem":230,"classnames":3,"lodash":5,"react":213,"react-router":44}],230:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":230,"../../mixins/WebAPIMixin":231,"./SubNavItem":229,"classnames":3,"lodash":5,"react":213,"react-router":44}],229:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -41142,7 +41078,71 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react":213,"react-router":44}],231:[function(require,module,exports){
+},{"lodash":5,"react":213,"react-router":44}],230:[function(require,module,exports){
+'use strict';
+
+var win = typeof window !== 'undefined' ? window : false;
+var ViewportMetrics = require('react/lib/ViewportMetrics');
+
+var ScrollListenerMixin = {
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      endScrollTimeout: 300
+    };
+  },
+
+  getInitialState: function getInitialState() {
+    return {
+      scrollTop: 0,
+      isScrolling: false
+    };
+  },
+
+  componentDidMount: function componentDidMount() {
+    if (win) {
+      win.addEventListener('scroll', this._onPageScroll);
+    }
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    if (win) {
+      win.removeEventListener('scroll', this._onPageScroll);
+    }
+  },
+
+  _onPageScrollEnd: function _onPageScrollEnd() {
+    var scrollTop = ViewportMetrics.currentScrollTop;
+    if (scrollTop === this.state.scrollTop) {
+      win.clearTimeout(this._pageScrollTimeout);
+      this.setState({ isScrolling: false });
+
+      if (typeof this.onPageScrollEnd === 'function') {
+        this.onPageScrollEnd(scrollTop);
+      }
+    }
+  },
+
+  _onPageScroll: function _onPageScroll() {
+    var scrollTop = ViewportMetrics.currentScrollTop;
+
+    this.setState({
+      scrollTop: scrollTop,
+      isScrolling: true
+    });
+
+    win.clearTimeout(this._pageScrollTimeout);
+    this._pageScrollTimeout = win.setTimeout(this._onPageScrollEnd, this.props.endScrollTimeout);
+
+    if (typeof this.onPageScroll === 'function') {
+      this.onPageScroll(scrollTop);
+    }
+  }
+};
+
+module.exports = ScrollListenerMixin;
+
+},{"react/lib/ViewportMetrics":162}],231:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -41287,18 +41287,30 @@ exports['default'] = _React2['default'].createClass({
     contextTypes: {
         router: _React2['default'].PropTypes.func
     },
+    _ScrollDown: function _ScrollDown() {
+        var categoryId = this.context.router.getCurrentParams().categoryId;
+        setTimeout(function () {
+            if (categoryId && $('.tile').length > 0) window.scrollTo(0, 600);
+        }, 500);
+    },
+    componentDidMount: function componentDidMount() {
+        this._ScrollDown();
+    },
+    componentWillUpdate: function componentWillUpdate() {
+        this._ScrollDown();
+    },
     render: function render() {
         var categoryId = this.context.router.getCurrentParams().categoryId;
         var subcategoryId = this.context.router.getCurrentParams().subcategoryId;
 
         return _React2['default'].createElement(
             'div',
-            null,
+            { ref: 'container' },
             _React2['default'].createElement(_Logo2['default'], null),
             _React2['default'].createElement(_NavBar2['default'], null),
             _React2['default'].createElement(_BannerList2['default'], null),
             _React2['default'].createElement(_SubNavBar2['default'], { categoryId: categoryId }),
-            _React2['default'].createElement(_PostList2['default'], {
+            _React2['default'].createElement(_PostList2['default'], { ref: 'postlist',
                 categoryId: categoryId,
                 subcategoryId: subcategoryId }),
             _React2['default'].createElement(_Footer2['default'], null)
@@ -41308,7 +41320,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":218,"../components/Footer":220,"../components/Logo":221,"../components/MainNav/NavBar":222,"../components/PostList":227,"../components/SubNav/SubNavBar":229,"lodash":5,"react":213}],234:[function(require,module,exports){
+},{"../components/Banner/BannerList":217,"../components/Footer":219,"../components/Logo":220,"../components/MainNav/NavBar":221,"../components/PostList":226,"../components/SubNav/SubNavBar":228,"lodash":5,"react":213}],234:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -41373,4 +41385,4 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/PostContent":224,"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}]},{},[1]);
+},{"../components/PostContent":223,"../mixins/WebAPIMixin":231,"lodash":5,"react":213,"react-router":44}]},{},[1]);
