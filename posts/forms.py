@@ -12,7 +12,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['zh_title', 'en_title', 'category', 'credits', 'articletext', 'starred', 'published']
+        fields = ['heading', 'subheading', 'category', 'credits', 'articletext', 'starred', 'published']
         widgets = {
             'articletext': CKEditorWidget()
         }

@@ -7,6 +7,17 @@ from tastypie.resources import ModelResource, fields, ALL_WITH_RELATIONS
 from posts.models import Category, Credit, Post, Image
 
 
+class AdminCategoryResource(ModelResource):
+
+    class Meta:
+        queryset = Category.objects.all()
+        resource_name = 'admin_posts'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
+
+
 class AdminPostResource(ModelResource):
 
     class Meta:

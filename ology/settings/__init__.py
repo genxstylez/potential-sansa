@@ -40,6 +40,7 @@ ADMINS = (
 # Application definition
 
 INSTALLED_APPS = (
+    'ology',
     'suit',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,11 +51,11 @@ INSTALLED_APPS = (
     'django_js_reverse',
     'suit_redactor',
     'suit_ckeditor',
-    'ology',
     'posts',
     'tastypie',
     'easy_thumbnails',
     'storages',
+    'watson',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,6 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'watson.middleware.SearchContextMiddleware',
 )
 
 ROOT_URLCONF = 'ology.urls'
