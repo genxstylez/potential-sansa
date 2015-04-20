@@ -58,7 +58,7 @@ class StarredResource(ModelResource):
                                use_in='list', full=True)
 
     class Meta:
-        queryset = Post.objects.filter(starred=True, published=True)
+        queryset = Post.objects.filter(starred=True, published=True).order_by('-created_at')
         resource_name = 'starred'
 
 
@@ -71,7 +71,7 @@ class PostResource(ModelResource):
                                use_in='list', full=True)
 
     class Meta:
-        queryset = Post.objects.filter(published=True)
+        queryset = Post.objects.filter(published=True).order_by('-created_at')
         resource_name = 'posts'
         list_allowed_methods = ['get', ]
         detailed_allowed_methods = ['get', ]
