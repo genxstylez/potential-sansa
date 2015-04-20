@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import uuid
 from django.db import models
 from easy_thumbnails import fields
 from django.utils.deconstruct import deconstructible
@@ -46,7 +47,7 @@ class Post(models.Model):
 
 
 def post_image_path(instance, filename):
-    return '{post}/{filename}'.format(post=instance.post, filename=filename)
+    return '{post}/{filename}.{ext}'.format(post=instance.post, filename=str(uuid.uuid4())[:8], ext=filename.split('.')[-1])
 
 
 class Image(models.Model):
