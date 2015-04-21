@@ -158,6 +158,14 @@ div.logo img {
     margin: 0 auto 50px auto
 }
 
+.no-results{
+    display: block;
+    font-size: 14px;
+    line-height: 7;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
 .tile {
     max-width: 320px;
     text-align: center;
@@ -457,12 +465,16 @@ ul.images li img {
 }
 .search-layer {
     display: none;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 1);
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
+    left: 0;
     z-index: 11;
+}
+.search-layer.show {
+    display: block;
 }
 .search-layer .close {
     margin: 20px 30px;
@@ -514,6 +526,7 @@ ul.images li img {
     line-height: 1.5;
     letter-spacing: 0.1em;
 }
+
 .sub-nav-filters {
     background: white;
     padding-left: 20px;
@@ -523,4 +536,21 @@ ul.images li img {
     padding: 0px !important;
 }
 
+/* animations */
+.ologyapp-enter {
+  opacity: 0.01;
+  transition: opacity .3s ease-in;
+}
 
+.ologyapp-enter.ologyapp-enter-active {
+  opacity: 1;
+}
+
+.ologyapp-leave {
+  opacity: 1;
+  transition: opacity .3s ease-in;
+}
+
+.ologyapp-leave.ologyapp-leave-active {
+  opacity: 0.01;
+}

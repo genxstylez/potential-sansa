@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React from 'react/addons';
 import _ from 'lodash';
 import NavBar from '../components/MainNav/NavBar';
 import Logo from '../components/Logo';
@@ -31,7 +31,6 @@ export default React.createClass({
     render() {
         var categoryId = this.context.router.getCurrentParams().categoryId;
         var subcategoryId = this.context.router.getCurrentParams().subcategoryId;
-
 
         return (
             <div ref="container">

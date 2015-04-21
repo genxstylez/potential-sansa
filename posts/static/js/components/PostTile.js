@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React from 'react/addons';
 import _ from 'lodash';
 import truncate from 'html-truncate';
 import Router from 'react-router';
@@ -12,13 +12,13 @@ const Link = Router.Link;
 export default React.createClass({
     propTypes: {
         id: React.PropTypes.number.isRequired,
-        zh_title: React.PropTypes.string.isRequired,
-        en_title: React.PropTypes.string.isRequired,
+        heading: React.PropTypes.string.isRequired,
+        subheading: React.PropTypes.string.isRequired,
         content: React.PropTypes.string.isRequired,
         cover: React.PropTypes.object.isRequired,
         created_at: React.PropTypes.string.isRequired,
         last_modified: React.PropTypes.string.isRequired,
-        uri: React.PropTypes.string.isRequired,
+        uri: React.PropTypes.string,
     },
     contextTypes: {
         router: React.PropTypes.func
@@ -88,10 +88,10 @@ export default React.createClass({
                         { this.props.category} | {new Date(this.props.created_at).toDateString()}
                     </div>
                     <div className="heading" style={styles.tileIntroHeading}>
-                        {this.props.zh_title}
+                        {this.props.heading}
                     </div>
                     <div className="sub-heading" style={styles.tileIntroSubHeading}>
-                        {this.props.en_title}
+                        {this.props.subheading}
                     </div>
 
                     <div className="divider" style={styles.tileIntroDivider}>

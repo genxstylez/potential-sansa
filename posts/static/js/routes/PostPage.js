@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React from 'react/addons';
 import _ from 'lodash';
 import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';

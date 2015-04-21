@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React from 'react/addons';
 import _ from 'lodash';
 import truncate from 'html-truncate';
 import Router from 'react-router';
@@ -56,8 +56,8 @@ export default React.createClass({
                 <BannerTile 
                     key={post.id} 
                     id={post.id} 
-                    zh_title={post.zh_title}
-                    en_title={post.en_title}
+                    heading={post.heading}
+                    subheading={post.subheading}
                     cover={post.cover[0]} />
             );
         });

@@ -11,7 +11,8 @@ import MansonryMixin from 'react-masonry-mixin';
 const Link = Router.Link;
 
 const mansonryOptions = {
-    transitionDuration: 0
+    transitionDuration: 0,
+    itemSelector: '.tile'
 }
 
 export default React.createClass({
@@ -20,8 +21,7 @@ export default React.createClass({
     pollInterval: 60000,
 
     propTypes: {
-        categoryId: React.PropTypes.string,
-        subcategoryId: React.PropTypes.string
+        query : React.PropTypes.string
     },
 
     getInitialState() {
@@ -33,26 +33,9 @@ export default React.createClass({
         }
     },
 
-    buildTiles(posts) {
-        return posts.map(function(post) {
-            return (
-                <PostTile 
-                    key={post.id} 
-                    id={post.id} 
-                    heading={post.heading}
-                    subheading={post.subheading}
-                    cover={post.cover[0]}
-                    created_at={post.created_at}
-                    last_modified={post.last_modified}
-                    content={post.articletext}
-                    category={post.category.name}
-                    uri={post.resource_uri} />
-            );
-        });
-    },
-
+    /*
     onPageScroll() {
-        var bottomOffset = React.findDOMNode(this.refs.mansonryContainer).scrollHeight - this.state.scrollTop;
+        var bottomOffset = this.refs.mansonryContainer.getDOMNode().scrollHeight - this.state.scrollTop;
         if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
@@ -60,9 +43,10 @@ export default React.createClass({
             this._getPosts(this.state.next_page);
         }
     },
+    */
                 
-    _getPosts(url, categoryId, subcategoryId) {
-        this.getPosts(url, categoryId, subcategoryId, (error, response) => {
+    _getSearchPosts(url, query) {
+        this.searchPosts(url, query, (error, response) => {
             var new_elements = error ? [] : response.body.objects,
                 next_page = response.body.meta.next, 
                 has_next = response.body.meta.next != null; 
@@ -76,19 +60,19 @@ export default React.createClass({
     },
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subscategoryId){
+        if (nextProps.query != this.props.query){
             // if category changes, start with a new list of posts
             this.setState({
                 posts: []
             });
-            this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
+            this._getSearchPosts(null, nextProps.query);
         }
     },
     /**
      * React component lifecycle method
      */
     componentDidMount() {
-        this._getPosts(null, this.props.categoryId, this.props.subcategoryId);
+        this._getSearchPosts(null, this.props.query);
     },
 
     /**
@@ -104,17 +88,25 @@ export default React.createClass({
                     id={post.id} 
                     heading={post.heading}
                     subheading={post.subheading}
-                    cover={post.cover[0]}
+                    cover={post.cover}
                     created_at={post.created_at}
                     last_modified={post.last_modified}
                     content={post.articletext}
-                    category={post.category.name}
-                    uri={post.resource_uri} />
+                    category={post.category.name} />
             );
         });
+        var template = PostTileNodes
+        var no_results = "No results found for " + this.props.query;
+        if (PostTileNodes.length == 0) {
+            template = <div className="no-results">
+                <span className="circle-divider" />
+                {no_results} 
+                <span className="circle-divider" />
+            </div>
+        }
         return (
             <div id="tiles"className="mansonryContainer" ref="mansonryContainer">
-                {PostTileNodes}
+                {template}
             </div>
         );
     }

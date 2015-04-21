@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import json
 from django.http import JsonResponse, HttpResponse
+from ology.utils import reverse
 import watson
 
 from posts.models import Image, Credit, Post
@@ -9,6 +10,10 @@ from posts.models import Image, Credit, Post
 
 def search(request):
     q = request.GET.get('q', '')
+    offset = request.GET.get('offset', 0)
+    limit = request.GET.get('limit', 20)
+    next_offset = offset + limit
+    previous_offset = offset - limit
     watson_results = watson.search(q)
     show_only_post_results = []
     for result in watson_results:
@@ -22,7 +27,22 @@ def search(request):
             for post in result.object.post_set.filter(published=True):
                 show_only_post_results.append(post)
     objects = [post.to_json() for post in list(set(show_only_post_results))]
-    meta = {'count': len(objects), 'keyword': q}
-    response = {'meta': meta, 'objects': objects}
+
+    paginated_objects = objects[offset: offset + limit]
+    has_next_page = len(objects[next_offset:]) > 0
+    has_previous_page = previous_offset >= 0
+    next_page = None
+    previous_page = None
+    if has_next_page:
+        next_page = reverse('search', query_kwargs={'limit': limit, 'offset': next_offset, 'q': q})
+    if has_previous_page:
+        previous_page = reverse('search', query_kwargs={'limit': limit, 'offset': previous_offset, 'q': q})
+    meta = {
+        'count': len(objects),
+        'next': next_page,
+        'previous': previous_page,
+        'keyword': q
+    }
+    response = {'meta': meta, 'objects': paginated_objects}
 
     return HttpResponse(json.dumps(response), content_type='application/json')

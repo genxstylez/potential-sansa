@@ -53,6 +53,16 @@ export default {
             .type('application/json')
             .accept('application/json')
             .end(cb);
+    },
+
+    searchPosts(url, query, cb) {
+        if(url == null) {
+            url = '/_search?q=' + query;
+        }
+        request.get(url)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
     }
 
 };

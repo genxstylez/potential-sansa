@@ -19,6 +19,7 @@ class Category(models.Model):
 
     def to_json(self):
         return dict(
+            id=self.id,
             name=self.name,
             parent=self.parent.to_json() if self.parent else None
         )
@@ -33,6 +34,7 @@ class Credit(models.Model):
 
     def to_json(self):
         return dict(
+            id=self.id,
             role=self.role,
             name=self.name
         )
@@ -60,13 +62,24 @@ class Post(models.Model):
 
     def to_json(self):
         return dict(
+            id=self.id,
             slug=self.slug,
             category=self.category.to_json(),
             heading=self.heading,
             subheading=self.subheading,
             articletext=self.articletext,
+            last_modified=str(self.last_modified),
+            created_at=str(self.created_at),
             credits=[credit.to_json() for credit in self.credits.all()],
             images=[image.to_json() for image in self.images.all()],
+            cover=dict(
+                img=dict(
+                    original=self.images.filter(is_cover=True)[0].img.url,
+                    small=self.images.filter(is_cover=True)[0].img['small'].url,
+                    medium=self.images.filter(is_cover=True)[0].img['medium'].url,
+                    large=self.images.filter(is_cover=True)[0].img['large'].url,
+                )
+            )
         )
 
 
@@ -86,6 +99,7 @@ class Image(models.Model):
 
     def to_json(self):
         return dict(
+            id=self.id,
             cover=self.is_cover,
             caption=self.caption,
             tag=self.tag,

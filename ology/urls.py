@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^posts/', include('posts.urls')),
     url(r'^api/', include(v1_api.urls)),
-    url(r'^search/$', 'ology.views.search', name='search'),
+    url(r'^_search/$', 'ology.views.search', name='search'),
     url(r'^$', TemplateView.as_view(template_name='app.html'), name='index'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
