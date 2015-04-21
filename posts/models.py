@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import watson
+import uuid
 
 from django.db import models
 from django.db.models.signals import post_save
@@ -84,7 +85,7 @@ class Post(models.Model):
 
 
 def post_image_path(instance, filename):
-    return '{post}/{filename}'.format(post=instance.post, filename=filename)
+    return '{post}/{filename}.{ext}'.format(post=instance.post, filename=str(uuid.uuid4())[:8], ext=filename.split('.')[-1])
 
 
 class Image(models.Model):
