@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_js_reverse',
     'suit_redactor',
     'ology',
     'posts',

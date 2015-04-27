@@ -18,7 +18,6 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'ology.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^jsreverse/$', 'django_js_reverse.views.urls_js', name='js_reverse'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^posts/', include('posts.urls')),
     url(r'^api/', include(v1_api.urls)),

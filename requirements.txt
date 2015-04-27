@@ -1,7 +1,6 @@
 boto==2.37.0
 easy-thumbnails==2.2
 django==1.7
-django-js-reverse==0.5.0
 django-storages-redux==1.2.3
 django-suit==0.2.12
 django-suit-redactor==0.0.2
