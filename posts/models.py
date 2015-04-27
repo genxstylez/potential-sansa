@@ -6,6 +6,7 @@ import uuid
 
 from django.db import models
 from django.db.models.signals import post_save
+from django.utils.safestring import mark_safe
 from taggit.managers import TaggableManager
 from easy_thumbnails import fields
 from jsonfield import JSONField
@@ -28,6 +29,15 @@ class Category(models.Model):
             parent=self.parent.to_json() if self.parent else None
         )
 
+credits_help_text = '''
+Example:<br>
+{<br>
+    "編輯": ["王阿貓", "Dog Chen", "Mr. Big"],<br>
+    "photography": ["小叮噹", "大雄"],<br>
+    "校稿": "只有一個人"<br>
+}
+'''
+
 
 class Post(models.Model):
     slug = AutoSlugField(populate_from=lambda instance: instance.heading,
@@ -37,7 +47,7 @@ class Post(models.Model):
     heading = models.CharField('主標題', max_length=30)
     subheading = models.CharField('副標題', max_length=30, blank=True)
     articletext = models.TextField('內容')
-    credits = JSONField('Credits', default={})
+    credits = JSONField('Credits', default={}, help_text=mark_safe(credits_help_text))
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     starred = models.BooleanField('加入至橫幅', default=False)
