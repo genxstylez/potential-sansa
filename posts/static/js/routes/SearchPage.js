@@ -2,6 +2,7 @@
 
 import React from 'react/addons';
 import _ from 'lodash';
+import classnames from 'classnames';
 import NavBar from '../components/MainNav/NavBar';
 import Logo from '../components/Logo';
 import BannerList from '../components/Banner/BannerList';
@@ -60,7 +61,10 @@ export default React.createClass({
         React.findDOMNode(this.refs.query_input).value = "";
     },
     render() {
-        var search_layer_class = this.state.q == null ? "search-layer show": "search-layer"; 
+        var search_layer_class = classnames({
+            'search-layer': true,
+            'show': this.state.q == null
+        });
 
         return (
             <div ref="container">

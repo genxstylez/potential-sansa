@@ -52,15 +52,17 @@ export default React.createClass({
         });
     },
     componentDidMount() {
-        this._getPost(this.props.id);
+        setTimeout(() => {
+            this._getPost(this.props.id);
+        }, 500);
+    },
+
+    componentWillUpdate(nextProps, nextState) {
         if(this.isMounted()) {
             setTimeout(() => {
                 $(this.refs.articleContent.getDOMNode()).jScrollPane();
             }, 50);
         }
-    },
-
-    componentDidUpdate(prevProps, prevState) {
     },
 
     handeClickOnCross() {

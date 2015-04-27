@@ -63,6 +63,14 @@ export default {
             .type('application/json')
             .accept('application/json')
             .end(cb);
+    },
+
+    createSubscriber(value, cb) {
+        request.post('/api/v1/subscribers/')
+            .send({ email: value})
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
     }
 
 };

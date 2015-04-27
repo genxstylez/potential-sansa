@@ -27,6 +27,10 @@ var _SearchPage = require('./routes/SearchPage');
 
 var _SearchPage2 = _interopRequireWildcard(_SearchPage);
 
+var _SubscribePage = require('./routes/SubscribePage');
+
+var _SubscribePage2 = _interopRequireWildcard(_SubscribePage);
+
 var Route = _Router2['default'].Route;
 var DefaultRoute = _Router2['default'].DefaultRoute;
 var NotFoundRoute = _Router2['default'].NotFoundRoute;
@@ -38,6 +42,7 @@ var routes = _React2['default'].createElement(
     _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'search', path: 'search', handler: _SearchPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'subscribe', path: 'subscribe', handler: _SubscribePage2['default'] }),
     _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId', handler: _PostPage2['default'] })
 );
 
@@ -45,7 +50,7 @@ _Router2['default'].run(routes, function (Handler) {
     _React2['default'].render(_React2['default'].createElement(Handler, null), document.querySelector('.react-container'));
 });
 
-},{"./routes/Application":252,"./routes/IndexPage":253,"./routes/PostPage":254,"./routes/SearchPage":255,"react-router":44,"react/addons":59}],2:[function(require,module,exports){
+},{"./routes/Application":252,"./routes/IndexPage":253,"./routes/PostPage":254,"./routes/SearchPage":255,"./routes/SubscribePage":256,"react-router":44,"react/addons":59}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -42203,8 +42208,8 @@ exports['default'] = _React2['default'].createClass({
                         _React2['default'].createElement('img', { src: fb_icon })
                     ),
                     _React2['default'].createElement(
-                        'a',
-                        { href: '#', className: 'subscribe' },
+                        Link,
+                        { to: 'subscribe', className: 'subscribe' },
                         'Subscribe'
                     )
                 ),
@@ -42368,15 +42373,20 @@ exports['default'] = _React2['default'].createClass({
     componentDidMount: function componentDidMount() {
         var _this2 = this;
 
-        this._getPost(this.props.id);
+        setTimeout(function () {
+            _this2._getPost(_this2.props.id);
+        }, 500);
+    },
+
+    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+        var _this3 = this;
+
         if (this.isMounted()) {
             setTimeout(function () {
-                $(_this2.refs.articleContent.getDOMNode()).jScrollPane();
+                $(_this3.refs.articleContent.getDOMNode()).jScrollPane();
             }, 50);
         }
     },
-
-    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {},
 
     handeClickOnCross: function handeClickOnCross() {
         if (!this.context.router.goBack()) {
@@ -43487,6 +43497,10 @@ exports['default'] = {
             url = '/_search?q=' + query;
         }
         _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
+    },
+
+    createSubscriber: function createSubscriber(value, cb) {
+        _request2['default'].post('/api/v1/subscribers/').send({ email: value }).type('application/json').accept('application/json').end(cb);
     }
 
 };
@@ -43699,6 +43713,10 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireWildcard(_classnames);
+
 var _NavBar = require('../components/MainNav/NavBar');
 
 var _NavBar2 = _interopRequireWildcard(_NavBar);
@@ -43778,7 +43796,10 @@ exports['default'] = _React2['default'].createClass({
         _React2['default'].findDOMNode(this.refs.query_input).value = '';
     },
     render: function render() {
-        var search_layer_class = this.state.q == null ? 'search-layer show' : 'search-layer';
+        var search_layer_class = _classnames2['default']({
+            'search-layer': true,
+            show: this.state.q == null
+        });
 
         return _React2['default'].createElement(
             'div',
@@ -43814,4 +43835,90 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":235,"../components/Footer":237,"../components/Logo":238,"../components/MainNav/NavBar":239,"../components/SearchPostList":246,"../components/SubNav/SearchSubNavBar":247,"lodash":5,"react/addons":59}]},{},[1]);
+},{"../components/Banner/BannerList":235,"../components/Footer":237,"../components/Logo":238,"../components/MainNav/NavBar":239,"../components/SearchPostList":246,"../components/SubNav/SearchSubNavBar":247,"classnames":3,"lodash":5,"react/addons":59}],256:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = require('react/addons');
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
+var _WebAPIMixin = require('../mixins/WebAPIMixin');
+
+var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+
+'use strict';
+
+exports['default'] = _React2['default'].createClass({
+    displayName: 'SubscribePage',
+
+    mixins: [_WebAPIMixin2['default']],
+
+    getInitialState: function getInitialState() {
+        return {
+            labelMessage: 'Type your email and hit enter to subcribe'
+        };
+    },
+    contextTypes: {
+        router: _React2['default'].PropTypes.func
+    },
+    _createSubscriber: function _createSubscriber(value) {
+        var _this = this;
+
+        this.createSubscriber(value, function (error, response) {
+            window.p = response;
+            _this.setState({
+                labelMessage: response.status == 201 ? 'Thanks for subscribing!' : JSON.parse(response.text).subscribers.email[0]
+            });
+        });
+    },
+    componentDidMount: function componentDidMount() {},
+    handeClickOnCross: function handeClickOnCross() {
+        if (!this.context.router.goBack()) {
+            this.context.router.transitionTo('/');
+        }
+    },
+    handleSubmit: function handleSubmit(e) {
+        e.preventDefault();
+        var email_value = _React2['default'].findDOMNode(this.refs.email_input).value.trim();
+        this._createSubscriber(email_value);
+    },
+    render: function render() {
+        return _React2['default'].createElement(
+            'div',
+            { ref: 'container' },
+            _React2['default'].createElement(
+                'div',
+                { className: 'search-layer show' },
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'close' },
+                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
+                ),
+                _React2['default'].createElement(
+                    'form',
+                    { className: 'subscribe-form', onSubmit: this.handleSubmit },
+                    _React2['default'].createElement('input', { ref: 'email_input', name: 'q', type: 'email', autoComplete: 'off', autoFocus: true }),
+                    _React2['default'].createElement(
+                        'label',
+                        { ref: 'labelMessage' },
+                        this.state.labelMessage
+                    )
+                )
+            )
+        );
+    }
+
+});
+module.exports = exports['default'];
+
+},{"../mixins/WebAPIMixin":251,"lodash":5,"react/addons":59}]},{},[1]);

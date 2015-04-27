@@ -455,7 +455,7 @@ ul.images li img {
 .search-layer .close {
     margin: 20px 30px;
 }
-.search-layer .search-form {
+.search-layer .search-form, .search-layer .subscribe-form {
     margin-top: 145px;
     text-align: center;
 }

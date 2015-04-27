@@ -6,6 +6,7 @@ import Application from './routes/Application';
 import IndexPage from './routes/IndexPage';
 import PostPage from './routes/PostPage';
 import SearchPage from './routes/SearchPage';
+import SubscribePage from './routes/SubscribePage';
 
 const Route = Router.Route;
 const DefaultRoute = Router.DefaultRoute;
@@ -17,6 +18,7 @@ const routes = (
         <Route name="category" path="category/:categoryId" handler={IndexPage}/>
         <Route name="subcategory" path="category/:categoryId/:subcategoryId" handler={IndexPage}/>
         <Route name="search" path="search" handler={SearchPage}/>
+        <Route name="subscribe" path="subscribe" handler={SubscribePage}/>
         <Route name="post" path="post/:postId" handler={PostPage}/>
     </Route>
 );

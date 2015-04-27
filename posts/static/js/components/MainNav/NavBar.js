@@ -89,7 +89,9 @@ export default React.createClass({
                         <a href="http://facebook.com" className="fb">
                             <img src={fb_icon} />
                         </a>
-                        <a href="#" className="subscribe">Subscribe</a>
+                        <Link to="subscribe" className="subscribe">
+                            Subscribe
+                        </Link>
                     </div>
                     <div className="navbar">
                         {NavItemNodes}

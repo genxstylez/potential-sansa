@@ -40,7 +40,7 @@ class Post(models.Model):
     credits = JSONField('Credits', default={})
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
-    starred = models.BooleanField('讚', default=False)
+    starred = models.BooleanField('加入至橫幅', default=False)
     published = models.BooleanField('發表', default=False)
     order = models.PositiveIntegerField(db_index=True, default=0)
     tags = TaggableManager(help_text='請用逗號在tag之間做區隔', blank=True)
