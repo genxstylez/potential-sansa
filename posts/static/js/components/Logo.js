@@ -21,6 +21,7 @@ export default React.createClass({
             },
             logo: {
                 margin: "50px auto 36px auto",
+                width: "222px",
                 textAlign: "center",
             },
             logoImg: {

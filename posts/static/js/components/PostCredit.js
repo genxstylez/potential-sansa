@@ -10,15 +10,23 @@ const Link = Router.Link;
 
 export default React.createClass({
     propTypes: {
-        id: React.PropTypes.number.isRequired,
         role: React.PropTypes.string.isRequired,
-        name: React.PropTypes.string.isRequired
     },
     render() {
+        const names = [];
+        if(this.props.names instanceof Array) {
+            _.forEach(this.props.names, (name, key) => {
+                names.push(<Link to="search" query={{q: name}}>{name}</Link>);
+                if (key < this.props.names.length -1) 
+                    names.push(', ')
+            });
+        } else {
+            names.push(<Link to="search" query={{q: this.props.names}}>{this.props.names}</Link>);
+        }
         return (
             <div className="credit">
                 <span className="role">{this.props.role}</span>
-                <span className="name">{this.props.name}</span>
+                <span className="name">{names}</span>
             </div>
         );
     }

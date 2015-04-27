@@ -6,7 +6,10 @@ import uuid
 
 from django.db import models
 from django.db.models.signals import post_save
+from taggit.managers import TaggableManager
 from easy_thumbnails import fields
+from jsonfield import JSONField
+from autoslug import AutoSlugField
 
 
 class Category(models.Model):
@@ -26,32 +29,21 @@ class Category(models.Model):
         )
 
 
-class Credit(models.Model):
-    role = models.CharField('職稱', max_length=30)
-    name = models.CharField('姓名', max_length=30)
-
-    def __unicode__(self):
-        return '{name} ({role})'.format(name=self.name, role=self.role)
-
-    def to_json(self):
-        return dict(
-            id=self.id,
-            role=self.role,
-            name=self.name
-        )
-
-
 class Post(models.Model):
-    slug = models.SlugField('slug', max_length=15)
+    slug = AutoSlugField(populate_from=lambda instance: instance.heading,
+                         unique_with=['category__name', 'created_at__month'],
+                         slugify=lambda value: value.replace(' ', '-'), db_index=True)
     category = models.ForeignKey(Category, related_name='posts', verbose_name='類別')
     heading = models.CharField('主標題', max_length=30)
     subheading = models.CharField('副標題', max_length=30, blank=True)
     articletext = models.TextField('內容')
-    credits = models.ManyToManyField(Credit, verbose_name='Credits')
+    credits = JSONField('Credits', default={})
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     starred = models.BooleanField('讚', default=False)
     published = models.BooleanField('發表', default=False)
+    order = models.PositiveIntegerField(db_index=True, default=0)
+    tags = TaggableManager(help_text='請用逗號在tag之間做區隔', blank=True)
 
     def __unicode__(self):
         return '({category}) - {heading}'.format(category=self.category, heading=self.heading)
@@ -71,7 +63,7 @@ class Post(models.Model):
             articletext=self.articletext,
             last_modified=str(self.last_modified),
             created_at=str(self.created_at),
-            credits=[credit.to_json() for credit in self.credits.all()],
+            credits=dict(self.credits),
             images=[image.to_json() for image in self.images.all()],
             cover=dict(
                 img=dict(
@@ -108,14 +100,8 @@ class Image(models.Model):
         )
 
 
-def update_credit_index(instance, **kwargs):
-    for credit in instance.credits.all():
-        watson.default_search_engine.update_obj_index(credit)
-
-
 def update_image_index(instance, **kwargs):
     for image in instance.images.all():
         watson.default_search_engine.update_obj_index(image)
 
-post_save.connect(update_credit_index, Post)
 post_save.connect(update_image_index, Post)

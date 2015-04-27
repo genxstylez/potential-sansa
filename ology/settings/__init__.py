@@ -40,7 +40,6 @@ ADMINS = (
 # Application definition
 
 INSTALLED_APPS = (
-    'ology',
     'suit',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,13 +48,15 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_js_reverse',
-    'suit_redactor',
     'suit_ckeditor',
+    'suit_redactor',
+    'ology',
     'posts',
     'tastypie',
     'easy_thumbnails',
     'storages',
     'watson',
+    'taggit',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -6,7 +6,7 @@ import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';
 import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
-
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 const Link = Router.Link;
 
@@ -24,9 +24,9 @@ export default React.createClass({
     getInitialState() {
         return {
             id: '',
-            zh_title: '',
-            en_title: '',
-            content: '',
+            heading: '',
+            subheading: '',
+            articletext: '',
             imgs: [],
             credits: [],
             created_at: '',
@@ -39,9 +39,9 @@ export default React.createClass({
             var post = error ? [] : response.body;
             this.setState({
                 id: post.id,
-                zh_title: post.zh_title,
-                en_title: post.en_title,
-                content: post.articletext,
+                heading: post.heading,
+                subheading: post.subheading,
+                articletext: post.articletext,
                 imgs: post.images,
                 credits: post.credits,
                 created_at: post.created_at,
@@ -53,9 +53,15 @@ export default React.createClass({
     },
     componentDidMount() {
         this._getPost(this.props.id);
+        if(this.isMounted()) {
+            setTimeout(() => {
+                $(this.refs.articleContent.getDOMNode()).jScrollPane();
+            }, 50);
+        }
     },
 
-    componentDidUpdate(prevProps, prevState) {},
+    componentDidUpdate(prevProps, prevState) {
+    },
 
     handeClickOnCross() {
        if(!this.context.router.goBack()) {
@@ -69,41 +75,35 @@ export default React.createClass({
             if(this.state.imgs[i].is_cover==true)
                 cover = this.state.imgs[i];
         };
-        const creditNodes = _.map(this.state.credits, credit => {
+        const creditNodes = _.map(this.state.credits, (value, key) => {
             return (
-                <PostCredit
-                    key={credit.id}
-                    id={credit.id}
-                    role={credit.role}
-                    name={credit.name}/>
+                <PostCredit role={key} names={value}/>
             );
         });
 
         var cross_icon = STATIC_URL + "img/cross.png";
         var fb_icon = STATIC_URL + "img/fb.png";
         return (
-            <div className="modal">
+            <div className="article-box" ref="articleBox">
                 <span className="close">
                     <img src={cross_icon} onClick={this.handeClickOnCross} />
                 </span>
-                <div className="row">
-                    <div className="modal-header">
-                        <span className="circle-divider"></span>
-                        {this.state.category}
-                        <span className="circle-divider"></span>
-                    </div>
+                <div className="row article-header">
+                    <span className="circle-divider"></span>
+                    {this.state.category}
+                    <span className="circle-divider"></span>
                 </div>
-                <div className="row">
-                    <div className="modal-content">
-                        <div className="pull-left content" ref="contentContainer">
-                            <p className="title">{this.state.zh_title}</p>
-                            <p className="sub-title">{this.state.en_title}</p>
+                <div className="row article">
+                    <div className="pull-left article-content" ref="articleContent">
+                        <div style={{paddingRight: '40px'}}>
+                            <p className="title">{this.state.heading}</p>
+                            <p className="sub-title">{this.state.subheading}</p>
                             <div className="decorations">
                                 <span className="twin circle-divider"></span>
                                 <span className="twin circle-divider"></span>
                                 <span className="pull-right created_at">{new Date(this.state.created_at).toDateString()}</span>
                             </div>
-                            <div dangerouslySetInnerHTML={{__html: this.state.content}} />
+                            <div dangerouslySetInnerHTML={{__html: this.state.articletext}} />
                             <div className="decorations end">
                                 <span className="twin circle-divider grey-circle"></span>
                                 <span className="twin circle-divider grey-circle"></span>
@@ -115,9 +115,9 @@ export default React.createClass({
                                 </a>
                             </div>
                         </div>
-                        <PostGallery imgs={this.state.imgs} on_deck={cover}/>
-                        <div className="triangle"></div>
                     </div>
+                    <PostGallery imgs={this.state.imgs} on_deck={cover}/>
+                    <div className="triangle"></div>
                 </div>
             </div>
         );

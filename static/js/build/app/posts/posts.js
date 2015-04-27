@@ -36,8 +36,8 @@ var routes = _React2['default'].createElement(
     { name: 'app', path: '/', handler: _Application2['default'] },
     _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'search', path: 'search', handler: _SearchPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'search', path: 'search', handler: _SearchPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId', handler: _PostPage2['default'] })
 );
 
@@ -41849,7 +41849,6 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'BannerList',
 
     mixins: [_WebAPIMixin2['default']],
-    pollInterval: 60000,
 
     contextTypes: {
         router: _React2['default'].PropTypes.func
@@ -41870,9 +41869,6 @@ exports['default'] = _React2['default'].createClass({
         var _this2 = this;
 
         this._getStarred();
-        this.interval = setInterval(function () {
-            _this2._getStarred();
-        }, this.pollInterval);
         if (this.isMounted()) {
             setTimeout(function () {
                 $(_this2.refs.bannerContainer.getDOMNode()).scrollbar({
@@ -41888,11 +41884,7 @@ exports['default'] = _React2['default'].createClass({
             $(_this3.refs.bannerContainer.getDOMNode()).scrollbar('resize');
         }, 100);
     },
-    componentWillUnmount: function componentWillUnmount() {
-        if (_import2['default'].has(this, 'interval')) {
-            clearInterval(this.interval);
-        }
-    },
+    componentWillUnmount: function componentWillUnmount() {},
     render: function render() {
         var tileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_BannerTile2['default'], {
@@ -41960,13 +41952,13 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'banner-tile' },
-            _React2['default'].createElement('img', { src: this.props.cover.img.large }),
             _React2['default'].createElement(
-                'div',
-                { className: 'title' },
+                Link,
+                { key: this.props.id, to: 'post', params: { postId: this.props.id } },
+                _React2['default'].createElement('img', { src: this.props.cover.img.large }),
                 _React2['default'].createElement(
-                    Link,
-                    { key: this.props.id, to: 'post', params: { postId: this.props.id } },
+                    'div',
+                    { className: 'title' },
                     this.props.heading,
                     _React2['default'].createElement('span', { className: 'circle-divider' }),
                     this.props.subheading
@@ -42057,6 +42049,7 @@ exports['default'] = _React2['default'].createClass({
                 backgroundColor: '#000000' },
             logo: {
                 margin: '50px auto 36px auto',
+                width: '222px',
                 textAlign: 'center' },
             logoImg: {
                 width: '222px' }
@@ -42193,20 +42186,32 @@ exports['default'] = _React2['default'].createClass({
                 'div',
                 { ref: 'header', className: header_classes },
                 _React2['default'].createElement(
-                    Link,
-                    { to: 'search' },
-                    _React2['default'].createElement('img', { className: 'pull-left search', src: search_icon })
-                ),
-                NavItemNodes,
-                _React2['default'].createElement(
-                    'a',
-                    { href: '#', className: 'pull-right subscribe' },
-                    'Subscribe'
+                    'div',
+                    { className: 'pull-left' },
+                    _React2['default'].createElement(
+                        Link,
+                        { to: 'search' },
+                        _React2['default'].createElement('img', { className: 'search', src: search_icon })
+                    )
                 ),
                 _React2['default'].createElement(
-                    'a',
-                    { href: 'http://facebook.com', className: 'pull-right fb' },
-                    _React2['default'].createElement('img', { src: fb_icon })
+                    'div',
+                    { className: 'pull-right' },
+                    _React2['default'].createElement(
+                        'a',
+                        { href: 'http://facebook.com', className: 'fb' },
+                        _React2['default'].createElement('img', { src: fb_icon })
+                    ),
+                    _React2['default'].createElement(
+                        'a',
+                        { href: '#', className: 'subscribe' },
+                        'Subscribe'
+                    )
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'navbar' },
+                    NavItemNodes
                 )
             )
         );
@@ -42313,6 +42318,8 @@ var _PostGallery2 = _interopRequireWildcard(_PostGallery);
 
 'use strict';
 
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
 var Link = _Router2['default'].Link;
 
 exports['default'] = _React2['default'].createClass({
@@ -42330,9 +42337,9 @@ exports['default'] = _React2['default'].createClass({
     getInitialState: function getInitialState() {
         return {
             id: '',
-            zh_title: '',
-            en_title: '',
-            content: '',
+            heading: '',
+            subheading: '',
+            articletext: '',
             imgs: [],
             credits: [],
             created_at: '',
@@ -42346,9 +42353,9 @@ exports['default'] = _React2['default'].createClass({
             var post = error ? [] : response.body;
             _this.setState({
                 id: post.id,
-                zh_title: post.zh_title,
-                en_title: post.en_title,
-                content: post.articletext,
+                heading: post.heading,
+                subheading: post.subheading,
+                articletext: post.articletext,
                 imgs: post.images,
                 credits: post.credits,
                 created_at: post.created_at,
@@ -42359,7 +42366,14 @@ exports['default'] = _React2['default'].createClass({
         });
     },
     componentDidMount: function componentDidMount() {
+        var _this2 = this;
+
         this._getPost(this.props.id);
+        if (this.isMounted()) {
+            setTimeout(function () {
+                $(_this2.refs.articleContent.getDOMNode()).jScrollPane();
+            }, 50);
+        }
     },
 
     componentDidUpdate: function componentDidUpdate(prevProps, prevState) {},
@@ -42375,19 +42389,15 @@ exports['default'] = _React2['default'].createClass({
         for (var i = 0; i < this.state.imgs.length; i++) {
             if (this.state.imgs[i].is_cover == true) cover = this.state.imgs[i];
         };
-        var creditNodes = _import2['default'].map(this.state.credits, function (credit) {
-            return _React2['default'].createElement(_PostCredit2['default'], {
-                key: credit.id,
-                id: credit.id,
-                role: credit.role,
-                name: credit.name });
+        var creditNodes = _import2['default'].map(this.state.credits, function (value, key) {
+            return _React2['default'].createElement(_PostCredit2['default'], { role: key, names: value });
         });
 
         var cross_icon = STATIC_URL + 'img/cross.png';
         var fb_icon = STATIC_URL + 'img/fb.png';
         return _React2['default'].createElement(
             'div',
-            { className: 'modal' },
+            { className: 'article-box', ref: 'articleBox' },
             _React2['default'].createElement(
                 'span',
                 { className: 'close' },
@@ -42395,33 +42405,29 @@ exports['default'] = _React2['default'].createClass({
             ),
             _React2['default'].createElement(
                 'div',
-                { className: 'row' },
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'modal-header' },
-                    _React2['default'].createElement('span', { className: 'circle-divider' }),
-                    this.state.category,
-                    _React2['default'].createElement('span', { className: 'circle-divider' })
-                )
+                { className: 'row article-header' },
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                this.state.category,
+                _React2['default'].createElement('span', { className: 'circle-divider' })
             ),
             _React2['default'].createElement(
                 'div',
-                { className: 'row' },
+                { className: 'row article' },
                 _React2['default'].createElement(
                     'div',
-                    { className: 'modal-content' },
+                    { className: 'pull-left article-content', ref: 'articleContent' },
                     _React2['default'].createElement(
                         'div',
-                        { className: 'pull-left content', ref: 'contentContainer' },
+                        { style: { paddingRight: '40px' } },
                         _React2['default'].createElement(
                             'p',
                             { className: 'title' },
-                            this.state.zh_title
+                            this.state.heading
                         ),
                         _React2['default'].createElement(
                             'p',
                             { className: 'sub-title' },
-                            this.state.en_title
+                            this.state.subheading
                         ),
                         _React2['default'].createElement(
                             'div',
@@ -42434,7 +42440,7 @@ exports['default'] = _React2['default'].createClass({
                                 new Date(this.state.created_at).toDateString()
                             )
                         ),
-                        _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: this.state.content } }),
+                        _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: this.state.articletext } }),
                         _React2['default'].createElement(
                             'div',
                             { className: 'decorations end' },
@@ -42451,17 +42457,17 @@ exports['default'] = _React2['default'].createClass({
                                 _React2['default'].createElement('img', { src: fb_icon })
                             )
                         )
-                    ),
-                    _React2['default'].createElement(_PostGallery2['default'], { imgs: this.state.imgs, on_deck: cover }),
-                    _React2['default'].createElement('div', { className: 'triangle' })
-                )
+                    )
+                ),
+                _React2['default'].createElement(_PostGallery2['default'], { imgs: this.state.imgs, on_deck: cover }),
+                _React2['default'].createElement('div', { className: 'triangle' })
             )
         );
     }
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":251,"./PostCredit":242,"./PostGallery":243,"lodash":5,"react-router":44,"react/addons":59}],242:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":251,"./PostCredit":242,"./PostGallery":243,"lodash":5,"react-router":44,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],242:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42494,11 +42500,27 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'PostCredit',
 
     propTypes: {
-        id: _React2['default'].PropTypes.number.isRequired,
-        role: _React2['default'].PropTypes.string.isRequired,
-        name: _React2['default'].PropTypes.string.isRequired
-    },
+        role: _React2['default'].PropTypes.string.isRequired },
     render: function render() {
+        var _this = this;
+
+        var names = [];
+        if (this.props.names instanceof Array) {
+            _import2['default'].forEach(this.props.names, function (name, key) {
+                names.push(_React2['default'].createElement(
+                    Link,
+                    { to: 'search', query: { q: name } },
+                    name
+                ));
+                if (key < _this.props.names.length - 1) names.push(', ');
+            });
+        } else {
+            names.push(_React2['default'].createElement(
+                Link,
+                { to: 'search', query: { q: this.props.names } },
+                this.props.names
+            ));
+        }
         return _React2['default'].createElement(
             'div',
             { className: 'credit' },
@@ -42510,7 +42532,7 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'span',
                 { className: 'name' },
-                this.props.name
+                names
             )
         );
     }
@@ -42544,6 +42566,8 @@ var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
 
 'use strict';
 
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
 var Link = _Router2['default'].Link;
 
 var SelectedImg = _React2['default'].createClass({
@@ -42554,22 +42578,16 @@ var SelectedImg = _React2['default'].createClass({
             'div',
             { className: 'on_deck' },
             _React2['default'].createElement('span', { className: 'align-helper' }),
-            _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' })
+            _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' }),
+            _React2['default'].createElement(
+                'div',
+                { className: 'caption' },
+                this.props.on_deck.caption
+            )
         );
     }
 });
 
-var ImgRow = _React2['default'].createClass({
-    displayName: 'ImgRow',
-
-    render: function render() {
-        return _React2['default'].createElement(
-            'ul',
-            { className: 'images' },
-            this.props.children
-        );
-    }
-});
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostGallery',
 
@@ -42588,10 +42606,14 @@ exports['default'] = _React2['default'].createClass({
         this.setState({ on_deck: image_url });
     },
     handleLeftArrow: function handleLeftArrow() {
-        this.refs.imgRow.getDOMNode().scrollLeft -= 500;
+        $(this.refs.imgRow.getDOMNode()).animate({
+            scrollLeft: '-=250'
+        }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        this.refs.imgRow.getDOMNode().scrollLeft += 500;
+        $(this.refs.imgRow.getDOMNode()).animate({
+            scrollLeft: '+=250'
+        }, 200);
     },
     getInitialState: function getInitialState() {
         return {
@@ -42603,7 +42625,11 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'pull-right gallery' },
-            _React2['default'].createElement(SelectedImg, { key: 'selectedImg', on_deck: this.state.on_deck }),
+            _React2['default'].createElement(
+                TransitionGroup,
+                { transitionName: 'gallery' },
+                _React2['default'].createElement(SelectedImg, { key: this.state.on_deck.id, on_deck: this.state.on_deck })
+            ),
             _React2['default'].createElement(
                 'div',
                 { className: 'arrow left', onClick: this.handleLeftArrow },
@@ -42611,8 +42637,8 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
             ),
             _React2['default'].createElement(
-                ImgRow,
-                { key: 'imgRow', ref: 'imgRow' },
+                'ul',
+                { className: 'images', ref: 'imgRow' },
                 this.state.imgs.map(function (image) {
                     return _React2['default'].createElement(
                         'li',
@@ -42633,7 +42659,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":251,"lodash":5,"react-router":44,"react/addons":59}],244:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":251,"lodash":5,"react-router":44,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],244:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42672,18 +42698,18 @@ var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
 
 'use strict';
 
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
 var Link = _Router2['default'].Link;
 
 var mansonryOptions = {
-    transitionDuration: 0
+    transitionDuration: '0.2s'
 };
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostList',
 
     mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
-
-    pollInterval: 60000,
 
     propTypes: {
         categoryId: _React2['default'].PropTypes.string,
@@ -42697,22 +42723,6 @@ exports['default'] = _React2['default'].createClass({
             has_next: false,
             is_loading: false
         };
-    },
-
-    buildTiles: function buildTiles(posts) {
-        return posts.map(function (post) {
-            return _React2['default'].createElement(_PostTile2['default'], {
-                key: post.id,
-                id: post.id,
-                heading: post.heading,
-                subheading: post.subheading,
-                cover: post.cover[0],
-                created_at: post.created_at,
-                last_modified: post.last_modified,
-                content: post.articletext,
-                category: post.category.name,
-                uri: post.resource_uri });
-        });
     },
 
     onPageScroll: function onPageScroll() {
@@ -42745,7 +42755,9 @@ exports['default'] = _React2['default'].createClass({
         if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subscategoryId) {
             // if category changes, start with a new list of posts
             this.setState({
-                posts: []
+                posts: [],
+                has_next: false,
+                next_page: null
             });
             this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
         }
@@ -42772,7 +42784,7 @@ exports['default'] = _React2['default'].createClass({
                 cover: post.cover[0],
                 created_at: post.created_at,
                 last_modified: post.last_modified,
-                content: post.articletext,
+                articletext: post.articletext,
                 category: post.category.name,
                 uri: post.resource_uri });
         });
@@ -42786,7 +42798,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":250,"../mixins/WebAPIMixin":251,"./PostTile":245,"lodash":5,"react-masonry-mixin":6,"react-router":44,"react/addons":59}],245:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":250,"../mixins/WebAPIMixin":251,"./PostTile":245,"lodash":5,"react-masonry-mixin":6,"react-router":44,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],245:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42826,7 +42838,7 @@ exports['default'] = _React2['default'].createClass({
         id: _React2['default'].PropTypes.number.isRequired,
         heading: _React2['default'].PropTypes.string.isRequired,
         subheading: _React2['default'].PropTypes.string.isRequired,
-        content: _React2['default'].PropTypes.string.isRequired,
+        articletext: _React2['default'].PropTypes.string.isRequired,
         cover: _React2['default'].PropTypes.object.isRequired,
         created_at: _React2['default'].PropTypes.string.isRequired,
         last_modified: _React2['default'].PropTypes.string.isRequired,
@@ -42838,83 +42850,41 @@ exports['default'] = _React2['default'].createClass({
         this.context.router.transitionTo('post', { postId: this.props.id });
     },
     render: function render() {
-        var styles = {
-            tile: {
-                maxWidth: '320px',
-                textAlign: 'center',
-                cursor: 'pointer',
-                padding: '2px' },
-            tileImg: {
-                width: '100%' },
-            tileIntro: {
-                textTransform: 'uppercase',
-                padding: '10px 35px 35px',
-                backgroundColor: '#f7f7f7'
-            },
-            tileIntroInfo: {
-                fontSize: '7px',
-                marginBottom: '5px' },
-            tileIntroHeading: {
-                fontSize: '20px',
-                letterSpacing: '0.1em'
-            },
-            tileIntroSubHeading: {
-                fontSize: '14px' },
-            tileIntroDivider: {
-                marginTop: '0px',
-                marginBottom: '12px' },
-            tileIntroSynopsis: {
-                fontSize: '11px',
-                textAlign: 'justify',
-                lineHeight: '19px' },
-            tileTriangle: {
-                fontSize: '0px',
-                lineHeight: '0%',
-                width: '0px',
-                borderBottom: '14px solid #000',
-                borderRight: '14px solid #f7f7f7',
-                marginTop: '-14px' },
-            circleDivider: {
-                backgroundColor: '#000',
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                display: 'inline-block',
-                margin: '1px' } };
+
         return _React2['default'].createElement(
             'div',
-            { className: 'tile', style: styles.tile, onClick: this.handleClick },
-            _React2['default'].createElement('img', { src: this.props.cover.img.medium, style: styles.tileImg }),
+            { className: 'tile', onClick: this.handleClick },
+            _React2['default'].createElement('img', { src: this.props.cover.img.medium }),
             _React2['default'].createElement(
                 'div',
-                { className: 'intro', style: styles.tileIntro },
+                { className: 'intro' },
                 _React2['default'].createElement(
                     'div',
-                    { className: 'info', style: styles.tileIntroInfo },
+                    { className: 'info' },
                     this.props.category,
                     ' | ',
                     new Date(this.props.created_at).toDateString()
                 ),
                 _React2['default'].createElement(
                     'div',
-                    { className: 'heading', style: styles.tileIntroHeading },
+                    { className: 'heading' },
                     this.props.heading
                 ),
                 _React2['default'].createElement(
                     'div',
-                    { className: 'sub-heading', style: styles.tileIntroSubHeading },
+                    { className: 'sub-heading' },
                     this.props.subheading
                 ),
                 _React2['default'].createElement(
                     'div',
-                    { className: 'divider', style: styles.tileIntroDivider },
-                    _React2['default'].createElement('span', { className: 'twin circle-divider', style: styles.circleDivider }),
-                    _React2['default'].createElement('span', { className: 'twin circle-divider', style: styles.circleDivider })
+                    { className: 'divider' },
+                    _React2['default'].createElement('span', { className: 'twin circle-divider' }),
+                    _React2['default'].createElement('span', { className: 'twin circle-divider' })
                 ),
-                _React2['default'].createElement('div', { className: 'synopsis', style: styles.tileIntroSynopsis,
-                    dangerouslySetInnerHTML: { __html: _truncate2['default'](this.props.content, 50) } })
+                _React2['default'].createElement('div', { className: 'synopsis',
+                    dangerouslySetInnerHTML: { __html: _truncate2['default'](this.props.articletext, 50) } })
             ),
-            _React2['default'].createElement('div', { className: 'triangle', style: styles.tileTriangle })
+            _React2['default'].createElement('div', { className: 'triangle' })
         );
     }
 });
@@ -43045,7 +43015,7 @@ exports['default'] = _React2['default'].createClass({
                 cover: post.cover,
                 created_at: post.created_at,
                 last_modified: post.last_modified,
-                content: post.articletext,
+                articletext: post.articletext,
                 category: post.category.name });
         });
         var template = PostTileNodes;
@@ -43551,15 +43521,10 @@ exports['default'] = _React2['default'].createClass({
         router: _React2['default'].PropTypes.func
     },
     render: function render() {
-        var name = this.context.router.getCurrentPath();
         return _React2['default'].createElement(
             'div',
             null,
-            _React2['default'].createElement(
-                TransitionGroup,
-                { transitionName: 'ologyapp' },
-                _React2['default'].createElement(RouteHandler, { key: name })
-            )
+            _React2['default'].createElement(RouteHandler, { key: name })
         );
     }
 
@@ -43620,7 +43585,9 @@ exports['default'] = _React2['default'].createClass({
     _ScrollDown: function _ScrollDown() {
         var categoryId = this.context.router.getCurrentParams().categoryId;
         setTimeout(function () {
-            if (categoryId && $('.tile').length > 0) window.scrollTo(0, 600);
+            if (categoryId && $('.tile').length > 0) $('body').animate({
+                scrollTop: 600
+            }, 2000);
         }, 500);
     },
     componentDidMount: function componentDidMount() {
@@ -43635,7 +43602,7 @@ exports['default'] = _React2['default'].createClass({
 
         return _React2['default'].createElement(
             'div',
-            { ref: 'container' },
+            null,
             _React2['default'].createElement(_Logo2['default'], null),
             _React2['default'].createElement(_NavBar2['default'], null),
             _React2['default'].createElement(_BannerList2['default'], null),

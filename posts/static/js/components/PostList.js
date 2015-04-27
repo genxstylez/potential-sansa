@@ -7,17 +7,16 @@ import WebAPIMixin from '../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import PostTile from './PostTile';
 import MansonryMixin from 'react-masonry-mixin';
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 const Link = Router.Link;
 
 const mansonryOptions = {
-    transitionDuration: 0
+    transitionDuration: '0.2s'
 }
 
 export default React.createClass({
     mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin],
-
-    pollInterval: 60000,
 
     propTypes: {
         categoryId: React.PropTypes.string,
@@ -31,24 +30,6 @@ export default React.createClass({
             has_next: false,
             is_loading: false
         }
-    },
-
-    buildTiles(posts) {
-        return posts.map(function(post) {
-            return (
-                <PostTile 
-                    key={post.id} 
-                    id={post.id} 
-                    heading={post.heading}
-                    subheading={post.subheading}
-                    cover={post.cover[0]}
-                    created_at={post.created_at}
-                    last_modified={post.last_modified}
-                    content={post.articletext}
-                    category={post.category.name}
-                    uri={post.resource_uri} />
-            );
-        });
     },
 
     onPageScroll() {
@@ -79,7 +60,9 @@ export default React.createClass({
         if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subscategoryId){
             // if category changes, start with a new list of posts
             this.setState({
-                posts: []
+                posts: [],
+                has_next: false,
+                next_page: null
             });
             this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
         }
@@ -107,7 +90,7 @@ export default React.createClass({
                     cover={post.cover[0]}
                     created_at={post.created_at}
                     last_modified={post.last_modified}
-                    content={post.articletext}
+                    articletext={post.articletext}
                     category={post.category.name}
                     uri={post.resource_uri} />
             );

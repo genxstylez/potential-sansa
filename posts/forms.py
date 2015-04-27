@@ -1,21 +1,43 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
-from posts.models import Image, Post, Category
+from posts.models import Image, Post
 from suit_redactor.widgets import RedactorWidget
-from suit_ckeditor.widgets import CKEditorWidget
 
 
 class PostForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(PostForm, self).__init__(*args, **kwargs)
-        self.fields['category'].queryset = Category.objects.exclude(parent=None)
 
     class Meta:
         model = Post
         fields = ['heading', 'subheading', 'category', 'credits', 'articletext', 'starred', 'published']
         widgets = {
-            'articletext': CKEditorWidget()
+            'articletext': RedactorWidget(editor_options={
+                'language': 'zh-Hant',
+                'focus': True,
+                'minHeight': '500',
+                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor'],
+            })
         }
+
+'''
+ckedit_options = {
+    'language': 'zh-Hant',
+    'height': '500px',
+    'toolbar': [
+        {'name': 'colors', 'items': ['TextColor']},
+        {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+        {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline']},
+    ]
+}
+'''
+
+
+class StarredPostForm(PostForm):
+
+    def __init__(self, *args, **kwargs):
+        super(StarredPostForm, self).__init__(*args, **kwargs)
+        self.fields['starred'].initial = True
 
 
 class ImageForm(forms.ModelForm):

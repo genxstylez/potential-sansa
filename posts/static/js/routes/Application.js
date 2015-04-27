@@ -10,12 +10,9 @@ export default React.createClass({
         router: React.PropTypes.func
     },
     render() {
-        var name = this.context.router.getCurrentPath();
         return (
             <div>
-                <TransitionGroup transitionName="ologyapp">
-                    <RouteHandler key={name}/>
-                </TransitionGroup>
+                <RouteHandler key={name}/>
             </div>
         );
     }

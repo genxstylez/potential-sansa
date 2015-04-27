@@ -12,7 +12,6 @@ const Link = Router.Link;
 
 export default React.createClass({
     mixins: [WebAPIMixin],
-    pollInterval: 60000,
 
     contextTypes: {
         router: React.PropTypes.func
@@ -29,9 +28,6 @@ export default React.createClass({
     },
     componentDidMount() {
         this._getStarred();
-         this.interval = setInterval(() => {
-            this._getStarred();
-        }, this.pollInterval);
         if(this.isMounted()) {
             setTimeout(() => {
                 $(this.refs.bannerContainer.getDOMNode()).scrollbar({
@@ -45,11 +41,7 @@ export default React.createClass({
             $(this.refs.bannerContainer.getDOMNode()).scrollbar("resize");
         }, 100);
     },
-    componentWillUnmount() {
-        if (_.has(this, 'interval')) {
-            clearInterval(this.interval);
-        }
-    },
+    componentWillUnmount() {},
     render() {
         const tileNodes = _.map(this.state.posts, post => {
             return (

@@ -80,14 +80,21 @@ export default React.createClass({
         return (
              <div className={nav_classes}>
                 <div ref="header" className={header_classes}> 
-                    <Link to="search">
-                        <img className="pull-left search" src={search_icon} />
-                    </Link>
-                    {NavItemNodes}
-                    <a href="#" className="pull-right subscribe">Subscribe</a>
-                    <a href="http://facebook.com" className="pull-right fb">
-                        <img src={fb_icon} />
-                    </a>
+                    <div className="pull-left">
+                        <Link to="search">
+                            <img className="search" src={search_icon} />
+                        </Link>
+                    </div>
+                    <div className="pull-right">
+                        <a href="http://facebook.com" className="fb">
+                            <img src={fb_icon} />
+                        </a>
+                        <a href="#" className="subscribe">Subscribe</a>
+                    </div>
+                    <div className="navbar">
+                        {NavItemNodes}
+                    </div>
+
                 </div>
             </div>
         );

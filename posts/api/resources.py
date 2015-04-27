@@ -4,7 +4,8 @@ from tastypie.authentication import (ApiKeyAuthentication, BasicAuthentication,
                                      MultiAuthentication)
 from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ModelResource, fields, ALL_WITH_RELATIONS
-from posts.models import Category, Credit, Post, Image
+from taggit.models import Tag
+from posts.models import Category, Post, Image
 
 
 class AdminCategoryResource(ModelResource):
@@ -29,26 +30,26 @@ class AdminPostResource(ModelResource):
         authorization = DjangoAuthorization()
 
 
-class CreditResource(ModelResource):
-
-    class Meta:
-        queryset = Credit.objects.all()
-
-
 class ImageResource(ModelResource):
 
     class Meta:
         queryset = Image.objects.all()
         resource_name = 'images'
 
-    def dehydrate(self, bundle):
+    def dehydrate_img(self, bundle):
         bundle.data['img'] = {
             'original': bundle.obj.img.url,
             'small': bundle.obj.img['small'].url,
             'medium': bundle.obj.img['medium'].url,
             'large': bundle.obj.img['large'].url
         }
-        return bundle
+        return bundle.data['img']
+
+
+class TagResource(ModelResource):
+
+    class Meta:
+        queryset = Tag.objects.all()
 
 
 class CategoryResource(ModelResource):
@@ -69,13 +70,14 @@ class StarredResource(ModelResource):
                                use_in='list', full=True)
 
     class Meta:
-        queryset = Post.objects.filter(starred=True, published=True).order_by('-created_at')
+        queryset = Post.objects.filter(starred=True, published=True).order_by('order')
         resource_name = 'starred'
 
 
 class PostResource(ModelResource):
     category = fields.ForeignKey(CategoryResource, 'category', full=True, null=True, blank=True)
-    credits = fields.ToManyField(CreditResource, 'credits', full=True, use_in='detail')
+    credits = fields.DictField('credits', use_in='detail')
+    tags = fields.ToManyField(TagResource, lambda bundle: bundle.obj.tags.all(), use_in='detail', full=True, null=True, blank=True)
     images = fields.ToManyField(ImageResource, 'images', full=True, use_in='detail')
     cover = fields.ToManyField(ImageResource,
                                lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True),

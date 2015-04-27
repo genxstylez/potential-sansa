@@ -4,6 +4,7 @@ import React from 'react/addons';
 import _ from 'lodash';
 import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 
 const Link = Router.Link;
@@ -14,20 +15,12 @@ var SelectedImg = React.createClass({
             <div className="on_deck">
                 <span className="align-helper" />
                 <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />
+                <div className="caption">{this.props.on_deck.caption}</div>
             </div>
         )
     }  
 });
 
-var ImgRow = React.createClass({  
-    render () {
-        return (
-            <ul className="images">
-                {this.props.children}
-            </ul>
-        )
-    }
-});
 export default React.createClass({
     propTypes: {
         on_deck: React.PropTypes.object.isRequired,
@@ -46,10 +39,14 @@ export default React.createClass({
         this.setState({on_deck: image_url});
     },
     handleLeftArrow() {
-        this.refs.imgRow.getDOMNode().scrollLeft -= 500;
+        $(this.refs.imgRow.getDOMNode()).animate({ 
+            scrollLeft: "-=250"
+        }, 200);
     },
     handlerRightArrow() {
-        this.refs.imgRow.getDOMNode().scrollLeft += 500;
+          $(this.refs.imgRow.getDOMNode()).animate({ 
+            scrollLeft: "+=250"
+        }, 200);
     },
     getInitialState() {
         return {
@@ -60,12 +57,14 @@ export default React.createClass({
     render() {
         return (
           <div className="pull-right gallery">
-            <SelectedImg key="selectedImg" on_deck={this.state.on_deck} />
+            <TransitionGroup transitionName="gallery">
+                <SelectedImg key={this.state.on_deck.id} on_deck={this.state.on_deck} />
+            </TransitionGroup>
             <div className="arrow left" onClick={this.handleLeftArrow}>
                 <span className="align-helper" />
                 <img src={STATIC_URL + "img/left-arrow.png"} />
             </div>
-            <ImgRow key="imgRow" ref="imgRow">
+            <ul className="images" ref="imgRow">
               {this.state.imgs.map(function(image) {
                   return (
                         <li>
@@ -74,7 +73,7 @@ export default React.createClass({
                         </li>
                   )
                 }, this)}
-            </ImgRow>
+            </ul>
             <div className="arrow right" onClick={this.handlerRightArrow}>
                 <span className="align-helper" />
                 <img src={STATIC_URL + "img/right-arrow.png"} />

@@ -91,7 +91,7 @@ export default React.createClass({
                     cover={post.cover}
                     created_at={post.created_at}
                     last_modified={post.last_modified}
-                    content={post.articletext}
+                    articletext={post.articletext}
                     category={post.category.name} />
             );
         });

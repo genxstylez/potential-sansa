@@ -19,7 +19,9 @@ export default React.createClass({
         var categoryId = this.context.router.getCurrentParams().categoryId;
         setTimeout( () => {
             if (categoryId && $('.tile').length > 0)
-                window.scrollTo(0, 600);
+                $('body').animate({ 
+                    scrollTop: 600
+                }, 2000);
         }, 500)
     },
     componentDidMount() {
@@ -33,7 +35,7 @@ export default React.createClass({
         var subcategoryId = this.context.router.getCurrentParams().subcategoryId;
 
         return (
-            <div ref="container">
+            <div>
                 <Logo />
                 <NavBar />
                 <BannerList />

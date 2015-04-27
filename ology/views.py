@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import json
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from ology.utils import reverse
 import watson
 
-from posts.models import Image, Credit, Post
+from posts.models import Image, Post
 
 
 def search(request):
@@ -23,10 +23,7 @@ def search(request):
         elif isinstance(result.object, Post):
             post = result.object
             show_only_post_results.append(post)
-        elif isinstance(result.object, Credit):
-            for post in result.object.post_set.filter(published=True):
-                show_only_post_results.append(post)
-    objects = [post.to_json() for post in list(set(show_only_post_results))]
+    objects = [this_post.to_json() for this_post in list(set(show_only_post_results))]
 
     paginated_objects = objects[offset: offset + limit]
     has_next_page = len(objects[next_offset:]) > 0
