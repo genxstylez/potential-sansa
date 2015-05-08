@@ -52,9 +52,7 @@ export default React.createClass({
         });
     },
     componentDidMount() {
-        setTimeout(() => {
-            this._getPost(this.props.id);
-        }, 500);
+        this._getPost(this.props.id);
     },
 
     componentWillUpdate(nextProps, nextState) {
@@ -97,19 +95,15 @@ export default React.createClass({
                 </div>
                 <div className="row article">
                     <div className="pull-left article-content" ref="articleContent">
-                        <div style={{paddingRight: '40px'}}>
+                        <div className="inner-content">
+                            <span className="label category">{this.state.category}</span>
                             <p className="title">{this.state.heading}</p>
                             <p className="sub-title">{this.state.subheading}</p>
                             <div className="decorations">
-                                <span className="twin circle-divider"></span>
-                                <span className="twin circle-divider"></span>
-                                <span className="pull-right created_at">{new Date(this.state.created_at).toDateString()}</span>
+                                <span className="created_at">{new Date(this.state.created_at).toDateString()}</span>
                             </div>
                             <div dangerouslySetInnerHTML={{__html: this.state.articletext}} />
-                            <div className="decorations end">
-                                <span className="twin circle-divider grey-circle"></span>
-                                <span className="twin circle-divider grey-circle"></span>
-                            </div>
+                            <div className="decorations end"></div>
                             {creditNodes}
                             <div className="share">
                                 <a href="http://facebook.com">

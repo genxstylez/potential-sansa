@@ -120,7 +120,8 @@ div.logo img {
 .banner-inner-container .banner-tile {
     float: left;
     position: relative;
-    height: 500px;
+    height: 450px;
+    width: 640px;
 }
 .banner-inner-container .banner-tile img {
     height: 100%;
@@ -157,7 +158,7 @@ div.logo img {
 }
 .mansonryContainer {
     width: 90%;
-    margin: 0 auto 50px auto
+    margin: 70px auto 50px auto;
 }
 
 .no-results{
@@ -172,7 +173,7 @@ div.logo img {
     max-width: 500px;
     text-align: center;
     cursor: pointer;
-    padding: 10px;
+    padding: 5px;
 }
 @media (min-width: 320px) and (max-width: 640px) {
     .tile{
@@ -318,6 +319,25 @@ div.logo img {
     border-right: 1px solid #d5d5d5;
     outline: 0;
 }
+
+.article-box .article .article-content .inner-content {
+    padding-right: 52px;
+}
+
+.article-box .article .article-content.jspScrollable .inner-content {
+    padding-right: 31px;
+}
+.article-box .article .category {
+    color: #ffffff;
+    height: 17px;
+    font-size: 10.5px;
+    border-radius: 12px;
+    background-color: #c8c8c8;
+    display: inline-block;
+    padding: 10px;
+    line-height: 0px;
+    margin-bottom: 22px;
+}
 .article-box .article .article-content.jspScrollable {
     border-right: none;
 }
@@ -429,9 +449,18 @@ ul.images li img {
     font-size: 10.5px;
     color: #6e6e6e;
     letter-spacing: 0.075em;
+    color: #ffffff;
+    height: 17px;
+    font-size: 10.5px;
+    border-radius: 12px;
+    background-color: #c8c8c8;
+    display: inline-block;
+    padding: 8px;
+    line-height: 0px;
+    font-weight: 500;
 }
 .article-box .credit .name {
-    margin-left: 13px;
+    margin-left: 7.5px;
     color: #c8c8c8;
 }
 .article-box .credit .name a {
@@ -472,15 +501,19 @@ ul.images li img {
     display: block;
 }
 .decorations {
-    margin: 16px 0 20px 0;
+    height: 1px;
+    background-color: #c8c8c8;
+    text-align: center;
+    margin: 20px 0;
 }
 .decorations .created_at {
-    font-size: 11px;
+    background-color: #F7F7F7;
+    color: #646464;
+    position: relative;
+    top: -10px;
+    font-size: 10px;
     letter-spacing: 0.075em;
-}
-
-.end.decorations {
-    margin-top: -10px;
+    padding: 0 9px;
 }
 
 .sub-nav .header, .sub-nav .header .fixed {
@@ -553,7 +586,7 @@ ul.images li img {
 
 /* jscrollpane */
 .jspTrack {
-    background: #ffffff;
+    background: #f7f7f7;
 }
 
 .jspDrag {

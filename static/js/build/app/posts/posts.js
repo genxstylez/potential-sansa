@@ -42265,10 +42265,6 @@ exports['default'] = _React2['default'].createClass({
         uri: _React2['default'].PropTypes.string.isRequired
     },
 
-    handleOnClick: function handleOnClick() {
-        window.scrollTo(0, 600);
-    },
-
     render: function render() {
         var styles = {
             anchor: {
@@ -42371,19 +42367,15 @@ exports['default'] = _React2['default'].createClass({
         });
     },
     componentDidMount: function componentDidMount() {
-        var _this2 = this;
-
-        setTimeout(function () {
-            _this2._getPost(_this2.props.id);
-        }, 500);
+        this._getPost(this.props.id);
     },
 
     componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
-        var _this3 = this;
+        var _this2 = this;
 
         if (this.isMounted()) {
             setTimeout(function () {
-                $(_this3.refs.articleContent.getDOMNode()).jScrollPane();
+                $(_this2.refs.articleContent.getDOMNode()).jScrollPane();
             }, 50);
         }
     },
@@ -42428,7 +42420,12 @@ exports['default'] = _React2['default'].createClass({
                     { className: 'pull-left article-content', ref: 'articleContent' },
                     _React2['default'].createElement(
                         'div',
-                        { style: { paddingRight: '40px' } },
+                        { className: 'inner-content' },
+                        _React2['default'].createElement(
+                            'span',
+                            { className: 'label category' },
+                            this.state.category
+                        ),
                         _React2['default'].createElement(
                             'p',
                             { className: 'title' },
@@ -42442,21 +42439,14 @@ exports['default'] = _React2['default'].createClass({
                         _React2['default'].createElement(
                             'div',
                             { className: 'decorations' },
-                            _React2['default'].createElement('span', { className: 'twin circle-divider' }),
-                            _React2['default'].createElement('span', { className: 'twin circle-divider' }),
                             _React2['default'].createElement(
                                 'span',
-                                { className: 'pull-right created_at' },
+                                { className: 'created_at' },
                                 new Date(this.state.created_at).toDateString()
                             )
                         ),
                         _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: this.state.articletext } }),
-                        _React2['default'].createElement(
-                            'div',
-                            { className: 'decorations end' },
-                            _React2['default'].createElement('span', { className: 'twin circle-divider grey-circle' }),
-                            _React2['default'].createElement('span', { className: 'twin circle-divider grey-circle' })
-                        ),
+                        _React2['default'].createElement('div', { className: 'decorations end' }),
                         creditNodes,
                         _React2['default'].createElement(
                             'div',
@@ -42536,7 +42526,7 @@ exports['default'] = _React2['default'].createClass({
             { className: 'credit' },
             _React2['default'].createElement(
                 'span',
-                { className: 'role' },
+                { className: 'label role' },
                 this.props.role
             ),
             _React2['default'].createElement(
@@ -42731,7 +42721,8 @@ exports['default'] = _React2['default'].createClass({
             posts: [],
             next_page: null,
             has_next: false,
-            is_loading: false
+            is_loading: false,
+            is_animating_scrolling: false
         };
     },
 
@@ -42756,18 +42747,18 @@ exports['default'] = _React2['default'].createClass({
                 posts: _this.state.posts.concat(new_elements),
                 next_page: next_page,
                 has_next: has_next,
-                is_loading: false
-            });
+                is_loading: false });
         });
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subscategoryId) {
+        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subcategoryId) {
             // if category changes, start with a new list of posts
             this.setState({
                 posts: [],
                 has_next: false,
-                next_page: null
+                next_page: null,
+                is_animating_scrolling: false
             });
             this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
         }
@@ -42777,6 +42768,13 @@ exports['default'] = _React2['default'].createClass({
      */
     componentDidMount: function componentDidMount() {
         this._getPosts(null, this.props.categoryId, this.props.subcategoryId);
+    },
+
+    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+        if (this.state.posts && !this.state.is_animating_scrolling && this.props.categoryId) {
+            this.setState({ is_animating_scrolling: true });
+            $.scrollTo('620px', 500);
+        };
     },
 
     /**
@@ -43596,20 +43594,7 @@ exports['default'] = _React2['default'].createClass({
     contextTypes: {
         router: _React2['default'].PropTypes.func
     },
-    _ScrollDown: function _ScrollDown() {
-        var categoryId = this.context.router.getCurrentParams().categoryId;
-        setTimeout(function () {
-            if (categoryId && $('.tile').length > 0) $('body').animate({
-                scrollTop: 600
-            }, 2000);
-        }, 500);
-    },
-    componentDidMount: function componentDidMount() {
-        this._ScrollDown();
-    },
-    componentWillUpdate: function componentWillUpdate() {
-        this._ScrollDown();
-    },
+
     render: function render() {
         var categoryId = this.context.router.getCurrentParams().categoryId;
         var subcategoryId = this.context.router.getCurrentParams().subcategoryId;

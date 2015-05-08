@@ -47,13 +47,13 @@ class Post(models.Model):
     heading = models.CharField('主標題', max_length=30)
     subheading = models.CharField('副標題', max_length=30, blank=True)
     articletext = models.TextField('內容')
-    credits = JSONField('Credits', default={}, help_text=mark_safe(credits_help_text))
+    credits = JSONField('Credits', default={}, help_text=mark_safe(credits_help_text), blank=True)
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     starred = models.BooleanField('加入至橫幅', default=False)
     published = models.BooleanField('發表', default=False)
     order = models.PositiveIntegerField(db_index=True, default=0)
-    tags = TaggableManager(help_text='請用逗號在tag之間做區隔', blank=True)
+    tags = TaggableManager(help_text='請用逗號(半形)在tag之間做區隔', blank=True)
 
     def __unicode__(self):
         return '({category}) - {heading}'.format(category=self.category, heading=self.heading)

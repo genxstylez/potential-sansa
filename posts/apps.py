@@ -3,10 +3,6 @@ from django.apps import AppConfig
 import watson
 
 
-def dumps_credits(post):
-    return dict(post.credits)
-
-
 class PostsAppConfig(AppConfig):
     name = 'posts'
 
@@ -14,5 +10,5 @@ class PostsAppConfig(AppConfig):
         post_model = self.get_model('Post')
         image_model = self.get_model('Image')
 
-        watson.register(post_model.objects.filter(published=True), fields=('heading', 'subheading', 'articletext', 'credits'))
+        watson.register(post_model.objects.filter(published=True), fields=('heading', 'subheading', 'articletext', 'credits', 'tags'))
         watson.register(image_model.objects.filter(post__published=True))

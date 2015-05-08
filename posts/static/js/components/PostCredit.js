@@ -25,7 +25,7 @@ export default React.createClass({
         }
         return (
             <div className="credit">
-                <span className="role">{this.props.role}</span>
+                <span className="label role">{this.props.role}</span>
                 <span className="name">{names}</span>
             </div>
         );

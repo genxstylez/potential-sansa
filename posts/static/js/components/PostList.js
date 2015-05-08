@@ -28,7 +28,8 @@ export default React.createClass({
             posts: [],
             next_page : null,
             has_next: false,
-            is_loading: false
+            is_loading: false,
+            is_animating_scrolling: false
         }
     },
 
@@ -51,18 +52,19 @@ export default React.createClass({
                 posts: this.state.posts.concat(new_elements),
                 next_page: next_page,
                 has_next: has_next,
-                is_loading: false
+                is_loading: false,
             });
         });
     },
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subscategoryId){
+        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subcategoryId){
             // if category changes, start with a new list of posts
             this.setState({
                 posts: [],
                 has_next: false,
-                next_page: null
+                next_page: null,
+                is_animating_scrolling: false
             });
             this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
         }
@@ -72,6 +74,14 @@ export default React.createClass({
      */
     componentDidMount() {
         this._getPosts(null, this.props.categoryId, this.props.subcategoryId);
+
+    },
+
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state.posts && !this.state.is_animating_scrolling && this.props.categoryId) {
+            this.setState({is_animating_scrolling: true})
+            $.scrollTo('620px', 500);
+        }; 
     },
 
     /**

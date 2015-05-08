@@ -15,21 +15,7 @@ export default React.createClass({
     contextTypes: {
         router: React.PropTypes.func
     },
-    _ScrollDown() {
-        var categoryId = this.context.router.getCurrentParams().categoryId;
-        setTimeout( () => {
-            if (categoryId && $('.tile').length > 0)
-                $('body').animate({ 
-                    scrollTop: 600
-                }, 2000);
-        }, 500)
-    },
-    componentDidMount() {
-       this._ScrollDown();
-    },
-    componentWillUpdate() {
-       this._ScrollDown();
-    },
+    
     render() {
         var categoryId = this.context.router.getCurrentParams().categoryId;
         var subcategoryId = this.context.router.getCurrentParams().subcategoryId;

@@ -16,10 +16,6 @@ export default React.createClass({
         uri: React.PropTypes.string.isRequired
     },
 
-    handleOnClick() {
-        window.scrollTo(0, 600);
-    },
-
     render() {
         var styles = {
             anchor: {
