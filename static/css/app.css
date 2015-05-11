@@ -142,8 +142,8 @@ div.logo img {
 .banner-inner-container .banner-tile {
     float: left;
     position: relative;
-    height: auto;
-    width: 640px;
+    height: 450px;
+    /* width: 640px; */
 }
 .banner-inner-container .banner-tile img {
     height: auto;
