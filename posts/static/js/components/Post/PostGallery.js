@@ -6,10 +6,13 @@ var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 var SelectedImg = React.createClass({
     render() {
+        var onDeckNode = this.props.on_deck.video ? 
+            <div className="video-embed" dangerouslySetInnerHTML={{__html: this.props.on_deck.video}} /> :  
+            [<span className="align-helper" />,
+            <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />]
         return (
             <div className="on_deck">
-                <span className="align-helper" />
-                <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />
+                {onDeckNode}
                 <div className="caption">{this.props.on_deck.caption}</div>
             </div>
         )
@@ -34,12 +37,12 @@ export default React.createClass({
         this.setState({on_deck: image_url});
     },
     handleLeftArrow() {
-        $(this.refs.imgRow.getDOMNode()).animate({ 
+        $(React.findDOMNode(this.refs.imgRow)).animate({ 
             scrollLeft: "-=250"
         }, 200);
     },
     handlerRightArrow() {
-          $(this.refs.imgRow.getDOMNode()).animate({ 
+          $(React.findDOMNode(this.refs.imgRow)).animate({ 
             scrollLeft: "+=250"
         }, 200);
     },
@@ -61,12 +64,21 @@ export default React.createClass({
             </div>
             <ul className="images" ref="imgRow">
               {this.state.imgs.map(function(image) {
-                  return (
-                        <li>
-                            <img key={image.id} src={image.img.small} 
-                                onClick={this.handleClick.bind(this, image)} />
-                        </li>
-                  )
+                    if (image.video) {
+                        return (
+                            <li key={image.id}>
+                                <img src={"https://i.ytimg.com/vi/" + image.video_id + "/hqdefault.jpg"}
+                                    onClick={this.handleClick.bind(this, image)} />
+                            </li>
+                        )
+                    } else {
+                        return (
+                            <li key={image.id}>
+                                <img src={image.img.small} 
+                                    onClick={this.handleClick.bind(this, image)} />
+                            </li>
+                        )
+                    }
                 }, this)}
             </ul>
             <div className="arrow right" onClick={this.handlerRightArrow}>

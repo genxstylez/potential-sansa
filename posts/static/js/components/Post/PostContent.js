@@ -24,16 +24,15 @@ export default React.createClass({
         last_modified: React.PropTypes.string,
     },
 
-
     componentDidMount() {
-    },
-
-    componentWillUpdate(nextProps, nextState) {
         if(this.isMounted()) {
             setTimeout(() => {
                 $(React.findDOMNode(this.refs.articleContent)).jScrollPane();
             }, 50);
         }
+    },
+    componentWillUpdate(nextProps, nextState) {
+        
     },
 
     handeClickOnCross() {
@@ -50,7 +49,7 @@ export default React.createClass({
         };
         const creditNodes = _.map(this.props.credits, (value, key) => {
             return (
-                <PostCredit role={key} names={value}/>
+                <PostCredit key={key} role={key} names={value}/>
             );
         });
 

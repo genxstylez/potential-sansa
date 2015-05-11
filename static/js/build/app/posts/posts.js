@@ -46,7 +46,7 @@ var routes = _React2['default'].createElement(
     _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId', handler: _PostPage2['default'] })
 );
 
-_Router2['default'].run(routes, function (Handler) {
+_Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Handler) {
     _React2['default'].render(_React2['default'].createElement(Handler, null), document.querySelector('.react-container'));
 });
 
@@ -15955,20 +15955,20 @@ if (typeof exports === 'object') {
 })( typeof window !== 'undefined' ? window : null );
 
 },{"./item":13,"desandro-matches-selector":15,"doc-ready":16,"eventemitter":17,"eventie":18,"get-size":11}],20:[function(require,module,exports){
-"use strict";
-
 /**
  * Represents a cancellation caused by navigating away
  * before the previous transition has fully resolved.
  */
+"use strict";
+
 function Cancellation() {}
 
 module.exports = Cancellation;
 },{}],21:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var invariant = require("react/lib/invariant");
-var canUseDOM = require("react/lib/ExecutionEnvironment").canUseDOM;
+var invariant = require('react/lib/invariant');
+var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
 
 var History = {
 
@@ -15983,7 +15983,7 @@ var History = {
    * Sends the browser back one entry in the history.
    */
   back: function back() {
-    invariant(canUseDOM, "Cannot use History.back without a DOM");
+    invariant(canUseDOM, 'Cannot use History.back without a DOM');
 
     // Do this first so that History.length will
     // be accurate in location change listeners.
@@ -15996,14 +15996,14 @@ var History = {
 
 module.exports = History;
 },{"react/lib/ExecutionEnvironment":80,"react/lib/invariant":209}],22:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 /* jshint -W084 */
-var PathUtils = require("./PathUtils");
+var PathUtils = require('./PathUtils');
 
 function deepSearch(route, pathname, query) {
   // Check the subtree first to find the most deeply-nested match.
@@ -16048,44 +16048,33 @@ var Match = (function () {
     this.routes = routes;
   }
 
-  _createClass(Match, null, {
-    findMatch: {
+  _createClass(Match, null, [{
+    key: 'findMatch',
 
-      /**
-       * Attempts to match depth-first a route in the given route's
-       * subtree against the given path and returns the match if it
-       * succeeds, null if no match can be made.
-       */
+    /**
+     * Attempts to match depth-first a route in the given route's
+     * subtree against the given path and returns the match if it
+     * succeeds, null if no match can be made.
+     */
+    value: function findMatch(routes, path) {
+      var pathname = PathUtils.withoutQuery(path);
+      var query = PathUtils.extractQuery(path);
+      var match = null;
 
-      value: function findMatch(routes, path) {
-        var pathname = PathUtils.withoutQuery(path);
-        var query = PathUtils.extractQuery(path);
-        var match = null;
+      for (var i = 0, len = routes.length; match == null && i < len; ++i) match = deepSearch(routes[i], pathname, query);
 
-        for (var i = 0, len = routes.length; match == null && i < len; ++i) match = deepSearch(routes[i], pathname, query);
-
-        return match;
-      }
+      return match;
     }
-  });
+  }]);
 
   return Match;
 })();
 
 module.exports = Match;
 },{"./PathUtils":24}],23:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var warning = require("react/lib/warning");
-var PropTypes = require("./PropTypes");
-
-function deprecatedMethod(routerMethodName, fn) {
-  return function () {
-    warning(false, "Router.Navigation is deprecated. Please use this.context.router." + routerMethodName + "() instead");
-
-    return fn.apply(this, arguments);
-  };
-}
+var PropTypes = require('./PropTypes');
 
 /**
  * A mixin for components that modify the URL.
@@ -16115,50 +16104,50 @@ var Navigation = {
    * Returns an absolute URL path created from the given route
    * name, URL parameters, and query values.
    */
-  makePath: deprecatedMethod("makePath", function (to, params, query) {
+  makePath: function makePath(to, params, query) {
     return this.context.router.makePath(to, params, query);
-  }),
+  },
 
   /**
    * Returns a string that may safely be used as the href of a
    * link to the route with the given name.
    */
-  makeHref: deprecatedMethod("makeHref", function (to, params, query) {
+  makeHref: function makeHref(to, params, query) {
     return this.context.router.makeHref(to, params, query);
-  }),
+  },
 
   /**
    * Transitions to the URL specified in the arguments by pushing
    * a new URL onto the history stack.
    */
-  transitionTo: deprecatedMethod("transitionTo", function (to, params, query) {
+  transitionTo: function transitionTo(to, params, query) {
     this.context.router.transitionTo(to, params, query);
-  }),
+  },
 
   /**
    * Transitions to the URL specified in the arguments by replacing
    * the current URL in the history stack.
    */
-  replaceWith: deprecatedMethod("replaceWith", function (to, params, query) {
+  replaceWith: function replaceWith(to, params, query) {
     this.context.router.replaceWith(to, params, query);
-  }),
+  },
 
   /**
    * Transitions to the previous URL.
    */
-  goBack: deprecatedMethod("goBack", function () {
+  goBack: function goBack() {
     return this.context.router.goBack();
-  })
+  }
 
 };
 
 module.exports = Navigation;
-},{"./PropTypes":25,"react/lib/warning":230}],24:[function(require,module,exports){
-"use strict";
+},{"./PropTypes":25}],24:[function(require,module,exports){
+'use strict';
 
-var invariant = require("react/lib/invariant");
-var objectAssign = require("object-assign");
-var qs = require("qs");
+var invariant = require('react/lib/invariant');
+var assign = require('object-assign');
+var qs = require('qs');
 
 var paramCompileMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$]*)|[*.()\[\]\\+|{}^$]/g;
 var paramInjectMatcher = /:([a-zA-Z_$][a-zA-Z0-9_$?]*[?]?)|[*]/g;
@@ -16173,17 +16162,17 @@ function compilePattern(pattern) {
     var source = pattern.replace(paramCompileMatcher, function (match, paramName) {
       if (paramName) {
         paramNames.push(paramName);
-        return "([^/?#]+)";
-      } else if (match === "*") {
-        paramNames.push("splat");
-        return "(.*?)";
+        return '([^/?#]+)';
+      } else if (match === '*') {
+        paramNames.push('splat');
+        return '(.*?)';
       } else {
-        return "\\" + match;
+        return '\\' + match;
       }
     });
 
     _compiledPatterns[pattern] = {
-      matcher: new RegExp("^" + source + "$", "i"),
+      matcher: new RegExp('^' + source + '$', 'i'),
       paramNames: paramNames
     };
   }
@@ -16197,14 +16186,14 @@ var PathUtils = {
    * Returns true if the given path is absolute.
    */
   isAbsolute: function isAbsolute(path) {
-    return path.charAt(0) === "/";
+    return path.charAt(0) === '/';
   },
 
   /**
    * Joins two URL paths together.
    */
   join: function join(a, b) {
-    return a.replace(/\/*$/, "/") + b;
+    return a.replace(/\/*$/, '/') + b;
   },
 
   /**
@@ -16248,28 +16237,28 @@ var PathUtils = {
     var splatIndex = 0;
 
     return pattern.replace(paramInjectMatcher, function (match, paramName) {
-      paramName = paramName || "splat";
+      paramName = paramName || 'splat';
 
       // If param is optional don't check for existence
-      if (paramName.slice(-1) === "?") {
+      if (paramName.slice(-1) === '?') {
         paramName = paramName.slice(0, -1);
 
-        if (params[paramName] == null) return "";
+        if (params[paramName] == null) return '';
       } else {
-        invariant(params[paramName] != null, "Missing \"%s\" parameter for path \"%s\"", paramName, pattern);
+        invariant(params[paramName] != null, 'Missing "%s" parameter for path "%s"', paramName, pattern);
       }
 
       var segment;
-      if (paramName === "splat" && Array.isArray(params[paramName])) {
+      if (paramName === 'splat' && Array.isArray(params[paramName])) {
         segment = params[paramName][splatIndex++];
 
-        invariant(segment != null, "Missing splat # %s for path \"%s\"", splatIndex, pattern);
+        invariant(segment != null, 'Missing splat # %s for path "%s"', splatIndex, pattern);
       } else {
         segment = params[paramName];
       }
 
       return segment;
-    }).replace(paramInjectTrailingSlashMatcher, "/");
+    }).replace(paramInjectTrailingSlashMatcher, '/');
   },
 
   /**
@@ -16285,7 +16274,7 @@ var PathUtils = {
    * Returns a version of the given path without the query string.
    */
   withoutQuery: function withoutQuery(path) {
-    return path.replace(queryMatcher, "");
+    return path.replace(queryMatcher, '');
   },
 
   /**
@@ -16295,12 +16284,12 @@ var PathUtils = {
   withQuery: function withQuery(path, query) {
     var existingQuery = PathUtils.extractQuery(path);
 
-    if (existingQuery) query = query ? objectAssign(existingQuery, query) : existingQuery;
+    if (existingQuery) query = query ? assign(existingQuery, query) : existingQuery;
 
-    var queryString = qs.stringify(query, { arrayFormat: "brackets" });
+    var queryString = qs.stringify(query, { arrayFormat: 'brackets' });
 
     if (queryString) {
-      return PathUtils.withoutQuery(path) + "?" + queryString;
+      return PathUtils.withoutQuery(path) + '?' + queryString;
     }return PathUtils.withoutQuery(path);
   }
 
@@ -16308,11 +16297,11 @@ var PathUtils = {
 
 module.exports = PathUtils;
 },{"object-assign":53,"qs":54,"react/lib/invariant":209}],25:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var assign = require("react/lib/Object.assign");
-var ReactPropTypes = require("react").PropTypes;
-var Route = require("./Route");
+var assign = require('react/lib/Object.assign');
+var ReactPropTypes = require('react').PropTypes;
+var Route = require('./Route');
 
 var PropTypes = assign({}, ReactPropTypes, {
 
@@ -16321,7 +16310,7 @@ var PropTypes = assign({}, ReactPropTypes, {
    */
   falsy: function falsy(props, propName, componentName) {
     if (props[propName]) {
-      return new Error("<" + componentName + "> may not have a \"" + propName + "\" prop");
+      return new Error('<' + componentName + '> should not have a "' + propName + '" prop');
     }
   },
 
@@ -16340,11 +16329,11 @@ var PropTypes = assign({}, ReactPropTypes, {
 
 module.exports = PropTypes;
 },{"./Route":27,"react":231,"react/lib/Object.assign":87}],26:[function(require,module,exports){
-"use strict";
-
 /**
  * Encapsulates a redirect to the given route.
  */
+"use strict";
+
 function Redirect(to, params, query) {
   this.to = to;
   this.params = params;
@@ -16353,16 +16342,16 @@ function Redirect(to, params, query) {
 
 module.exports = Redirect;
 },{}],27:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var assign = require("react/lib/Object.assign");
-var invariant = require("react/lib/invariant");
-var warning = require("react/lib/warning");
-var PathUtils = require("./PathUtils");
+var assign = require('react/lib/Object.assign');
+var invariant = require('react/lib/invariant');
+var warning = require('react/lib/warning');
+var PathUtils = require('./PathUtils');
 
 var _currentRoute;
 
@@ -16381,191 +16370,184 @@ var Route = (function () {
     this.handler = handler;
   }
 
-  _createClass(Route, {
-    appendChild: {
+  _createClass(Route, [{
+    key: 'appendChild',
 
-      /**
-       * Appends the given route to this route's child routes.
-       */
+    /**
+     * Appends the given route to this route's child routes.
+     */
+    value: function appendChild(route) {
+      invariant(route instanceof Route, 'route.appendChild must use a valid Route');
 
-      value: function appendChild(route) {
-        invariant(route instanceof Route, "route.appendChild must use a valid Route");
+      if (!this.childRoutes) this.childRoutes = [];
 
-        if (!this.childRoutes) this.childRoutes = [];
-
-        this.childRoutes.push(route);
-      }
-    },
-    toString: {
-      value: function toString() {
-        var string = "<Route";
-
-        if (this.name) string += " name=\"" + this.name + "\"";
-
-        string += " path=\"" + this.path + "\">";
-
-        return string;
-      }
+      this.childRoutes.push(route);
     }
   }, {
-    createRoute: {
+    key: 'toString',
+    value: function toString() {
+      var string = '<Route';
 
-      /**
-       * Creates and returns a new route. Options may be a URL pathname string
-       * with placeholders for named params or an object with any of the following
-       * properties:
-       *
-       * - name                     The name of the route. This is used to lookup a
-       *                            route relative to its parent route and should be
-       *                            unique among all child routes of the same parent
-       * - path                     A URL pathname string with optional placeholders
-       *                            that specify the names of params to extract from
-       *                            the URL when the path matches. Defaults to `/${name}`
-       *                            when there is a name given, or the path of the parent
-       *                            route, or /
-       * - ignoreScrollBehavior     True to make this route (and all descendants) ignore
-       *                            the scroll behavior of the router
-       * - isDefault                True to make this route the default route among all
-       *                            its siblings
-       * - isNotFound               True to make this route the "not found" route among
-       *                            all its siblings
-       * - onEnter                  A transition hook that will be called when the
-       *                            router is going to enter this route
-       * - onLeave                  A transition hook that will be called when the
-       *                            router is going to leave this route
-       * - handler                  A React component that will be rendered when
-       *                            this route is active
-       * - parentRoute              The parent route to use for this route. This option
-       *                            is automatically supplied when creating routes inside
-       *                            the callback to another invocation of createRoute. You
-       *                            only ever need to use this when declaring routes
-       *                            independently of one another to manually piece together
-       *                            the route hierarchy
-       *
-       * The callback may be used to structure your route hierarchy. Any call to
-       * createRoute, createDefaultRoute, createNotFoundRoute, or createRedirect
-       * inside the callback automatically uses this route as its parent.
-       */
+      if (this.name) string += ' name="' + this.name + '"';
 
-      value: function createRoute(options, callback) {
-        options = options || {};
+      string += ' path="' + this.path + '">';
 
-        if (typeof options === "string") options = { path: options };
-
-        var parentRoute = _currentRoute;
-
-        if (parentRoute) {
-          warning(options.parentRoute == null || options.parentRoute === parentRoute, "You should not use parentRoute with createRoute inside another route's child callback; it is ignored");
-        } else {
-          parentRoute = options.parentRoute;
-        }
-
-        var name = options.name;
-        var path = options.path || name;
-
-        if (path && !(options.isDefault || options.isNotFound)) {
-          if (PathUtils.isAbsolute(path)) {
-            if (parentRoute) {
-              invariant(path === parentRoute.path || parentRoute.paramNames.length === 0, "You cannot nest path \"%s\" inside \"%s\"; the parent requires URL parameters", path, parentRoute.path);
-            }
-          } else if (parentRoute) {
-            // Relative paths extend their parent.
-            path = PathUtils.join(parentRoute.path, path);
-          } else {
-            path = "/" + path;
-          }
-        } else {
-          path = parentRoute ? parentRoute.path : "/";
-        }
-
-        if (options.isNotFound && !/\*$/.test(path)) path += "*"; // Auto-append * to the path of not found routes.
-
-        var route = new Route(name, path, options.ignoreScrollBehavior, options.isDefault, options.isNotFound, options.onEnter, options.onLeave, options.handler);
-
-        if (parentRoute) {
-          if (route.isDefault) {
-            invariant(parentRoute.defaultRoute == null, "%s may not have more than one default route", parentRoute);
-
-            parentRoute.defaultRoute = route;
-          } else if (route.isNotFound) {
-            invariant(parentRoute.notFoundRoute == null, "%s may not have more than one not found route", parentRoute);
-
-            parentRoute.notFoundRoute = route;
-          }
-
-          parentRoute.appendChild(route);
-        }
-
-        // Any routes created in the callback
-        // use this route as their parent.
-        if (typeof callback === "function") {
-          var currentRoute = _currentRoute;
-          _currentRoute = route;
-          callback.call(route, route);
-          _currentRoute = currentRoute;
-        }
-
-        return route;
-      }
-    },
-    createDefaultRoute: {
-
-      /**
-       * Creates and returns a route that is rendered when its parent matches
-       * the current URL.
-       */
-
-      value: function createDefaultRoute(options) {
-        return Route.createRoute(assign({}, options, { isDefault: true }));
-      }
-    },
-    createNotFoundRoute: {
-
-      /**
-       * Creates and returns a route that is rendered when its parent matches
-       * the current URL but none of its siblings do.
-       */
-
-      value: function createNotFoundRoute(options) {
-        return Route.createRoute(assign({}, options, { isNotFound: true }));
-      }
-    },
-    createRedirect: {
-
-      /**
-       * Creates and returns a route that automatically redirects the transition
-       * to another route. In addition to the normal options to createRoute, this
-       * function accepts the following options:
-       *
-       * - from         An alias for the `path` option. Defaults to *
-       * - to           The path/route/route name to redirect to
-       * - params       The params to use in the redirect URL. Defaults
-       *                to using the current params
-       * - query        The query to use in the redirect URL. Defaults
-       *                to using the current query
-       */
-
-      value: function createRedirect(options) {
-        return Route.createRoute(assign({}, options, {
-          path: options.path || options.from || "*",
-          onEnter: function onEnter(transition, params, query) {
-            transition.redirect(options.to, options.params || params, options.query || query);
-          }
-        }));
-      }
+      return string;
     }
-  });
+  }], [{
+    key: 'createRoute',
+
+    /**
+     * Creates and returns a new route. Options may be a URL pathname string
+     * with placeholders for named params or an object with any of the following
+     * properties:
+     *
+     * - name                     The name of the route. This is used to lookup a
+     *                            route relative to its parent route and should be
+     *                            unique among all child routes of the same parent
+     * - path                     A URL pathname string with optional placeholders
+     *                            that specify the names of params to extract from
+     *                            the URL when the path matches. Defaults to `/${name}`
+     *                            when there is a name given, or the path of the parent
+     *                            route, or /
+     * - ignoreScrollBehavior     True to make this route (and all descendants) ignore
+     *                            the scroll behavior of the router
+     * - isDefault                True to make this route the default route among all
+     *                            its siblings
+     * - isNotFound               True to make this route the "not found" route among
+     *                            all its siblings
+     * - onEnter                  A transition hook that will be called when the
+     *                            router is going to enter this route
+     * - onLeave                  A transition hook that will be called when the
+     *                            router is going to leave this route
+     * - handler                  A React component that will be rendered when
+     *                            this route is active
+     * - parentRoute              The parent route to use for this route. This option
+     *                            is automatically supplied when creating routes inside
+     *                            the callback to another invocation of createRoute. You
+     *                            only ever need to use this when declaring routes
+     *                            independently of one another to manually piece together
+     *                            the route hierarchy
+     *
+     * The callback may be used to structure your route hierarchy. Any call to
+     * createRoute, createDefaultRoute, createNotFoundRoute, or createRedirect
+     * inside the callback automatically uses this route as its parent.
+     */
+    value: function createRoute(options, callback) {
+      options = options || {};
+
+      if (typeof options === 'string') options = { path: options };
+
+      var parentRoute = _currentRoute;
+
+      if (parentRoute) {
+        warning(options.parentRoute == null || options.parentRoute === parentRoute, 'You should not use parentRoute with createRoute inside another route\'s child callback; it is ignored');
+      } else {
+        parentRoute = options.parentRoute;
+      }
+
+      var name = options.name;
+      var path = options.path || name;
+
+      if (path && !(options.isDefault || options.isNotFound)) {
+        if (PathUtils.isAbsolute(path)) {
+          if (parentRoute) {
+            invariant(path === parentRoute.path || parentRoute.paramNames.length === 0, 'You cannot nest path "%s" inside "%s"; the parent requires URL parameters', path, parentRoute.path);
+          }
+        } else if (parentRoute) {
+          // Relative paths extend their parent.
+          path = PathUtils.join(parentRoute.path, path);
+        } else {
+          path = '/' + path;
+        }
+      } else {
+        path = parentRoute ? parentRoute.path : '/';
+      }
+
+      if (options.isNotFound && !/\*$/.test(path)) path += '*'; // Auto-append * to the path of not found routes.
+
+      var route = new Route(name, path, options.ignoreScrollBehavior, options.isDefault, options.isNotFound, options.onEnter, options.onLeave, options.handler);
+
+      if (parentRoute) {
+        if (route.isDefault) {
+          invariant(parentRoute.defaultRoute == null, '%s may not have more than one default route', parentRoute);
+
+          parentRoute.defaultRoute = route;
+        } else if (route.isNotFound) {
+          invariant(parentRoute.notFoundRoute == null, '%s may not have more than one not found route', parentRoute);
+
+          parentRoute.notFoundRoute = route;
+        }
+
+        parentRoute.appendChild(route);
+      }
+
+      // Any routes created in the callback
+      // use this route as their parent.
+      if (typeof callback === 'function') {
+        var currentRoute = _currentRoute;
+        _currentRoute = route;
+        callback.call(route, route);
+        _currentRoute = currentRoute;
+      }
+
+      return route;
+    }
+  }, {
+    key: 'createDefaultRoute',
+
+    /**
+     * Creates and returns a route that is rendered when its parent matches
+     * the current URL.
+     */
+    value: function createDefaultRoute(options) {
+      return Route.createRoute(assign({}, options, { isDefault: true }));
+    }
+  }, {
+    key: 'createNotFoundRoute',
+
+    /**
+     * Creates and returns a route that is rendered when its parent matches
+     * the current URL but none of its siblings do.
+     */
+    value: function createNotFoundRoute(options) {
+      return Route.createRoute(assign({}, options, { isNotFound: true }));
+    }
+  }, {
+    key: 'createRedirect',
+
+    /**
+     * Creates and returns a route that automatically redirects the transition
+     * to another route. In addition to the normal options to createRoute, this
+     * function accepts the following options:
+     *
+     * - from         An alias for the `path` option. Defaults to *
+     * - to           The path/route/route name to redirect to
+     * - params       The params to use in the redirect URL. Defaults
+     *                to using the current params
+     * - query        The query to use in the redirect URL. Defaults
+     *                to using the current query
+     */
+    value: function createRedirect(options) {
+      return Route.createRoute(assign({}, options, {
+        path: options.path || options.from || '*',
+        onEnter: function onEnter(transition, params, query) {
+          transition.redirect(options.to, options.params || params, options.query || query);
+        }
+      }));
+    }
+  }]);
 
   return Route;
 })();
 
 module.exports = Route;
 },{"./PathUtils":24,"react/lib/Object.assign":87,"react/lib/invariant":209,"react/lib/warning":230}],28:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var invariant = require("react/lib/invariant");
-var canUseDOM = require("react/lib/ExecutionEnvironment").canUseDOM;
-var getWindowScrollPosition = require("./getWindowScrollPosition");
+var invariant = require('react/lib/invariant');
+var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
+var getWindowScrollPosition = require('./getWindowScrollPosition');
 
 function shouldUpdateScroll(state, prevState) {
   if (!prevState) {
@@ -16614,7 +16596,7 @@ var ScrollHistory = {
   },
 
   componentWillMount: function componentWillMount() {
-    invariant(this.constructor.getScrollBehavior() == null || canUseDOM, "Cannot use scroll behavior without a DOM");
+    invariant(this.constructor.getScrollBehavior() == null || canUseDOM, 'Cannot use scroll behavior without a DOM');
   },
 
   componentDidMount: function componentDidMount() {
@@ -16637,18 +16619,9 @@ var ScrollHistory = {
 
 module.exports = ScrollHistory;
 },{"./getWindowScrollPosition":43,"react/lib/ExecutionEnvironment":80,"react/lib/invariant":209}],29:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var warning = require("react/lib/warning");
-var PropTypes = require("./PropTypes");
-
-function deprecatedMethod(routerMethodName, fn) {
-  return function () {
-    warning(false, "Router.State is deprecated. Please use this.context.router." + routerMethodName + "() instead");
-
-    return fn.apply(this, arguments);
-  };
-}
+var PropTypes = require('./PropTypes');
 
 /**
  * A mixin for components that need to know the path, routes, URL
@@ -16660,10 +16633,10 @@ function deprecatedMethod(routerMethodName, fn) {
  *     mixins: [ Router.State ],
  *     render() {
  *       var className = this.props.className;
- *   
+ *
  *       if (this.isActive('about'))
  *         className += ' is-active';
- *   
+ *
  *       return React.DOM.a({ className: className }, this.props.children);
  *     }
  *   });
@@ -16677,56 +16650,56 @@ var State = {
   /**
    * Returns the current URL path.
    */
-  getPath: deprecatedMethod("getCurrentPath", function () {
+  getPath: function getPath() {
     return this.context.router.getCurrentPath();
-  }),
+  },
 
   /**
    * Returns the current URL path without the query string.
    */
-  getPathname: deprecatedMethod("getCurrentPathname", function () {
+  getPathname: function getPathname() {
     return this.context.router.getCurrentPathname();
-  }),
+  },
 
   /**
    * Returns an object of the URL params that are currently active.
    */
-  getParams: deprecatedMethod("getCurrentParams", function () {
+  getParams: function getParams() {
     return this.context.router.getCurrentParams();
-  }),
+  },
 
   /**
    * Returns an object of the query params that are currently active.
    */
-  getQuery: deprecatedMethod("getCurrentQuery", function () {
+  getQuery: function getQuery() {
     return this.context.router.getCurrentQuery();
-  }),
+  },
 
   /**
    * Returns an array of the routes that are currently active.
    */
-  getRoutes: deprecatedMethod("getCurrentRoutes", function () {
+  getRoutes: function getRoutes() {
     return this.context.router.getCurrentRoutes();
-  }),
+  },
 
   /**
    * A helper method to determine if a given route, params, and query
    * are active.
    */
-  isActive: deprecatedMethod("isActive", function (to, params, query) {
+  isActive: function isActive(to, params, query) {
     return this.context.router.isActive(to, params, query);
-  })
+  }
 
 };
 
 module.exports = State;
-},{"./PropTypes":25,"react/lib/warning":230}],30:[function(require,module,exports){
-"use strict";
-
+},{"./PropTypes":25}],30:[function(require,module,exports){
 /* jshint -W058 */
 
-var Cancellation = require("./Cancellation");
-var Redirect = require("./Redirect");
+'use strict';
+
+var Cancellation = require('./Cancellation');
+var Redirect = require('./Redirect');
 
 /**
  * Encapsulates a transition to a given path.
@@ -16742,7 +16715,7 @@ function Transition(path, retry) {
 }
 
 Transition.prototype.abort = function (reason) {
-  if (this.abortReason == null) this.abortReason = reason || "ABORT";
+  if (this.abortReason == null) this.abortReason = reason || 'ABORT';
 };
 
 Transition.prototype.redirect = function (to, params, query) {
@@ -16797,35 +16770,35 @@ Transition.to = function (transition, routes, params, query, callback) {
 
 module.exports = Transition;
 },{"./Cancellation":20,"./Redirect":26}],31:[function(require,module,exports){
-"use strict";
-
 /**
  * Actions that modify the URL.
  */
+'use strict';
+
 var LocationActions = {
 
   /**
    * Indicates a new location is being pushed to the history stack.
    */
-  PUSH: "push",
+  PUSH: 'push',
 
   /**
    * Indicates the current location should be replaced.
    */
-  REPLACE: "replace",
+  REPLACE: 'replace',
 
   /**
    * Indicates the most recent entry should be removed from the history stack.
    */
-  POP: "pop"
+  POP: 'pop'
 
 };
 
 module.exports = LocationActions;
 },{}],32:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var LocationActions = require("../actions/LocationActions");
+var LocationActions = require('../actions/LocationActions');
 
 /**
  * A scroll behavior that attempts to imitate the default behavior
@@ -16853,12 +16826,12 @@ var ImitateBrowserBehavior = {
 
 module.exports = ImitateBrowserBehavior;
 },{"../actions/LocationActions":31}],33:[function(require,module,exports){
-"use strict";
-
 /**
  * A scroll behavior that always scrolls to the top of the page
  * after a transition.
  */
+"use strict";
+
 var ScrollToTopBehavior = {
 
   updateScrollPosition: function updateScrollPosition() {
@@ -16869,13 +16842,13 @@ var ScrollToTopBehavior = {
 
 module.exports = ScrollToTopBehavior;
 },{}],34:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
 /**
  * This component is necessary to get around a context warning
@@ -16883,7 +16856,7 @@ var _classCallCheck = function (instance, Constructor) { if (!(instance instance
  * between the "owner" and "parent" contexts.
  */
 
-var React = require("react");
+var React = require('react');
 
 var ContextWrapper = (function (_React$Component) {
   function ContextWrapper() {
@@ -16896,28 +16869,27 @@ var ContextWrapper = (function (_React$Component) {
 
   _inherits(ContextWrapper, _React$Component);
 
-  _createClass(ContextWrapper, {
-    render: {
-      value: function render() {
-        return this.props.children;
-      }
+  _createClass(ContextWrapper, [{
+    key: 'render',
+    value: function render() {
+      return this.props.children;
     }
-  });
+  }]);
 
   return ContextWrapper;
 })(React.Component);
 
 module.exports = ContextWrapper;
 },{"react":231}],35:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var PropTypes = require("../PropTypes");
-var RouteHandler = require("./RouteHandler");
-var Route = require("./Route");
+var PropTypes = require('../PropTypes');
+var RouteHandler = require('./RouteHandler');
+var Route = require('./Route');
 
 /**
  * A <DefaultRoute> component is a special kind of <Route> that
@@ -16957,17 +16929,17 @@ DefaultRoute.defaultProps = {
 
 module.exports = DefaultRoute;
 },{"../PropTypes":25,"./Route":39,"./RouteHandler":40}],36:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var React = require("react");
-var assign = require("react/lib/Object.assign");
-var PropTypes = require("../PropTypes");
+var React = require('react');
+var assign = require('react/lib/Object.assign');
+var PropTypes = require('../PropTypes');
 
 function isLeftClickEvent(event) {
   return event.button === 0;
@@ -17007,67 +16979,64 @@ var Link = (function (_React$Component) {
 
   _inherits(Link, _React$Component);
 
-  _createClass(Link, {
-    handleClick: {
-      value: function handleClick(event) {
-        var allowTransition = true;
-        var clickResult;
+  _createClass(Link, [{
+    key: 'handleClick',
+    value: function handleClick(event) {
+      var allowTransition = true;
+      var clickResult;
 
-        if (this.props.onClick) clickResult = this.props.onClick(event);
+      if (this.props.onClick) clickResult = this.props.onClick(event);
 
-        if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
-          return;
-        }if (clickResult === false || event.defaultPrevented === true) allowTransition = false;
+      if (isModifiedEvent(event) || !isLeftClickEvent(event)) {
+        return;
+      }if (clickResult === false || event.defaultPrevented === true) allowTransition = false;
 
-        event.preventDefault();
+      event.preventDefault();
 
-        if (allowTransition) this.context.router.transitionTo(this.props.to, this.props.params, this.props.query);
-      }
-    },
-    getHref: {
-
-      /**
-       * Returns the value of the "href" attribute to use on the DOM element.
-       */
-
-      value: function getHref() {
-        return this.context.router.makeHref(this.props.to, this.props.params, this.props.query);
-      }
-    },
-    getClassName: {
-
-      /**
-       * Returns the value of the "class" attribute to use on the DOM element, which contains
-       * the value of the activeClassName property when this <Link> is active.
-       */
-
-      value: function getClassName() {
-        var className = this.props.className;
-
-        if (this.getActiveState()) className += " " + this.props.activeClassName;
-
-        return className;
-      }
-    },
-    getActiveState: {
-      value: function getActiveState() {
-        return this.context.router.isActive(this.props.to, this.props.params, this.props.query);
-      }
-    },
-    render: {
-      value: function render() {
-        var props = assign({}, this.props, {
-          href: this.getHref(),
-          className: this.getClassName(),
-          onClick: this.handleClick.bind(this)
-        });
-
-        if (props.activeStyle && this.getActiveState()) props.style = props.activeStyle;
-
-        return React.DOM.a(props, this.props.children);
-      }
+      if (allowTransition) this.context.router.transitionTo(this.props.to, this.props.params, this.props.query);
     }
-  });
+  }, {
+    key: 'getHref',
+
+    /**
+     * Returns the value of the "href" attribute to use on the DOM element.
+     */
+    value: function getHref() {
+      return this.context.router.makeHref(this.props.to, this.props.params, this.props.query);
+    }
+  }, {
+    key: 'getClassName',
+
+    /**
+     * Returns the value of the "class" attribute to use on the DOM element, which contains
+     * the value of the activeClassName property when this <Link> is active.
+     */
+    value: function getClassName() {
+      var className = this.props.className;
+
+      if (this.getActiveState()) className += ' ' + this.props.activeClassName;
+
+      return className;
+    }
+  }, {
+    key: 'getActiveState',
+    value: function getActiveState() {
+      return this.context.router.isActive(this.props.to, this.props.params, this.props.query);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var props = assign({}, this.props, {
+        href: this.getHref(),
+        className: this.getClassName(),
+        onClick: this.handleClick.bind(this)
+      });
+
+      if (props.activeStyle && this.getActiveState()) props.style = props.activeStyle;
+
+      return React.DOM.a(props, this.props.children);
+    }
+  }]);
 
   return Link;
 })(React.Component);
@@ -17090,21 +17059,21 @@ Link.propTypes = {
 };
 
 Link.defaultProps = {
-  activeClassName: "active",
-  className: ""
+  activeClassName: 'active',
+  className: ''
 };
 
 module.exports = Link;
 },{"../PropTypes":25,"react":231,"react/lib/Object.assign":87}],37:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var PropTypes = require("../PropTypes");
-var RouteHandler = require("./RouteHandler");
-var Route = require("./Route");
+var PropTypes = require('../PropTypes');
+var RouteHandler = require('./RouteHandler');
+var Route = require('./Route');
 
 /**
  * A <NotFoundRoute> is a special kind of <Route> that
@@ -17145,14 +17114,14 @@ NotFoundRoute.defaultProps = {
 
 module.exports = NotFoundRoute;
 },{"../PropTypes":25,"./Route":39,"./RouteHandler":40}],38:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var PropTypes = require("../PropTypes");
-var Route = require("./Route");
+var PropTypes = require('../PropTypes');
+var Route = require('./Route');
 
 /**
  * A <Redirect> component is a special kind of <Route> that always
@@ -17189,18 +17158,18 @@ Redirect.defaultProps = {};
 
 module.exports = Redirect;
 },{"../PropTypes":25,"./Route":39}],39:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var React = require("react");
-var invariant = require("react/lib/invariant");
-var PropTypes = require("../PropTypes");
-var RouteHandler = require("./RouteHandler");
+var React = require('react');
+var invariant = require('react/lib/invariant');
+var PropTypes = require('../PropTypes');
+var RouteHandler = require('./RouteHandler');
 
 /**
  * <Route> components specify components that are rendered to the page when the
@@ -17254,13 +17223,12 @@ var Route = (function (_React$Component) {
 
   _inherits(Route, _React$Component);
 
-  _createClass(Route, {
-    render: {
-      value: function render() {
-        invariant(false, "%s elements are for router configuration only and should not be rendered", this.constructor.name);
-      }
+  _createClass(Route, [{
+    key: 'render',
+    value: function render() {
+      invariant(false, '%s elements are for router configuration only and should not be rendered', this.constructor.name);
     }
-  });
+  }]);
 
   return Route;
 })(React.Component);
@@ -17282,20 +17250,20 @@ Route.defaultProps = {
 
 module.exports = Route;
 },{"../PropTypes":25,"./RouteHandler":40,"react":231,"react/lib/invariant":209}],40:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var React = require("react");
-var ContextWrapper = require("./ContextWrapper");
-var assign = require("react/lib/Object.assign");
-var PropTypes = require("../PropTypes");
+var React = require('react');
+var ContextWrapper = require('./ContextWrapper');
+var assign = require('react/lib/Object.assign');
+var PropTypes = require('../PropTypes');
 
-var REF_NAME = "__routeHandler__";
+var REF_NAME = '__routeHandler__';
 
 /**
  * A <RouteHandler> component renders the active child route handler
@@ -17313,57 +17281,65 @@ var RouteHandler = (function (_React$Component) {
 
   _inherits(RouteHandler, _React$Component);
 
-  _createClass(RouteHandler, {
-    getChildContext: {
-      value: function getChildContext() {
-        return {
-          routeDepth: this.context.routeDepth + 1
-        };
-      }
-    },
-    componentDidMount: {
-      value: function componentDidMount() {
-        this._updateRouteComponent(this.refs[REF_NAME]);
-      }
-    },
-    componentDidUpdate: {
-      value: function componentDidUpdate() {
-        this._updateRouteComponent(this.refs[REF_NAME]);
-      }
-    },
-    componentWillUnmount: {
-      value: function componentWillUnmount() {
-        this._updateRouteComponent(null);
-      }
-    },
-    _updateRouteComponent: {
-      value: function _updateRouteComponent(component) {
-        this.context.router.setRouteComponentAtDepth(this.getRouteDepth(), component);
-      }
-    },
-    getRouteDepth: {
-      value: function getRouteDepth() {
-        return this.context.routeDepth;
-      }
-    },
-    createChildRouteHandler: {
-      value: function createChildRouteHandler(props) {
-        var route = this.context.router.getRouteAtDepth(this.getRouteDepth());
-        return route ? React.createElement(route.handler, assign({}, props || this.props, { ref: REF_NAME })) : null;
-      }
-    },
-    render: {
-      value: function render() {
-        var handler = this.createChildRouteHandler();
-        // <script/> for things like <CSSTransitionGroup/> that don't like null
-        return handler ? React.createElement(
-          ContextWrapper,
-          null,
-          handler
-        ) : React.createElement("script", null);
-      }
+  _createClass(RouteHandler, [{
+    key: 'getChildContext',
+    value: function getChildContext() {
+      return {
+        routeDepth: this.context.routeDepth + 1
+      };
     }
-  });
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this._updateRouteComponent(this.refs[REF_NAME]);
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      this._updateRouteComponent(this.refs[REF_NAME]);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this._updateRouteComponent(null);
+    }
+  }, {
+    key: '_updateRouteComponent',
+    value: function _updateRouteComponent(component) {
+      this.context.router.setRouteComponentAtDepth(this.getRouteDepth(), component);
+    }
+  }, {
+    key: 'getRouteDepth',
+    value: function getRouteDepth() {
+      return this.context.routeDepth;
+    }
+  }, {
+    key: 'createChildRouteHandler',
+    value: function createChildRouteHandler(props) {
+      var route = this.context.router.getRouteAtDepth(this.getRouteDepth());
+
+      if (route == null) {
+        return null;
+      }var childProps = assign({}, props || this.props, {
+        ref: REF_NAME,
+        params: this.context.router.getCurrentParams(),
+        query: this.context.router.getCurrentQuery()
+      });
+
+      return React.createElement(route.handler, childProps);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var handler = this.createChildRouteHandler();
+      // <script/> for things like <CSSTransitionGroup/> that don't like null
+      return handler ? React.createElement(
+        ContextWrapper,
+        null,
+        handler
+      ) : React.createElement('script', null);
+    }
+  }]);
 
   return RouteHandler;
 })(React.Component);
@@ -17384,36 +17360,36 @@ RouteHandler.childContextTypes = {
 module.exports = RouteHandler;
 },{"../PropTypes":25,"./ContextWrapper":34,"react":231,"react/lib/Object.assign":87}],41:[function(require,module,exports){
 (function (process){
-"use strict";
-
 /* jshint -W058 */
-var React = require("react");
-var warning = require("react/lib/warning");
-var invariant = require("react/lib/invariant");
-var canUseDOM = require("react/lib/ExecutionEnvironment").canUseDOM;
-var LocationActions = require("./actions/LocationActions");
-var ImitateBrowserBehavior = require("./behaviors/ImitateBrowserBehavior");
-var HashLocation = require("./locations/HashLocation");
-var HistoryLocation = require("./locations/HistoryLocation");
-var RefreshLocation = require("./locations/RefreshLocation");
-var StaticLocation = require("./locations/StaticLocation");
-var ScrollHistory = require("./ScrollHistory");
-var createRoutesFromReactChildren = require("./createRoutesFromReactChildren");
-var isReactChildren = require("./isReactChildren");
-var Transition = require("./Transition");
-var PropTypes = require("./PropTypes");
-var Redirect = require("./Redirect");
-var History = require("./History");
-var Cancellation = require("./Cancellation");
-var Match = require("./Match");
-var Route = require("./Route");
-var supportsHistory = require("./supportsHistory");
-var PathUtils = require("./PathUtils");
+'use strict';
+
+var React = require('react');
+var warning = require('react/lib/warning');
+var invariant = require('react/lib/invariant');
+var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
+var LocationActions = require('./actions/LocationActions');
+var ImitateBrowserBehavior = require('./behaviors/ImitateBrowserBehavior');
+var HashLocation = require('./locations/HashLocation');
+var HistoryLocation = require('./locations/HistoryLocation');
+var RefreshLocation = require('./locations/RefreshLocation');
+var StaticLocation = require('./locations/StaticLocation');
+var ScrollHistory = require('./ScrollHistory');
+var createRoutesFromReactChildren = require('./createRoutesFromReactChildren');
+var isReactChildren = require('./isReactChildren');
+var Transition = require('./Transition');
+var PropTypes = require('./PropTypes');
+var Redirect = require('./Redirect');
+var History = require('./History');
+var Cancellation = require('./Cancellation');
+var Match = require('./Match');
+var Route = require('./Route');
+var supportsHistory = require('./supportsHistory');
+var PathUtils = require('./PathUtils');
 
 /**
  * The default location for new routers.
  */
-var DEFAULT_LOCATION = canUseDOM ? HashLocation : "/";
+var DEFAULT_LOCATION = canUseDOM ? HashLocation : '/';
 
 /**
  * The default scroll behavior for new routers.
@@ -17451,7 +17427,7 @@ function addRoutesToNamedRoutes(routes, namedRoutes) {
     route = routes[i];
 
     if (route.name) {
-      invariant(namedRoutes[route.name] == null, "You may not have more than one route named \"%s\"", route.name);
+      invariant(namedRoutes[route.name] == null, 'You may not have more than one route named "%s"', route.name);
 
       namedRoutes[route.name] = route;
     }
@@ -17509,12 +17485,12 @@ function createRouter(options) {
   var pendingTransition = null;
   var dispatchHandler = null;
 
-  if (typeof location === "string") location = new StaticLocation(location);
+  if (typeof location === 'string') location = new StaticLocation(location);
 
   if (location instanceof StaticLocation) {
-    warning(!canUseDOM || process.env.NODE_ENV === "test", "You should not use a static location in a DOM environment because " + "the router will not be kept in sync with the current URL");
+    warning(!canUseDOM || process.env.NODE_ENV === 'test', 'You should not use a static location in a DOM environment because ' + 'the router will not be kept in sync with the current URL');
   } else {
-    invariant(canUseDOM || location.needsDOM === false, "You cannot use %s without a DOM", location);
+    invariant(canUseDOM || location.needsDOM === false, 'You cannot use %s without a DOM', location);
   }
 
   // Automatically fall back to full page refreshes in
@@ -17523,7 +17499,7 @@ function createRouter(options) {
 
   var Router = React.createClass({
 
-    displayName: "Router",
+    displayName: 'Router',
 
     statics: {
 
@@ -17582,7 +17558,7 @@ function createRouter(options) {
         } else {
           var route = to instanceof Route ? to : Router.namedRoutes[to];
 
-          invariant(route instanceof Route, "Cannot find a route named \"%s\"", to);
+          invariant(route instanceof Route, 'Cannot find a route named "%s"', to);
 
           path = route.path;
         }
@@ -17596,7 +17572,7 @@ function createRouter(options) {
        */
       makeHref: function makeHref(to, params, query) {
         var path = Router.makePath(to, params, query);
-        return location === HashLocation ? "#" + path : path;
+        return location === HashLocation ? '#' + path : path;
       },
 
       /**
@@ -17639,13 +17615,13 @@ function createRouter(options) {
           return true;
         }
 
-        warning(false, "goBack() was ignored because there is no router history");
+        warning(false, 'goBack() was ignored because there is no router history');
 
         return false;
       },
 
       handleAbort: options.onAbort || function (abortReason) {
-        if (location instanceof StaticLocation) throw new Error("Unhandled aborted transition! Reason: " + abortReason);
+        if (location instanceof StaticLocation) throw new Error('Unhandled aborted transition! Reason: ' + abortReason);
 
         if (abortReason instanceof Cancellation) {
           return;
@@ -17697,7 +17673,7 @@ function createRouter(options) {
 
         var match = Router.match(path);
 
-        warning(match != null, "No route matches path \"%s\". Make sure you have <Route path=\"%s\"> somewhere in your routes", path, path);
+        warning(match != null, 'No route matches path "%s". Make sure you have <Route path="%s"> somewhere in your routes', path, path);
 
         if (match == null) match = {};
 
@@ -17752,7 +17728,7 @@ function createRouter(options) {
        * Router.*Location objects (e.g. Router.HashLocation or Router.HistoryLocation).
        */
       run: function run(callback) {
-        invariant(!Router.isRunning, "Router is already running");
+        invariant(!Router.isRunning, 'Router is already running');
 
         dispatchHandler = function (error, transition, newState) {
           if (error) Router.handleError(error);
@@ -17900,19 +17876,19 @@ function createRouter(options) {
 module.exports = createRouter;
 }).call(this,require('_process'))
 },{"./Cancellation":20,"./History":21,"./Match":22,"./PathUtils":24,"./PropTypes":25,"./Redirect":26,"./Route":27,"./ScrollHistory":28,"./Transition":30,"./actions/LocationActions":31,"./behaviors/ImitateBrowserBehavior":32,"./createRoutesFromReactChildren":42,"./isReactChildren":45,"./locations/HashLocation":46,"./locations/HistoryLocation":47,"./locations/RefreshLocation":48,"./locations/StaticLocation":49,"./supportsHistory":52,"_process":2,"react":231,"react/lib/ExecutionEnvironment":80,"react/lib/invariant":209,"react/lib/warning":230}],42:[function(require,module,exports){
-"use strict";
-
 /* jshint -W084 */
-var React = require("react");
-var assign = require("react/lib/Object.assign");
-var warning = require("react/lib/warning");
-var DefaultRoute = require("./components/DefaultRoute");
-var NotFoundRoute = require("./components/NotFoundRoute");
-var Redirect = require("./components/Redirect");
-var Route = require("./Route");
+'use strict';
+
+var React = require('react');
+var assign = require('react/lib/Object.assign');
+var warning = require('react/lib/warning');
+var DefaultRoute = require('./components/DefaultRoute');
+var NotFoundRoute = require('./components/NotFoundRoute');
+var Redirect = require('./components/Redirect');
+var Route = require('./Route');
 
 function checkPropTypes(componentName, propTypes, props) {
-  componentName = componentName || "UnknownComponent";
+  componentName = componentName || 'UnknownComponent';
 
   for (var propName in propTypes) {
     if (propTypes.hasOwnProperty(propName)) {
@@ -17982,16 +17958,16 @@ function createRoutesFromReactChildren(children) {
 
 module.exports = createRoutesFromReactChildren;
 },{"./Route":27,"./components/DefaultRoute":35,"./components/NotFoundRoute":37,"./components/Redirect":38,"react":231,"react/lib/Object.assign":87,"react/lib/warning":230}],43:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var invariant = require("react/lib/invariant");
-var canUseDOM = require("react/lib/ExecutionEnvironment").canUseDOM;
+var invariant = require('react/lib/invariant');
+var canUseDOM = require('react/lib/ExecutionEnvironment').canUseDOM;
 
 /**
  * Returns the current scroll position of the window as { x, y }.
  */
 function getWindowScrollPosition() {
-  invariant(canUseDOM, "Cannot get current scroll position without a DOM");
+  invariant(canUseDOM, 'Cannot get current scroll position without a DOM');
 
   return {
     x: window.pageXOffset || document.documentElement.scrollLeft,
@@ -18001,39 +17977,41 @@ function getWindowScrollPosition() {
 
 module.exports = getWindowScrollPosition;
 },{"react/lib/ExecutionEnvironment":80,"react/lib/invariant":209}],44:[function(require,module,exports){
-"use strict";
+'use strict';
 
-exports.DefaultRoute = require("./components/DefaultRoute");
-exports.Link = require("./components/Link");
-exports.NotFoundRoute = require("./components/NotFoundRoute");
-exports.Redirect = require("./components/Redirect");
-exports.Route = require("./components/Route");
-exports.RouteHandler = require("./components/RouteHandler");
+exports.DefaultRoute = require('./components/DefaultRoute');
+exports.Link = require('./components/Link');
+exports.NotFoundRoute = require('./components/NotFoundRoute');
+exports.Redirect = require('./components/Redirect');
+exports.Route = require('./components/Route');
+exports.ActiveHandler = require('./components/RouteHandler');
+exports.RouteHandler = exports.ActiveHandler;
 
-exports.HashLocation = require("./locations/HashLocation");
-exports.HistoryLocation = require("./locations/HistoryLocation");
-exports.RefreshLocation = require("./locations/RefreshLocation");
-exports.StaticLocation = require("./locations/StaticLocation");
-exports.TestLocation = require("./locations/TestLocation");
+exports.HashLocation = require('./locations/HashLocation');
+exports.HistoryLocation = require('./locations/HistoryLocation');
+exports.RefreshLocation = require('./locations/RefreshLocation');
+exports.StaticLocation = require('./locations/StaticLocation');
+exports.TestLocation = require('./locations/TestLocation');
 
-exports.ImitateBrowserBehavior = require("./behaviors/ImitateBrowserBehavior");
-exports.ScrollToTopBehavior = require("./behaviors/ScrollToTopBehavior");
+exports.ImitateBrowserBehavior = require('./behaviors/ImitateBrowserBehavior');
+exports.ScrollToTopBehavior = require('./behaviors/ScrollToTopBehavior');
 
-exports.History = require("./History");
-exports.Navigation = require("./Navigation");
-exports.State = require("./State");
+exports.History = require('./History');
+exports.Navigation = require('./Navigation');
+exports.State = require('./State');
 
-exports.createRoute = require("./Route").createRoute;
-exports.createDefaultRoute = require("./Route").createDefaultRoute;
-exports.createNotFoundRoute = require("./Route").createNotFoundRoute;
-exports.createRedirect = require("./Route").createRedirect;
-exports.createRoutesFromReactChildren = require("./createRoutesFromReactChildren");
-exports.create = require("./createRouter");
-exports.run = require("./runRouter");
+exports.createRoute = require('./Route').createRoute;
+exports.createDefaultRoute = require('./Route').createDefaultRoute;
+exports.createNotFoundRoute = require('./Route').createNotFoundRoute;
+exports.createRedirect = require('./Route').createRedirect;
+exports.createRoutesFromReactChildren = require('./createRoutesFromReactChildren');
+
+exports.create = require('./createRouter');
+exports.run = require('./runRouter');
 },{"./History":21,"./Navigation":23,"./Route":27,"./State":29,"./behaviors/ImitateBrowserBehavior":32,"./behaviors/ScrollToTopBehavior":33,"./components/DefaultRoute":35,"./components/Link":36,"./components/NotFoundRoute":37,"./components/Redirect":38,"./components/Route":39,"./components/RouteHandler":40,"./createRouter":41,"./createRoutesFromReactChildren":42,"./locations/HashLocation":46,"./locations/HistoryLocation":47,"./locations/RefreshLocation":48,"./locations/StaticLocation":49,"./locations/TestLocation":50,"./runRouter":51}],45:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var React = require("react");
+var React = require('react');
 
 function isValidChild(object) {
   return object == null || React.isValidElement(object);
@@ -18045,10 +18023,10 @@ function isReactChildren(object) {
 
 module.exports = isReactChildren;
 },{"react":231}],46:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var LocationActions = require("../actions/LocationActions");
-var History = require("../History");
+var LocationActions = require('../actions/LocationActions');
+var History = require('../History');
 
 var _listeners = [];
 var _isListening = false;
@@ -18070,9 +18048,9 @@ function notifyChange(type) {
 function ensureSlash() {
   var path = HashLocation.getCurrentPath();
 
-  if (path.charAt(0) === "/") {
+  if (path.charAt(0) === '/') {
     return true;
-  }HashLocation.replace("/" + path);
+  }HashLocation.replace('/' + path);
 
   return false;
 }
@@ -18102,9 +18080,9 @@ var HashLocation = {
 
     if (!_isListening) {
       if (window.addEventListener) {
-        window.addEventListener("hashchange", onHashChange, false);
+        window.addEventListener('hashchange', onHashChange, false);
       } else {
-        window.attachEvent("onhashchange", onHashChange);
+        window.attachEvent('onhashchange', onHashChange);
       }
 
       _isListening = true;
@@ -18118,9 +18096,9 @@ var HashLocation = {
 
     if (_listeners.length === 0) {
       if (window.removeEventListener) {
-        window.removeEventListener("hashchange", onHashChange, false);
+        window.removeEventListener('hashchange', onHashChange, false);
       } else {
-        window.removeEvent("onhashchange", onHashChange);
+        window.removeEvent('onhashchange', onHashChange);
       }
 
       _isListening = false;
@@ -18134,7 +18112,7 @@ var HashLocation = {
 
   replace: function replace(path) {
     _actionType = LocationActions.REPLACE;
-    window.location.replace(window.location.pathname + window.location.search + "#" + path);
+    window.location.replace(window.location.pathname + window.location.search + '#' + path);
   },
 
   pop: function pop() {
@@ -18146,21 +18124,21 @@ var HashLocation = {
     return decodeURI(
     // We can't use window.location.hash here because it's not
     // consistent across browsers - Firefox will pre-decode it!
-    window.location.href.split("#")[1] || "");
+    window.location.href.split('#')[1] || '');
   },
 
   toString: function toString() {
-    return "<HashLocation>";
+    return '<HashLocation>';
   }
 
 };
 
 module.exports = HashLocation;
 },{"../History":21,"../actions/LocationActions":31}],47:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var LocationActions = require("../actions/LocationActions");
-var History = require("../History");
+var LocationActions = require('../actions/LocationActions');
+var History = require('../History');
 
 var _listeners = [];
 var _isListening = false;
@@ -18194,9 +18172,9 @@ var HistoryLocation = {
 
     if (!_isListening) {
       if (window.addEventListener) {
-        window.addEventListener("popstate", onPopState, false);
+        window.addEventListener('popstate', onPopState, false);
       } else {
-        window.attachEvent("onpopstate", onPopState);
+        window.attachEvent('onpopstate', onPopState);
       }
 
       _isListening = true;
@@ -18210,9 +18188,9 @@ var HistoryLocation = {
 
     if (_listeners.length === 0) {
       if (window.addEventListener) {
-        window.removeEventListener("popstate", onPopState, false);
+        window.removeEventListener('popstate', onPopState, false);
       } else {
-        window.removeEvent("onpopstate", onPopState);
+        window.removeEvent('onpopstate', onPopState);
       }
 
       _isListening = false;
@@ -18220,13 +18198,13 @@ var HistoryLocation = {
   },
 
   push: function push(path) {
-    window.history.pushState({ path: path }, "", path);
+    window.history.pushState({ path: path }, '', path);
     History.length += 1;
     notifyChange(LocationActions.PUSH);
   },
 
   replace: function replace(path) {
-    window.history.replaceState({ path: path }, "", path);
+    window.history.replaceState({ path: path }, '', path);
     notifyChange(LocationActions.REPLACE);
   },
 
@@ -18237,17 +18215,17 @@ var HistoryLocation = {
   },
 
   toString: function toString() {
-    return "<HistoryLocation>";
+    return '<HistoryLocation>';
   }
 
 };
 
 module.exports = HistoryLocation;
 },{"../History":21,"../actions/LocationActions":31}],48:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var HistoryLocation = require("./HistoryLocation");
-var History = require("../History");
+var HistoryLocation = require('./HistoryLocation');
+var History = require('../History');
 
 /**
  * A Location that uses full page refreshes. This is used as
@@ -18269,23 +18247,23 @@ var RefreshLocation = {
   getCurrentPath: HistoryLocation.getCurrentPath,
 
   toString: function toString() {
-    return "<RefreshLocation>";
+    return '<RefreshLocation>';
   }
 
 };
 
 module.exports = RefreshLocation;
 },{"../History":21,"./HistoryLocation":47}],49:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var invariant = require("react/lib/invariant");
+var invariant = require('react/lib/invariant');
 
 function throwCannotModify() {
-  invariant(false, "You cannot modify a static location");
+  invariant(false, 'You cannot modify a static location');
 }
 
 /**
@@ -18301,18 +18279,17 @@ var StaticLocation = (function () {
     this.path = path;
   }
 
-  _createClass(StaticLocation, {
-    getCurrentPath: {
-      value: function getCurrentPath() {
-        return this.path;
-      }
-    },
-    toString: {
-      value: function toString() {
-        return "<StaticLocation path=\"" + this.path + "\">";
-      }
+  _createClass(StaticLocation, [{
+    key: 'getCurrentPath',
+    value: function getCurrentPath() {
+      return this.path;
     }
-  });
+  }, {
+    key: 'toString',
+    value: function toString() {
+      return '<StaticLocation path="' + this.path + '">';
+    }
+  }]);
 
   return StaticLocation;
 })();
@@ -18327,15 +18304,15 @@ StaticLocation.prototype.pop = throwCannotModify;
 
 module.exports = StaticLocation;
 },{"react/lib/invariant":209}],50:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var invariant = require("react/lib/invariant");
-var LocationActions = require("../actions/LocationActions");
-var History = require("../History");
+var invariant = require('react/lib/invariant');
+var LocationActions = require('../actions/LocationActions');
+var History = require('../History');
 
 /**
  * A location that is convenient for testing and does not require a DOM.
@@ -18350,82 +18327,81 @@ var TestLocation = (function () {
     this._updateHistoryLength();
   }
 
-  _createClass(TestLocation, {
-    needsDOM: {
-      get: function () {
-        return false;
-      }
-    },
-    _updateHistoryLength: {
-      value: function _updateHistoryLength() {
-        History.length = this.history.length;
-      }
-    },
-    _notifyChange: {
-      value: function _notifyChange(type) {
-        var change = {
-          path: this.getCurrentPath(),
-          type: type
-        };
-
-        for (var i = 0, len = this.listeners.length; i < len; ++i) this.listeners[i].call(this, change);
-      }
-    },
-    addChangeListener: {
-      value: function addChangeListener(listener) {
-        this.listeners.push(listener);
-      }
-    },
-    removeChangeListener: {
-      value: function removeChangeListener(listener) {
-        this.listeners = this.listeners.filter(function (l) {
-          return l !== listener;
-        });
-      }
-    },
-    push: {
-      value: function push(path) {
-        this.history.push(path);
-        this._updateHistoryLength();
-        this._notifyChange(LocationActions.PUSH);
-      }
-    },
-    replace: {
-      value: function replace(path) {
-        invariant(this.history.length, "You cannot replace the current path with no history");
-
-        this.history[this.history.length - 1] = path;
-
-        this._notifyChange(LocationActions.REPLACE);
-      }
-    },
-    pop: {
-      value: function pop() {
-        this.history.pop();
-        this._updateHistoryLength();
-        this._notifyChange(LocationActions.POP);
-      }
-    },
-    getCurrentPath: {
-      value: function getCurrentPath() {
-        return this.history[this.history.length - 1];
-      }
-    },
-    toString: {
-      value: function toString() {
-        return "<TestLocation>";
-      }
+  _createClass(TestLocation, [{
+    key: 'needsDOM',
+    get: function () {
+      return false;
     }
-  });
+  }, {
+    key: '_updateHistoryLength',
+    value: function _updateHistoryLength() {
+      History.length = this.history.length;
+    }
+  }, {
+    key: '_notifyChange',
+    value: function _notifyChange(type) {
+      var change = {
+        path: this.getCurrentPath(),
+        type: type
+      };
+
+      for (var i = 0, len = this.listeners.length; i < len; ++i) this.listeners[i].call(this, change);
+    }
+  }, {
+    key: 'addChangeListener',
+    value: function addChangeListener(listener) {
+      this.listeners.push(listener);
+    }
+  }, {
+    key: 'removeChangeListener',
+    value: function removeChangeListener(listener) {
+      this.listeners = this.listeners.filter(function (l) {
+        return l !== listener;
+      });
+    }
+  }, {
+    key: 'push',
+    value: function push(path) {
+      this.history.push(path);
+      this._updateHistoryLength();
+      this._notifyChange(LocationActions.PUSH);
+    }
+  }, {
+    key: 'replace',
+    value: function replace(path) {
+      invariant(this.history.length, 'You cannot replace the current path with no history');
+
+      this.history[this.history.length - 1] = path;
+
+      this._notifyChange(LocationActions.REPLACE);
+    }
+  }, {
+    key: 'pop',
+    value: function pop() {
+      this.history.pop();
+      this._updateHistoryLength();
+      this._notifyChange(LocationActions.POP);
+    }
+  }, {
+    key: 'getCurrentPath',
+    value: function getCurrentPath() {
+      return this.history[this.history.length - 1];
+    }
+  }, {
+    key: 'toString',
+    value: function toString() {
+      return '<TestLocation>';
+    }
+  }]);
 
   return TestLocation;
 })();
 
 module.exports = TestLocation;
 },{"../History":21,"../actions/LocationActions":31,"react/lib/invariant":209}],51:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var createRouter = require("./createRouter");
+var createRouter = require('./createRouter');
 
 /**
  * A high-level convenience method that creates, configures, and
@@ -18457,7 +18433,7 @@ var createRouter = require("./createRouter");
  *   });
  */
 function runRouter(routes, location, callback) {
-  if (typeof location === "function") {
+  if (typeof location === 'function') {
     callback = location;
     location = null;
   }
@@ -18474,7 +18450,7 @@ function runRouter(routes, location, callback) {
 
 module.exports = runRouter;
 },{"./createRouter":41}],52:[function(require,module,exports){
-"use strict";
+'use strict';
 
 function supportsHistory() {
   /*! taken from modernizr
@@ -18483,10 +18459,10 @@ function supportsHistory() {
    * changed to avoid false negatives for Windows Phones: https://github.com/rackt/react-router/issues/586
    */
   var ua = navigator.userAgent;
-  if ((ua.indexOf("Android 2.") !== -1 || ua.indexOf("Android 4.0") !== -1) && ua.indexOf("Mobile Safari") !== -1 && ua.indexOf("Chrome") === -1 && ua.indexOf("Windows Phone") === -1) {
+  if ((ua.indexOf('Android 2.') !== -1 || ua.indexOf('Android 4.0') !== -1) && ua.indexOf('Mobile Safari') !== -1 && ua.indexOf('Chrome') === -1 && ua.indexOf('Windows Phone') === -1) {
     return false;
   }
-  return window.history && "pushState" in window.history;
+  return window.history && 'pushState' in window.history;
 }
 
 module.exports = supportsHistory;
@@ -41876,7 +41852,7 @@ exports['default'] = _React2['default'].createClass({
         this._getStarred();
         if (this.isMounted()) {
             setTimeout(function () {
-                $(_this2.refs.bannerContainer.getDOMNode()).scrollbar({
+                $(_React2['default'].findDOMNode(_this2.refs.bannerContainer)).scrollbar({
                     horizontal: true
                 });
             }, 50);
@@ -41886,10 +41862,19 @@ exports['default'] = _React2['default'].createClass({
         var _this3 = this;
 
         setTimeout(function () {
-            $(_this3.refs.bannerContainer.getDOMNode()).scrollbar('resize');
+            $(_React2['default'].findDOMNode(_this3.refs.bannerContainer)).scrollbar('resize');
         }, 100);
     },
-    componentWillUnmount: function componentWillUnmount() {},
+    handleLeftArrow: function handleLeftArrow() {
+        $('.fs-scrollbar-content').animate({
+            scrollLeft: '-=1280'
+        }, 200);
+    },
+    handlerRightArrow: function handlerRightArrow() {
+        $('.fs-scrollbar-content').animate({
+            scrollLeft: '+=1280'
+        }, 200);
+    },
     render: function render() {
         var tileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_BannerTile2['default'], {
@@ -41901,11 +41886,17 @@ exports['default'] = _React2['default'].createClass({
         });
         return _React2['default'].createElement(
             'div',
-            { className: 'row banner-outer-container', ref: 'bannerContainer' },
+            { className: 'row banner-outer-container' },
+            _React2['default'].createElement('img', { className: 'arrow left', onClick: this.handleLeftArrow, src: STATIC_URL + 'img/banner-left.png' }),
+            _React2['default'].createElement('img', { className: 'arrow right', src: STATIC_URL + 'img/banner-right.png', onClick: this.handlerRightArrow }),
             _React2['default'].createElement(
                 'div',
-                { className: 'banner-inner-container' },
-                tileNodes
+                { ref: 'bannerContainer' },
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'banner-inner-container', ref: 'InnerContainer' },
+                    tileNodes
+                )
             )
         );
     }
@@ -42332,9 +42323,7 @@ exports['default'] = _React2['default'].createClass({
         created_at: _React2['default'].PropTypes.string,
         last_modified: _React2['default'].PropTypes.string },
 
-    componentDidMount: function componentDidMount() {},
-
-    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+    componentDidMount: function componentDidMount() {
         var _this = this;
 
         if (this.isMounted()) {
@@ -42343,6 +42332,7 @@ exports['default'] = _React2['default'].createClass({
             }, 50);
         }
     },
+    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {},
 
     handeClickOnCross: function handeClickOnCross() {
         if (!this.goBack()) {
@@ -42356,7 +42346,7 @@ exports['default'] = _React2['default'].createClass({
             if (this.props.imgs[i].is_cover == true) cover = this.props.imgs[i];
         };
         var creditNodes = _import2['default'].map(this.props.credits, function (value, key) {
-            return _React2['default'].createElement(_PostCredit2['default'], { role: key, names: value });
+            return _React2['default'].createElement(_PostCredit2['default'], { key: key, role: key, names: value });
         });
 
         return _React2['default'].createElement(
@@ -42467,7 +42457,7 @@ exports['default'] = _React2['default'].createClass({
             _import2['default'].forEach(this.props.names, function (name, key) {
                 names.push(_React2['default'].createElement(
                     Link,
-                    { to: 'search', query: { q: name } },
+                    { key: key, to: 'search', query: { q: name } },
                     name
                 ));
                 if (key < _this.props.names.length - 1) names.push(', ');
@@ -42475,7 +42465,7 @@ exports['default'] = _React2['default'].createClass({
         } else {
             names.push(_React2['default'].createElement(
                 Link,
-                { to: 'search', query: { q: this.props.names } },
+                { key: 'single-credit-link', to: 'search', query: { q: this.props.names } },
                 this.props.names
             ));
         }
@@ -42522,11 +42512,11 @@ var SelectedImg = _React2['default'].createClass({
     displayName: 'SelectedImg',
 
     render: function render() {
+        var onDeckNode = this.props.on_deck.video ? _React2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: this.props.on_deck.video } }) : [_React2['default'].createElement('span', { className: 'align-helper' }), _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' })];
         return _React2['default'].createElement(
             'div',
             { className: 'on_deck' },
-            _React2['default'].createElement('span', { className: 'align-helper' }),
-            _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' }),
+            onDeckNode,
             _React2['default'].createElement(
                 'div',
                 { className: 'caption' },
@@ -42554,12 +42544,12 @@ exports['default'] = _React2['default'].createClass({
         this.setState({ on_deck: image_url });
     },
     handleLeftArrow: function handleLeftArrow() {
-        $(this.refs.imgRow.getDOMNode()).animate({
+        $(_React2['default'].findDOMNode(this.refs.imgRow)).animate({
             scrollLeft: '-=250'
         }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        $(this.refs.imgRow.getDOMNode()).animate({
+        $(_React2['default'].findDOMNode(this.refs.imgRow)).animate({
             scrollLeft: '+=250'
         }, 200);
     },
@@ -42588,12 +42578,21 @@ exports['default'] = _React2['default'].createClass({
                 'ul',
                 { className: 'images', ref: 'imgRow' },
                 this.state.imgs.map(function (image) {
-                    return _React2['default'].createElement(
-                        'li',
-                        null,
-                        _React2['default'].createElement('img', { key: image.id, src: image.img.small,
-                            onClick: this.handleClick.bind(this, image) })
-                    );
+                    if (image.video) {
+                        return _React2['default'].createElement(
+                            'li',
+                            { key: image.id },
+                            _React2['default'].createElement('img', { src: 'https://i.ytimg.com/vi/' + image.video_id + '/hqdefault.jpg',
+                                onClick: this.handleClick.bind(this, image) })
+                        );
+                    } else {
+                        return _React2['default'].createElement(
+                            'li',
+                            { key: image.id },
+                            _React2['default'].createElement('img', { src: image.img.small,
+                                onClick: this.handleClick.bind(this, image) })
+                        );
+                    }
                 }, this)
             ),
             _React2['default'].createElement(
@@ -42608,6 +42607,98 @@ exports['default'] = _React2['default'].createClass({
 module.exports = exports['default'];
 
 },{"lodash":5,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],244:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = require('react/addons');
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
+var _truncate = require('html-truncate');
+
+var _truncate2 = _interopRequireWildcard(_truncate);
+
+var _Router = require('react-router');
+
+var _Router2 = _interopRequireWildcard(_Router);
+
+var _WebAPIMixin = require('../../mixins/WebAPIMixin');
+
+var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+
+'use strict';
+
+var Link = _Router2['default'].Link;
+
+exports['default'] = _React2['default'].createClass({
+    displayName: 'PostTile',
+
+    propTypes: {
+        id: _React2['default'].PropTypes.number.isRequired,
+        heading: _React2['default'].PropTypes.string.isRequired,
+        subheading: _React2['default'].PropTypes.string.isRequired,
+        articletext: _React2['default'].PropTypes.string.isRequired,
+        cover: _React2['default'].PropTypes.object.isRequired,
+        created_at: _React2['default'].PropTypes.string.isRequired,
+        last_modified: _React2['default'].PropTypes.string.isRequired,
+        uri: _React2['default'].PropTypes.string },
+    contextTypes: {
+        router: _React2['default'].PropTypes.func
+    },
+    handleClick: function handleClick() {
+        this.context.router.transitionTo('post', { postId: this.props.id });
+    },
+    render: function render() {
+
+        return _React2['default'].createElement(
+            'div',
+            { className: 'tile', onClick: this.handleClick },
+            _React2['default'].createElement('img', { src: this.props.cover.img.medium }),
+            _React2['default'].createElement(
+                'div',
+                { className: 'intro' },
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'info' },
+                    this.props.category,
+                    ' | ',
+                    new Date(this.props.created_at).toDateString()
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'heading' },
+                    this.props.heading
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'sub-heading' },
+                    this.props.subheading
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'divider' },
+                    _React2['default'].createElement('span', { className: 'twin circle-divider' }),
+                    _React2['default'].createElement('span', { className: 'twin circle-divider' })
+                ),
+                _React2['default'].createElement('div', { className: 'synopsis',
+                    dangerouslySetInnerHTML: { __html: _truncate2['default'](this.props.articletext, 50) } })
+            ),
+            _React2['default'].createElement('div', { className: 'triangle' })
+        );
+    }
+});
+module.exports = exports['default'];
+
+},{"../../mixins/WebAPIMixin":254,"html-truncate":4,"lodash":5,"react-router":44,"react/addons":59}],245:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42726,7 +42817,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../PostCredit":242,"./ShootingGallery":246,"lodash":5,"react-router":44,"react/addons":59}],245:[function(require,module,exports){
+},{"../PostCredit":242,"./ShootingGallery":247,"lodash":5,"react-router":44,"react/addons":59}],246:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42794,7 +42885,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":44,"react/addons":59}],246:[function(require,module,exports){
+},{"lodash":5,"react-router":44,"react/addons":59}],247:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42837,11 +42928,12 @@ var SelectedImg = _React2['default'].createClass({
                 )
             );
         }
+        var onDeckNode = this.props.on_deck.video ? _React2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: this.props.on_deck.video } }) : [_React2['default'].createElement('span', { className: 'align-hlper' }), _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' })];
+
         return _React2['default'].createElement(
             'div',
             { className: 'on_deck' },
-            _React2['default'].createElement('span', { className: 'align-helper' }),
-            _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' }),
+            onDeckNode,
             _React2['default'].createElement(
                 'div',
                 { className: 'caption' },
@@ -42920,12 +43012,21 @@ exports['default'] = _React2['default'].createClass({
                 'ul',
                 { className: 'images', ref: 'imgRow' },
                 this.state.imgs.map(function (image) {
-                    return _React2['default'].createElement(
-                        'li',
-                        { key: image.id },
-                        _React2['default'].createElement('img', { src: image.img.small,
-                            onClick: this.handleClick.bind(this, image) })
-                    );
+                    if (image.video) {
+                        return _React2['default'].createElement(
+                            'li',
+                            { key: image.id },
+                            _React2['default'].createElement('img', { src: 'https://i.ytimg.com/vi/' + image.video_id + '/hqdefault.jpg',
+                                onClick: this.handleClick.bind(this, image) })
+                        );
+                    } else {
+                        return _React2['default'].createElement(
+                            'li',
+                            { key: image.id },
+                            _React2['default'].createElement('img', { src: image.img.small,
+                                onClick: this.handleClick.bind(this, image) })
+                        );
+                    }
                 }, this)
             ),
             _React2['default'].createElement(
@@ -42939,7 +43040,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./ShootingCredit":245,"lodash":5,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],247:[function(require,module,exports){
+},{"./ShootingCredit":246,"lodash":5,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],248:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42968,7 +43069,7 @@ var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
 
 var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
-var _PostTile = require('./PostTile');
+var _PostTile = require('./Post/PostTile');
 
 var _PostTile2 = _interopRequireWildcard(_PostTile);
 
@@ -43086,99 +43187,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":253,"../mixins/WebAPIMixin":254,"./PostTile":248,"lodash":5,"react-masonry-mixin":6,"react-router":44,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],248:[function(require,module,exports){
-'use strict';
-
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _React = require('react/addons');
-
-var _React2 = _interopRequireWildcard(_React);
-
-var _import = require('lodash');
-
-var _import2 = _interopRequireWildcard(_import);
-
-var _truncate = require('html-truncate');
-
-var _truncate2 = _interopRequireWildcard(_truncate);
-
-var _Router = require('react-router');
-
-var _Router2 = _interopRequireWildcard(_Router);
-
-var _WebAPIMixin = require('../mixins/WebAPIMixin');
-
-var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
-
-'use strict';
-
-var Link = _Router2['default'].Link;
-
-exports['default'] = _React2['default'].createClass({
-    displayName: 'PostTile',
-
-    propTypes: {
-        id: _React2['default'].PropTypes.number.isRequired,
-        heading: _React2['default'].PropTypes.string.isRequired,
-        subheading: _React2['default'].PropTypes.string.isRequired,
-        articletext: _React2['default'].PropTypes.string.isRequired,
-        cover: _React2['default'].PropTypes.object.isRequired,
-        created_at: _React2['default'].PropTypes.string.isRequired,
-        last_modified: _React2['default'].PropTypes.string.isRequired,
-        uri: _React2['default'].PropTypes.string },
-    contextTypes: {
-        router: _React2['default'].PropTypes.func
-    },
-    handleClick: function handleClick() {
-        this.context.router.transitionTo('post', { postId: this.props.id });
-    },
-    render: function render() {
-
-        return _React2['default'].createElement(
-            'div',
-            { className: 'tile', onClick: this.handleClick },
-            _React2['default'].createElement('img', { src: this.props.cover.img.medium }),
-            _React2['default'].createElement(
-                'div',
-                { className: 'intro' },
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'info' },
-                    this.props.category,
-                    ' | ',
-                    new Date(this.props.created_at).toDateString()
-                ),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'heading' },
-                    this.props.heading
-                ),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'sub-heading' },
-                    this.props.subheading
-                ),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'divider' },
-                    _React2['default'].createElement('span', { className: 'twin circle-divider' }),
-                    _React2['default'].createElement('span', { className: 'twin circle-divider' })
-                ),
-                _React2['default'].createElement('div', { className: 'synopsis',
-                    dangerouslySetInnerHTML: { __html: _truncate2['default'](this.props.articletext, 50) } })
-            ),
-            _React2['default'].createElement('div', { className: 'triangle' })
-        );
-    }
-});
-module.exports = exports['default'];
-
-},{"../mixins/WebAPIMixin":254,"html-truncate":4,"lodash":5,"react-router":44,"react/addons":59}],249:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":253,"../mixins/WebAPIMixin":254,"./Post/PostTile":244,"lodash":5,"react-masonry-mixin":6,"react-router":44,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],249:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43207,7 +43216,7 @@ var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
 
 var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
-var _PostTile = require('./PostTile');
+var _PostTile = require('./Post/PostTile');
 
 var _PostTile2 = _interopRequireWildcard(_PostTile);
 
@@ -43327,7 +43336,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":253,"../mixins/WebAPIMixin":254,"./PostTile":248,"lodash":5,"react-masonry-mixin":6,"react-router":44,"react/addons":59}],250:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":253,"../mixins/WebAPIMixin":254,"./Post/PostTile":244,"lodash":5,"react-masonry-mixin":6,"react-router":44,"react/addons":59}],250:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43803,19 +43812,20 @@ var _Router2 = _interopRequireWildcard(_Router);
 
 'use strict';
 
+var State = require('react-router').State;
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 var RouteHandler = _Router2['default'].RouteHandler;
 exports['default'] = _React2['default'].createClass({
     displayName: 'Application',
 
-    contextTypes: {
-        router: _React2['default'].PropTypes.func
-    },
+    mixins: [State],
+
     render: function render() {
+        var name = this.getPath();
         return _React2['default'].createElement(
-            'div',
-            null,
+            TransitionGroup,
+            { transitionName: 'post', transitionLeave: false },
             _React2['default'].createElement(RouteHandler, { key: name })
         );
     }
@@ -43896,7 +43906,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":235,"../components/Footer":237,"../components/Logo":238,"../components/MainNav/NavBar":239,"../components/PostList":247,"../components/SubNav/SubNavBar":251,"lodash":5,"react/addons":59}],257:[function(require,module,exports){
+},{"../components/Banner/BannerList":235,"../components/Footer":237,"../components/Logo":238,"../components/MainNav/NavBar":239,"../components/PostList":248,"../components/SubNav/SubNavBar":251,"lodash":5,"react/addons":59}],257:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43928,6 +43938,9 @@ var _ShootingContent2 = _interopRequireWildcard(_ShootingContent);
 'use strict';
 
 var State = require('react-router').State;
+
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostPage',
 
@@ -43974,7 +43987,28 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.is_shooting) {
-            return _React2['default'].createElement(_ShootingContent2['default'], { id: this.state.id,
+            return _React2['default'].createElement(
+                TransitionGroup,
+                { transitionName: 'post' },
+                _React2['default'].createElement(_ShootingContent2['default'], {
+                    key: this.state.id,
+                    id: this.state.id,
+                    heading: this.state.heading,
+                    subheading: this.state.subheading,
+                    articletext: this.state.articletext,
+                    imgs: this.state.imgs,
+                    credits: this.state.credits,
+                    created_at: this.state.created_at,
+                    last_modified: this.state.last_modified,
+                    category: this.state.category })
+            );
+        }
+        return _React2['default'].createElement(
+            TransitionGroup,
+            { transitionName: 'post' },
+            _React2['default'].createElement(_PostContent2['default'], {
+                key: this.state.id,
+                id: this.state.id,
                 heading: this.state.heading,
                 subheading: this.state.subheading,
                 articletext: this.state.articletext,
@@ -43982,23 +44016,14 @@ exports['default'] = _React2['default'].createClass({
                 credits: this.state.credits,
                 created_at: this.state.created_at,
                 last_modified: this.state.last_modified,
-                category: this.state.category });
-        }
-        return _React2['default'].createElement(_PostContent2['default'], { id: this.state.id,
-            heading: this.state.heading,
-            subheading: this.state.subheading,
-            articletext: this.state.articletext,
-            imgs: this.state.imgs,
-            credits: this.state.credits,
-            created_at: this.state.created_at,
-            last_modified: this.state.last_modified,
-            category: this.state.category });
+                category: this.state.category })
+        );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../components/Post/PostContent":241,"../components/Post/Shooting/ShootingContent":244,"../mixins/WebAPIMixin":254,"lodash":5,"react-router":44,"react/addons":59}],258:[function(require,module,exports){
+},{"../components/Post/PostContent":241,"../components/Post/Shooting/ShootingContent":245,"../mixins/WebAPIMixin":254,"lodash":5,"react-router":44,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],258:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -44045,6 +44070,8 @@ var _Footer2 = _interopRequireWildcard(_Footer);
 
 'use strict';
 
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
 exports['default'] = _React2['default'].createClass({
     displayName: 'SearchPage',
 
@@ -44055,7 +44082,8 @@ exports['default'] = _React2['default'].createClass({
     },
     getInitialState: function getInitialState() {
         return {
-            q: this.context.router.getCurrentQuery().q };
+            q: this.context.router.getCurrentQuery().q,
+            query_string: '' };
     },
     _ScrollDown: function _ScrollDown() {
         var query = this.context.router.getCurrentQuery().q;
@@ -44097,6 +44125,14 @@ exports['default'] = _React2['default'].createClass({
 
         _React2['default'].findDOMNode(this.refs.query_input).value = '';
     },
+    handleOnChange: function handleOnChange(e) {
+        this.setState({
+            query_string: e.target.value
+        });
+    },
+    handleOnClickPage: function handleOnClickPage() {
+        _React2['default'].findDOMNode(this.refs.query_input).focus();
+    },
     render: function render() {
         var search_layer_class = _classnames2['default']({
             'search-layer': true,
@@ -44104,40 +44140,55 @@ exports['default'] = _React2['default'].createClass({
         });
 
         return _React2['default'].createElement(
-            'div',
-            { ref: 'container' },
+            TransitionGroup,
+            { transitionName: 'post' },
             _React2['default'].createElement(
                 'div',
-                { className: search_layer_class },
+                { key: 'search-page', ref: 'container', onClick: this.handleOnClickPage },
                 _React2['default'].createElement(
-                    'span',
-                    { className: 'close' },
-                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
-                ),
-                _React2['default'].createElement(
-                    'form',
-                    { className: 'search-form', onSubmit: this.handleSubmit },
-                    _React2['default'].createElement('input', { ref: 'query_input', name: 'q', type: 'text', autoComplete: 'off', autoFocus: true }),
+                    'div',
+                    { className: search_layer_class },
                     _React2['default'].createElement(
-                        'label',
-                        null,
-                        'Type and hit enter to search'
+                        'span',
+                        { className: 'close' },
+                        _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
+                    ),
+                    _React2['default'].createElement(
+                        'form',
+                        { className: 'search-form', onSubmit: this.handleSubmit },
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'value-field' },
+                            this.state.query_string
+                        ),
+                        _React2['default'].createElement('input', { className: 'tiny-input',
+                            ref: 'query_input',
+                            name: 'q',
+                            type: 'text',
+                            autoComplete: 'off',
+                            autoFocus: true,
+                            onChange: this.handleOnChange }),
+                        _React2['default'].createElement(
+                            'label',
+                            null,
+                            this.state.query_string ? '' : 'Type and hit enter to search'
+                        )
                     )
-                )
-            ),
-            _React2['default'].createElement(_Logo2['default'], null),
-            _React2['default'].createElement(_NavBar2['default'], null),
-            _React2['default'].createElement(_BannerList2['default'], null),
-            _React2['default'].createElement(_SearchSubNavBar2['default'], { query: this.state.q }),
-            _React2['default'].createElement(_SearchPostList2['default'], { ref: 'postlist', query: this.state.q }),
-            _React2['default'].createElement(_Footer2['default'], null)
+                ),
+                _React2['default'].createElement(_Logo2['default'], null),
+                _React2['default'].createElement(_NavBar2['default'], null),
+                _React2['default'].createElement(_BannerList2['default'], null),
+                _React2['default'].createElement(_SearchSubNavBar2['default'], { query: this.state.q }),
+                _React2['default'].createElement(_SearchPostList2['default'], { ref: 'postlist', query: this.state.q }),
+                _React2['default'].createElement(_Footer2['default'], null)
+            )
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":235,"../components/Footer":237,"../components/Logo":238,"../components/MainNav/NavBar":239,"../components/SearchPostList":249,"../components/SubNav/SearchSubNavBar":250,"classnames":3,"lodash":5,"react/addons":59}],259:[function(require,module,exports){
+},{"../components/Banner/BannerList":235,"../components/Footer":237,"../components/Logo":238,"../components/MainNav/NavBar":239,"../components/SearchPostList":249,"../components/SubNav/SearchSubNavBar":250,"classnames":3,"lodash":5,"react/addons":59,"react/lib/ReactCSSTransitionGroup":92}],259:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -44167,7 +44218,8 @@ exports['default'] = _React2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            labelMessage: 'Type your email and hit enter to subcribe'
+            labelMessage: 'Type your email and hit enter to subcribe',
+            query_string: ''
         };
     },
     contextTypes: {
@@ -44177,13 +44229,12 @@ exports['default'] = _React2['default'].createClass({
         var _this = this;
 
         this.createSubscriber(value, function (error, response) {
-            window.p = response;
             _this.setState({
+                query_string: '',
                 labelMessage: response.status == 201 ? 'Thanks for subscribing!' : JSON.parse(response.text).subscribers.email[0]
             });
         });
     },
-    componentDidMount: function componentDidMount() {},
     handeClickOnCross: function handeClickOnCross() {
         if (!this.context.router.goBack()) {
             this.context.router.transitionTo('/');
@@ -44194,10 +44245,18 @@ exports['default'] = _React2['default'].createClass({
         var email_value = _React2['default'].findDOMNode(this.refs.email_input).value.trim();
         this._createSubscriber(email_value);
     },
+    handleOnChange: function handleOnChange(e) {
+        this.setState({
+            query_string: e.target.value
+        });
+    },
+    handleOnClickPage: function handleOnClickPage() {
+        _React2['default'].findDOMNode(this.refs.email_input).focus();
+    },
     render: function render() {
         return _React2['default'].createElement(
             'div',
-            { ref: 'container' },
+            { ref: 'container', onClick: this.handleOnClickPage },
             _React2['default'].createElement(
                 'div',
                 { className: 'search-layer show' },
@@ -44209,11 +44268,18 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement(
                     'form',
                     { className: 'subscribe-form', onSubmit: this.handleSubmit },
-                    _React2['default'].createElement('input', { ref: 'email_input', name: 'q', type: 'email', autoComplete: 'off', autoFocus: true }),
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'value-field' },
+                        this.state.query_string
+                    ),
+                    _React2['default'].createElement('input', { className: 'tiny-input', ref: 'email_input',
+                        name: 'q', type: 'email', autoComplete: 'off', autoFocus: true,
+                        onChange: this.handleOnChange }),
                     _React2['default'].createElement(
                         'label',
                         { ref: 'labelMessage' },
-                        this.state.labelMessage
+                        this.state.query_string ? '' : this.state.labelMessage
                     )
                 )
             )

@@ -6,6 +6,7 @@ import WebAPIMixin from '../mixins/WebAPIMixin';
 var State = require('react-router').State;
 import PostContent from '../components/Post/PostContent';
 import ShootingContent from '../components/Post/Shooting/ShootingContent';
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 export default React.createClass({
     mixins: [WebAPIMixin, State],
@@ -51,19 +52,26 @@ export default React.createClass({
     render() {
         if(this.state.is_shooting) {
             return (
-                <ShootingContent id={this.state.id} 
-                    heading={this.state.heading}
-                    subheading={this.state.subheading}
-                    articletext={this.state.articletext}
-                    imgs={this.state.imgs}
-                    credits={this.state.credits}
-                    created_at={this.state.created_at}
-                    last_modified={this.state.last_modified}
-                    category={this.state.category} />
+                <TransitionGroup transitionName="post">
+                    <ShootingContent 
+                        key={this.state.id}
+                        id={this.state.id} 
+                        heading={this.state.heading}
+                        subheading={this.state.subheading}
+                        articletext={this.state.articletext}
+                        imgs={this.state.imgs}
+                        credits={this.state.credits}
+                        created_at={this.state.created_at}
+                        last_modified={this.state.last_modified}
+                        category={this.state.category} />
+                </TransitionGroup>
                 )
         }
         return (
-                <PostContent id={this.state.id} 
+            <TransitionGroup transitionName="post">
+                <PostContent 
+                    key={this.state.id}
+                    id={this.state.id} 
                     heading={this.state.heading}
                     subheading={this.state.subheading}
                     articletext={this.state.articletext}
@@ -72,6 +80,7 @@ export default React.createClass({
                     created_at={this.state.created_at}
                     last_modified={this.state.last_modified}
                     category={this.state.category} />
+            </TransitionGroup>
         );
     }
 

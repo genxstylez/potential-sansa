@@ -9,7 +9,8 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            labelMessage: "Type your email and hit enter to subcribe"
+            labelMessage: "Type your email and hit enter to subcribe",
+            query_string: ""
         }
     },
     contextTypes: {
@@ -17,13 +18,11 @@ export default React.createClass({
     },
     _createSubscriber(value) {
         this.createSubscriber(value, (error, response) => {
-            window.p = response;
             this.setState({
+                query_string: "",
                 labelMessage: response.status==201 ? "Thanks for subscribing!" : JSON.parse(response.text).subscribers.email[0]
             });
         });
-    },
-    componentDidMount() {
     },
     handeClickOnCross() {
        if(!this.context.router.goBack()) {
@@ -35,16 +34,27 @@ export default React.createClass({
         var email_value = React.findDOMNode(this.refs.email_input).value.trim();
         this._createSubscriber(email_value);
     },
+    handleOnChange(e) {
+        this.setState({
+            query_string: e.target.value
+        });
+    },
+    handleOnClickPage() {
+        React.findDOMNode(this.refs.email_input).focus();
+    },
     render() {
         return (
-            <div ref="container">
+            <div ref="container" onClick={this.handleOnClickPage}>
                 <div className="search-layer show">
                     <span className="close">
                         <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
                     </span>
                     <form className="subscribe-form" onSubmit={this.handleSubmit}>
-                        <input ref="email_input" name="q" type="email" autoComplete="off" autoFocus={true} />
-                        <label ref="labelMessage">{this.state.labelMessage}</label>
+                        <div className="value-field">{this.state.query_string}</div>
+                        <input className="tiny-input" ref="email_input" 
+                            name="q" type="email" autoComplete="off" autoFocus={true} 
+                            onChange={this.handleOnChange} />
+                        <label ref="labelMessage">{this.state.query_string ? "" : this.state.labelMessage}</label>
                     </form>
                 </div>
             </div>

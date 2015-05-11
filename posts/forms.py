@@ -16,7 +16,7 @@ class PostForm(forms.ModelForm):
                 'language': 'zh-Hant',
                 'focus': True,
                 'minHeight': '500',
-                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor'],
+                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
             })
         }
 

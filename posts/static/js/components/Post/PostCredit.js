@@ -14,12 +14,12 @@ export default React.createClass({
         const names = [];
         if(this.props.names instanceof Array) {
             _.forEach(this.props.names, (name, key) => {
-                names.push(<Link to="search" query={{q: name}}>{name}</Link>);
+                names.push(<Link key={key} to="search" query={{q: name}}>{name}</Link>);
                 if (key < this.props.names.length -1) 
                     names.push(', ')
             });
         } else {
-            names.push(<Link to="search" query={{q: this.props.names}}>{this.props.names}</Link>);
+            names.push(<Link key="single-credit-link" to="search" query={{q: this.props.names}}>{this.props.names}</Link>);
         }
         return (
             <div className="credit">

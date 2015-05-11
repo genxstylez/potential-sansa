@@ -4,7 +4,7 @@ import React from 'react/addons';
 import _ from 'lodash';
 import truncate from 'html-truncate';
 import Router from 'react-router';
-import WebAPIMixin from '../mixins/WebAPIMixin';
+import WebAPIMixin from '../../mixins/WebAPIMixin';
 
 
 const Link = Router.Link;

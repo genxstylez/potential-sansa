@@ -114,17 +114,39 @@ div.logo img {
     overflow-x: auto;
     overflow-y: hidden;
 }
+
+.banner-outer-container .arrow {
+    position: absolute;
+    top: 45%;
+    width: 28px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.banner-outer-container .arrow:hover {
+    opacity: 0.5;
+}
+
+.banner-outer-container .arrow.left {
+    left: 10px;
+}
+
+.banner-outer-container .arrow.right {
+    right: 10px;
+}
+
 .banner-inner-container {
-    width: 100000px;
+    width: 12800px;
+    white-space: nowrap;
 }
 .banner-inner-container .banner-tile {
     float: left;
     position: relative;
-    height: 450px;
+    height: auto;
     width: 640px;
 }
 .banner-inner-container .banner-tile img {
-    height: 100%;
+    height: auto;
     width: auto;
 }
 .banner-inner-container .banner-tile .title {
@@ -318,6 +340,7 @@ div.logo img {
     overflow: auto;
     border-right: 1px solid #d5d5d5;
     outline: 0;
+    overflow: hidden;
 }
 
 .article-box .article .article-content .inner-content {
@@ -421,6 +444,10 @@ ul.images li img {
     display: inline-block;
     vertical-align: middle;
     max-height: 100%;
+}
+
+.on_deck .video-embed {
+    display: inline;
 }
 
 .on_deck .caption {
@@ -546,6 +573,19 @@ ul.images li img {
     margin-top: 145px;
     text-align: center;
 }
+
+.search-layer .tiny-input {
+    width: 1px;
+    position: fixed;
+    left: 50%;
+    top: 15%;
+}
+
+.search-layer .value-field {
+    font-size: 150px;
+    height: 190px;
+}
+
 .search-layer input {
     font-size: 150px;
     outline: 0;
@@ -604,22 +644,22 @@ ul.images li img {
 }
 
 /* animations */
-.posts-enter {
+.post-enter  {
   opacity: 0.01;
-  transition: opacity .3s ease-in;
+  transition: opacity 300ms ease-in;
 }
 
-.posts-enter.posts-enter-active {
+.post-enter.post-enter-active {
   opacity: 1;
 }
 
-.posts-leave {
-  opacity: 0;
-  transition: opacity .3s ease-in;
+.post-leave {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
 }
 
-.posts-leave.posts-leave-active {
-  opacity: 0.01;
+.post-leave.post-leave-active {
+  opacity: 0;
 }
 
 .gallery-enter {
@@ -652,3 +692,9 @@ ul.images li img {
   border-radius: 3px;
   background: #d5d5d5;
 }
+
+/* fs-scrollbar */
+.fs-scrollbar-track {
+    background-color: #f7f7f7;
+}
+

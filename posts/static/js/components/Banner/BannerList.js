@@ -30,7 +30,7 @@ export default React.createClass({
         this._getStarred();
         if(this.isMounted()) {
             setTimeout(() => {
-                $(this.refs.bannerContainer.getDOMNode()).scrollbar({
+                $(React.findDOMNode(this.refs.bannerContainer)).scrollbar({
                     horizontal: true
                 });
             }, 50);
@@ -38,10 +38,19 @@ export default React.createClass({
     },
     componentDidUpdate(prevProps, prevState){
         setTimeout(() => {
-            $(this.refs.bannerContainer.getDOMNode()).scrollbar("resize");
+            $(React.findDOMNode(this.refs.bannerContainer)).scrollbar("resize");
         }, 100);
     },
-    componentWillUnmount() {},
+    handleLeftArrow() {
+        $('.fs-scrollbar-content').animate({ 
+            scrollLeft: "-=1280"
+        }, 200);
+    },
+    handlerRightArrow() {
+        $('.fs-scrollbar-content').animate({ 
+            scrollLeft: "+=1280"
+        }, 200);
+    },
     render() {
         const tileNodes = _.map(this.state.posts, post => {
             return (
@@ -54,9 +63,13 @@ export default React.createClass({
             );
         });
         return (
-            <div className="row banner-outer-container" ref="bannerContainer">
-                <div className="banner-inner-container">
-                    {tileNodes}
+            <div className="row banner-outer-container">
+                <img className="arrow left" onClick={this.handleLeftArrow} src={STATIC_URL + "img/banner-left.png"} />
+                <img className="arrow right" src={STATIC_URL + "img/banner-right.png"} onClick={this.handlerRightArrow} />
+                <div ref="bannerContainer">
+                    <div className="banner-inner-container" ref="InnerContainer">
+                        {tileNodes}
+                    </div>
                 </div>
             </div>
         );

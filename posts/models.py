@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import watson
 import uuid
+import urlparse
 
 from django.db import models
 from django.db.models.signals import post_save
@@ -57,6 +58,11 @@ class Post(models.Model):
     is_shooting = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
+        if self.subheading:
+            return '({category}) - {heading} - {subheading}'.format(
+                category=self.category,
+                heading=self.heading,
+                subheading=self.subheading)
         return '({category}) - {heading}'.format(category=self.category, heading=self.heading)
 
     def save(self, *args, **kwargs):
@@ -96,9 +102,29 @@ def post_image_path(instance, filename):
 class Image(models.Model):
     post = models.ForeignKey(Post, related_name='images', verbose_name='文章')
     is_cover = models.BooleanField('封面照片', default=False)
-    caption = models.CharField('註解', blank=True, max_length=50)
+    caption = models.CharField('註解', blank=True, max_length=25)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
-    img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path)
+    img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path, null=True, blank=True)
+    video_url = models.CharField('Youtube 網址', max_length=255, blank=True, default='')
+    video_id = models.CharField('Youtube ID', max_length=40, editable=False, blank=True, default='')
+
+    def save(self, *args, **kwargs):
+        if self.video_url:
+            url_obj = urlparse.urlparse(self.video_url)
+            if url_obj.netloc.lower() == 'www.youtube.com':
+                self.video_id = urlparse.parse_qs(url_obj.query)['v'][0]
+            elif url_obj.netloc.lower() == 'youtu.be':
+                self.video_id = url_obj.path.strip('/')
+        super(Image, self).save(*args, **kwargs)
+
+    def generate_video_embed(self, width=600, height=450):
+        return '<iframe width="{width}" height="{height}" ' \
+            'src="https://www.youtube.com/embed/{video_id}" ' \
+            'frameborder="0" allowfullscreen></iframe>'.format(
+                width=width,
+                height=height,
+                video_id=self.video_id
+            )
 
     def __unicode__(self):
         return '{post} - {id}'.format(post=self.post, id=self.id)
@@ -109,7 +135,9 @@ class Image(models.Model):
             cover=self.is_cover,
             caption=self.caption,
             tag=self.tag,
-            img=self.img.url
+            img=self.img.url if self.img else '',
+            video=self.generate_video_embed(),
+            video_id=self.video_id
         )
 
 

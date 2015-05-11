@@ -38,13 +38,18 @@ class ImageResource(ModelResource):
         resource_name = 'images'
 
     def dehydrate_img(self, bundle):
-        bundle.data['img'] = {
-            'original': bundle.obj.img.url,
-            'small': bundle.obj.img['small'].url,
-            'medium': bundle.obj.img['medium'].url,
-            'large': bundle.obj.img['large'].url
-        }
-        return bundle.data['img']
+        if bundle.obj.img:
+            bundle.data['img'] = {
+                'original': bundle.obj.img.url,
+                'small': bundle.obj.img['small'].url,
+                'medium': bundle.obj.img['medium'].url,
+                'large': bundle.obj.img['large'].url
+            }
+            return bundle.data['img']
+
+    def dehydrate(self, bundle):
+        bundle.data['video'] = bundle.obj.generate_video_embed() if bundle.obj.video_url else ''
+        return bundle
 
 
 class TagResource(ModelResource):
