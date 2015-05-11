@@ -54,6 +54,7 @@ class Post(models.Model):
     published = models.BooleanField('發表', default=False)
     order = models.PositiveIntegerField(db_index=True, default=0)
     tags = TaggableManager(help_text='請用逗號(半形)在tag之間做區隔', blank=True)
+    is_shooting = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
         return '({category}) - {heading}'.format(category=self.category, heading=self.heading)
@@ -61,6 +62,8 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self.heading[:14]
+        if self.category.name.lower() in ['shooting']:
+            self.is_shooting = True
         super(Post, self).save(*args, **kwargs)
 
     def to_json(self):

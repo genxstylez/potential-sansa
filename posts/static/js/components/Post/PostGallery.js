@@ -2,12 +2,7 @@
 
 import React from 'react/addons';
 import _ from 'lodash';
-import Router from 'react-router';
-import WebAPIMixin from '../mixins/WebAPIMixin';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-
-
-const Link = Router.Link;
 
 var SelectedImg = React.createClass({
     render() {

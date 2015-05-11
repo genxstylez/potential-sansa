@@ -427,12 +427,70 @@ ul.images li img {
     font-size: 11px;
     letter-spacing: 0.05em;
 }
+
+.on_deck.shooting-credits {
+    display: table;
+}
+
+.on_deck.shooting-credits .shooting-credits-inner {
+    display: table-cell;
+    vertical-align: middle;
+}
 .article-box .article .article-content .share {}
 .article-box .article .gallery {
     width: 50%;
     padding: 0px 40px;
     height: 100%;
 }
+.article-box .article .gallery.shooting {
+    width: 62.5%;
+    padding: 0px 40px;
+    height: 95%;
+    margin: 0 auto;
+}
+
+.article-box .article .shooting-info {
+    height: 5%;
+    position: absolute;
+    bottom: 5px;
+    text-align: center;
+    width: 100%;
+    left: 0;
+}
+
+.shooting-info .shooting-info-heading {
+    font-size: 20px;
+    letter-spacing: 0.075em;
+}
+
+.shooting-info .shooting-info-toggle {
+    color: #6e6e6e;
+    font-size: 14px;
+    letter-spacing: 0.075em;
+    position: absolute;
+    right: 35px;
+    cursor: pointer;
+}
+
+.article-box .shooting-credits .shooting-credits-inner .role {
+    font-size: 15px;
+    letter-spacing: 0.075em;
+    border-radius: 0px;
+    background-color: transparent;
+    color: #6e6e6e;
+    text-align: right;
+    width: 45%;
+}
+.article-box .shooting-credits .shooting-credits-inner .name {
+    font-size: 15px;
+    letter-spacing: 0.075em;
+    margin-left: 13px;
+    color: #c8c8c8;
+    display: inline-block;
+    text-align: left;
+    width: 50%;
+}
+
 .article-box .article .gallery .item.active {
     display: flex;
 }
@@ -443,11 +501,10 @@ ul.images li img {
     margin-bottom: 3px !important;
 }
 .article-box .credit{
-    margin-bottom: 15px !important;
+    margin-bottom: 13px !important;
 }
 .article-box .credit .role {
     font-size: 10.5px;
-    color: #6e6e6e;
     letter-spacing: 0.075em;
     color: #ffffff;
     height: 17px;
@@ -462,12 +519,13 @@ ul.images li img {
 .article-box .credit .name {
     margin-left: 7.5px;
     color: #c8c8c8;
-}
-.article-box .credit .name a {
     font-size: 10.5px;
-    color: #c8c8c8;
     letter-spacing: 0.075em;
 }
+.article-box .credit a, .articl-box .shooting-credits-info a {
+    color: #c8c8c8;
+}
+
 .search-layer {
     display: none;
     background: rgba(255, 255, 255, 1);
