@@ -9,7 +9,7 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            labelMessage: "Type your email and hit enter to subcribe",
+            labelMessage: <p>Type your email and hit enter to subcribe<br />請輸入您的email並按下Enter</p>,
             query_string: ""
         }
     },

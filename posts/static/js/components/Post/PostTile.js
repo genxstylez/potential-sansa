@@ -5,6 +5,7 @@ import _ from 'lodash';
 import truncate from 'html-truncate';
 import Router from 'react-router';
 import WebAPIMixin from '../../mixins/WebAPIMixin';
+import moment from 'moment';
 
 
 const Link = Router.Link;
@@ -33,7 +34,7 @@ export default React.createClass({
                 <img src={this.props.cover.img.medium} ></img>
                 <div className="intro">
                     <div className="info">
-                        { this.props.category} | {new Date(this.props.created_at).toDateString()}
+                        { this.props.category} | {moment(this.props.created_at).format("YYYY.MM.DD")}
                     </div>
                     <div className="heading">
                         {this.props.heading}

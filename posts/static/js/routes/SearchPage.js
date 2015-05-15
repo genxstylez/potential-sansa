@@ -92,7 +92,7 @@ export default React.createClass({
                                 autoComplete="off" 
                                 autoFocus={true} 
                                 onChange={this.handleOnChange}/>
-                            <label>{this.state.query_string ? "" : "Type and hit enter to search"}</label>
+                            <label>{this.state.query_string ? "" : <p>Type and hit enter to search<br />請輸入欲搜尋字串並按下Enter</p>}</label>
                         </form>
                     </div>
                     <Logo /> 

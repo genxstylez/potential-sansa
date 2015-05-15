@@ -34,21 +34,17 @@ export default React.createClass({
         });
     },
 
-    /**
-     * React component lifecycle method
-     */
     componentDidMount() {
         this._getCategories();
     },
 
-    /**
-     * React component lifecycle method
-     */
+    handleSubscribeOnMouseEnter(e) {
+        e.target.text = '訂閱';
+    },
 
-    /**
-     * render
-     * @returns {XML}
-     */
+    handleSubscribeOnMouseOut(e) {
+        e.target.text = 'Subscribe';
+    },
 
     render() {
         var header_classes = classNames({
@@ -68,10 +64,15 @@ export default React.createClass({
         for(var x in this.state.categories) {
             var category = this.state.categories[x]
             NavItemNodes.push(
-                <NavItem key={category.id} id={category.id} name={category.name} uri={category.resource_uri} />
+                <NavItem 
+                    key={category.id} 
+                    id={category.id} 
+                    name={category.name} 
+                    zh_name={category.zh_name}
+                    uri={category.resource_uri} />
             );
             if (x < this.state.categories.length -1) {
-                NavItemNodes.push(<span className="circle-divider"/>);
+                NavItemNodes.push(<span key={x + 800} className="circle-divider"/>);
             };
         };
         var fb_icon = STATIC_URL + "img/fb.png";
@@ -89,7 +90,9 @@ export default React.createClass({
                         <a href="http://facebook.com" className="fb">
                             <img src={fb_icon} />
                         </a>
-                        <Link to="subscribe" className="subscribe">
+                        <Link to="subscribe" className="subscribe"
+                            onMouseEnter={this.handleSubscribeOnMouseEnter}
+                            onMouseOut={this.handleSubscribeOnMouseOut}>
                             Subscribe
                         </Link>
                     </div>

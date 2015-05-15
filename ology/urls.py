@@ -14,14 +14,16 @@ v1_api.register(StarredResource())
 v1_api.register(ImageResource())
 v1_api.register(SubscriberResource())
 
+
 urlpatterns = [
     # Examples:
     # url(r'^$', 'ology.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^posts/', include('posts.urls')),
-    url(r'^api/', include(v1_api.urls)),
     url(r'^_search/$', 'ology.views.search', name='search'),
-    url(r'^$', TemplateView.as_view(template_name='app.html'), name='index'),
+    url(r'^api/', include(v1_api.urls)),
+    url(r'^', TemplateView.as_view(template_name='app.html'), name='index'),
+    url(r'^posts/', include('posts.urls')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + urlpatterns

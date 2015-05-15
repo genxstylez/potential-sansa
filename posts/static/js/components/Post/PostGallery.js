@@ -48,9 +48,15 @@ export default React.createClass({
     },
     getInitialState() {
         return {
+            on_deck: {},
+            imgs: []
+        }
+    },
+    componentDidMount() {
+        this.setState({
             on_deck: this.props.on_deck,
             imgs: this.props.imgs
-        }
+        });
     },
     render() {
         return (

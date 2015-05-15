@@ -13,7 +13,32 @@ export default React.createClass({
     propTypes: {
         id: React.PropTypes.number.isRequired,
         name: React.PropTypes.string.isRequired,
+        zh_name: React.PropTypes.string.isRequired,
         uri: React.PropTypes.string.isRequired
+    },
+
+    getInitialState() {
+        return {
+            display: ''
+        }
+    },
+
+    componentDidMount() {
+        this.setState({
+            display: this.props.name
+        });
+    },
+
+    handleOnMouseEnter() {
+        this.setState({
+            display: this.props.zh_name
+        });
+    },
+
+    handleOnMouseOut() {
+        this.setState({
+            display: this.props.name
+        });
     },
 
     render() {
@@ -26,8 +51,12 @@ export default React.createClass({
             }
         };
         return (
-            <Link key={this.props.id} style={styles.anchor} to="category" onClick={this.handleOnClick}
-                params={{categoryId: this.props.id}}>{this.props.name}</Link>
+            <Link key={this.props.id} 
+                style={styles.anchor} 
+                to="category"
+                params={{categoryId: this.props.id}}
+                onMouseEnter={this.handleOnMouseEnter}
+                onMouseOut={this.handleOnMouseOut}>{this.state.display}</Link>
         );
     }
 

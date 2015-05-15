@@ -2,6 +2,7 @@
 
 import React from 'react/addons';
 import _ from 'lodash';
+import moment from 'moment';
 import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
 var Navigation = require('react-router').Navigation;
@@ -31,9 +32,6 @@ export default React.createClass({
             }, 50);
         }
     },
-    componentWillUpdate(nextProps, nextState) {
-        
-    },
 
     handeClickOnCross() {
        if(!this.goBack()) {
@@ -42,16 +40,15 @@ export default React.createClass({
     },
 
     render() {
-        var cover = {};
-        for (var i=0; i < this.props.imgs.length; i++) {
-            if(this.props.imgs[i].is_cover==true)
-                cover = this.props.imgs[i];
-        };
         const creditNodes = _.map(this.props.credits, (value, key) => {
             return (
                 <PostCredit key={key} role={key} names={value}/>
             );
         });
+
+        var cover = {};
+        if (this.props.imgs.length > 0)
+            cover = this.props.imgs[0];
 
         return (
             <div className="article-box" ref="articleBox">
@@ -70,7 +67,7 @@ export default React.createClass({
                             <p className="title">{this.props.heading}</p>
                             <p className="sub-title">{this.props.subheading}</p>
                             <div className="decorations">
-                                <span className="created_at">{new Date(this.props.created_at).toDateString()}</span>
+                                <span className="created_at">{moment(this.props.created_at).format("YYYY.MM.DD")}</span>
                             </div>
                             <div dangerouslySetInnerHTML={{__html: this.props.articletext}} />
                             <div className="decorations end"></div>

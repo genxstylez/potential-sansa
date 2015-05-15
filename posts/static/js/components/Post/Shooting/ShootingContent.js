@@ -45,13 +45,8 @@ export default React.createClass({
     },
     render() {
         var cover = {};
-        for (var i=0; i < this.props.imgs.length; i++) {
-            if(this.props.imgs[i].is_cover==true)
-                cover = this.props.imgs[i];
-                break;
-        };
-
-
+        if (this.props.imgs.length > 0)
+            cover = this.props.imgs[0];
         return (
             <div className="article-box" ref="articleBox">
                 <span className="close">

@@ -16,6 +16,7 @@ from autoslug import AutoSlugField
 
 class Category(models.Model):
     name = models.CharField('標題', max_length=20)
+    zh_name = models.CharField('中文標題', max_length=20)
     parent = models.ForeignKey('self', verbose_name='主類別', related_name='sub_categories', null=True, blank=True)
 
     def __unicode__(self):
@@ -45,7 +46,7 @@ class Post(models.Model):
                          unique_with=['category__name', 'created_at__month'],
                          slugify=lambda value: value.replace(' ', '-'), db_index=True)
     category = models.ForeignKey(Category, related_name='posts', verbose_name='類別')
-    heading = models.CharField('主標題', max_length=30)
+    heading = models.CharField('主標題', max_length=30, help_text="若要分行請輸入\r")
     subheading = models.CharField('副標題', max_length=30, blank=True)
     articletext = models.TextField('內容')
     credits = JSONField('Credits', default={}, help_text=mark_safe(credits_help_text), blank=True)

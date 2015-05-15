@@ -72,14 +72,20 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            on_deck: this.props.on_deck,
-            imgs: this.props.imgs,
+            on_deck: {},
+            imgs: [],
             show_credits: false,
             credits: {}
         }
     },
-    render() {
 
+    componentDidMount() {
+        this.setState({
+            on_deck: this.props.on_deck,
+            imgs: this.props.imgs,
+        });
+    },
+    render() {
         return (
             <div className="gallery shooting">
                 <TransitionGroup transitionName="gallery">
