@@ -74,7 +74,12 @@ export default React.createClass({
             if (x < this.state.categories.length -1) {
                 NavItemNodes.push(<span key={x + 800} className="circle-divider"/>);
             };
+
         };
+        NavItemNodes.push(<span key="80011" className="circle-divider"/>);
+        NavItemNodes.push(<Link to="albums">Photos</Link>);
+        NavItemNodes.push(<span key="80012" className="circle-divider"/>);
+        
         var fb_icon = STATIC_URL + "img/fb.png";
         var search_icon = STATIC_URL + "img/search.png";
             

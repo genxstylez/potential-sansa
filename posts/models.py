@@ -69,8 +69,8 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = self.heading[:14]
-        if self.category.name.lower() in ['shooting']:
-            self.is_shooting = True
+        self.is_shooting = self.category.name.lower() in ['shooting']
+
         super(Post, self).save(*args, **kwargs)
 
     def to_json(self):

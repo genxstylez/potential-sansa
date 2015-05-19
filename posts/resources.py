@@ -71,9 +71,9 @@ class CategoryResource(ModelResource):
 
 
 class StarredResource(ModelResource):
-    cover = fields.ToManyField(ImageResource,
-                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True),
-                               use_in='list', full=True)
+    cover = fields.ToOneField(ImageResource,
+                              lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True).first(),
+                              use_in='list', full=True)
 
     class Meta:
         queryset = Post.objects.filter(starred=True, published=True).order_by('order')
@@ -85,9 +85,9 @@ class PostResource(ModelResource):
     credits = fields.DictField('credits', use_in='detail')
     tags = fields.ToManyField(TagResource, lambda bundle: bundle.obj.tags.all(), use_in='detail', full=True, null=True, blank=True)
     images = fields.ToManyField(ImageResource, 'images', full=True, use_in='detail')
-    cover = fields.ToManyField(ImageResource,
-                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True),
-                               use_in='list', full=True)
+    cover = fields.ToOneField(ImageResource,
+                              lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True).first(),
+                              use_in='list', full=True)
 
     class Meta:
         queryset = Post.objects.filter(published=True).order_by('-created_at')

@@ -59,7 +59,7 @@ export default React.createClass({
                     id={post.id} 
                     heading={post.heading}
                     subheading={post.subheading}
-                    cover={post.cover[0]} />
+                    cover={post.cover} />
             );
         });
         return (

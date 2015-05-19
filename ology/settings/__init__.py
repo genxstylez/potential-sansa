@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'ology',
     'posts',
     'subscriptions',
+    'photos',
     'tastypie',
     'easy_thumbnails',
     'storages',
@@ -160,6 +161,11 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 # EASY_THUMBNAILS
 THUMBNAIL_ALIASES = {
     'posts.Image.img': {
+        'small': {'size': (150, 0), 'crop': 'scale'},
+        'medium': {'size': (320, 0), 'crop': 'scale'},
+        'large': {'size': (640, 0), 'crop': 'scale'}
+    },
+    'photos.Photo.img': {
         'small': {'size': (150, 0), 'crop': 'scale'},
         'medium': {'size': (320, 0), 'crop': 'scale'},
         'large': {'size': (640, 0), 'crop': 'scale'}

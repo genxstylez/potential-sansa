@@ -7,7 +7,7 @@ var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var SelectedImg = React.createClass({
     render() {
         var onDeckNode = this.props.on_deck.video ? 
-            <div className="video-embed" dangerouslySetInnerHTML={{__html: this.props.on_deck.video}} /> :  
+            <div key={this.props.on_deck.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.props.on_deck.video}} /> :  
             [<span className="align-helper" />,
             <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />]
         return (
@@ -48,7 +48,7 @@ export default React.createClass({
     },
     getInitialState() {
         return {
-            on_deck: {},
+            on_deck: {'id': '99-00-11'},
             imgs: []
         }
     },

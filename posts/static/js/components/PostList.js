@@ -39,21 +39,31 @@ export default React.createClass({
             this.setState({
                 is_loading: true
             });
-            this._getPosts(this.state.next_page);
+            this._getMorePosts(this.state.next_page);
         }
     },
+
+    processResponse(error, response) {
+        var new_elements = error ? [] : response.body.objects,
+            next_page = response.body.meta.next, 
+            has_next = response.body.meta.next != null; 
+        this.setState({
+            posts: this.state.posts.concat(new_elements),
+            next_page: next_page,
+            has_next: has_next,
+            is_loading: false,
+        });
+    },
+
+    _getMorePosts(url) {
+        this.getMorePosts(url, (error, response) => {
+            this.processResponse(error, response);
+        });
+    },
                 
-    _getPosts(url, categoryId, subcategoryId) {
-        this.getPosts(url, categoryId, subcategoryId, (error, response) => {
-            var new_elements = error ? [] : response.body.objects,
-                next_page = response.body.meta.next, 
-                has_next = response.body.meta.next != null; 
-            this.setState({
-                posts: this.state.posts.concat(new_elements),
-                next_page: next_page,
-                has_next: has_next,
-                is_loading: false,
-            });
+    _getPosts(categoryId, subcategoryId) {
+        this.getPosts(categoryId, subcategoryId, (error, response) => {
+            this.processResponse(error, response);
         });
     },
 
@@ -66,14 +76,14 @@ export default React.createClass({
                 next_page: null,
                 is_animating_scrolling: false
             });
-            this._getPosts(null, nextProps.categoryId, nextProps.subcategoryId);
+            this._getPosts(nextProps.categoryId, nextProps.subcategoryId);
         }
     },
     /**
      * React component lifecycle method
      */
     componentDidMount() {
-        this._getPosts(null, this.props.categoryId, this.props.subcategoryId);
+        this._getPosts(this.props.categoryId, this.props.subcategoryId);
 
     },
 
@@ -97,7 +107,7 @@ export default React.createClass({
                     id={post.id} 
                     heading={post.heading}
                     subheading={post.subheading}
-                    cover={post.cover[0]}
+                    cover={post.cover}
                     created_at={post.created_at}
                     last_modified={post.last_modified}
                     articletext={post.articletext}
@@ -106,7 +116,7 @@ export default React.createClass({
             );
         });
         return (
-            <div id="tiles"className="mansonryContainer" ref="mansonryContainer">
+            <div id="tiles" className="mansonryContainer" ref="mansonryContainer">
                 {PostTileNodes}
             </div>
         );

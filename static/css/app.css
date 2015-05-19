@@ -326,24 +326,21 @@ div.logo img {
     bottom: 0px;
 }
 .article-box .article .article-content {
-    width: 51%;
-    padding: 0px 52px !important;
+    width: 50% !important;
     text-align: justify;
     color: #000000;
     font-size: 13px;
     line-height: 21px;
-    overflow: auto;
     border-right: 1px solid #d5d5d5;
     outline: 0;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .article-box .article .article-content .inner-content {
-    padding-right: 52px;
+    padding: 52px;
 }
 
 .article-box .article .article-content.jspScrollable .inner-content {
-    padding-right: 31px;
 }
 .article-box .article .category {
     color: #ffffff;
@@ -418,8 +415,9 @@ ul.images li:hover {
     opacity: .5;
 }
 ul.images li img {
-    max-height: 100%;
-    max-width: 100%;
+    max-height: 150px;
+    height: 100%;
+    width: auto;
 }
 .align-helper {
     display: inline-block;
@@ -638,6 +636,67 @@ ul.images li img {
     padding: 0px !important;
 }
 
+.mansonryAlbumContainer {
+    width: 90%;
+    margin: 40px auto;
+}
+.albums .close {
+    position: absolute;
+    right: 10%;
+    top: 60px;
+    opacity: 1
+}
+
+.albums .close:hover {
+    opacity: 0.5;
+}
+.albums-header {
+    height: 50px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    padding: 16px 0;
+}
+
+.album-tile {
+    cursor: pointer;
+}
+
+.album-tile:hover {
+    opacity: 0.8;
+}
+
+.license-footer {
+    height: 150px;
+    transition: height 300ms ease-in;
+    line-height: 20px; 
+}
+
+.license-footer.collapsed{
+    height: 40px;
+    cursor: pointer;
+}
+
+
+.license-footer .title {
+    font-size: 14px;
+    margin-bottom: 24px;
+    margin-top: 10px;
+}
+
+.license-footer p {
+    margin: 0px;   
+}
+
+.license-footer .license-footer-link {
+    margin-top: 12px;
+}
+.license-footer a {
+    text-decoration: none;
+    color: #333;
+}
 /* animations */
 .post-enter  {
   opacity: 0.01;
@@ -686,6 +745,13 @@ ul.images li img {
   width: 7px;
   border-radius: 3px;
   background: #d5d5d5;
+}
+
+.article-content .jspVerticalBar {
+    position: relative;
+    width: 16px;
+    height: 100%;
+    margin-left: 99%;
 }
 
 /* fs-scrollbar */

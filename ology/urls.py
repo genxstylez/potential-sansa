@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import admin
 from tastypie.api import Api
 from posts.resources import CategoryResource, PostResource, StarredResource, ImageResource
+from photos.resources import AlbumResource
 from subscriptions.resources import SubscriberResource
 
 v1_api = Api(api_name='v1')
@@ -13,6 +14,7 @@ v1_api.register(PostResource())
 v1_api.register(StarredResource())
 v1_api.register(ImageResource())
 v1_api.register(SubscriberResource())
+v1_api.register(AlbumResource())
 
 
 urlpatterns = [

@@ -10,10 +10,6 @@ var Navigation = require('react-router').Navigation;
 export default React.createClass({
     mixins: [Navigation],
 
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-
     propTypes: {
         id: React.PropTypes.number.isRequired,
         heading: React.PropTypes.string.isRequired,
@@ -31,6 +27,16 @@ export default React.createClass({
                 $(React.findDOMNode(this.refs.articleContent)).jScrollPane();
             }, 50);
         }
+        window.addEventListener('resize', this.handleResize);
+    },
+    
+    componentWillUnmount () {
+        window.removeEventListener('resize', this.handleResize);
+    },
+
+    handleResize() {
+        if($(React.findDOMNode(this.refs.articleContent)).data('jsp') != undefined)
+            $(React.findDOMNode(this.refs.articleContent)).data('jsp').reinitialise();
     },
 
     handeClickOnCross() {
