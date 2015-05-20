@@ -8,8 +8,15 @@
 * {
     -webkit-text-size-adjust: none;
 }
+html {
+    height: 100%;
+}
 body {
     font-family: futura-book, "Microsoft JhengHei", "微軟正黑";
+    height: 100%;
+}
+.react-container {
+    height: 100%;
 }
 div .top-black-bar {
     height: 17px;
@@ -54,7 +61,7 @@ div.logo img {
     margin: 1px;
 }
 .nav {
-    background-color: #f7f7f7;
+    background-color: #f0f0f0;
 }
 .nav.fixed, .sub-nav.fixed {
     position: fixed;
@@ -86,7 +93,7 @@ div.logo img {
     line-height: 1.5;
 }
 .header a.active {
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 .header .navbar {
@@ -117,7 +124,7 @@ div.logo img {
 
 .banner-outer-container .arrow {
     position: absolute;
-    top: 45%;
+    top: 430px;
     width: 28px;
     z-index: 2;
     cursor: pointer;
@@ -241,7 +248,7 @@ div.logo img {
 .tile .intro {
     text-transform: uppercase;
     padding: 10px 35px 35px;
-    background: #f7f7f7;
+    background: #f0f0f0;
 }
 .tile .intro .info {
     font-size: xx-small;
@@ -270,7 +277,7 @@ div.logo img {
     line-height: 0%;
     width: 0px;
     border-bottom: 14px solid #000;
-    border-right: 14px solid #f7f7f7;
+    border-right: 14px solid #f0f0f0;
     margin-top: -14px;
 }
 .article-box{
@@ -306,7 +313,7 @@ div.logo img {
     bottom: 70px;
     left: 50%;
     margin-left: -45%;
-    background-color: #f7f7f7;
+    background-color: #f0f0f0;
     width: 90%;
     text-align: center;
     padding: 40px 0px;
@@ -320,7 +327,7 @@ div.logo img {
     line-height: 0%;
     width: 0px;
     border-bottom: 14px solid #000;
-    border-right: 14px solid #f7f7f7;
+    border-right: 14px solid #f0f0f0;
     position: absolute;
     left: 0px;
     bottom: 0px;
@@ -334,6 +341,10 @@ div.logo img {
     border-right: 1px solid #d5d5d5;
     outline: 0;
     overflow: auto;
+}
+.article-content .text a:hover{
+    text-decoration: none;
+    opacity: 0.7;
 }
 
 .article-box .article .article-content .inner-content {
@@ -397,7 +408,7 @@ div.logo img {
     height: 13px;
 }
 
-ul.images {
+ul.thumbnails {
     margin: 0;
     padding: 0;
     white-space: nowrap;
@@ -406,15 +417,15 @@ ul.images {
     overflow: hidden;
     float: left;
 }
-ul.images li {
+ul.thumbnails li {
     display: inline;
     height: 100%;
     cursor: pointer;
 }
-ul.images li:hover {
+ul.thumbnails li:hover {
     opacity: .5;
 }
-ul.images li img {
+ul.thumbnails li img {
     max-height: 150px;
     height: 100%;
     width: auto;
@@ -440,7 +451,8 @@ ul.images li img {
 }
 
 .on_deck .video-embed {
-    display: inline;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .on_deck .caption {
@@ -598,7 +610,7 @@ ul.images li img {
     margin: 20px 0;
 }
 .decorations .created_at {
-    background-color: #F7F7F7;
+    background-color: #f0f0f0;
     color: #646464;
     position: relative;
     top: -10px;
@@ -642,9 +654,8 @@ ul.images li img {
 }
 .albums .close {
     position: absolute;
-    right: 10%;
-    top: 60px;
-    opacity: 1
+    right: 30px;
+    top: 30px;
 }
 
 .albums .close:hover {
@@ -667,6 +678,68 @@ ul.images li img {
 .album-tile:hover {
     opacity: 0.8;
 }
+.album-content {
+    height: 100%;
+}
+
+.album-content .myslick-container img {
+    cursor: pointer;
+}
+.album-content .myslick-container img:hover {
+    opacity: 0.8;
+}
+
+.album-content .caption {
+    height: 5%;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.album-content .thumbnails-div {
+    width: 50%;
+    margin: 0 auto;
+    height: 10%;
+}
+.album-content .thumbnails-div .arrow {
+    width: 3%;
+    height: 100%;
+    float: left;
+    cursor: pointer;
+}
+.album-content .thumbnails-div .arrow.right {
+    text-align: right;
+}
+.album-content .thumbnails-div .thumbnails {
+    margin: 0 auto;
+    height: 100%;
+    width: 93%;
+    text-align: center;
+}
+.photo-layer {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: rgba(255, 255, 255, 1);
+    left: 0;
+    text-align: center;
+    z-index: 1;
+}
+.photo-layer .photo-content {
+    height: 90%;
+}
+.photo-layer .align-helper {
+    height: 90%;
+}
+.photo-layer img {
+    max-width: 1280px;
+}
+.album-content .close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+}
 
 .license-footer {
     height: 150px;
@@ -679,8 +752,7 @@ ul.images li img {
     cursor: pointer;
 }
 
-
-.license-footer .title {
+.license-footer .title, .license-footer .current-title {
     font-size: 14px;
     margin-bottom: 24px;
     margin-top: 10px;
@@ -738,7 +810,7 @@ ul.images li img {
 
 /* jscrollpane */
 .jspTrack {
-    background: #f7f7f7;
+    background: #f0f0f0;
 }
 
 .jspDrag {
@@ -760,9 +832,42 @@ ul.images li img {
 }
 
 .fs-scrollbar-track {
-    background-color: #f7f7f7;
+    background-color: #f0f0f0;
 }
 
 .fs-scrollbar-handle {
     bottom: 7.5px !important;
+}
+
+/* slick-slider */
+.slick-slider {
+    height: 70%;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.slick-list {
+    height: 100%;
+}
+
+.slick-track {
+    height: 100%;
+}
+
+.slick-slide {
+    height: 100%;
+    margin: 10px;
+}
+
+.slick-slide img {
+    display: inline-block !important;
+    max-height: 95%;
+}
+
+.slick-prev::before, .slick-next::before {
+    color: #c8c8c8 !important;
+}
+
+.slick-prev::before:hover, .slick-next::before:hover {
+    opacity: 0.8;
 }

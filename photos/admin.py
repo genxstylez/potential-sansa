@@ -3,11 +3,13 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from photos.models import Album, Photo
+from photos.forms import PhotoForm
 
 
 class PhotoInline(admin.TabularInline):
     model = Photo
     suit_classes = 'suit-tab suit-tab-photos'
+    form = PhotoForm
 
     class Meta:
         verbose_name = ''

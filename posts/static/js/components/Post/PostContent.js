@@ -75,7 +75,7 @@ export default React.createClass({
                             <div className="decorations">
                                 <span className="created_at">{moment(this.props.created_at).format("YYYY.MM.DD")}</span>
                             </div>
-                            <div dangerouslySetInnerHTML={{__html: this.props.articletext}} />
+                            <div className="text" dangerouslySetInnerHTML={{__html: this.props.articletext}} />
                             <div className="decorations end"></div>
                             {creditNodes}
                             <div className="share">

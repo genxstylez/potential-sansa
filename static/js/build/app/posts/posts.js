@@ -60,7 +60,7 @@ _Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (H
     _React2['default'].render(_React2['default'].createElement(Handler, null), document.querySelector('.react-container'));
 });
 
-},{"./routes/AlbumPage":260,"./routes/AlbumsPage":261,"./routes/Application":262,"./routes/IndexPage":263,"./routes/PostPage":264,"./routes/SearchPage":265,"./routes/SubscribePage":266,"react-router":45,"react/addons":60}],2:[function(require,module,exports){
+},{"./routes/AlbumPage":261,"./routes/AlbumsPage":262,"./routes/Application":263,"./routes/IndexPage":264,"./routes/PostPage":265,"./routes/SearchPage":266,"./routes/SubscribePage":267,"react-router":45,"react/addons":60}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -45025,7 +45025,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":259,"./BannerTile":237,"html-truncate":4,"lodash":5,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"./BannerTile":237,"html-truncate":4,"lodash":5,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45087,7 +45087,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":259,"html-truncate":4,"lodash":5,"react-router":45,"react/addons":60}],238:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":4,"lodash":5,"react-router":45,"react/addons":60}],238:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45126,7 +45126,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":259,"lodash":5,"react-router":45,"react/addons":60}],239:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":260,"lodash":5,"react-router":45,"react/addons":60}],239:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45282,7 +45282,11 @@ exports['default'] = _React2['default'].createClass({
             row: true,
             nav: true,
             fixed: this.state.scrollTop > 200 });
-        var NavItemNodes = [];
+        var NavItemNodes = [_React2['default'].createElement(
+            Link,
+            { to: '/' },
+            'Home'
+        ), _React2['default'].createElement('span', { key: '80010', className: 'circle-divider' })];
         for (var x in this.state.categories) {
             var category = this.state.categories[x];
             NavItemNodes.push(_React2['default'].createElement(_NavItem2['default'], {
@@ -45349,7 +45353,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./NavItem":241,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],241:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./NavItem":241,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],241:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45437,7 +45441,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":258,"lodash":5,"react-router":45,"react/addons":60}],242:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"lodash":5,"react-router":45,"react/addons":60}],242:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45454,95 +45458,170 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-var _WebAPIMixin = require('../../mixins/WebAPIMixin');
+var _classNames = require('classnames');
 
-var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+var _classNames2 = _interopRequireWildcard(_classNames);
+
+var _PhotoFooter = require('./PhotoFooter');
+
+var _PhotoFooter2 = _interopRequireWildcard(_PhotoFooter);
 
 'use strict';
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-var State = require('react-router').State;
+var Navigation = require('react-router').Navigation;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'AlbumContent',
 
-    mixins: [_WebAPIMixin2['default'], State],
+    mixins: [Navigation],
 
     getInitialState: function getInitialState() {
         return {
-            id: 0,
-            name: '',
-            zh_name: '',
-            photos: []
+            current_photo: undefined
         };
     },
 
-    _getAlbum: function _getAlbum(id) {
-        var _this = this;
-
-        this.getAlbum(id, function (error, response) {
-            if (response.body) _this.setState({
-                id: response.body.id,
-                photos: _this.state.photos.concat(response.body.photos),
-                name: response.body.name,
-                zh_name: response.body.zh_name
-            });
+    handleClickOnThumbnail: function handleClickOnThumbnail(index) {
+        $('.myslick-container').slick('slickGoTo', index);
+    },
+    handleClickOnPhoto: function handleClickOnPhoto(photo) {
+        this.setState({
+            current_photo: photo
         });
     },
-
-    handleClick: function handleClick(image_url) {
-        this.setState({ on_deck: image_url });
+    handeClickOnPhotoCross: function handeClickOnPhotoCross() {
+        this.setState({
+            current_photo: undefined
+        });
+    },
+    handeClickOnCross: function handeClickOnCross() {
+        if (!this.goBack()) this.transitionTo('albums');
     },
     handleLeftArrow: function handleLeftArrow() {
-        $(_React2['default'].findDOMNode(this.refs.imgRow)).animate({
-            scrollLeft: '-=250'
+        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
+            scrollLeft: '-=350'
         }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        $(_React2['default'].findDOMNode(this.refs.imgRow)).animate({
-            scrollLeft: '+=250'
+        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
+            scrollLeft: '+=350'
         }, 200);
     },
     componentDidMount: function componentDidMount() {
-        this._getAlbum(this.getParams().albumId);
+        if (this.isMounted()) {
+            $('.myslick-container').slick({
+                centerMode: true,
+                slidesToShow: 1,
+                variableWidth: true,
+                speed: 300,
+                inifinite: true
+            });
+        }
     },
-    render: function render() {
-        var _this2 = this;
 
-        var thumbnailNodes = _import2['default'].map(this.state.photos, function (photo) {
+    render: function render() {
+        var _this = this;
+
+        var ImageNodes = _import2['default'].map(this.props.photos, function (photo) {
+            return _React2['default'].createElement(
+                'div',
+                null,
+                _React2['default'].createElement('span', { className: 'align-helper' }),
+                _React2['default'].createElement('img', { src: photo.img.large,
+                    onClick: _this.handleClickOnPhoto.bind(_this, photo) }),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'caption' },
+                    photo.caption
+                )
+            );
+        });
+        var thumbnailNodes = _import2['default'].map(this.props.photos, function (photo, index) {
             return _React2['default'].createElement(
                 'li',
                 { key: photo.id },
                 _React2['default'].createElement('img', { src: photo.img.small,
-                    onClick: _this2.handleClick.bind(_this2, photo) })
+                    onClick: _this.handleClickOnThumbnail.bind(_this, index) })
             );
         });
+        var PhotoNode = '';
+        if (this.state.current_photo) {
+            PhotoNode = _React2['default'].createElement(
+                'div',
+                { className: 'photo-layer', key: this.state.current_photo.id },
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'close' },
+                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnPhotoCross })
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'caption' },
+                    this.state.current_photo.caption
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'photo-content' },
+                    _React2['default'].createElement('span', { className: 'align-helper' }),
+                    _React2['default'].createElement('img', { src: this.state.current_photo.img.original })
+                ),
+                _React2['default'].createElement(_PhotoFooter2['default'], { photo: this.state.current_photo })
+            );
+        }
+
         return _React2['default'].createElement(
             'div',
-            { className: 'album-gallery' },
+            { className: 'album-content' },
             _React2['default'].createElement(
-                'div',
-                { className: 'arrow left', onClick: this.handleLeftArrow },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
-            ),
-            _React2['default'].createElement(
-                'ul',
-                { className: 'images', ref: 'imgRow' },
-                thumbnailNodes
+                'span',
+                { className: 'close' },
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
             ),
             _React2['default'].createElement(
                 'div',
-                { className: 'arrow right', onClick: this.handlerRightArrow },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
+                { className: 'albums-header' },
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                this.props.name,
+                _React2['default'].createElement('span', { className: 'circle-divider' })
+            ),
+            _React2['default'].createElement(
+                'div',
+                { className: 'myslick-container' },
+                ImageNodes
+            ),
+            _React2['default'].createElement(
+                'div',
+                { className: 'thumbnails-div' },
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'arrow pull-left', onClick: this.handleLeftArrow },
+                    _React2['default'].createElement('span', { className: 'align-helper' }),
+                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
+                ),
+                _React2['default'].createElement(
+                    'ul',
+                    { className: 'thumbnails', ref: 'thumbnailsRow' },
+                    thumbnailNodes
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'arrow pull-left right', onClick: this.handlerRightArrow },
+                    _React2['default'].createElement('span', { className: 'align-helper' }),
+                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
+                )
+            ),
+            _React2['default'].createElement(
+                TransitionGroup,
+                { transitionName: 'post' },
+                PhotoNode
             )
         );
     }
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":259,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],243:[function(require,module,exports){
+},{"./PhotoFooter":246,"classnames":3,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],243:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45662,7 +45741,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./AlbumTile":244,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],244:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./AlbumTile":244,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],244:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45719,7 +45798,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":259,"html-truncate":4,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],245:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":4,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],245:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45795,6 +45874,172 @@ exports['default'] = _React2['default'].createClass({
 module.exports = exports['default'];
 
 },{"classnames":3,"react/addons":60}],246:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = require('react/addons');
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _classNames = require('classnames');
+
+var _classNames2 = _interopRequireWildcard(_classNames);
+
+'use strict';
+
+var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O’logy website. Check out the full license description below.</p>' + '<div class="license-footer-link">' + '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' + '</div>';
+
+exports['default'] = _React2['default'].createClass({
+    displayName: 'PhotoFooter',
+
+    propTypes: {
+        collapsed: _React2['default'].PropTypes.bool.isRequired,
+        photo: _React2['default'].PropTypes.object.isRequired
+    },
+    getInitialState: function getInitialState() {
+        return {
+            collapsed: true,
+            content: license_text,
+            current_title: ''
+        };
+    },
+    handleOnClick: function handleOnClick() {
+        if (!this.state.collapsed) {
+            this.setState({
+                collapsed: true });
+        }
+    },
+
+    handleOnClickTitle: function handleOnClickTitle(e) {
+        switch (e.target.innerHTML) {
+            case 'License':
+                this.setState({
+                    current_title: 'License',
+                    content: license_text,
+                    collapsed: false
+                });
+                break;
+            case 'Download':
+                break;
+            case 'Photographer':
+                this.setState({
+                    current_title: 'Photographer',
+                    content: this.props.photo.photographer,
+                    collapsed: false
+                });
+                break;
+        }
+    },
+    handleOnMouseEnter: function handleOnMouseEnter(e) {},
+    handleOnMouseOut: function handleOnMouseOut(e) {},
+    componetWillReceiveProps: function componetWillReceiveProps(nextProps, nextState) {
+        if (nextState.collapsed) {
+            this.setState({
+                current_title: '',
+                content: ''
+            });
+        }
+    },
+    render: function render() {
+        var cls = _classNames2['default']({
+            row: true,
+            footer: true,
+            'license-footer': true,
+            collapsed: this.state.collapsed
+        });
+        var title_cls = _classNames2['default']({
+            title: true,
+            hidden: !this.state.collapsed
+        });
+        var current_title_cls = _classNames2['default']({
+            'current-title': true,
+            hidden: this.state.collpased
+        });
+        return _React2['default'].createElement(
+            'div',
+            { className: cls },
+            _React2['default'].createElement(
+                'div',
+                { className: title_cls },
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                _React2['default'].createElement(
+                    'span',
+                    { onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    'License'
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                _React2['default'].createElement(
+                    'a',
+                    { href: this.props.photo.img.original,
+                        target: '_blank',
+                        onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    'Download'
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                _React2['default'].createElement(
+                    'span',
+                    { onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    'Photographer'
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' })
+            ),
+            _React2['default'].createElement(
+                'div',
+                { className: current_title_cls, onClick: this.handleOnClick },
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                _React2['default'].createElement(
+                    'span',
+                    { onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    this.state.current_title
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' })
+            ),
+            _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: this.state.content } })
+        );
+    }
+});
+module.exports = exports['default'];
+
+/*
+switch(e.target.innerHTML) {
+    case "License": 
+        e.target.innerHTML = "版權";
+        break;
+    case "Download":
+        e.target.innerHTML = "下載";
+        break;
+    case "Photographer":
+        e.target.innerHTML = "攝影";
+        break;
+} */
+
+/*
+switch(e.target.innerHTML) {
+    case "版權": 
+        e.target.innerHTML = "License";
+        break;
+    case "下載":
+        e.target.innerHTML = "Download";
+        break;
+    case "攝影":
+        e.target.innerHTML = "Photographer";
+        break;
+}*/
+
+},{"classnames":3,"react/addons":60}],247:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45923,7 +46168,7 @@ exports['default'] = _React2['default'].createClass({
                                 _moment2['default'](this.props.created_at).format('YYYY.MM.DD')
                             )
                         ),
-                        _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: this.props.articletext } }),
+                        _React2['default'].createElement('div', { className: 'text', dangerouslySetInnerHTML: { __html: this.props.articletext } }),
                         _React2['default'].createElement('div', { className: 'decorations end' }),
                         creditNodes,
                         _React2['default'].createElement(
@@ -45945,7 +46190,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./PostCredit":247,"./PostGallery":248,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],247:[function(require,module,exports){
+},{"./PostCredit":248,"./PostGallery":249,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46013,7 +46258,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
+},{"lodash":5,"react-router":45,"react/addons":60}],249:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46034,14 +46279,23 @@ var _import2 = _interopRequireWildcard(_import);
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
+function generate_embed(youtube_id) {
+    var width = $('.on_deck').width();
+    var height = width / 1.5;
+
+    return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + youtube_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
+};
+
 var SelectedImg = _React2['default'].createClass({
     displayName: 'SelectedImg',
 
     render: function render() {
-        var onDeckNode = this.props.on_deck.video ? _React2['default'].createElement('div', { key: this.props.on_deck.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.props.on_deck.video } }) : [_React2['default'].createElement('span', { className: 'align-helper' }), _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' })];
+        var onDeckNode = this.props.on_deck.video_id ? _React2['default'].createElement('div', { key: this.props.on_deck.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.props.on_deck.video_id) } }) : _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' });
         return _React2['default'].createElement(
             'div',
             { className: 'on_deck' },
+            _React2['default'].createElement('span', { className: 'align-helper' }),
+            ',',
             onDeckNode,
             _React2['default'].createElement(
                 'div',
@@ -46070,12 +46324,12 @@ exports['default'] = _React2['default'].createClass({
         this.setState({ on_deck: image_url });
     },
     handleLeftArrow: function handleLeftArrow() {
-        $(_React2['default'].findDOMNode(this.refs.imgRow)).animate({
+        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
             scrollLeft: '-=250'
         }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        $(_React2['default'].findDOMNode(this.refs.imgRow)).animate({
+        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
             scrollLeft: '+=250'
         }, 200);
     },
@@ -46108,9 +46362,9 @@ exports['default'] = _React2['default'].createClass({
             ),
             _React2['default'].createElement(
                 'ul',
-                { className: 'images', ref: 'imgRow' },
+                { className: 'thumbnails', ref: 'thumbnailsRow' },
                 this.state.imgs.map(function (image) {
-                    if (image.video) {
+                    if (image.video_id) {
                         return _React2['default'].createElement(
                             'li',
                             { key: image.id },
@@ -46138,7 +46392,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],249:[function(require,module,exports){
+},{"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],250:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46234,7 +46488,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":259,"html-truncate":4,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],250:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":4,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],251:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46349,7 +46603,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../PostCredit":247,"./ShootingGallery":252,"lodash":5,"react-router":45,"react/addons":60}],251:[function(require,module,exports){
+},{"../PostCredit":248,"./ShootingGallery":253,"lodash":5,"react-router":45,"react/addons":60}],252:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46417,7 +46671,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],252:[function(require,module,exports){
+},{"lodash":5,"react-router":45,"react/addons":60}],253:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46442,6 +46696,13 @@ var _ShootingCredit2 = _interopRequireWildcard(_ShootingCredit);
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
+function generate_embed(youtube_id) {
+    var width = $('.on_deck').width();
+    var height = width / 1.5;
+
+    return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + youtube_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
+};
+
 var SelectedImg = _React2['default'].createClass({
     displayName: 'SelectedImg',
 
@@ -46460,11 +46721,12 @@ var SelectedImg = _React2['default'].createClass({
                 )
             );
         }
-        var onDeckNode = this.props.on_deck.video ? _React2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: this.props.on_deck.video } }) : [_React2['default'].createElement('span', { className: 'align-hlper' }), _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' })];
+        var onDeckNode = this.props.on_deck.video_id ? _React2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.props.on_deck.video_id) } }) : _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' });
 
         return _React2['default'].createElement(
             'div',
             { className: 'on_deck' },
+            _React2['default'].createElement('span', { className: 'align-helper' }),
             onDeckNode,
             _React2['default'].createElement(
                 'div',
@@ -46502,12 +46764,12 @@ exports['default'] = _React2['default'].createClass({
         });
     },
     handleLeftArrow: function handleLeftArrow() {
-        $(this.refs.imgRow.getDOMNode()).animate({
+        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
             scrollLeft: '-=250'
         }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        $(this.refs.imgRow.getDOMNode()).animate({
+        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
             scrollLeft: '+=250'
         }, 200);
     },
@@ -46547,9 +46809,9 @@ exports['default'] = _React2['default'].createClass({
             ),
             _React2['default'].createElement(
                 'ul',
-                { className: 'images', ref: 'imgRow' },
+                { className: 'thumbnails', ref: 'thumbnailsRow' },
                 this.state.imgs.map(function (image) {
-                    if (image.video) {
+                    if (image.video_id) {
                         return _React2['default'].createElement(
                             'li',
                             { key: image.id },
@@ -46577,7 +46839,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./ShootingCredit":251,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],253:[function(require,module,exports){
+},{"./ShootingCredit":252,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],254:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46736,7 +46998,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":258,"../mixins/WebAPIMixin":259,"./Post/PostTile":249,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],254:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],255:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46885,7 +47147,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":258,"../mixins/WebAPIMixin":259,"./Post/PostTile":249,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60}],255:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47005,7 +47267,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./SubNavItem":257,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./SubNavItem":258,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],257:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47150,7 +47412,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./SubNavItem":257,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],257:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./SubNavItem":258,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],258:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47208,7 +47470,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],258:[function(require,module,exports){
+},{"lodash":5,"react-router":45,"react/addons":60}],259:[function(require,module,exports){
 'use strict';
 
 var win = typeof window !== 'undefined' ? window : false;
@@ -47272,7 +47534,7 @@ var ScrollListenerMixin = {
 
 module.exports = ScrollListenerMixin;
 
-},{"react/lib/ViewportMetrics":177}],259:[function(require,module,exports){
+},{"react/lib/ViewportMetrics":177}],260:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47355,7 +47617,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"superagent":233}],260:[function(require,module,exports){
+},{"superagent":233}],261:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47376,21 +47638,65 @@ var _AlbumContent = require('../components/Photo/AlbumContent');
 
 var _AlbumContent2 = _interopRequireWildcard(_AlbumContent);
 
+var _LicenseFooter = require('../components/Photo/LicenseFooter');
+
+var _LicenseFooter2 = _interopRequireWildcard(_LicenseFooter);
+
+var _WebAPIMixin = require('../mixins/WebAPIMixin');
+
+var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+
 'use strict';
 
-var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var State = require('react-router').State;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'AlbumPage',
 
+    mixins: [_WebAPIMixin2['default'], State],
+
+    getInitialState: function getInitialState() {
+        return {
+            id: 0,
+            name: '',
+            zh_name: '',
+            photos: [],
+            footer_collapsed: true
+        };
+    },
+
+    _getAlbum: function _getAlbum(id) {
+        var _this = this;
+
+        this.getAlbum(id, function (error, response) {
+            if (response.body) _this.setState({
+                id: response.body.id,
+                photos: _this.state.photos.concat(response.body.photos),
+                name: response.body.name,
+                zh_name: response.body.zh_name });
+        });
+    },
+    componentDidMount: function componentDidMount() {
+        this._getAlbum(this.getParams().albumId);
+    },
     render: function render() {
-        return _React2['default'].createElement(_AlbumContent2['default'], null);
+
+        return _React2['default'].createElement(
+            'div',
+            { style: { height: '100%' } },
+            _React2['default'].createElement(_AlbumContent2['default'], { key: this.state.id,
+                id: this.state.id,
+                name: this.state.name,
+                zh_name: this.state.zh_name,
+                photos: this.state.photos }),
+            _React2['default'].createElement(_LicenseFooter2['default'], { collapsed: this.state.footer_collapsed })
+        );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../components/Photo/AlbumContent":242,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],261:[function(require,module,exports){
+},{"../components/Photo/AlbumContent":242,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":260,"lodash":5,"react-router":45,"react/addons":60}],262:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47438,30 +47744,14 @@ exports['default'] = _React2['default'].createClass({
             this.transitionTo('/');
         }
     },
-    handleClickOnAlbums: function handleClickOnAlbums() {
-        this.setState({
-            footer_collapsed: true
-        });
-    },
     render: function render() {
         return _React2['default'].createElement(
             'div',
-            { className: 'albums', onClick: this.handleClickOnAlbums },
+            { className: 'albums' },
             _React2['default'].createElement(
                 TransitionGroup,
                 { transitionName: 'post' },
-                _React2['default'].createElement(
-                    'span',
-                    { className: 'close' },
-                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
-                ),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'albums-header' },
-                    _React2['default'].createElement('span', { className: 'circle-divider' }),
-                    'Photo',
-                    _React2['default'].createElement('span', { className: 'circle-divider' })
-                ),
+                _React2['default'].createElement(_NavBar2['default'], null),
                 _React2['default'].createElement(_AlbumList2['default'], null)
             ),
             _React2['default'].createElement(_LicenseFooter2['default'], { collapsed: this.state.footer_collapsed })
@@ -47471,7 +47761,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],262:[function(require,module,exports){
+},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47511,7 +47801,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
+},{"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],264:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47584,7 +47874,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":253,"../components/SubNav/SubNavBar":256,"lodash":5,"react/addons":60}],264:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":254,"../components/SubNav/SubNavBar":257,"lodash":5,"react/addons":60}],265:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47701,7 +47991,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Post/PostContent":246,"../components/Post/Shooting/ShootingContent":250,"../mixins/WebAPIMixin":259,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],265:[function(require,module,exports){
+},{"../components/Post/PostContent":247,"../components/Post/Shooting/ShootingContent":251,"../mixins/WebAPIMixin":260,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],266:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47872,7 +48162,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/SearchPostList":254,"../components/SubNav/SearchSubNavBar":255,"classnames":3,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],266:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/SearchPostList":255,"../components/SubNav/SearchSubNavBar":256,"classnames":3,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],267:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47979,4 +48269,4 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":259,"lodash":5,"react/addons":60}]},{},[1]);
+},{"../mixins/WebAPIMixin":260,"lodash":5,"react/addons":60}]},{},[1]);

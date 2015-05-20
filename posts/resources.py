@@ -47,10 +47,6 @@ class ImageResource(ModelResource):
             }
             return bundle.data['img']
 
-    def dehydrate(self, bundle):
-        bundle.data['video'] = bundle.obj.generate_video_embed() if bundle.obj.video_url else ''
-        return bundle
-
 
 class TagResource(ModelResource):
 

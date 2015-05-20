@@ -21,24 +21,11 @@ export default React.createClass({
             this.transitionTo('/')
        }
     },
-    handleClickOnAlbums() {
-        this.setState({
-            footer_collapsed: true
-        });
-    },
     render() {
         return (
-            <div className="albums" onClick={this.handleClickOnAlbums}>
+            <div className="albums">
                 <TransitionGroup transitionName="post">
-                    <span className="close">
-                        <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
-                    </span>
-                    <div className="albums-header">
-                        <span className="circle-divider" />
-                        Photo
-                        <span className="circle-divider" />
-                    </div>
-
+                    <NavBar />
                     <AlbumList />
                 </TransitionGroup>
                 <LicenseFooter collapsed={this.state.footer_collapsed} />

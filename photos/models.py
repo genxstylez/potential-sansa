@@ -26,3 +26,4 @@ class Photo(models.Model):
     album = models.ForeignKey(Album, verbose_name='相簿', related_name='photos')
     caption = models.CharField('註解', max_length=20, blank=True)
     img = fields.ThumbnailerImageField('圖片', upload_to=album_image_path)
+    photographer = models.TextField('攝影', blank=True)

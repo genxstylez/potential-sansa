@@ -4,14 +4,24 @@ import React from 'react/addons';
 import _ from 'lodash';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
+
+function generate_embed(youtube_id) {
+    var width = $('.on_deck').width();
+    var height = width / 1.5;
+
+    return '<iframe width="' + width + '" height="' + height + '" ' +
+            'src="https://www.youtube.com/embed/' + youtube_id + '" ' +
+            'frameborder="0" allowfullscreen></iframe>';
+};
+
 var SelectedImg = React.createClass({
     render() {
-        var onDeckNode = this.props.on_deck.video ? 
-            <div key={this.props.on_deck.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.props.on_deck.video}} /> :  
-            [<span className="align-helper" />,
-            <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />]
+        var onDeckNode = this.props.on_deck.video_id ? 
+            <div key={this.props.on_deck.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: generate_embed(this.props.on_deck.video_id)}} /> :  
+            <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />
         return (
             <div className="on_deck">
+                <span className="align-helper" />,
                 {onDeckNode}
                 <div className="caption">{this.props.on_deck.caption}</div>
             </div>
@@ -37,12 +47,12 @@ export default React.createClass({
         this.setState({on_deck: image_url});
     },
     handleLeftArrow() {
-        $(React.findDOMNode(this.refs.imgRow)).animate({ 
+        $(React.findDOMNode(this.refs.thumbnailsRow)).animate({ 
             scrollLeft: "-=250"
         }, 200);
     },
     handlerRightArrow() {
-          $(React.findDOMNode(this.refs.imgRow)).animate({ 
+          $(React.findDOMNode(this.refs.thumbnailsRow)).animate({ 
             scrollLeft: "+=250"
         }, 200);
     },
@@ -68,9 +78,9 @@ export default React.createClass({
                 <span className="align-helper" />
                 <img src={STATIC_URL + "img/left-arrow.png"} />
             </div>
-            <ul className="images" ref="imgRow">
+            <ul className="thumbnails" ref="thumbnailsRow">
               {this.state.imgs.map(function(image) {
-                    if (image.video) {
+                    if (image.video_id) {
                         return (
                             <li key={image.id}>
                                 <img src={"https://i.ytimg.com/vi/" + image.video_id + "/hqdefault.jpg"}

@@ -60,7 +60,7 @@ export default React.createClass({
             'nav': true,
             'fixed': this.state.scrollTop > 200,
         });
-        const NavItemNodes = [];
+        const NavItemNodes = [<Link to="/">Home</Link>, <span key="80010" className="circle-divider"/>];
         for(var x in this.state.categories) {
             var category = this.state.categories[x]
             NavItemNodes.push(
