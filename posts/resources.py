@@ -55,14 +55,23 @@ class TagResource(ModelResource):
 
 
 class CategoryResource(ModelResource):
+    children = fields.ToManyField('self', 'sub_categories', null=True, blank=True, full=True)
+
+    class Meta:
+        queryset = Category.objects.filter(parent__isnull=True)
+        resource_name = 'category'
+        allowed_methods = ['get']
+
+
+class SubCategoryResource(ModelResource):
     parent = fields.ForeignKey('self', 'parent', null=True, blank=True, full=True)
 
     class Meta:
         queryset = Category.objects.all()
-        resource_name = 'category'
+        resource_name = 'subcategory'
         allowed_methods = ['get']
         filtering = {
-            'parent': ('isnull', 'exact')
+            'parent': ['isnull', 'exact'],
         }
 
 
@@ -77,7 +86,7 @@ class StarredResource(ModelResource):
 
 
 class PostResource(ModelResource):
-    category = fields.ForeignKey(CategoryResource, 'category', full=True, null=True, blank=True)
+    category = fields.ForeignKey(SubCategoryResource, 'category', full=True, null=True, blank=True)
     credits = fields.DictField('credits', use_in='detail')
     tags = fields.ToManyField(TagResource, lambda bundle: bundle.obj.tags.all(), use_in='detail', full=True, null=True, blank=True)
     images = fields.ToManyField(ImageResource, 'images', full=True, use_in='detail')

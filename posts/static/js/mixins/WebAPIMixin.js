@@ -8,9 +8,9 @@ export default {
      * gets categories from the server
      * @param {function} cb
      */
-    getCategories(parent, cb) {
-        var qs = parent ? '&parent=' + parent : '&parent__isnull=true';
-        request.get('/api/v1/category/?format=json' + qs)
+    getCategories(cb) {
+        request.get('/api/v1/category/')
+            .query('format=json')
             .type('application/json')
             .accept('application/json')
             .end(cb);
@@ -24,7 +24,7 @@ export default {
     },
     /**
      * get all/categorised posts from the server
-     * @param {number} id
+ * @param {number} id
      * @param {function} cb
      */
     getPosts(category_id, subcategory_id, cb) {

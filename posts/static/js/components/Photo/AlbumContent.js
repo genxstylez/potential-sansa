@@ -58,7 +58,7 @@ export default React.createClass({
     render() {
         const ImageNodes = _.map(this.props.photos, photo => {
             return (
-                <div>
+                <div key={photo.id}>
                     <span className="align-helper" />
                     <img src={photo.img.large} 
                         onClick={this.handleClickOnPhoto.bind(this, photo)} />
@@ -85,7 +85,7 @@ export default React.createClass({
                     <span className="align-helper" />
                     <img src={this.state.current_photo.img.original} />
                 </div>
-                <PhotoFooter photo={this.state.current_photo} />
+                <PhotoFooter collapsed={true} photo={this.state.current_photo} />
             </div>
         }
 

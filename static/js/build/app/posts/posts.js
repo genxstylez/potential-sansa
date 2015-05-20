@@ -153,6 +153,115 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 },{}],4:[function(require,module,exports){
+/**
+ * matchesSelector v1.0.3
+ * matchesSelector( element, '.selector' )
+ * MIT license
+ */
+
+/*jshint browser: true, strict: true, undef: true, unused: true */
+/*global define: false, module: false */
+
+( function( ElemProto ) {
+
+  'use strict';
+
+  var matchesMethod = ( function() {
+    // check for the standard method name first
+    if ( ElemProto.matches ) {
+      return 'matches';
+    }
+    // check un-prefixed
+    if ( ElemProto.matchesSelector ) {
+      return 'matchesSelector';
+    }
+    // check vendor prefixes
+    var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
+
+    for ( var i=0, len = prefixes.length; i < len; i++ ) {
+      var prefix = prefixes[i];
+      var method = prefix + 'MatchesSelector';
+      if ( ElemProto[ method ] ) {
+        return method;
+      }
+    }
+  })();
+
+  // ----- match ----- //
+
+  function match( elem, selector ) {
+    return elem[ matchesMethod ]( selector );
+  }
+
+  // ----- appendToFragment ----- //
+
+  function checkParent( elem ) {
+    // not needed if already has parent
+    if ( elem.parentNode ) {
+      return;
+    }
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild( elem );
+  }
+
+  // ----- query ----- //
+
+  // fall back to using QSA
+  // thx @jonathantneal https://gist.github.com/3062955
+  function query( elem, selector ) {
+    // append to fragment if no parent
+    checkParent( elem );
+
+    // match elem with all selected elems of parent
+    var elems = elem.parentNode.querySelectorAll( selector );
+    for ( var i=0, len = elems.length; i < len; i++ ) {
+      // return true if match
+      if ( elems[i] === elem ) {
+        return true;
+      }
+    }
+    // otherwise return false
+    return false;
+  }
+
+  // ----- matchChild ----- //
+
+  function matchChild( elem, selector ) {
+    checkParent( elem );
+    return match( elem, selector );
+  }
+
+  // ----- matchesSelector ----- //
+
+  var matchesSelector;
+
+  if ( matchesMethod ) {
+    // IE9 supports matchesSelector, but doesn't work on orphaned elems
+    // check for that
+    var div = document.createElement('div');
+    var supportsOrphans = match( div, 'div' );
+    matchesSelector = supportsOrphans ? match : matchChild;
+  } else {
+    matchesSelector = query;
+  }
+
+  // transport
+  if ( typeof define === 'function' && define.amd ) {
+    // AMD
+    define( function() {
+      return matchesSelector;
+    });
+  } else if ( typeof exports === 'object' ) {
+    module.exports = matchesSelector;
+  }
+  else {
+    // browser global
+    window.matchesSelector = matchesSelector;
+  }
+
+})( Element.prototype );
+
+},{}],5:[function(require,module,exports){
 /*global module:true*/
 /*jslint nomen:true*/
 /**
@@ -400,7 +509,7 @@ if (typeof module !== 'undefined' && module.exports) {
     }
 }(this));
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -12207,7 +12316,7 @@ if (typeof module !== 'undefined' && module.exports) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -15319,7 +15428,7 @@ if (typeof module !== 'undefined' && module.exports) {
     return _moment;
 
 }));
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var isBrowser = (typeof window !== 'undefined');
 var Masonry = isBrowser ? window.Masonry || require('masonry') : null;
 var imagesloaded = isBrowser ? require('imagesloaded') : null;
@@ -15432,7 +15541,7 @@ function MasonryMixin() {
 
 module.exports = MasonryMixin();
 
-},{"imagesloaded":8,"masonry":11}],8:[function(require,module,exports){
+},{"imagesloaded":9,"masonry":12}],9:[function(require,module,exports){
 /*!
  * imagesLoaded v3.1.8
  * JavaScript is all like "You images are done yet or what?"
@@ -15769,7 +15878,7 @@ function makeArray( obj ) {
 
 });
 
-},{"eventie":9,"wolfy87-eventemitter":10}],9:[function(require,module,exports){
+},{"eventie":10,"wolfy87-eventemitter":11}],10:[function(require,module,exports){
 /*!
  * eventie v1.0.6
  * event binding helper
@@ -15853,7 +15962,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 })( window );
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*!
  * EventEmitter v4.2.11 - git.io/ee
  * Unlicense - http://unlicense.org/
@@ -16327,7 +16436,7 @@ if ( typeof define === 'function' && define.amd ) {
     }
 }.call(this));
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*!
  * Masonry v3.1.5
  * Cascading grid layout library
@@ -16539,7 +16648,7 @@ if (typeof exports === 'object') {
 
 })( typeof window !== 'undefined' ? window : null );
 
-},{"get-size":12,"outlayer":20}],12:[function(require,module,exports){
+},{"get-size":13,"outlayer":20}],13:[function(require,module,exports){
 /*!
  * getSize v1.1.8
  * measure size of elements
@@ -16757,7 +16866,7 @@ if ( typeof exports === 'object' ) {
 
 })( typeof window !== 'undefined' ? window : null );
 
-},{"desandro-get-style-property":13}],13:[function(require,module,exports){
+},{"desandro-get-style-property":14}],14:[function(require,module,exports){
 /*!
  * getStyleProperty v1.0.4
  * original by kangax
@@ -16814,7 +16923,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 })( window );
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * Outlayer Item
  */
@@ -17346,118 +17455,9 @@ if (typeof exports === 'object') {
 
 })( typeof window !== 'undefined' ? window : null );
 
-},{"desandro-get-style-property":15,"eventemitter":18,"get-size":12}],15:[function(require,module,exports){
-arguments[4][13][0].apply(exports,arguments)
-},{"dup":13}],16:[function(require,module,exports){
-/**
- * matchesSelector v1.0.3
- * matchesSelector( element, '.selector' )
- * MIT license
- */
-
-/*jshint browser: true, strict: true, undef: true, unused: true */
-/*global define: false, module: false */
-
-( function( ElemProto ) {
-
-  'use strict';
-
-  var matchesMethod = ( function() {
-    // check for the standard method name first
-    if ( ElemProto.matches ) {
-      return 'matches';
-    }
-    // check un-prefixed
-    if ( ElemProto.matchesSelector ) {
-      return 'matchesSelector';
-    }
-    // check vendor prefixes
-    var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
-
-    for ( var i=0, len = prefixes.length; i < len; i++ ) {
-      var prefix = prefixes[i];
-      var method = prefix + 'MatchesSelector';
-      if ( ElemProto[ method ] ) {
-        return method;
-      }
-    }
-  })();
-
-  // ----- match ----- //
-
-  function match( elem, selector ) {
-    return elem[ matchesMethod ]( selector );
-  }
-
-  // ----- appendToFragment ----- //
-
-  function checkParent( elem ) {
-    // not needed if already has parent
-    if ( elem.parentNode ) {
-      return;
-    }
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild( elem );
-  }
-
-  // ----- query ----- //
-
-  // fall back to using QSA
-  // thx @jonathantneal https://gist.github.com/3062955
-  function query( elem, selector ) {
-    // append to fragment if no parent
-    checkParent( elem );
-
-    // match elem with all selected elems of parent
-    var elems = elem.parentNode.querySelectorAll( selector );
-    for ( var i=0, len = elems.length; i < len; i++ ) {
-      // return true if match
-      if ( elems[i] === elem ) {
-        return true;
-      }
-    }
-    // otherwise return false
-    return false;
-  }
-
-  // ----- matchChild ----- //
-
-  function matchChild( elem, selector ) {
-    checkParent( elem );
-    return match( elem, selector );
-  }
-
-  // ----- matchesSelector ----- //
-
-  var matchesSelector;
-
-  if ( matchesMethod ) {
-    // IE9 supports matchesSelector, but doesn't work on orphaned elems
-    // check for that
-    var div = document.createElement('div');
-    var supportsOrphans = match( div, 'div' );
-    matchesSelector = supportsOrphans ? match : matchChild;
-  } else {
-    matchesSelector = query;
-  }
-
-  // transport
-  if ( typeof define === 'function' && define.amd ) {
-    // AMD
-    define( function() {
-      return matchesSelector;
-    });
-  } else if ( typeof exports === 'object' ) {
-    module.exports = matchesSelector;
-  }
-  else {
-    // browser global
-    window.matchesSelector = matchesSelector;
-  }
-
-})( Element.prototype );
-
-},{}],17:[function(require,module,exports){
+},{"desandro-get-style-property":16,"eventemitter":18,"get-size":13}],16:[function(require,module,exports){
+arguments[4][14][0].apply(exports,arguments)
+},{"dup":14}],17:[function(require,module,exports){
 /*!
  * docReady v1.0.3
  * Cross browser DOMContentLoaded event emitter
@@ -19076,7 +19076,7 @@ if (typeof exports === 'object') {
 
 })( typeof window !== 'undefined' ? window : null );
 
-},{"./item":14,"desandro-matches-selector":16,"doc-ready":17,"eventemitter":18,"eventie":19,"get-size":12}],21:[function(require,module,exports){
+},{"./item":15,"desandro-matches-selector":4,"doc-ready":17,"eventemitter":18,"eventie":19,"get-size":13}],21:[function(require,module,exports){
 /**
  * Represents a cancellation caused by navigating away
  * before the previous transition has fully resolved.
@@ -45025,7 +45025,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"./BannerTile":237,"html-truncate":4,"lodash":5,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"./BannerTile":237,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45087,7 +45087,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":4,"lodash":5,"react-router":45,"react/addons":60}],238:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],238:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45126,7 +45126,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":260,"lodash":5,"react-router":45,"react/addons":60}],239:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60}],239:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45189,7 +45189,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],240:[function(require,module,exports){
+},{"lodash":6,"react-router":45,"react/addons":60}],240:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45251,9 +45251,8 @@ exports['default'] = _React2['default'].createClass({
     _getCategories: function _getCategories() {
         var _this = this;
 
-        this.getCategories(null, function (error, response) {
+        this.getCategories(function (error, response) {
             _this.setState({ categories: error ? [] : response.body.objects });
-            _this.forceUpdate();
         });
     },
 
@@ -45269,6 +45268,22 @@ exports['default'] = _React2['default'].createClass({
         e.target.text = 'Subscribe';
     },
 
+    handleHomeOnMouseEnter: function handleHomeOnMouseEnter(e) {
+        e.target.text = '首頁';
+    },
+
+    handleHomeOnMouseOut: function handleHomeOnMouseOut(e) {
+        e.target.text = 'Home';
+    },
+
+    handlePhotoOnMouseEnter: function handlePhotoOnMouseEnter(e) {
+        e.target.text = '照片';
+    },
+
+    handlePhotoOnMouseOut: function handlePhotoOnMouseOut(e) {
+        e.target.text = 'Photo';
+    },
+
     render: function render() {
         var header_classes = _classNames2['default']({
             header: true,
@@ -45276,7 +45291,6 @@ exports['default'] = _React2['default'].createClass({
             'col-sm-12': true,
             'col-md-12': true,
             'col-lg-12': true
-
         });
         var nav_classes = _classNames2['default']({
             row: true,
@@ -45284,7 +45298,9 @@ exports['default'] = _React2['default'].createClass({
             fixed: this.state.scrollTop > 200 });
         var NavItemNodes = [_React2['default'].createElement(
             Link,
-            { to: '/' },
+            { key: 'home', to: '/',
+                onMouseEnter: this.handleHomeOnMouseEnter,
+                onMouseOut: this.handleHomeOnMouseOut },
             'Home'
         ), _React2['default'].createElement('span', { key: '80010', className: 'circle-divider' })];
         for (var x in this.state.categories) {
@@ -45294,6 +45310,7 @@ exports['default'] = _React2['default'].createClass({
                 id: category.id,
                 name: category.name,
                 zh_name: category.zh_name,
+                children: category.children,
                 uri: category.resource_uri }));
             if (x < this.state.categories.length - 1) {
                 NavItemNodes.push(_React2['default'].createElement('span', { key: x + 800, className: 'circle-divider' }));
@@ -45302,10 +45319,11 @@ exports['default'] = _React2['default'].createClass({
         NavItemNodes.push(_React2['default'].createElement('span', { key: '80011', className: 'circle-divider' }));
         NavItemNodes.push(_React2['default'].createElement(
             Link,
-            { to: 'albums' },
-            'Photos'
+            { key: 'albums', to: 'albums',
+                onMouseEnter: this.handlePhotoOnMouseEnter,
+                onMouseOut: this.handlePhotoOnMouseOut },
+            'Photo'
         ));
-        NavItemNodes.push(_React2['default'].createElement('span', { key: '80012', className: 'circle-divider' }));
 
         var fb_icon = STATIC_URL + 'img/fb.png';
         var search_icon = STATIC_URL + 'img/search.png';
@@ -45353,7 +45371,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./NavItem":241,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],241:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./NavItem":241,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],241:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45374,9 +45392,9 @@ var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
 
-var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
+var _SubNavBar = require('../SubNav/SubNavBar');
 
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+var _SubNavBar2 = _interopRequireWildcard(_SubNavBar);
 
 'use strict';
 
@@ -45385,19 +45403,17 @@ var Link = _Router2['default'].Link;
 exports['default'] = _React2['default'].createClass({
     displayName: 'NavItem',
 
-    mixins: [_ScrollListenerMixin2['default']],
-
     propTypes: {
         id: _React2['default'].PropTypes.number.isRequired,
         name: _React2['default'].PropTypes.string.isRequired,
         zh_name: _React2['default'].PropTypes.string.isRequired,
+        children: _React2['default'].PropTypes.array,
         uri: _React2['default'].PropTypes.string.isRequired
     },
 
     getInitialState: function getInitialState() {
         return {
-            display: ''
-        };
+            display: '' };
     },
 
     componentDidMount: function componentDidMount() {
@@ -45408,14 +45424,12 @@ exports['default'] = _React2['default'].createClass({
 
     handleOnMouseEnter: function handleOnMouseEnter() {
         this.setState({
-            display: this.props.zh_name
-        });
+            display: this.props.zh_name });
     },
 
     handleOnMouseOut: function handleOnMouseOut() {
         this.setState({
-            display: this.props.name
-        });
+            display: this.props.name });
     },
 
     render: function render() {
@@ -45427,21 +45441,26 @@ exports['default'] = _React2['default'].createClass({
                 lineHeight: '1.5' }
         };
         return _React2['default'].createElement(
-            Link,
-            { key: this.props.id,
-                style: styles.anchor,
-                to: 'category',
-                params: { categoryId: this.props.id },
-                onMouseEnter: this.handleOnMouseEnter,
-                onMouseOut: this.handleOnMouseOut },
-            this.state.display
+            'span',
+            { className: 'navitems' },
+            _React2['default'].createElement(
+                Link,
+                { key: this.props.id,
+                    style: styles.anchor,
+                    to: 'category',
+                    params: { categoryId: this.props.id },
+                    onMouseEnter: this.handleOnMouseEnter,
+                    onMouseOut: this.handleOnMouseOut },
+                this.state.display
+            ),
+            _React2['default'].createElement(_SubNavBar2['default'], { parent_id: this.props.id, categories: this.props.children })
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"lodash":5,"react-router":45,"react/addons":60}],242:[function(require,module,exports){
+},{"../SubNav/SubNavBar":257,"lodash":6,"react-router":45,"react/addons":60}],242:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45526,7 +45545,7 @@ exports['default'] = _React2['default'].createClass({
         var ImageNodes = _import2['default'].map(this.props.photos, function (photo) {
             return _React2['default'].createElement(
                 'div',
-                null,
+                { key: photo.id },
                 _React2['default'].createElement('span', { className: 'align-helper' }),
                 _React2['default'].createElement('img', { src: photo.img.large,
                     onClick: _this.handleClickOnPhoto.bind(_this, photo) }),
@@ -45566,7 +45585,7 @@ exports['default'] = _React2['default'].createClass({
                     _React2['default'].createElement('span', { className: 'align-helper' }),
                     _React2['default'].createElement('img', { src: this.state.current_photo.img.original })
                 ),
-                _React2['default'].createElement(_PhotoFooter2['default'], { photo: this.state.current_photo })
+                _React2['default'].createElement(_PhotoFooter2['default'], { collapsed: true, photo: this.state.current_photo })
             );
         }
 
@@ -45621,7 +45640,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./PhotoFooter":246,"classnames":3,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],243:[function(require,module,exports){
+},{"./PhotoFooter":246,"classnames":3,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],243:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45741,7 +45760,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./AlbumTile":244,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],244:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./AlbumTile":244,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],244:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45798,7 +45817,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":4,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],245:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],245:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46190,7 +46209,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./PostCredit":248,"./PostGallery":249,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
+},{"./PostCredit":248,"./PostGallery":249,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46258,7 +46277,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],249:[function(require,module,exports){
+},{"lodash":6,"react-router":45,"react/addons":60}],249:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46392,7 +46411,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],250:[function(require,module,exports){
+},{"lodash":6,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],250:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46488,7 +46507,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":4,"lodash":5,"moment":6,"react-router":45,"react/addons":60}],251:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],251:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46603,7 +46622,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../PostCredit":248,"./ShootingGallery":253,"lodash":5,"react-router":45,"react/addons":60}],252:[function(require,module,exports){
+},{"../PostCredit":248,"./ShootingGallery":253,"lodash":6,"react-router":45,"react/addons":60}],252:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46671,7 +46690,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],253:[function(require,module,exports){
+},{"lodash":6,"react-router":45,"react/addons":60}],253:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46839,7 +46858,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./ShootingCredit":252,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],254:[function(require,module,exports){
+},{"./ShootingCredit":252,"lodash":6,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],254:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46998,7 +47017,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],255:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],255:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47147,7 +47166,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":5,"react-masonry-mixin":7,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47267,7 +47286,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./SubNavItem":258,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],257:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./SubNavItem":258,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],257:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47296,33 +47315,21 @@ var _SubNavItem = require('./SubNavItem');
 
 var _SubNavItem2 = _interopRequireWildcard(_SubNavItem);
 
-var _WebAPIMixin = require('../../mixins/WebAPIMixin');
-
-var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
-
-var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
-
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
-
 'use strict';
-
-var Link = _Router2['default'].Link;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'SubNavBar',
 
     propTypes: {
-        categoryId: _React2['default'].PropTypes.string },
+        categories: _React2['default'].PropTypes.array,
+        parent_id: _React2['default'].PropTypes.number.isRequired
+    },
 
-    /**
-     * @type {object[]}
-     */
-    mixins: [_WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
+    getInitialState: function getInitialState() {
+        return {
+            categories: [] };
+    },
 
-    /**
-     * gets users from web API
-     * @private
-     */
     _getCategories: function _getCategories(categoryId) {
         var _this = this;
 
@@ -47332,87 +47339,44 @@ exports['default'] = _React2['default'].createClass({
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId) this._getCategories(nextProps.categoryId);else this.setState({ categories: [] });
-    },
-
-    getInitialState: function getInitialState() {
-        return {
-            categories: [] };
+        this.setState({ categories: nextProps.categories });
     },
 
     componentDidMount: function componentDidMount() {
-        if (this.props.categoryId) this._getCategories(this.props.categoryId);
+        this.setState({ categories: this.props.categories });
     },
 
-    /**
-     * render
-     * @returns {XML}
-     */
-
     render: function render() {
-        var header_classes = _classNames2['default']({
-            header: true,
-            'col-xs-0': true,
-            'col-sm-12': true,
-            'col-md-12': true,
-            'col-lg-12': true
-
-        });
         var nav_classes = _classNames2['default']({
-            row: true,
             'sub-nav': true,
-            fixed: this.state.scrollTop > 200 });
+            hidden: this.state.categories.length == 0
+        });
+        var NavItemNodes = [];
+        for (var x in this.state.categories) {
+            var category = this.state.categories[x];
 
-        var template = null;
-        if (this.state.categories.length > 0) {
-            var NavItemNodes = [];
-            for (var x in this.state.categories) {
-                var category = this.state.categories[x];
+            NavItemNodes.push(_React2['default'].createElement(_SubNavItem2['default'], { key: category.id,
+                parent_id: this.props.parent_id,
+                id: category.id,
+                name: category.name,
+                zh_name: category.zh_name,
+                uri: category.resource_uri }));
 
-                NavItemNodes.push(_React2['default'].createElement(_SubNavItem2['default'], { key: category.id,
-                    parent_id: this.props.categoryId,
-                    id: category.id,
-                    name: category.name,
-                    uri: category.resource_uri }));
-
-                if (x < this.state.categories.length - 1) {
-                    NavItemNodes.push(_React2['default'].createElement('span', { className: 'circle-divider' }));
-                };
+            if (x < this.state.categories.length - 1) {
+                NavItemNodes.push(_React2['default'].createElement('span', { key: x + 99, className: 'circle-divider' }));
             };
-            template = _React2['default'].createElement(
-                'div',
-                { className: nav_classes },
-                _React2['default'].createElement(
-                    'div',
-                    { className: header_classes },
-                    _React2['default'].createElement(
-                        'div',
-                        { className: 'sub-nav-inner' },
-                        _React2['default'].createElement(
-                            'div',
-                            { className: 'nav-selected' },
-                            this.state.categories[0].parent.name
-                        ),
-                        _React2['default'].createElement(
-                            'div',
-                            { className: 'sub-nav-filters pull-right' },
-                            NavItemNodes
-                        )
-                    )
-                )
-            );
         }
         return _React2['default'].createElement(
             'div',
-            null,
-            template
+            { className: nav_classes },
+            NavItemNodes
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./SubNavItem":258,"classnames":3,"lodash":5,"react-router":45,"react/addons":60}],258:[function(require,module,exports){
+},{"./SubNavItem":258,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],258:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47441,36 +47405,50 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'SubNavItem',
 
     propTypes: {
-        parent_id: _React2['default'].PropTypes.string.isRequired,
+        parent_id: _React2['default'].PropTypes.number.isRequired,
         id: _React2['default'].PropTypes.number.isRequired,
         name: _React2['default'].PropTypes.string.isRequired,
+        zh_name: _React2['default'].PropTypes.string.isRequired,
         uri: _React2['default'].PropTypes.string.isRequired
     },
+    getInitialState: function getInitialState() {
+        return {
+            display: '' };
+    },
 
+    componentDidMount: function componentDidMount() {
+        this.setState({
+            display: this.props.name
+        });
+    },
+
+    handleOnMouseEnter: function handleOnMouseEnter() {
+        this.setState({
+            display: this.props.zh_name });
+    },
+
+    handleOnMouseOut: function handleOnMouseOut() {
+        this.setState({
+            display: this.props.name });
+    },
     render: function render() {
-        var styles = {
-            anchor: {
-                fontSize: '14px',
-                color: '#000',
-                letterSpacing: '0.1em',
-                lineHeight: '1.5' }
-        };
         return _React2['default'].createElement(
             Link,
             { key: this.props.id,
-                style: styles.anchor,
                 to: 'subcategory',
+                onMouseEnter: this.handleOnMouseEnter,
+                onMouseOut: this.handleOnMouseOut,
                 params: {
                     categoryId: this.props.parent_id,
                     subcategoryId: this.props.id } },
-            this.props.name
+            this.state.display
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"lodash":5,"react-router":45,"react/addons":60}],259:[function(require,module,exports){
+},{"lodash":6,"react-router":45,"react/addons":60}],259:[function(require,module,exports){
 'use strict';
 
 var win = typeof window !== 'undefined' ? window : false;
@@ -47555,9 +47533,8 @@ exports['default'] = {
      * gets categories from the server
      * @param {function} cb
      */
-    getCategories: function getCategories(parent, cb) {
-        var qs = parent ? '&parent=' + parent : '&parent__isnull=true';
-        _request2['default'].get('/api/v1/category/?format=json' + qs).type('application/json').accept('application/json').end(cb);
+    getCategories: function getCategories(cb) {
+        _request2['default'].get('/api/v1/category/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     getStarred: function getStarred(cb) {
@@ -47565,7 +47542,7 @@ exports['default'] = {
     },
     /**
      * get all/categorised posts from the server
-     * @param {number} id
+    * @param {number} id
      * @param {function} cb
      */
     getPosts: function getPosts(category_id, subcategory_id, cb) {
@@ -47696,7 +47673,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Photo/AlbumContent":242,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":260,"lodash":5,"react-router":45,"react/addons":60}],262:[function(require,module,exports){
+},{"../components/Photo/AlbumContent":242,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60}],262:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47761,7 +47738,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
+},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47830,10 +47807,6 @@ var _BannerList = require('../components/Banner/BannerList');
 
 var _BannerList2 = _interopRequireWildcard(_BannerList);
 
-var _SubNavBar = require('../components/SubNav/SubNavBar');
-
-var _SubNavBar2 = _interopRequireWildcard(_SubNavBar);
-
 var _PostList = require('../components/PostList');
 
 var _PostList2 = _interopRequireWildcard(_PostList);
@@ -47863,7 +47836,6 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(_Logo2['default'], null),
             _React2['default'].createElement(_NavBar2['default'], null),
             _React2['default'].createElement(_BannerList2['default'], null),
-            _React2['default'].createElement(_SubNavBar2['default'], { categoryId: categoryId }),
             _React2['default'].createElement(_PostList2['default'], { ref: 'postlist',
                 categoryId: categoryId,
                 subcategoryId: subcategoryId }),
@@ -47874,7 +47846,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":254,"../components/SubNav/SubNavBar":257,"lodash":5,"react/addons":60}],265:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":254,"lodash":6,"react/addons":60}],265:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47991,7 +47963,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Post/PostContent":247,"../components/Post/Shooting/ShootingContent":251,"../mixins/WebAPIMixin":260,"lodash":5,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],266:[function(require,module,exports){
+},{"../components/Post/PostContent":247,"../components/Post/Shooting/ShootingContent":251,"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],266:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -48162,7 +48134,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/SearchPostList":255,"../components/SubNav/SearchSubNavBar":256,"classnames":3,"lodash":5,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],267:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/SearchPostList":255,"../components/SubNav/SearchSubNavBar":256,"classnames":3,"lodash":6,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],267:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -48269,4 +48241,4 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":260,"lodash":5,"react/addons":60}]},{},[1]);
+},{"../mixins/WebAPIMixin":260,"lodash":6,"react/addons":60}]},{},[1]);

@@ -50,7 +50,7 @@ div.logo img {
     height: 4px;
     border-radius: 50%;
     display: inline-block;
-    margin: 0px 9px 3px 9px;
+    margin: 0px 14px 3px 14px;
 }
 
 .grey-circle {
@@ -63,7 +63,7 @@ div.logo img {
 .nav {
     background-color: #f0f0f0;
 }
-.nav.fixed, .sub-nav.fixed {
+.nav.fixed {
     position: fixed;
     top: 0;
     left: 0;
@@ -71,12 +71,33 @@ div.logo img {
     z-index: 11;
     margin: 0px;
 }
-.sub-nav {
-    background: #fff;
-}
-.sub-nav.fixed {
+.nav.fixed .sub-nav{
     top: 47px;
 }
+
+.navitems:hover .sub-nav {
+    visibility: visible;
+    transition: visibility 0s;
+}
+
+.sub-nav {
+    visibility: hidden;
+    position: absolute;
+    top: 224px;
+    background-color: #fff;
+    z-index: 3;
+    width: 100%;
+    left: 0px;
+    height: 47px;
+    line-height: 47px;
+    transition: 0.2s;
+
+}
+
+.sub-nav a {
+    color: #646464 !important;
+}
+
 .header {
     text-align: center;
     margin: 2px 0px;
@@ -85,6 +106,7 @@ div.logo img {
     width: 90%;
     margin: 0 auto;
     float: none;
+    position: static;
 }
 .header a {
     font-size: 14px;
@@ -99,6 +121,7 @@ div.logo img {
 .header .navbar {
     width: 50%;
     margin: 0 auto;
+    position: static;
 }
 .header .search {
     cursor: pointer;
@@ -870,4 +893,14 @@ ul.thumbnails li img {
 
 .slick-prev::before:hover, .slick-next::before:hover {
     opacity: 0.8;
+}
+
+.asd {
+    visibility: hidden;
+    position: absolute;
+    top: 35px;
+}
+
+.navitems:hover .asd {
+    visibility: visible;
 }

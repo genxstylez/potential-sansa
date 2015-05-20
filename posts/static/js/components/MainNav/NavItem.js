@@ -3,23 +3,22 @@
 import React from 'react/addons';
 import _ from 'lodash';
 import Router from 'react-router';
-import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
+import SubNavBar from '../SubNav/SubNavBar';
 
 const Link = Router.Link;
 
 export default React.createClass({
-    mixins: [ScrollListenerMixin],
-
     propTypes: {
         id: React.PropTypes.number.isRequired,
         name: React.PropTypes.string.isRequired,
         zh_name: React.PropTypes.string.isRequired,
+        children: React.PropTypes.array,
         uri: React.PropTypes.string.isRequired
     },
 
     getInitialState() {
         return {
-            display: ''
+            display: '',
         }
     },
 
@@ -31,13 +30,13 @@ export default React.createClass({
 
     handleOnMouseEnter() {
         this.setState({
-            display: this.props.zh_name
+            display: this.props.zh_name,
         });
     },
 
     handleOnMouseOut() {
         this.setState({
-            display: this.props.name
+            display: this.props.name,
         });
     },
 
@@ -51,12 +50,17 @@ export default React.createClass({
             }
         };
         return (
-            <Link key={this.props.id} 
-                style={styles.anchor} 
-                to="category"
-                params={{categoryId: this.props.id}}
-                onMouseEnter={this.handleOnMouseEnter}
-                onMouseOut={this.handleOnMouseOut}>{this.state.display}</Link>
+            <span className="navitems">
+                <Link key={this.props.id} 
+                    style={styles.anchor} 
+                    to="category"
+                    params={{categoryId: this.props.id}}
+                    onMouseEnter={this.handleOnMouseEnter}
+                    onMouseOut={this.handleOnMouseOut}>{this.state.display}</Link>
+                <SubNavBar parent_id={this.props.id} categories={this.props.children} />
+            </span>
+        
+
         );
     }
 

@@ -8,28 +8,44 @@ const Link = Router.Link;
 
 export default React.createClass({
     propTypes: {
-        parent_id: React.PropTypes.string.isRequired,
+        parent_id: React.PropTypes.number.isRequired,
         id: React.PropTypes.number.isRequired,
         name: React.PropTypes.string.isRequired,
+        zh_name: React.PropTypes.string.isRequired,
         uri: React.PropTypes.string.isRequired
     },
+    getInitialState() {
+        return {
+            display: '',
+        }
+    },
 
+    componentDidMount() {
+        this.setState({
+            display: this.props.name
+        });
+    },
+
+    handleOnMouseEnter() {
+        this.setState({
+            display: this.props.zh_name,
+        });
+    },
+
+    handleOnMouseOut() {
+        this.setState({
+            display: this.props.name,
+        });
+    },
     render() {
-        var styles = {
-            anchor: {
-                fontSize: "14px",
-                color: "#000",
-                letterSpacing: "0.1em",
-                lineHeight: "1.5",
-            }
-        };
         return (
             <Link key={this.props.id} 
-                style={styles.anchor} 
                 to="subcategory" 
+                onMouseEnter={this.handleOnMouseEnter}
+                onMouseOut={this.handleOnMouseOut}
                 params={{
                     categoryId: this.props.parent_id, 
-                    subcategoryId: this.props.id}}>{this.props.name}</Link>
+                    subcategoryId: this.props.id}}>{this.state.display}</Link>
         );
     }
 

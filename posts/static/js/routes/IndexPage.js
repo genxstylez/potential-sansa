@@ -5,7 +5,6 @@ import _ from 'lodash';
 import NavBar from '../components/MainNav/NavBar';
 import Logo from '../components/Logo';
 import BannerList from '../components/Banner/BannerList';
-import SubNavBar from '../components/SubNav/SubNavBar';
 import PostList from '../components/PostList';
 import Footer from '../components/Footer';
 
@@ -25,7 +24,6 @@ export default React.createClass({
                 <Logo />
                 <NavBar />
                 <BannerList />
-                <SubNavBar categoryId={categoryId} />
                 <PostList ref="postlist"
                     categoryId={categoryId} 
                     subcategoryId={subcategoryId} />
