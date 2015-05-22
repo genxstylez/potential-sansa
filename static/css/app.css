@@ -365,6 +365,9 @@ div.logo img {
     outline: 0;
     overflow: auto;
 }
+.article-box .article .article-content.overflow {
+    border-right: none;
+}
 .article-content .text a:hover{
     text-decoration: none;
     opacity: 0.7;
@@ -829,6 +832,26 @@ ul.thumbnails li img {
 
 .gallery-leave.gallery-leave-active {
   opacity: 0.01;
+}
+
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 7px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #d5d5d5;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(213,213,213,0.4); 
 }
 
 /* jscrollpane */

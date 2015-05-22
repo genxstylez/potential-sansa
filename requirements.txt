@@ -3,8 +3,7 @@ easy-thumbnails==2.2
 django==1.7
 django-storages-redux==1.2.3
 django-suit==0.2.12
-django-suit-redactor==0.0.2
-django-wysiwyg-redactor
+django-wysiwyg-redactor==0.4.7
 django-tastypie==0.12.1
 django-taggit==0.13.0
 django-watson==1.1.7

@@ -5,12 +5,12 @@ import _ from 'lodash';
 import moment from 'moment';
 import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
+import classNames from 'classnames';
+import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
 var Navigation = require('react-router').Navigation;
 
-
-
 export default React.createClass({
-    mixins: [Navigation],
+    mixins: [Navigation, ScrollListenerMixin],
 
     propTypes: {
         id: React.PropTypes.number.isRequired,
@@ -24,45 +24,73 @@ export default React.createClass({
     },
     getInitialState() {
         return ({
+            overflow: false,
             cover: {}
         })
     },
+    onPageScroll() {
+        if(this.state.scrollTop == 0) {
+            this.setState({
+                cover: this.props.imgs[0]
+            });
+        }
+    },
+    _setCover(index) {
+        const that = this;
+        _.forEach(this.props.imgs, function(img){
+            if(img.tag == index)
+                that.setState({
+                    cover: img
+                });
+        });
+    },
     componentDidMount() {
+        const that = this;
         if (this.props.imgs.length > 0) {
             this.setState({
                 cover: this.props.imgs[0]
             });
         };
         if(this.isMounted()) {
-            setTimeout(() => {
-                $(React.findDOMNode(this.refs.articleContent)).jScrollPane();
-                var wyp = new Waypoint({
-                    element: document.getElementsByTagName('sup')[0],
+            const articleContent = React.findDOMNode(this.refs.articleContent);
+            this.setState({
+                overflow: articleContent.offsetHeight < articleContent.scrollHeight            
+            });
+            var supscripts = document.getElementsByTagName('sup')
+            _.forEach(supscripts, function(sup){
+                new Waypoint({
+                    element: sup,
                     handler: function() {
-                        console.log('123123123');
+                        var index = parseInt(this.element.innerHTML);
+                        console.log(index);
+                        if(typeof index === 'number')
+                            that._setCover(index);
                     },
-                    context: document.getElementById('articleContent')
+                    context: document.getElementById('articleContent'),
+                    offset: 'bottom-in-view'
                 });
-                $('.credit').waypoint(function() {
-                    console.log('credit');
-                }, {
-                    context: '#articleContent'
-                });
+            });
+            /*
+            setTimeout(() => {
+                
             }, 50);
+            */
         };
-        window.addEventListener('resize', this.handleResize);
 
+        //window.addEventListener('resize', this.handleResize);
 
     },
-    
     componentWillUnmount () {
-        window.removeEventListener('resize', this.handleResize);
+        Waypoint.destroyAll();
+        //window.removeEventListener('resize', this.handleResize);
     },
 
+    /* 
     handleResize() {
         if($(React.findDOMNode(this.refs.articleContent)).data('jsp') != undefined)
             $(React.findDOMNode(this.refs.articleContent)).data('jsp').reinitialise();
     },
+    */
 
     handeClickOnCross() {
        if(!this.goBack()) {
@@ -76,7 +104,11 @@ export default React.createClass({
                 <PostCredit key={key} role={key} names={value}/>
             );
         });
-
+        const articleContent_class = classNames({
+            'pull-left': true,
+            'article-content': true,
+            'overflow': this.state.overflow
+        });
         return (
             <div className="article-box" ref="articleBox">
                 <span className="close">
@@ -88,7 +120,7 @@ export default React.createClass({
                     <span className="circle-divider"></span>
                 </div>
                 <div className="row article">
-                    <div id="articleContent" className="pull-left article-content" ref="articleContent">
+                    <div id="articleContent" className={articleContent_class} ref="articleContent">
                         <div className="inner-content">
                             <span className="label category">{this.props.category}</span>
                             <p className="title">{this.props.heading}</p>

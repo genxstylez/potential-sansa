@@ -46087,6 +46087,14 @@ var _PostGallery = require('./PostGallery');
 
 var _PostGallery2 = _interopRequireWildcard(_PostGallery);
 
+var _classNames = require('classnames');
+
+var _classNames2 = _interopRequireWildcard(_classNames);
+
+var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
+
+var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+
 'use strict';
 
 var Navigation = require('react-router').Navigation;
@@ -46094,7 +46102,7 @@ var Navigation = require('react-router').Navigation;
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostContent',
 
-    mixins: [Navigation],
+    mixins: [Navigation, _ScrollListenerMixin2['default']],
 
     propTypes: {
         id: _React2['default'].PropTypes.number.isRequired,
@@ -46107,44 +46115,70 @@ exports['default'] = _React2['default'].createClass({
         last_modified: _React2['default'].PropTypes.string },
     getInitialState: function getInitialState() {
         return {
+            overflow: false,
             cover: {}
         };
     },
+    onPageScroll: function onPageScroll() {
+        if (this.state.scrollTop == 0) {
+            this.setState({
+                cover: this.props.imgs[0]
+            });
+        }
+    },
+    _setCover: function _setCover(index) {
+        var that = this;
+        _import2['default'].forEach(this.props.imgs, function (img) {
+            if (img.tag == index) that.setState({
+                cover: img
+            });
+        });
+    },
     componentDidMount: function componentDidMount() {
-        var _this = this;
-
+        var that = this;
         if (this.props.imgs.length > 0) {
             this.setState({
                 cover: this.props.imgs[0]
             });
         };
         if (this.isMounted()) {
-            setTimeout(function () {
-                $(_React2['default'].findDOMNode(_this.refs.articleContent)).jScrollPane();
-                var wyp = new Waypoint({
-                    element: document.getElementsByTagName('sup')[0],
+            var articleContent = _React2['default'].findDOMNode(this.refs.articleContent);
+            this.setState({
+                overflow: articleContent.offsetHeight < articleContent.scrollHeight
+            });
+            var supscripts = document.getElementsByTagName('sup');
+            _import2['default'].forEach(supscripts, function (sup) {
+                new Waypoint({
+                    element: sup,
                     handler: function handler() {
-                        console.log('123123123');
+                        var index = parseInt(this.element.innerHTML);
+                        console.log(index);
+                        if (typeof index === 'number') that._setCover(index);
                     },
-                    context: document.getElementById('articleContent')
+                    context: document.getElementById('articleContent'),
+                    offset: 'bottom-in-view'
                 });
-                $('.credit').waypoint(function () {
-                    console.log('credit');
-                }, {
-                    context: '#articleContent'
-                });
+            });
+            /*
+            setTimeout(() => {
+                
             }, 50);
+            */
         };
-        window.addEventListener('resize', this.handleResize);
-    },
 
+        //window.addEventListener('resize', this.handleResize);
+    },
     componentWillUnmount: function componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
+        Waypoint.destroyAll();
+        //window.removeEventListener('resize', this.handleResize);
     },
 
-    handleResize: function handleResize() {
-        if ($(_React2['default'].findDOMNode(this.refs.articleContent)).data('jsp') != undefined) $(_React2['default'].findDOMNode(this.refs.articleContent)).data('jsp').reinitialise();
+    /* 
+    handleResize() {
+        if($(React.findDOMNode(this.refs.articleContent)).data('jsp') != undefined)
+            $(React.findDOMNode(this.refs.articleContent)).data('jsp').reinitialise();
     },
+    */
 
     handeClickOnCross: function handeClickOnCross() {
         if (!this.goBack()) {
@@ -46156,7 +46190,11 @@ exports['default'] = _React2['default'].createClass({
         var creditNodes = _import2['default'].map(this.props.credits, function (value, key) {
             return _React2['default'].createElement(_PostCredit2['default'], { key: key, role: key, names: value });
         });
-
+        var articleContent_class = _classNames2['default']({
+            'pull-left': true,
+            'article-content': true,
+            overflow: this.state.overflow
+        });
         return _React2['default'].createElement(
             'div',
             { className: 'article-box', ref: 'articleBox' },
@@ -46177,7 +46215,7 @@ exports['default'] = _React2['default'].createClass({
                 { className: 'row article' },
                 _React2['default'].createElement(
                     'div',
-                    { id: 'articleContent', className: 'pull-left article-content', ref: 'articleContent' },
+                    { id: 'articleContent', className: articleContent_class, ref: 'articleContent' },
                     _React2['default'].createElement(
                         'div',
                         { className: 'inner-content' },
@@ -46227,7 +46265,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./PostCredit":248,"./PostGallery":249,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":259,"./PostCredit":248,"./PostGallery":249,"classnames":3,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46944,7 +46982,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     onPageScroll: function onPageScroll() {
-        var bottomOffset = _React2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - this.state.scrollTop;
+        var bottomOffset = _React2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - window.innerHeight - this.state.scrollTop;
         if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
