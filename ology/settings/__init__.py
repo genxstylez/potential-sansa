@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'suit_redactor',
+    'redactor',
     'ology',
     'posts',
     'subscriptions',
@@ -189,7 +189,13 @@ AWS_HEADERS = {
     'Cache-Control': 'max-age=99999',
 }
 
-
+REDACTOR_OPTIONS = {
+    'lang': 'zh_tw',
+    'focus': 'true',
+    'minHeight': '500',
+    'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+    'plugins': ['scriptbuttons']
+}
 # RAVEN
 # Set your DSN value
 RAVEN_CONFIG = {

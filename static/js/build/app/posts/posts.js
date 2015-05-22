@@ -46105,15 +46105,36 @@ exports['default'] = _React2['default'].createClass({
         credits: _React2['default'].PropTypes.object,
         created_at: _React2['default'].PropTypes.string,
         last_modified: _React2['default'].PropTypes.string },
-
+    getInitialState: function getInitialState() {
+        return {
+            cover: {}
+        };
+    },
     componentDidMount: function componentDidMount() {
         var _this = this;
 
+        if (this.props.imgs.length > 0) {
+            this.setState({
+                cover: this.props.imgs[0]
+            });
+        };
         if (this.isMounted()) {
             setTimeout(function () {
                 $(_React2['default'].findDOMNode(_this.refs.articleContent)).jScrollPane();
+                var wyp = new Waypoint({
+                    element: document.getElementsByTagName('sup')[0],
+                    handler: function handler() {
+                        console.log('123123123');
+                    },
+                    context: document.getElementById('articleContent')
+                });
+                $('.credit').waypoint(function () {
+                    console.log('credit');
+                }, {
+                    context: '#articleContent'
+                });
             }, 50);
-        }
+        };
         window.addEventListener('resize', this.handleResize);
     },
 
@@ -46136,9 +46157,6 @@ exports['default'] = _React2['default'].createClass({
             return _React2['default'].createElement(_PostCredit2['default'], { key: key, role: key, names: value });
         });
 
-        var cover = {};
-        if (this.props.imgs.length > 0) cover = this.props.imgs[0];
-
         return _React2['default'].createElement(
             'div',
             { className: 'article-box', ref: 'articleBox' },
@@ -46159,7 +46177,7 @@ exports['default'] = _React2['default'].createClass({
                 { className: 'row article' },
                 _React2['default'].createElement(
                     'div',
-                    { className: 'pull-left article-content', ref: 'articleContent' },
+                    { id: 'articleContent', className: 'pull-left article-content', ref: 'articleContent' },
                     _React2['default'].createElement(
                         'div',
                         { className: 'inner-content' },
@@ -46201,7 +46219,7 @@ exports['default'] = _React2['default'].createClass({
                         )
                     )
                 ),
-                _React2['default'].createElement(_PostGallery2['default'], { imgs: this.props.imgs, on_deck: cover }),
+                _React2['default'].createElement(_PostGallery2['default'], { imgs: this.props.imgs, on_deck: this.state.cover }),
                 _React2['default'].createElement('div', { className: 'triangle' })
             )
         );

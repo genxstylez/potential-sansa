@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django import forms
 from posts.models import Image, Post
-from suit_redactor.widgets import RedactorWidget
+from redactor.widgets import RedactorEditor
 
 
 class PostForm(forms.ModelForm):
@@ -12,12 +12,7 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['heading', 'subheading', 'category', 'credits', 'articletext', 'starred', 'published']
         widgets = {
-            'articletext': RedactorWidget(editor_options={
-                'language': 'zh-Hant',
-                'focus': True,
-                'minHeight': '500',
-                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
-            })
+            'articletext': RedactorEditor()
         }
 
 '''

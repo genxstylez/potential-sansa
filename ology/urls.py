@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^_search/$', 'ology.views.search', name='search'),
     url(r'^api/', include(v1_api.urls)),
+    url(r'^redactor/', include('redactor.urls')),
     url(r'^', TemplateView.as_view(template_name='app.html'), name='index'),
     url(r'^posts/', include('posts.urls')),
 

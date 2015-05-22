@@ -7,6 +7,8 @@ import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
 var Navigation = require('react-router').Navigation;
 
+
+
 export default React.createClass({
     mixins: [Navigation],
 
@@ -20,14 +22,37 @@ export default React.createClass({
         created_at: React.PropTypes.string,
         last_modified: React.PropTypes.string,
     },
-
+    getInitialState() {
+        return ({
+            cover: {}
+        })
+    },
     componentDidMount() {
+        if (this.props.imgs.length > 0) {
+            this.setState({
+                cover: this.props.imgs[0]
+            });
+        };
         if(this.isMounted()) {
             setTimeout(() => {
                 $(React.findDOMNode(this.refs.articleContent)).jScrollPane();
+                var wyp = new Waypoint({
+                    element: document.getElementsByTagName('sup')[0],
+                    handler: function() {
+                        console.log('123123123');
+                    },
+                    context: document.getElementById('articleContent')
+                });
+                $('.credit').waypoint(function() {
+                    console.log('credit');
+                }, {
+                    context: '#articleContent'
+                });
             }, 50);
-        }
+        };
         window.addEventListener('resize', this.handleResize);
+
+
     },
     
     componentWillUnmount () {
@@ -52,10 +77,6 @@ export default React.createClass({
             );
         });
 
-        var cover = {};
-        if (this.props.imgs.length > 0)
-            cover = this.props.imgs[0];
-
         return (
             <div className="article-box" ref="articleBox">
                 <span className="close">
@@ -67,7 +88,7 @@ export default React.createClass({
                     <span className="circle-divider"></span>
                 </div>
                 <div className="row article">
-                    <div className="pull-left article-content" ref="articleContent">
+                    <div id="articleContent" className="pull-left article-content" ref="articleContent">
                         <div className="inner-content">
                             <span className="label category">{this.props.category}</span>
                             <p className="title">{this.props.heading}</p>
@@ -85,7 +106,7 @@ export default React.createClass({
                             </div>
                         </div>
                     </div>
-                    <PostGallery imgs={this.props.imgs} on_deck={cover}/>
+                    <PostGallery imgs={this.props.imgs} on_deck={this.state.cover}/>
                     <div className="triangle"></div>
                 </div>
             </div>

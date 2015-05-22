@@ -45,6 +45,11 @@ class PostAdmin(admin.ModelAdmin):
         ('images', '圖片')
     )
 
+    class Media:
+        css = {
+            'all': ("//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css",)
+        }
+
 
 class StarredPost(Post):
 
