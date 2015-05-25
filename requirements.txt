@@ -18,3 +18,4 @@ psycopg2==2.6
 Pillow==2.8.1
 raven==5.2.0
 pytz==2015.2
+jsonfield==1.0.3
