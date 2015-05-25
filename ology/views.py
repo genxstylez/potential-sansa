@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from ology.utils import reverse
 import watson
 
-from posts.models import Image, Post
+from posts.models import Image, Post, Credit
 
 
 def search(request):
@@ -19,10 +19,11 @@ def search(request):
     for result in watson_results:
         if isinstance(result.object, Image):
             post = result.object.post
-            show_only_post_results.append(post)
         elif isinstance(result.object, Post):
             post = result.object
-            show_only_post_results.append(post)
+        elif isinstance(result.object, Credit):
+            post = result.object.post
+        show_only_post_results.append(post)
     objects = [this_post.to_json() for this_post in list(set(show_only_post_results))]
 
     paginated_objects = objects[offset: offset + limit]

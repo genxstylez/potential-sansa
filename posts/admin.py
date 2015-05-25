@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from posts.models import Category, Image, Post
+from posts.models import Category, Image, Post, Credit
 from posts.forms import PostForm, StarredPostForm
 
 from suit.admin import SortableModelAdmin
@@ -16,19 +16,25 @@ class ImageInline(admin.TabularInline):
         verbose_name = ''
 
 
+class CreditInline(admin.TabularInline):
+    model = Credit
+    suit_classes = 'suit-tab suit-tab-credits'
+
+
 class PostAdmin(admin.ModelAdmin):
     form = PostForm
     list_filter = ('category', 'starred')
     date_hierarchy = 'created_at'
     inlines = [
         ImageInline,
+        CreditInline,
     ]
     search_fields = ['heading', 'subheading']
 
     fieldsets = (
         ('', {
             'classes': ('suit-tab', 'suit-tab-general'),
-            'fields': ('heading', 'subheading', 'category', 'credits', 'published', 'starred', 'tags')
+            'fields': ('heading', 'subheading', 'category', 'published', 'starred', 'tags')
         }),
         ('內容', {
             'classes': ('suit-tab', 'suit-tab-article', 'full-width',),
@@ -37,12 +43,17 @@ class PostAdmin(admin.ModelAdmin):
         ('', {
             'classes': ('suit-tab', 'suit-tab-images'),
             'fields': (),
-        })
+        }),
+        ('', {
+            'classes': ('suit-tab', 'suit-tab-credits'),
+            'fields': (),
+        }),
     )
     suit_form_tabs = (
         ('general', 'General'),
         ('article', '內容'),
-        ('images', '圖片')
+        ('images', '圖片'),
+        ('credits', 'Credits')
     )
 
     class Media:
@@ -63,13 +74,14 @@ class StarredAdmin(SortableModelAdmin):
     sortable = 'order'
     inlines = [
         ImageInline,
+        CreditInline
     ]
     search_fields = ['heading', 'subheading']
 
     fieldsets = (
         ('', {
             'classes': ('suit-tab', 'suit-tab-general'),
-            'fields': ('heading', 'subheading', 'category', 'credits', 'published', 'starred', 'tags')
+            'fields': ('heading', 'subheading', 'category', 'published', 'starred', 'tags')
         }),
         ('內容', {
             'classes': ('suit-tab', 'suit-tab-article', 'full-width',),
@@ -78,12 +90,17 @@ class StarredAdmin(SortableModelAdmin):
         ('', {
             'classes': ('suit-tab', 'suit-tab-images'),
             'fields': (),
-        })
+        }),
+        ('', {
+            'classes': ('suit-tab', 'suit-tab-credits'),
+            'fields': (),
+        }),
     )
     suit_form_tabs = (
         ('general', 'General'),
         ('article', '內容'),
-        ('images', '圖片')
+        ('images', '圖片'),
+        ('credits', 'Credits')
     )
 
     def get_queryset(self, request):
@@ -95,3 +112,4 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(StarredPost, StarredAdmin)
 admin.site.register(Category)
 admin.site.register(Image)
+admin.site.register(Credit)

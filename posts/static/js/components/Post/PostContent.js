@@ -17,7 +17,7 @@ export default React.createClass({
         subheading: React.PropTypes.string.isRequired,
         articletext: React.PropTypes.string,
         imgs: React.PropTypes.array.isRequired,
-        credits: React.PropTypes.object,
+        credits: React.PropTypes.array,
         created_at: React.PropTypes.string,
         last_modified: React.PropTypes.string,
     },
@@ -87,9 +87,9 @@ export default React.createClass({
     },
 
     render() {
-        const creditNodes = _.map(this.props.credits, (value, key) => {
+        const creditNodes = _.map(this.props.credits, credit => {
             return (
-                <PostCredit key={key} role={key} names={value}/>
+                <PostCredit key={credit.id} role={credit.role} name={credit.name} />
             );
         });
         const articleContent_class = classNames({

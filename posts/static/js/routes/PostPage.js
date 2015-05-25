@@ -18,7 +18,7 @@ export default React.createClass({
             subheading: '',
             articletext: '',
             imgs: [],
-            credits: {},
+            credits: [],
             created_at: '',
             last_modified: '',
             is_shooting: false,

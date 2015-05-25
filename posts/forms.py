@@ -10,22 +10,10 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['heading', 'subheading', 'category', 'credits', 'articletext', 'starred', 'published']
+        fields = ['heading', 'subheading', 'category', 'articletext', 'starred', 'published']
         widgets = {
             'articletext': RedactorEditor()
         }
-
-'''
-ckedit_options = {
-    'language': 'zh-Hant',
-    'height': '500px',
-    'toolbar': [
-        {'name': 'colors', 'items': ['TextColor']},
-        {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-        {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline']},
-    ]
-}
-'''
 
 
 class StarredPostForm(PostForm):

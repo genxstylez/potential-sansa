@@ -9,18 +9,16 @@ const Link = Router.Link;
 export default React.createClass({
     propTypes: {
         role: React.PropTypes.string.isRequired,
+        name: React.PropTypes.string.isRequired
     },
     render() {
+        const name_array = this.props.name.split(',');
         const names = [];
-        if(this.props.names instanceof Array) {
-            _.forEach(this.props.names, (name, key) => {
-                names.push(<Link key={key} to="search" query={{q: name}}>{name}</Link>);
-                if (key < this.props.names.length -1) 
-                    names.push(', ')
-            });
-        } else {
-            names.push(<Link key="single-credit-link" to="search" query={{q: this.props.names}}>{this.props.names}</Link>);
-        }
+        _.forEach(name_array, (name, key) => {
+            names.push(<Link key={key} to="search" query={{q: name}}>{name}</Link>);
+            if (key < name_array.length -1) 
+                names.push(', ')
+        });
         return (
             <div className="credit">
                 <span className="label role">{this.props.role}</span>

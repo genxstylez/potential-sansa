@@ -45,10 +45,10 @@ var NotFoundRoute = _Router2['default'].NotFoundRoute;
 
 var routes = _React2['default'].createElement(
     Route,
-    { name: 'app', path: '/', handler: _Application2['default'] },
-    _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'] }),
+    { name: 'app', path: '/', handler: _Application2['default'], ignoreScrollBehavior: true },
+    _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'], ignoreScrollBehavior: true }),
+    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'], ignoreScrollBehavior: true }),
+    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'], ignoreScrollBehavior: true }),
     _React2['default'].createElement(Route, { name: 'search', path: 'search', handler: _SearchPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'albums', path: 'albums', handler: _AlbumsPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId', handler: _AlbumPage2['default'] }),
@@ -46091,10 +46091,6 @@ var _classNames = require('classnames');
 
 var _classNames2 = _interopRequireWildcard(_classNames);
 
-var _ScrollListenerMixin = require('../../mixins/ScrollListenerMixin');
-
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
-
 'use strict';
 
 var Navigation = require('react-router').Navigation;
@@ -46102,7 +46098,7 @@ var Navigation = require('react-router').Navigation;
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostContent',
 
-    mixins: [Navigation, _ScrollListenerMixin2['default']],
+    mixins: [Navigation],
 
     propTypes: {
         id: _React2['default'].PropTypes.number.isRequired,
@@ -46110,21 +46106,14 @@ exports['default'] = _React2['default'].createClass({
         subheading: _React2['default'].PropTypes.string.isRequired,
         articletext: _React2['default'].PropTypes.string,
         imgs: _React2['default'].PropTypes.array.isRequired,
-        credits: _React2['default'].PropTypes.object,
+        credits: _React2['default'].PropTypes.array,
         created_at: _React2['default'].PropTypes.string,
         last_modified: _React2['default'].PropTypes.string },
     getInitialState: function getInitialState() {
         return {
             overflow: false,
-            cover: {}
+            cover: { id: 0 }
         };
-    },
-    onPageScroll: function onPageScroll() {
-        if (this.state.scrollTop == 0) {
-            this.setState({
-                cover: this.props.imgs[0]
-            });
-        }
     },
     _setCover: function _setCover(index) {
         var that = this;
@@ -46135,6 +46124,8 @@ exports['default'] = _React2['default'].createClass({
         });
     },
     componentDidMount: function componentDidMount() {
+        var _this = this;
+
         var that = this;
         if (this.props.imgs.length > 0) {
             this.setState({
@@ -46142,28 +46133,26 @@ exports['default'] = _React2['default'].createClass({
             });
         };
         if (this.isMounted()) {
-            var articleContent = _React2['default'].findDOMNode(this.refs.articleContent);
-            this.setState({
-                overflow: articleContent.offsetHeight < articleContent.scrollHeight
-            });
-            var supscripts = document.getElementsByTagName('sup');
-            _import2['default'].forEach(supscripts, function (sup) {
-                new Waypoint({
-                    element: sup,
-                    handler: function handler() {
-                        var index = parseInt(this.element.innerHTML);
-                        console.log(index);
-                        if (typeof index === 'number') that._setCover(index);
-                    },
-                    context: document.getElementById('articleContent'),
-                    offset: 'bottom-in-view'
+            (function () {
+                var articleContent = _React2['default'].findDOMNode(_this.refs.articleContent);
+                _this.setState({
+                    overflow: articleContent.offsetHeight < articleContent.scrollHeight
                 });
-            });
-            /*
-            setTimeout(() => {
-                
-            }, 50);
-            */
+                setTimeout(function () {
+                    var supscripts = document.getElementsByTagName('sup');
+                    _import2['default'].forEach(supscripts, function (sup) {
+                        new Waypoint({
+                            element: sup,
+                            handler: function handler() {
+                                var index = parseInt(this.element.innerHTML);
+                                if (typeof index === 'number') that._setCover(index);
+                            },
+                            context: articleContent,
+                            offset: 'bottom-in-view'
+                        });
+                    });
+                }, 1000);
+            })();
         };
 
         //window.addEventListener('resize', this.handleResize);
@@ -46187,8 +46176,8 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
-        var creditNodes = _import2['default'].map(this.props.credits, function (value, key) {
-            return _React2['default'].createElement(_PostCredit2['default'], { key: key, role: key, names: value });
+        var creditNodes = _import2['default'].map(this.props.credits, function (credit) {
+            return _React2['default'].createElement(_PostCredit2['default'], { key: credit.id, role: credit.role, name: credit.name });
         });
         var articleContent_class = _classNames2['default']({
             'pull-left': true,
@@ -46265,7 +46254,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"./PostCredit":248,"./PostGallery":249,"classnames":3,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
+},{"./PostCredit":248,"./PostGallery":249,"classnames":3,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],248:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46294,27 +46283,20 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'PostCredit',
 
     propTypes: {
-        role: _React2['default'].PropTypes.string.isRequired },
+        role: _React2['default'].PropTypes.string.isRequired,
+        name: _React2['default'].PropTypes.string.isRequired
+    },
     render: function render() {
-        var _this = this;
-
+        var name_array = this.props.name.split(',');
         var names = [];
-        if (this.props.names instanceof Array) {
-            _import2['default'].forEach(this.props.names, function (name, key) {
-                names.push(_React2['default'].createElement(
-                    Link,
-                    { key: key, to: 'search', query: { q: name } },
-                    name
-                ));
-                if (key < _this.props.names.length - 1) names.push(', ');
-            });
-        } else {
+        _import2['default'].forEach(name_array, function (name, key) {
             names.push(_React2['default'].createElement(
                 Link,
-                { key: 'single-credit-link', to: 'search', query: { q: this.props.names } },
-                this.props.names
+                { key: key, to: 'search', query: { q: name } },
+                name
             ));
-        }
+            if (key < name_array.length - 1) names.push(', ');
+        });
         return _React2['default'].createElement(
             'div',
             { className: 'credit' },
@@ -46370,7 +46352,6 @@ var SelectedImg = _React2['default'].createClass({
             'div',
             { className: 'on_deck' },
             _React2['default'].createElement('span', { className: 'align-helper' }),
-            ',',
             onDeckNode,
             _React2['default'].createElement(
                 'div',
@@ -47638,7 +47619,7 @@ exports['default'] = {
 
     searchPosts: function searchPosts(url, query, cb) {
         if (url == null) {
-            url = '/_search?q=' + query;
+            url = '/_search/?q=' + query;
         }
         _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
@@ -47949,7 +47930,7 @@ exports['default'] = _React2['default'].createClass({
             subheading: '',
             articletext: '',
             imgs: [],
-            credits: {},
+            credits: [],
             created_at: '',
             last_modified: '',
             is_shooting: false,

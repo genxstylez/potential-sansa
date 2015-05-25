@@ -6,7 +6,7 @@ from tastypie.authentication import (ApiKeyAuthentication, BasicAuthentication,
 from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ModelResource, fields, ALL_WITH_RELATIONS
 from taggit.models import Tag
-from posts.models import Category, Post, Image
+from posts.models import Category, Post, Image, Credit
 
 
 class AdminCategoryResource(ModelResource):
@@ -54,6 +54,12 @@ class TagResource(ModelResource):
         queryset = Tag.objects.all()
 
 
+class CreditResource(ModelResource):
+
+    class Meta:
+        queryset = Credit.objects.all()
+
+
 class CategoryResource(ModelResource):
     children = fields.ToManyField('self', 'sub_categories', null=True, blank=True, full=True)
 
@@ -87,7 +93,7 @@ class StarredResource(ModelResource):
 
 class PostResource(ModelResource):
     category = fields.ForeignKey(SubCategoryResource, 'category', full=True, null=True, blank=True)
-    credits = fields.DictField('credits', use_in='detail')
+    credits = fields.ToManyField(CreditResource, 'credits', full=True, use_in='detail')
     tags = fields.ToManyField(TagResource, lambda bundle: bundle.obj.tags.all(), use_in='detail', full=True, null=True, blank=True)
     images = fields.ToManyField(ImageResource, 'images', full=True, use_in='detail')
     cover = fields.ToOneField(ImageResource,

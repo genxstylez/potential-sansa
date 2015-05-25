@@ -7,10 +7,8 @@ import urlparse
 
 from django.db import models
 from django.db.models.signals import post_save
-from django.utils.safestring import mark_safe
 from taggit.managers import TaggableManager
 from easy_thumbnails import fields
-from jsonfield import JSONField
 from autoslug import AutoSlugField
 
 
@@ -31,6 +29,7 @@ class Category(models.Model):
             parent=self.parent.to_json() if self.parent else None
         )
 
+
 credits_help_text = '''
 Example:<br>
 {<br>
@@ -49,7 +48,6 @@ class Post(models.Model):
     heading = models.CharField('主標題', max_length=30, help_text="若要分行請輸入\r")
     subheading = models.CharField('副標題', max_length=30, blank=True)
     articletext = models.TextField('內容')
-    credits = JSONField('Credits', default={}, help_text=mark_safe(credits_help_text), blank=True)
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     starred = models.BooleanField('加入至橫幅', default=False)
@@ -83,7 +81,7 @@ class Post(models.Model):
             articletext=self.articletext,
             last_modified=str(self.last_modified),
             created_at=str(self.created_at),
-            credits=dict(self.credits),
+            credits=[credit.to_json() for credit in self.credits.all()],
             images=[image.to_json() for image in self.images.all()],
             cover=dict(
                 img=dict(
@@ -98,6 +96,18 @@ class Post(models.Model):
 
 def post_image_path(instance, filename):
     return '{post}/{filename}.{ext}'.format(post=instance.post, filename=str(uuid.uuid4())[:8], ext=filename.split('.')[-1])
+
+
+class Credit(models.Model):
+    post = models.ForeignKey(Post, related_name='credits')
+    role = models.CharField('職稱', max_length=50)
+    name = models.CharField('姓名', max_length=255, help_text='複數人數請用半形, 分隔開。例如：Amber Chan, 小叮噹')
+
+    def to_json(self):
+        return dict(
+            role=self.role,
+            name=self.name
+        )
 
 
 class Image(models.Model):
@@ -146,4 +156,10 @@ def update_image_index(instance, **kwargs):
     for image in instance.images.all():
         watson.default_search_engine.update_obj_index(image)
 
+
+def update_credit_index(instance, **kwargs):
+    for credit in instance.new_credits.all():
+        watson.default_search_engine.update_obj_index(credit)
+
 post_save.connect(update_image_index, Post)
+post_save.connect(update_credit_index, Post)
