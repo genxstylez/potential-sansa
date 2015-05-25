@@ -34,7 +34,7 @@ class AdminPostResource(ModelResource):
 class ImageResource(ModelResource):
 
     class Meta:
-        queryset = Image.objects.all()
+        queryset = Image.objects.order_by('id')
         resource_name = 'images'
 
     def dehydrate_img(self, bundle):

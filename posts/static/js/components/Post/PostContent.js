@@ -6,11 +6,10 @@ import moment from 'moment';
 import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
 import classNames from 'classnames';
-import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
 var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
-    mixins: [Navigation, ScrollListenerMixin],
+    mixins: [Navigation],
 
     propTypes: {
         id: React.PropTypes.number.isRequired,
@@ -25,15 +24,8 @@ export default React.createClass({
     getInitialState() {
         return ({
             overflow: false,
-            cover: {}
+            cover: {id:0}
         })
-    },
-    onPageScroll() {
-        if(this.state.scrollTop == 0) {
-            this.setState({
-                cover: this.props.imgs[0]
-            });
-        }
     },
     _setCover(index) {
         const that = this;
@@ -56,25 +48,21 @@ export default React.createClass({
             this.setState({
                 overflow: articleContent.offsetHeight < articleContent.scrollHeight            
             });
-            var supscripts = document.getElementsByTagName('sup')
-            _.forEach(supscripts, function(sup){
-                new Waypoint({
-                    element: sup,
-                    handler: function() {
-                        var index = parseInt(this.element.innerHTML);
-                        console.log(index);
-                        if(typeof index === 'number')
-                            that._setCover(index);
-                    },
-                    context: document.getElementById('articleContent'),
-                    offset: 'bottom-in-view'
-                });
-            });
-            /*
             setTimeout(() => {
-                
-            }, 50);
-            */
+                var supscripts = document.getElementsByTagName('sup')
+                _.forEach(supscripts, function(sup){
+                    new Waypoint({
+                        element: sup,
+                        handler: function() {
+                            var index = parseInt(this.element.innerHTML);
+                            if(typeof index === 'number')
+                                that._setCover(index);
+                        },
+                        context: articleContent,
+                        offset: 'bottom-in-view'
+                    });
+                });
+            }, 1000);
         };
 
         //window.addEventListener('resize', this.handleResize);

@@ -21,7 +21,7 @@ var SelectedImg = React.createClass({
             <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />
         return (
             <div className="on_deck">
-                <span className="align-helper" />,
+                <span className="align-helper" />
                 {onDeckNode}
                 <div className="caption">{this.props.on_deck.caption}</div>
             </div>
