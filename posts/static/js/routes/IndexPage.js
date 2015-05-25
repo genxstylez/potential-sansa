@@ -9,24 +9,13 @@ import PostList from '../components/PostList';
 import Footer from '../components/Footer';
 
 export default React.createClass({
-    mixins: [],
-
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-    
     render() {
-        var categoryId = this.context.router.getCurrentParams().categoryId;
-        var subcategoryId = this.context.router.getCurrentParams().subcategoryId;
-
         return (
             <div>
                 <Logo />
                 <NavBar />
                 <BannerList />
-                <PostList ref="postlist"
-                    categoryId={categoryId} 
-                    subcategoryId={subcategoryId} />
+                <PostList />
                 <Footer />
             </div>
         );

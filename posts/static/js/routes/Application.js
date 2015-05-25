@@ -13,7 +13,7 @@ export default React.createClass({
         const name = this.getPath();
         return (
              <TransitionGroup transitionName="post" transitionLeave={false}>
-                <RouteHandler key={name}/>
+                <RouteHandler />
             </TransitionGroup>
         );
     }

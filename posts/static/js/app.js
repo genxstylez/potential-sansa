@@ -16,9 +16,9 @@ const NotFoundRoute = Router.NotFoundRoute;
 
 const routes = (
     <Route name="app" path="/" handler={Application} ignoreScrollBehavior>
-        <DefaultRoute handler={IndexPage} ignoreScrollBehavior/>
-        <Route name="category" path="category/:categoryId" handler={IndexPage} ignoreScrollBehavior/>
-        <Route name="subcategory"  path="category/:categoryId/:subcategoryId" handler={IndexPage} ignoreScrollBehavior />
+        <DefaultRoute handler={IndexPage} />
+        <Route name="category" path="category/:categoryId" handler={IndexPage} />
+        <Route name="subcategory"  path="category/:categoryId/:subcategoryId" handler={IndexPage} />
         <Route name="search" path="search" handler={SearchPage}/>
         <Route name="albums" path="albums" handler={AlbumsPage} />
         <Route name="album" path="albums/:albumId" handler={AlbumPage} />

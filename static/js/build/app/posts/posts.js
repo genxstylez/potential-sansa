@@ -46,9 +46,9 @@ var NotFoundRoute = _Router2['default'].NotFoundRoute;
 var routes = _React2['default'].createElement(
     Route,
     { name: 'app', path: '/', handler: _Application2['default'], ignoreScrollBehavior: true },
-    _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'], ignoreScrollBehavior: true }),
-    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'], ignoreScrollBehavior: true }),
-    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'], ignoreScrollBehavior: true }),
+    _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'search', path: 'search', handler: _SearchPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'albums', path: 'albums', handler: _AlbumsPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId', handler: _AlbumPage2['default'] }),
@@ -46917,31 +46917,28 @@ var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
 'use strict';
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var State = require('react-router').State;
 
 var Link = _Router2['default'].Link;
 
 var mansonryOptions = {
-    transitionDuration: '0.2s'
+    transitionDuration: 0
 };
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostList',
 
-    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
-
-    propTypes: {
-        categoryId: _React2['default'].PropTypes.string,
-        subcategoryId: _React2['default'].PropTypes.string
-    },
+    mixins: [_WebAPIMixin2['default'], _ScrollListenerMixin2['default'], State],
 
     getInitialState: function getInitialState() {
         return {
             posts: [],
+            categoryId: null,
+            subcategoryId: null,
             next_page: null,
             has_next: false,
             is_loading: false,
-            is_animating_scrolling: false
-        };
+            is_animating_scrolling: false };
     },
 
     onPageScroll: function onPageScroll() {
@@ -46954,22 +46951,20 @@ exports['default'] = _React2['default'].createClass({
         }
     },
 
-    processResponse: function processResponse(error, response) {
-        var new_elements = error ? [] : response.body.objects,
-            next_page = response.body.meta.next,
-            has_next = response.body.meta.next != null;
-        this.setState({
-            posts: this.state.posts.concat(new_elements),
-            next_page: next_page,
-            has_next: has_next,
-            is_loading: false });
-    },
+    processResponse: function processResponse(error, response) {},
 
     _getMorePosts: function _getMorePosts(url) {
         var _this = this;
 
         this.getMorePosts(url, function (error, response) {
-            _this.processResponse(error, response);
+            var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next,
+                has_next = response.body.meta.next != null;
+            _this.setState({
+                posts: _this.state.posts.concat(new_elements),
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false });
         });
     },
 
@@ -46977,31 +46972,43 @@ exports['default'] = _React2['default'].createClass({
         var _this2 = this;
 
         this.getPosts(categoryId, subcategoryId, function (error, response) {
-            _this2.processResponse(error, response);
+            var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next,
+                has_next = response.body.meta.next != null;
+            _this2.setState({
+                posts: new_elements,
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false });
         });
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subcategoryId) {
+        if (this.state.categoryId != this.getParams().categoryId || this.state.subcategoryId != this.getParams().subcategoryId) {
             // if category changes, start with a new list of posts
             this.setState({
-                posts: [],
                 has_next: false,
                 next_page: null,
-                is_animating_scrolling: false
+                is_animating_scrolling: false,
+                categoryId: this.getParams().categoryId,
+                subcategoryId: this.getParams().subcategoryId
             });
-            this._getPosts(nextProps.categoryId, nextProps.subcategoryId);
+            this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
     },
     /**
      * React component lifecycle method
      */
     componentDidMount: function componentDidMount() {
-        this._getPosts(this.props.categoryId, this.props.subcategoryId);
+        this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
+        this.setState({
+            categoryId: this.getParams().categoryId,
+            subcategoryId: this.getParams().subcategoryId
+        });
     },
 
     componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
-        if (this.state.posts && !this.state.is_animating_scrolling && this.props.categoryId) {
+        if (this.state.posts && !this.state.is_animating_scrolling && this.getParams().categoryId) {
             this.setState({ is_animating_scrolling: true });
             $.scrollTo('620px', 500);
         };
@@ -47014,17 +47021,21 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         var PostTileNodes = _import2['default'].map(this.state.posts, function (post) {
-            return _React2['default'].createElement(_PostTile2['default'], {
-                key: post.id,
-                id: post.id,
-                heading: post.heading,
-                subheading: post.subheading,
-                cover: post.cover,
-                created_at: post.created_at,
-                last_modified: post.last_modified,
-                articletext: post.articletext,
-                category: post.category.name,
-                uri: post.resource_uri });
+            return _React2['default'].createElement(
+                TransitionGroup,
+                { transitionName: 'post', transitionLeave: false },
+                _React2['default'].createElement(_PostTile2['default'], {
+                    key: post.id,
+                    id: post.id,
+                    heading: post.heading,
+                    subheading: post.subheading,
+                    cover: post.cover,
+                    created_at: post.created_at,
+                    last_modified: post.last_modified,
+                    articletext: post.articletext,
+                    category: post.category.name,
+                    uri: post.resource_uri })
+            );
         });
         return _React2['default'].createElement(
             'div',
@@ -47790,7 +47801,7 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             TransitionGroup,
             { transitionName: 'post', transitionLeave: false },
-            _React2['default'].createElement(RouteHandler, { key: name })
+            _React2['default'].createElement(RouteHandler, null)
         );
     }
 
@@ -47839,25 +47850,14 @@ var _Footer2 = _interopRequireWildcard(_Footer);
 exports['default'] = _React2['default'].createClass({
     displayName: 'IndexPage',
 
-    mixins: [],
-
-    contextTypes: {
-        router: _React2['default'].PropTypes.func
-    },
-
     render: function render() {
-        var categoryId = this.context.router.getCurrentParams().categoryId;
-        var subcategoryId = this.context.router.getCurrentParams().subcategoryId;
-
         return _React2['default'].createElement(
             'div',
             null,
             _React2['default'].createElement(_Logo2['default'], null),
             _React2['default'].createElement(_NavBar2['default'], null),
             _React2['default'].createElement(_BannerList2['default'], null),
-            _React2['default'].createElement(_PostList2['default'], { ref: 'postlist',
-                categoryId: categoryId,
-                subcategoryId: subcategoryId }),
+            _React2['default'].createElement(_PostList2['default'], null),
             _React2['default'].createElement(_Footer2['default'], null)
         );
     }
