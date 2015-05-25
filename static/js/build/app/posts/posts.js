@@ -46588,18 +46588,9 @@ exports['default'] = _React2['default'].createClass({
         subheading: _React2['default'].PropTypes.string.isRequired,
         articletext: _React2['default'].PropTypes.string,
         imgs: _React2['default'].PropTypes.array.isRequired,
-        credits: _React2['default'].PropTypes.object,
+        credits: _React2['default'].PropTypes.array,
         created_at: _React2['default'].PropTypes.string,
         last_modified: _React2['default'].PropTypes.string },
-    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
-        var _this = this;
-
-        if (this.isMounted()) {
-            setTimeout(function () {
-                $(_React2['default'].findDOMNode(_this.refs.articleContent)).jScrollPane();
-            }, 50);
-        }
-    },
 
     handeClickOnCross: function handeClickOnCross() {
         if (!this.goBack()) {
@@ -46690,25 +46681,16 @@ exports['default'] = _React2['default'].createClass({
     propTypes: {
         role: _React2['default'].PropTypes.string.isRequired },
     render: function render() {
-        var _this = this;
-
+        var name_array = this.props.name.split(',');
         var names = [];
-        if (this.props.names instanceof Array) {
-            _import2['default'].forEach(this.props.names, function (name, key) {
-                names.push(_React2['default'].createElement(
-                    Link,
-                    { key: key, to: 'search', query: { q: name } },
-                    name
-                ));
-                if (key < _this.props.names.length - 1) names.push(', ');
-            });
-        } else {
+        _import2['default'].forEach(name_array, function (name, key) {
             names.push(_React2['default'].createElement(
                 Link,
-                { key: 'single-credit', to: 'search', query: { q: this.props.names } },
-                this.props.names
+                { key: key, to: 'search', query: { q: name } },
+                name
             ));
-        }
+            if (key < name_array.length - 1) names.push(', ');
+        });
         return _React2['default'].createElement(
             'div',
             { className: 'credit' },
@@ -46763,8 +46745,8 @@ var SelectedImg = _React2['default'].createClass({
     displayName: 'SelectedImg',
 
     render: function render() {
-        var creditNodes = _import2['default'].map(this.props.credits, function (value, key) {
-            return _React2['default'].createElement(_ShootingCredit2['default'], { key: key, role: key, names: value });
+        var creditNodes = _import2['default'].map(this.props.credits, function (credit) {
+            return _React2['default'].createElement(_ShootingCredit2['default'], { key: credit.id, role: credit.role, name: credit.name });
         });
         if (this.props.show_credits) {
             return _React2['default'].createElement(
@@ -46799,7 +46781,7 @@ exports['default'] = _React2['default'].createClass({
     propTypes: {
         on_deck: _React2['default'].PropTypes.object.isRequired,
         imgs: _React2['default'].PropTypes.array.isRequired,
-        credits: _React2['default'].PropTypes.object,
+        credits: _React2['default'].PropTypes.array,
         show_credits: _React2['default'].PropTypes.bool.isRequired
     },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {

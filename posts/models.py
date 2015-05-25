@@ -128,15 +128,6 @@ class Image(models.Model):
                 self.video_id = url_obj.path.strip('/')
         super(Image, self).save(*args, **kwargs)
 
-    def generate_video_embed(self, width=600, height=450):
-        return '<iframe width="{width}" height="{height}" ' \
-            'src="https://www.youtube.com/embed/{video_id}" ' \
-            'frameborder="0" allowfullscreen></iframe>'.format(
-                width=width,
-                height=height,
-                video_id=self.video_id
-            )
-
     def __unicode__(self):
         return '{post} - {id}'.format(post=self.post, id=self.id)
 
@@ -147,7 +138,6 @@ class Image(models.Model):
             caption=self.caption,
             tag=self.tag,
             img=self.img.url if self.img else '',
-            video=self.generate_video_embed(),
             video_id=self.video_id
         )
 
@@ -158,8 +148,8 @@ def update_image_index(instance, **kwargs):
 
 
 def update_credit_index(instance, **kwargs):
-    for credit in instance.new_credits.all():
+    for credit in instance.credits.all():
         watson.default_search_engine.update_obj_index(credit)
 
-post_save.connect(update_image_index, Post)
-post_save.connect(update_credit_index, Post)
+# post_save.connect(update_image_index, Post)
+# post_save.connect(update_credit_index, Post)

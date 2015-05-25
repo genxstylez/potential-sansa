@@ -20,16 +20,9 @@ export default React.createClass({
         subheading: React.PropTypes.string.isRequired,
         articletext: React.PropTypes.string,
         imgs: React.PropTypes.array.isRequired,
-        credits: React.PropTypes.object,
+        credits: React.PropTypes.array,
         created_at: React.PropTypes.string,
         last_modified: React.PropTypes.string,
-    },
-    componentWillUpdate(nextProps, nextState) {
-        if(this.isMounted()) {
-            setTimeout(() => {
-                $(React.findDOMNode(this.refs.articleContent)).jScrollPane();
-            }, 50);
-        }
     },
 
     handeClickOnCross() {

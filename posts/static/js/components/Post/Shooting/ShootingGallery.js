@@ -16,9 +16,9 @@ function generate_embed(youtube_id) {
 
 var SelectedImg = React.createClass({
     render() {
-        const creditNodes = _.map(this.props.credits, (value, key) => {
+        const creditNodes = _.map(this.props.credits, credit => {
             return (
-                <ShootingCredit key={key} role={key} names={value}/>
+                <ShootingCredit key={credit.id} role={credit.role} name={credit.name}/>
             );
         });
         if (this.props.show_credits) {
@@ -48,7 +48,7 @@ export default React.createClass({
     propTypes: {
         on_deck: React.PropTypes.object.isRequired,
         imgs: React.PropTypes.array.isRequired,
-        credits: React.PropTypes.object,
+        credits: React.PropTypes.array,
         show_credits: React.PropTypes.bool.isRequired
     },
     componentWillReceiveProps(nextProps) {
