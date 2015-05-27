@@ -46917,6 +46917,7 @@ var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
 'use strict';
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var State = require('react-router').State;
 
 var Link = _Router2['default'].Link;
 
@@ -46927,21 +46928,17 @@ var mansonryOptions = {
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostList',
 
-    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
-
-    propTypes: {
-        categoryId: _React2['default'].PropTypes.string,
-        subcategoryId: _React2['default'].PropTypes.string
-    },
+    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default'], State],
 
     getInitialState: function getInitialState() {
         return {
             posts: [],
+            categoryId: null,
+            subcategoryId: null,
             next_page: null,
             has_next: false,
             is_loading: false,
-            is_animating_scrolling: false
-        };
+            is_animating_scrolling: false };
     },
 
     onPageScroll: function onPageScroll() {
@@ -46954,22 +46951,20 @@ exports['default'] = _React2['default'].createClass({
         }
     },
 
-    processResponse: function processResponse(error, response) {
-        var new_elements = error ? [] : response.body.objects,
-            next_page = response.body.meta.next,
-            has_next = response.body.meta.next != null;
-        this.setState({
-            posts: this.state.posts.concat(new_elements),
-            next_page: next_page,
-            has_next: has_next,
-            is_loading: false });
-    },
+    processResponse: function processResponse(error, response) {},
 
     _getMorePosts: function _getMorePosts(url) {
         var _this = this;
 
         this.getMorePosts(url, function (error, response) {
-            _this.processResponse(error, response);
+            var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next,
+                has_next = response.body.meta.next != null;
+            _this.setState({
+                posts: _this.state.posts.concat(new_elements),
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false });
         });
     },
 
@@ -46977,27 +46972,39 @@ exports['default'] = _React2['default'].createClass({
         var _this2 = this;
 
         this.getPosts(categoryId, subcategoryId, function (error, response) {
-            _this2.processResponse(error, response);
+            var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next,
+                has_next = response.body.meta.next != null;
+            _this2.setState({
+                posts: new_elements,
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false });
         });
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subcategoryId) {
+        if (this.state.categoryId != this.getParams().categoryId || this.state.subcategoryId != this.getParams().subcategoryId) {
             // if category changes, start with a new list of posts
             this.setState({
-                posts: [],
                 has_next: false,
                 next_page: null,
-                is_animating_scrolling: false
+                is_animating_scrolling: false,
+                categoryId: this.getParams().categoryId,
+                subcategoryId: this.getParams().subcategoryId
             });
-            this._getPosts(nextProps.categoryId, nextProps.subcategoryId);
+            this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
     },
     /**
      * React component lifecycle method
      */
     componentDidMount: function componentDidMount() {
-        this._getPosts(this.props.categoryId, this.props.subcategoryId);
+        this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
+        this.setState({
+            categoryId: this.getParams().categoryId,
+            subcategoryId: this.getParams().subcategoryId
+        });
     },
 
     componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
@@ -47787,11 +47794,7 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         var name = this.getPath();
-        return _React2['default'].createElement(
-            TransitionGroup,
-            { transitionName: 'post', transitionLeave: false },
-            _React2['default'].createElement(RouteHandler, { key: name })
-        );
+        return _React2['default'].createElement(RouteHandler, null);
     }
 
 });

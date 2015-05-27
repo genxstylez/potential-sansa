@@ -8,6 +8,7 @@ import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import PostTile from './Post/PostTile';
 import MansonryMixin from 'react-masonry-mixin';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var State = require('react-router').State;
 
 const Link = Router.Link;
 
@@ -16,20 +17,17 @@ const mansonryOptions = {
 }
 
 export default React.createClass({
-    mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin],
-
-    propTypes: {
-        categoryId: React.PropTypes.string,
-        subcategoryId: React.PropTypes.string
-    },
+    mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin, State],
 
     getInitialState() {
         return {
             posts: [],
+            categoryId: null,
+            subcategoryId: null,
             next_page : null,
             has_next: false,
             is_loading: false,
-            is_animating_scrolling: false
+            is_animating_scrolling: false,
         }
     },
 
@@ -44,47 +42,59 @@ export default React.createClass({
     },
 
     processResponse(error, response) {
-        var new_elements = error ? [] : response.body.objects,
-            next_page = response.body.meta.next, 
-            has_next = response.body.meta.next != null; 
-        this.setState({
-            posts: this.state.posts.concat(new_elements),
-            next_page: next_page,
-            has_next: has_next,
-            is_loading: false,
-        });
-    },
+           },
 
     _getMorePosts(url) {
         this.getMorePosts(url, (error, response) => {
-            this.processResponse(error, response);
+            var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next, 
+                has_next = response.body.meta.next != null;
+            this.setState({
+                posts: this.state.posts.concat(new_elements),
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false,
+            });
+
         });
     },
                 
     _getPosts(categoryId, subcategoryId) {
         this.getPosts(categoryId, subcategoryId, (error, response) => {
-            this.processResponse(error, response);
+            var new_elements = error ? [] : response.body.objects,
+            next_page = response.body.meta.next, 
+            has_next = response.body.meta.next != null;
+            this.setState({
+                posts: new_elements,
+                next_page: next_page,
+                has_next: has_next,
+                is_loading: false,
+            });
         });
     },
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.categoryId != this.props.categoryId || nextProps.subcategoryId != this.props.subcategoryId){
+        if (this.state.categoryId != this.getParams().categoryId || this.state.subcategoryId != this.getParams().subcategoryId){
             // if category changes, start with a new list of posts
             this.setState({
-                posts: [],
                 has_next: false,
                 next_page: null,
-                is_animating_scrolling: false
+                is_animating_scrolling: false,
+                categoryId: this.getParams().categoryId,
+                subcategoryId: this.getParams().subcategoryId
             });
-            this._getPosts(nextProps.categoryId, nextProps.subcategoryId);
+            this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
     },
     /**
      * React component lifecycle method
      */
     componentDidMount() {
-        this._getPosts(this.props.categoryId, this.props.subcategoryId);
-
+        this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
+        this.setState({
+            categoryId: this.getParams().categoryId,
+            subcategoryId: this.getParams().subcategoryId
+        });
     },
 
     componentWillUpdate(nextProps, nextState) {
