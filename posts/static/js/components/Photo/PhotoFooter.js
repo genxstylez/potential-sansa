@@ -13,8 +13,8 @@ var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免
 
 export default React.createClass({
     propTypes: {
-        collapsed: React.PropTypes.bool.isRequired,
-        photo: React.PropTypes.object.isRequired
+        photo: React.PropTypes.object.isRequired,
+        photographer: React.PropTypes.string.isRequired
     },
     getInitialState() {
         return({
@@ -45,7 +45,7 @@ export default React.createClass({
             case "Photographer":
                 this.setState({
                     current_title: "Photographer",
-                    content: this.props.photo.photographer,
+                    content: this.props.photographer,
                     collapsed: false
                 });
                 break;
@@ -101,7 +101,7 @@ export default React.createClass({
         });
         var current_title_cls = classNames({
             'current-title': true,
-            'hidden': this.state.collpased
+            'hidden': this.state.collapsed
         });
         return (
             <div className={cls} onClick={this.handleOnClick}>

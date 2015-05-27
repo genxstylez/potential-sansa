@@ -3,13 +3,12 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from photos.models import Album, Photo
-from photos.forms import PhotoForm
+from photos.forms import AlbumForm
 
 
 class PhotoInline(admin.TabularInline):
     model = Photo
     suit_classes = 'suit-tab suit-tab-photos'
-    form = PhotoForm
 
     class Meta:
         verbose_name = ''
@@ -18,6 +17,7 @@ class PhotoInline(admin.TabularInline):
 class AlbumAdmin(admin.ModelAdmin):
     model = Album
     date_hierarchy = 'created_at'
+    form = AlbumForm
     inlines = [
         PhotoInline,
     ]
@@ -28,6 +28,10 @@ class AlbumAdmin(admin.ModelAdmin):
             'classes': ('suit-tab', 'suit-tab-general'),
             'fields': ('name', 'zh_name', 'published')
         }),
+        ('攝影', {
+            'classes': ('suit-tab', 'suit-tab-photographer', 'full-width',),
+            'fields': ('photographer',)
+        }),
         ('', {
             'classes': ('suit-tab', 'suit-tab-photos'),
             'fields': (),
@@ -35,6 +39,7 @@ class AlbumAdmin(admin.ModelAdmin):
     )
     suit_form_tabs = (
         ('general', 'General'),
+        ('photographer', '攝影'),
         ('photos', '圖片')
     )
 

@@ -87,7 +87,7 @@ export default React.createClass({
                     <span className="align-helper" />
                     <img src={this.state.current_photo.img.original} />
                 </div>
-                <PhotoFooter collapsed={true} photo={this.state.current_photo} />
+                <PhotoFooter photo={this.state.current_photo} photographer={this.props.photographer} />
             </div>
         }
 

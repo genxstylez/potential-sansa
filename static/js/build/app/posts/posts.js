@@ -45277,7 +45277,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handlePhotoOnMouseEnter: function handlePhotoOnMouseEnter(e) {
-        e.target.text = '照片';
+        e.target.text = '免費圖庫';
     },
 
     handlePhotoOnMouseOut: function handlePhotoOnMouseOut(e) {
@@ -45587,7 +45587,7 @@ exports['default'] = _React2['default'].createClass({
                     _React2['default'].createElement('span', { className: 'align-helper' }),
                     _React2['default'].createElement('img', { src: this.state.current_photo.img.original })
                 ),
-                _React2['default'].createElement(_PhotoFooter2['default'], { collapsed: true, photo: this.state.current_photo })
+                _React2['default'].createElement(_PhotoFooter2['default'], { photo: this.state.current_photo, photographer: this.props.photographer })
             );
         }
 
@@ -45838,29 +45838,53 @@ var _classNames2 = _interopRequireWildcard(_classNames);
 
 'use strict';
 
-var footer_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O’logy website. Check out the full license description below.</p>';
+var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O’logy website. Check out the full license description below.</p>' + '<div class="license-footer-link">' + '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' + '</div>';
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'LicenseFooter',
 
     propTypes: {
-        collapsed: _React2['default'].PropTypes.bool.isRequired
+        photographer: _React2['default'].PropTypes.string
     },
     getInitialState: function getInitialState() {
         return {
-            collapsed: false
+            collapsed: true,
+            content: license_text,
+            current_title: ''
         };
     },
-    componentWillUpdate: function componentWillUpdate() {
-        if (!this.state.collapsed) this.setState({
-            collapsed: true
-        });
+    handleOnClick: function handleOnClick() {
+        if (!this.state.collapsed) {
+            this.setState({
+                collapsed: true });
+        }
     },
 
-    handleOnClick: function handleOnClick() {
-        this.setState({
-            collapsed: !this.state.collapsed
-        });
+    handleOnClickTitle: function handleOnClickTitle(e) {
+        switch (e.target.innerHTML) {
+            case 'License':
+                this.setState({
+                    current_title: 'License',
+                    content: license_text,
+                    collapsed: false
+                });
+                break;
+            case 'Photographer':
+                this.setState({
+                    current_title: 'Photographer',
+                    content: this.props.photographer,
+                    collapsed: false
+                });
+                break;
+        }
+    },
+    componetWillReceiveProps: function componetWillReceiveProps(nextProps, nextState) {
+        if (nextState.collapsed) {
+            this.setState({
+                current_title: '',
+                content: ''
+            });
+        }
     },
     render: function render() {
         var cls = _classNames2['default']({
@@ -45869,26 +45893,60 @@ exports['default'] = _React2['default'].createClass({
             'license-footer': true,
             collapsed: this.state.collapsed
         });
+        var title_cls = _classNames2['default']({
+            title: true,
+            hidden: !this.state.collapsed
+        });
+        var current_title_cls = _classNames2['default']({
+            'current-title': true,
+            hidden: this.state.collapsed
+        });
+        var photographer_node = '';
+        if (this.props.photographer) {
+            photographer_node = _React2['default'].createElement(
+                'span',
+                null,
+                _React2['default'].createElement(
+                    'span',
+                    { onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    'Photographer'
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' })
+            );
+        };
         return _React2['default'].createElement(
             'div',
             { className: cls, onClick: this.handleOnClick },
             _React2['default'].createElement(
                 'div',
-                { className: 'title' },
+                { className: title_cls },
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
-                'License',
-                _React2['default'].createElement('span', { className: 'circle-divider' })
+                _React2['default'].createElement(
+                    'span',
+                    { onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    'License'
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                photographer_node
             ),
-            _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: footer_text } }),
             _React2['default'].createElement(
                 'div',
-                { className: 'license-footer-link' },
+                { className: current_title_cls },
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
                 _React2['default'].createElement(
-                    'a',
-                    { target: '_blank', href: 'http://creativecommons.org/licenses/by/3.0' },
-                    'http://creativecommons.org/licenses/by/3.0'
-                )
-            )
+                    'span',
+                    { onClick: this.handleOnClickTitle,
+                        onMouseEnter: this.handleOnMouseEnter,
+                        onMouseOut: this.handleOnMouseOut },
+                    this.state.current_title
+                ),
+                _React2['default'].createElement('span', { className: 'circle-divider' })
+            ),
+            _React2['default'].createElement('div', { dangerouslySetInnerHTML: { __html: this.state.content } })
         );
     }
 });
@@ -45919,8 +45977,8 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'PhotoFooter',
 
     propTypes: {
-        collapsed: _React2['default'].PropTypes.bool.isRequired,
-        photo: _React2['default'].PropTypes.object.isRequired
+        photo: _React2['default'].PropTypes.object.isRequired,
+        photographer: _React2['default'].PropTypes.string.isRequired
     },
     getInitialState: function getInitialState() {
         return {
@@ -45950,7 +46008,7 @@ exports['default'] = _React2['default'].createClass({
             case 'Photographer':
                 this.setState({
                     current_title: 'Photographer',
-                    content: this.props.photo.photographer,
+                    content: this.props.photographer,
                     collapsed: false
                 });
                 break;
@@ -45979,7 +46037,7 @@ exports['default'] = _React2['default'].createClass({
         });
         var current_title_cls = _classNames2['default']({
             'current-title': true,
-            hidden: this.state.collpased
+            hidden: this.state.collapsed
         });
         return _React2['default'].createElement(
             'div',
@@ -47082,25 +47140,14 @@ var _PostTile = require('./Post/PostTile');
 
 var _PostTile2 = _interopRequireWildcard(_PostTile);
 
-var _MansonryMixin = require('react-masonry-mixin');
-
-var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
-
 'use strict';
 
 var Link = _Router2['default'].Link;
 
-var mansonryOptions = {
-    transitionDuration: 0,
-    itemSelector: '.tile'
-};
-
 exports['default'] = _React2['default'].createClass({
     displayName: 'SearchPostList',
 
-    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
-
-    pollInterval: 60000,
+    mixins: [_WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
 
     propTypes: {
         query: _React2['default'].PropTypes.string
@@ -47177,28 +47224,25 @@ exports['default'] = _React2['default'].createClass({
                 articletext: post.articletext,
                 category: post.category.name });
         });
-        var template = PostTileNodes;
-        var no_results = 'No results found for ' + this.props.query;
-        if (PostTileNodes.length == 0) {
-            template = _React2['default'].createElement(
-                'div',
-                { className: 'no-results' },
-                _React2['default'].createElement('span', { className: 'circle-divider' }),
-                no_results,
-                _React2['default'].createElement('span', { className: 'circle-divider' })
-            );
-        }
+        var results_string = this.state.posts.length > 0 ? 'Results for ' : 'No results found for ';
         return _React2['default'].createElement(
             'div',
             { id: 'tiles', className: 'mansonryContainer', ref: 'mansonryContainer' },
-            template
+            _React2['default'].createElement(
+                'div',
+                { className: 'no-results' },
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                results_string + this.props.query,
+                _React2['default'].createElement('span', { className: 'circle-divider' })
+            ),
+            PostTileNodes
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47669,9 +47713,7 @@ exports['default'] = _React2['default'].createClass({
             id: 0,
             name: '',
             zh_name: '',
-            photos: [],
-            footer_collapsed: true
-        };
+            photos: [] };
     },
 
     _getAlbum: function _getAlbum(id) {
@@ -47682,7 +47724,9 @@ exports['default'] = _React2['default'].createClass({
                 id: response.body.id,
                 photos: _this.state.photos.concat(response.body.photos),
                 name: response.body.name,
-                zh_name: response.body.zh_name });
+                zh_name: response.body.zh_name,
+                photographer: response.body.photographer
+            });
         });
     },
     componentDidMount: function componentDidMount() {
@@ -47697,8 +47741,9 @@ exports['default'] = _React2['default'].createClass({
                 id: this.state.id,
                 name: this.state.name,
                 zh_name: this.state.zh_name,
-                photos: this.state.photos }),
-            _React2['default'].createElement(_LicenseFooter2['default'], { collapsed: this.state.footer_collapsed })
+                photos: this.state.photos,
+                photographer: this.state.photographer }),
+            _React2['default'].createElement(_LicenseFooter2['default'], { photographer: this.state.photographer })
         );
     }
 
@@ -47743,11 +47788,6 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'AlbumsPage',
 
     mixins: [Navigation],
-    getInitialState: function getInitialState() {
-        return {
-            footer_collapsed: false
-        };
-    },
     handeClickOnCross: function handeClickOnCross() {
         if (!this.goBack()) {
             this.transitionTo('/');
@@ -47763,7 +47803,7 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement(_NavBar2['default'], null),
                 _React2['default'].createElement(_AlbumList2['default'], null)
             ),
-            _React2['default'].createElement(_LicenseFooter2['default'], { collapsed: this.state.footer_collapsed })
+            _React2['default'].createElement(_LicenseFooter2['default'], null)
         );
     }
 

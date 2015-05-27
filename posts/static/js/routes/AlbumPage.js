@@ -16,7 +16,6 @@ export default React.createClass({
             name: '',
             zh_name: '',
             photos: [],
-            footer_collapsed: true
         });
     },
     
@@ -28,6 +27,7 @@ export default React.createClass({
                     photos: this.state.photos.concat(response.body.photos),
                     name: response.body.name,
                     zh_name: response.body.zh_name,
+                    photographer: response.body.photographer
                 });
         });
     },
@@ -42,8 +42,9 @@ export default React.createClass({
                     id={this.state.id}
                     name={this.state.name}
                     zh_name={this.state.zh_name}
-                    photos={this.state.photos} />
-                <LicenseFooter collapsed={this.state.footer_collapsed} />
+                    photos={this.state.photos} 
+                    photographer={this.state.photographer} />
+                <LicenseFooter photographer={this.state.photographer} />
             </div>
         );
     }

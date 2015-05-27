@@ -11,11 +11,6 @@ var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
     mixins: [Navigation],
-    getInitialState() {
-        return ({
-            footer_collapsed: false
-        });
-    },
     handeClickOnCross() {
         if(!this.goBack()) {
             this.transitionTo('/')
@@ -28,7 +23,7 @@ export default React.createClass({
                     <NavBar />
                     <AlbumList />
                 </TransitionGroup>
-                <LicenseFooter collapsed={this.state.footer_collapsed} />
+                <LicenseFooter />
             </div>
         );
     }
