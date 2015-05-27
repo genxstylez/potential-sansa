@@ -6,19 +6,11 @@ import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import PostTile from './Post/PostTile';
-import MansonryMixin from 'react-masonry-mixin';
 
 const Link = Router.Link;
 
-const mansonryOptions = {
-    transitionDuration: 0,
-    itemSelector: '.tile'
-}
-
 export default React.createClass({
-    mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin],
-
-    pollInterval: 60000,
+    mixins: [WebAPIMixin, ScrollListenerMixin],
 
     propTypes: {
         query : React.PropTypes.string

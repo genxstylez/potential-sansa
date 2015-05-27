@@ -55,7 +55,7 @@ export default React.createClass({
     },
 
     handlePhotoOnMouseEnter(e) {
-        e.target.text = '照片';
+        e.target.text = '免費圖庫';
     },
 
     handlePhotoOnMouseOut(e) {

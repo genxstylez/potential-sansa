@@ -33,7 +33,7 @@ div.logo img {
 
 .footer {
     height: 40px;
-    background-color: #f7f7f7;
+    background-color: #f0f0f0;
     font-size: 12px;
     letter-spacing: 0.1em;
     text-align: center;
@@ -222,6 +222,10 @@ div.logo img {
     line-height: 7;
     letter-spacing: 0.1em;
     text-align: center;
+    width: 100%;
+    position: absolute;
+    margin-bottom: 20px;
+    margin-top: -75px;
 }
 
 .tile {
@@ -315,6 +319,18 @@ div.logo img {
     line-height: 19px;
     word-wrap: break-word;
 }
+
+.tile .intro .synopsis h1, .tile .intro .synopsis h2,
+.tile .intro .synopsis h3, .tile .intro .synopsis h4,
+.tile .intro .synopsis h5, .tile .intro .synopsis h6 {
+    font-size: 11px;
+    text-align: justify;
+    line-height: 19px;
+    word-wrap: break-word;
+}
+.tile .intro .synopsis b {
+    font-weight: 500;
+} 
 .tile .triangle {
     font-size: 0px;
     line-height: 0%;
@@ -388,6 +404,11 @@ div.logo img {
 .article-box .article .article-content.overflow {
     border-right: none;
 }
+.article-content .text h1, .article-content .text h2,
+.article-content .text h3, .article-content .text h4, 
+.article-content .text h5, .article-content .text h6 {
+    letter-spacing: 0.075em;
+}
 .article-content .text a:hover{
     text-decoration: none;
     opacity: 0.7;
@@ -435,6 +456,7 @@ div.logo img {
     font-size: 20px;
     margin-bottom: 13px;
     letter-spacing: 0.075em;
+    line-height: 30px;
 }
 .article-box .article .article-content p.sub-title {
     font-size: 16px;
@@ -478,7 +500,7 @@ ul.thumbnails li img {
 }
 .align-helper {
     display: inline-block;
-    height: 95%;
+    height: 85%;
     vertical-align: middle;
 }
 .on_deck{
@@ -493,7 +515,8 @@ ul.thumbnails li img {
     max-width: 100%;
     display: inline-block;
     vertical-align: middle;
-    max-height: 100%;
+    height: auto;
+    max-height: 85%;
 }
 
 .on_deck .video-embed {
@@ -504,6 +527,7 @@ ul.thumbnails li img {
 .on_deck .caption {
     font-size: 11px;
     letter-spacing: 0.05em;
+    height: 5%;
 }
 
 .on_deck.shooting-credits {
@@ -791,6 +815,7 @@ ul.thumbnails li img {
     height: 150px;
     transition: height 300ms ease-in;
     line-height: 20px; 
+    padding: 0 60px 20px;
 }
 
 .license-footer.collapsed{
@@ -927,7 +952,7 @@ ul.thumbnails li img {
 
 .slick-slide img {
     display: inline-block !important;
-    max-height: 95%;
+    height: 85%;
 }
 
 .slick-prev::before, .slick-next::before {
