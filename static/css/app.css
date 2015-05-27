@@ -45,12 +45,12 @@ div.logo img {
 }
 
 .circle-divider {
-    background: #000;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    display: inline-block;
-    margin: 0px 14px 3px 14px;
+  background: #000;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0px 8px 2px 8px;
 }
 
 .grey-circle {
@@ -58,7 +58,7 @@ div.logo img {
 }
 
 .twin {
-    margin: 1px;
+    margin: 0 3px;
 }
 .nav {
     background-color: #f0f0f0;
@@ -75,9 +75,13 @@ div.logo img {
     top: 47px;
 }
 
+.navitems:hover .sub-nav a, .navitems:hover .sub-nav span {
+    visibility: visible;
+}
 .navitems:hover .sub-nav {
     visibility: visible;
-    transition: visibility 0s;
+    height: 47px;
+    visibility: all 0.2s;
 }
 
 .sub-nav {
@@ -88,14 +92,14 @@ div.logo img {
     z-index: 3;
     width: 100%;
     left: 0px;
-    height: 47px;
+    height: 0px;
     line-height: 47px;
-    transition: 0.2s;
+    transition: all 0.2s;
 
 }
-
-.sub-nav a {
+.sub-nav a, .sub-nav span {
     color: #646464 !important;
+    visibility: hidden;
 }
 
 .header {
@@ -109,10 +113,12 @@ div.logo img {
     position: static;
 }
 .header a {
-    font-size: 14px;
-    color: #000;
-    letter-spacing: 0.1em;
-    line-height: 1.5;
+  font-size: 14px;
+  color: #000;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  width: 65px;
+  display: inline-block;
 }
 .header a.active {
     text-decoration: underline;
@@ -222,6 +228,10 @@ div.logo img {
     line-height: 7;
     letter-spacing: 0.1em;
     text-align: center;
+    width: 100%;
+    position: absolute;
+    margin-bottom: 20px;
+    margin-top: -75px;
 }
 
 .tile {
@@ -400,15 +410,16 @@ div.logo img {
 .article-box .article .article-content.jspScrollable .inner-content {
 }
 .article-box .article .category {
-    color: #ffffff;
-    height: 17px;
-    font-size: 10.5px;
-    border-radius: 12px;
-    background-color: #c8c8c8;
-    display: inline-block;
-    padding: 10px;
-    line-height: 0px;
-    margin-bottom: 22px;
+  color: #ffffff;
+  height: 17px;
+  font-size: 10.5px;
+  border-radius: 12px;
+  background-color: #c8c8c8;
+  display: inline-block;
+  padding: 10px;
+  line-height: 0px;
+  margin-bottom: 22px;
+  letter-spacing: 0.075em;
 }
 .article-box .article .article-content.jspScrollable {
     border-right: none;
@@ -578,8 +589,8 @@ ul.thumbnails li img {
 .article-box .author {
     margin-bottom: 3px !important;
 }
-.article-box .credit{
-    margin-bottom: 13px !important;
+.article-box .credit {
+  margin-bottom: 5px !important;
 }
 .article-box .credit .role {
     font-size: 10.5px;
@@ -625,17 +636,6 @@ ul.thumbnails li img {
     text-align: center;
 }
 
-.search-layer .tiny-input {
-    width: 1px;
-    position: fixed;
-    left: 50%;
-    top: 15%;
-}
-
-.search-layer .value-field {
-    font-size: 150px;
-    height: 190px;
-}
 
 .search-layer input {
     font-size: 150px;
@@ -704,6 +704,10 @@ ul.thumbnails li img {
     top: 30px;
 }
 
+.albums .sub-nav {
+    top: 47px;
+}
+
 .albums .close:hover {
     opacity: 0.5;
 }
@@ -733,6 +737,32 @@ ul.thumbnails li img {
 }
 .album-content .myslick-container img:hover {
     opacity: 0.8;
+}
+
+.myslick-prev, .myslick-next {
+  position: absolute;
+  display: block;
+  height: 28px;
+  width: 28px;
+  line-height: 0;
+  font-size: 0;
+  cursor: pointer;
+  top: 50%;
+  margin-top: -10px;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: #e6e6e6,;
+  border-radius: 14px;
+}
+.myslick-prev:hover, .myslick-next:hover {
+    opacity: 0.7;
+}
+.myslick-prev {
+    left: -70px;
+}
+.myslick-next {
+    right: -70px;
 }
 
 .album-content .caption {

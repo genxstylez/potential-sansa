@@ -120,7 +120,7 @@ export default React.createClass({
                             <div className="decorations end"></div>
                             {creditNodes}
                             <div className="share">
-                                <a href="http://facebook.com">
+                                <a href={"https://www.facebook.com/sharer/sharer.php?u=" + window.location.href + "&title=" + this.props.heading}>
                                     <img src={STATIC_URL + "img/fb.png"} />
                                 </a>
                             </div>

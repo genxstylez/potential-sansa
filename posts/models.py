@@ -68,6 +68,7 @@ class Post(models.Model):
         if not self.slug:
             self.slug = self.heading[:14]
         self.is_shooting = self.category.name.lower() in ['shooting']
+        self.order = Post.objects.filter(starred=True).count() + 1
 
         super(Post, self).save(*args, **kwargs)
 
@@ -115,7 +116,8 @@ class Image(models.Model):
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=25)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
-    img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path, null=True, blank=True)
+    img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path, null=True, blank=True,
+                                       help_text='橫幅照片尺寸為 640x450')
     video_url = models.CharField('Youtube 網址', max_length=255, blank=True, default='')
     video_id = models.CharField('Youtube ID', max_length=40, editable=False, blank=True, default='')
 
@@ -151,5 +153,5 @@ def update_credit_index(instance, **kwargs):
     for credit in instance.credits.all():
         watson.default_search_engine.update_obj_index(credit)
 
-# post_save.connect(update_image_index, Post)
-# post_save.connect(update_credit_index, Post)
+post_save.connect(update_image_index, Post)
+post_save.connect(update_credit_index, Post)

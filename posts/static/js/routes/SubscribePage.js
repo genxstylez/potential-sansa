@@ -9,8 +9,12 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            labelMessage: <p>Type your email and hit enter to subcribe<br />請輸入您的email並按下Enter</p>,
-            query_string: ""
+            labelMessage: <p>
+                <span style={{fontSize:"22px", letterSpacing:"0.05em"}}>Type your email and hit enter to subcribe</span>
+                <br />
+                <span style={{fontSize:"17px", letterSpacing:"0.05em"}}>請輸入您的email並按下Enter</span>
+                </p>,
+            has_value: false
         }
     },
     contextTypes: {
@@ -19,7 +23,7 @@ export default React.createClass({
     _createSubscriber(value) {
         this.createSubscriber(value, (error, response) => {
             this.setState({
-                query_string: "",
+                has_value: false,
                 labelMessage: response.status==201 ? "Thanks for subscribing!" : JSON.parse(response.text).subscribers.email[0]
             });
         });
@@ -36,7 +40,7 @@ export default React.createClass({
     },
     handleOnChange(e) {
         this.setState({
-            query_string: e.target.value
+            has_value: e.target.value != ""
         });
     },
     handleOnClickPage() {
@@ -50,11 +54,10 @@ export default React.createClass({
                         <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
                     </span>
                     <form className="subscribe-form" onSubmit={this.handleSubmit}>
-                        <div className="value-field">{this.state.query_string}</div>
-                        <input className="tiny-input" ref="email_input" 
+                        <input ref="email_input" 
                             name="q" type="email" autoComplete="off" autoFocus={true} 
                             onChange={this.handleOnChange} />
-                        <label ref="labelMessage">{this.state.query_string ? "" : this.state.labelMessage}</label>
+                        <label ref="labelMessage">{this.state.has_value ? "" : this.state.labelMessage}</label>
                     </form>
                 </div>
             </div>

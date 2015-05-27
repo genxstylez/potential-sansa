@@ -45348,7 +45348,7 @@ exports['default'] = _React2['default'].createClass({
                     { className: 'pull-right' },
                     _React2['default'].createElement(
                         'a',
-                        { href: 'http://facebook.com', className: 'fb' },
+                        { href: 'https://www.facebook.com/OlogyFashion', target: '_blank', className: 'fb' },
                         _React2['default'].createElement('img', { src: fb_icon })
                     ),
                     _React2['default'].createElement(
@@ -45534,7 +45534,9 @@ exports['default'] = _React2['default'].createClass({
                 slidesToShow: 1,
                 variableWidth: true,
                 speed: 300,
-                inifinite: true
+                inifinite: true,
+                prevArrow: '<button type="button" class="myslick-prev"><img src="' + STATIC_URL + 'img/banner-left.png" /></button>',
+                nextArrow: '<button type="button" class="myslick-next"><img src="' + STATIC_URL + 'img/banner-right.png" /></button>'
             });
         }
     },
@@ -45981,7 +45983,7 @@ exports['default'] = _React2['default'].createClass({
         });
         return _React2['default'].createElement(
             'div',
-            { className: cls },
+            { className: cls, onClick: this.handleOnClick },
             _React2['default'].createElement(
                 'div',
                 { className: title_cls },
@@ -46015,7 +46017,7 @@ exports['default'] = _React2['default'].createClass({
             ),
             _React2['default'].createElement(
                 'div',
-                { className: current_title_cls, onClick: this.handleOnClick },
+                { className: current_title_cls },
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
                 _React2['default'].createElement(
                     'span',
@@ -46240,7 +46242,7 @@ exports['default'] = _React2['default'].createClass({
                             { className: 'share' },
                             _React2['default'].createElement(
                                 'a',
-                                { href: 'http://facebook.com' },
+                                { href: 'https://www.facebook.com/sharer/sharer.php?u=' + window.location.href + '&title=' + this.props.heading },
                                 _React2['default'].createElement('img', { src: STATIC_URL + 'img/fb.png' })
                             )
                         )
@@ -48041,8 +48043,23 @@ exports['default'] = _React2['default'].createClass({
     },
     getInitialState: function getInitialState() {
         return {
+            labelMessage: _React2['default'].createElement(
+                'p',
+                null,
+                _React2['default'].createElement(
+                    'span',
+                    { style: { fontSize: '22px', letterSpacing: '0.05em' } },
+                    'Type and hit enter to search'
+                ),
+                _React2['default'].createElement('br', null),
+                _React2['default'].createElement(
+                    'span',
+                    { style: { fontSize: '17px', letterSpacing: '0.05em' } },
+                    '請輸入欲搜尋字串並按下Enter'
+                )
+            ),
             q: this.context.router.getCurrentQuery().q,
-            query_string: '' };
+            has_value: false };
     },
     _ScrollDown: function _ScrollDown() {
         var query = this.context.router.getCurrentQuery().q;
@@ -48086,7 +48103,7 @@ exports['default'] = _React2['default'].createClass({
     },
     handleOnChange: function handleOnChange(e) {
         this.setState({
-            query_string: e.target.value
+            has_value: e.target.value != ''
         });
     },
     handleOnClickPage: function handleOnClickPage() {
@@ -48115,11 +48132,6 @@ exports['default'] = _React2['default'].createClass({
                     _React2['default'].createElement(
                         'form',
                         { className: 'search-form', onSubmit: this.handleSubmit },
-                        _React2['default'].createElement(
-                            'div',
-                            { className: 'value-field' },
-                            this.state.query_string
-                        ),
                         _React2['default'].createElement('input', { className: 'tiny-input',
                             ref: 'query_input',
                             name: 'q',
@@ -48130,13 +48142,7 @@ exports['default'] = _React2['default'].createClass({
                         _React2['default'].createElement(
                             'label',
                             null,
-                            this.state.query_string ? '' : _React2['default'].createElement(
-                                'p',
-                                null,
-                                'Type and hit enter to search',
-                                _React2['default'].createElement('br', null),
-                                '請輸入欲搜尋字串並按下Enter'
-                            )
+                            this.state.has_value ? '' : this.state.labelMessage
                         )
                     )
                 ),
@@ -48186,11 +48192,19 @@ exports['default'] = _React2['default'].createClass({
             labelMessage: _React2['default'].createElement(
                 'p',
                 null,
-                'Type your email and hit enter to subcribe',
+                _React2['default'].createElement(
+                    'span',
+                    { style: { fontSize: '22px', letterSpacing: '0.05em' } },
+                    'Type your email and hit enter to subcribe'
+                ),
                 _React2['default'].createElement('br', null),
-                '請輸入您的email並按下Enter'
+                _React2['default'].createElement(
+                    'span',
+                    { style: { fontSize: '17px', letterSpacing: '0.05em' } },
+                    '請輸入您的email並按下Enter'
+                )
             ),
-            query_string: ''
+            has_value: false
         };
     },
     contextTypes: {
@@ -48201,7 +48215,7 @@ exports['default'] = _React2['default'].createClass({
 
         this.createSubscriber(value, function (error, response) {
             _this.setState({
-                query_string: '',
+                has_value: false,
                 labelMessage: response.status == 201 ? 'Thanks for subscribing!' : JSON.parse(response.text).subscribers.email[0]
             });
         });
@@ -48218,7 +48232,7 @@ exports['default'] = _React2['default'].createClass({
     },
     handleOnChange: function handleOnChange(e) {
         this.setState({
-            query_string: e.target.value
+            has_value: e.target.value != ''
         });
     },
     handleOnClickPage: function handleOnClickPage() {
@@ -48239,18 +48253,13 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement(
                     'form',
                     { className: 'subscribe-form', onSubmit: this.handleSubmit },
-                    _React2['default'].createElement(
-                        'div',
-                        { className: 'value-field' },
-                        this.state.query_string
-                    ),
-                    _React2['default'].createElement('input', { className: 'tiny-input', ref: 'email_input',
+                    _React2['default'].createElement('input', { ref: 'email_input',
                         name: 'q', type: 'email', autoComplete: 'off', autoFocus: true,
                         onChange: this.handleOnChange }),
                     _React2['default'].createElement(
                         'label',
                         { ref: 'labelMessage' },
-                        this.state.query_string ? '' : this.state.labelMessage
+                        this.state.has_value ? '' : this.state.labelMessage
                     )
                 )
             )

@@ -104,7 +104,7 @@ export default React.createClass({
             'hidden': this.state.collpased
         });
         return (
-            <div className={cls}>
+            <div className={cls} onClick={this.handleOnClick}>
                 <div className={title_cls}>
                     <span className="circle-divider" />
                     <span onClick={this.handleOnClickTitle}
@@ -122,7 +122,7 @@ export default React.createClass({
                         onMouseOut={this.handleOnMouseOut}>Photographer</span>
                     <span className="circle-divider" />
                 </div>
-                <div className={current_title_cls} onClick={this.handleOnClick}>
+                <div className={current_title_cls}>
                     <span className="circle-divider" />
                     <span onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}

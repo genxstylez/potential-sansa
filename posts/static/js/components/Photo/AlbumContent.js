@@ -50,7 +50,9 @@ export default React.createClass({
                 slidesToShow: 1,
                 variableWidth: true,
                 speed: 300,
-                inifinite: true
+                inifinite: true,
+                prevArrow: '<button type="button" class="myslick-prev"><img src="' + STATIC_URL + 'img/banner-left.png" /></button>',
+                nextArrow: '<button type="button" class="myslick-next"><img src="' + STATIC_URL + 'img/banner-right.png" /></button>'
             });
         }
     },

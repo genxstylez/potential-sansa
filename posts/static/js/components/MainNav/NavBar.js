@@ -112,7 +112,7 @@ export default React.createClass({
                         </Link>
                     </div>
                     <div className="pull-right">
-                        <a href="http://facebook.com" className="fb">
+                        <a href="https://www.facebook.com/OlogyFashion" target="_blank" className="fb">
                             <img src={fb_icon} />
                         </a>
                         <Link to="subscribe" className="subscribe"

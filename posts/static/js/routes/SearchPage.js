@@ -19,8 +19,13 @@ export default React.createClass({
     },
     getInitialState() {
         return {
+            labelMessage: <p>
+                <span style={{fontSize:"22px", letterSpacing:"0.05em"}}>Type and hit enter to search</span>
+                <br />
+                <span style={{fontSize:"17px", letterSpacing:"0.05em"}}>請輸入欲搜尋字串並按下Enter</span>
+                </p>,
             q: this.context.router.getCurrentQuery().q,
-            query_string: '',
+            has_value: false,
         }
     },
     _ScrollDown() {
@@ -64,7 +69,7 @@ export default React.createClass({
     },
     handleOnChange(e) {
         this.setState({
-            query_string: e.target.value
+            has_value: e.target.value != ""
         });
     },
     handleOnClickPage() {
@@ -84,7 +89,6 @@ export default React.createClass({
                             <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
                         </span>
                         <form className="search-form" onSubmit={this.handleSubmit}>
-                            <div className="value-field">{this.state.query_string}</div>
                             <input className="tiny-input" 
                                 ref="query_input" 
                                 name="q" 
@@ -92,7 +96,7 @@ export default React.createClass({
                                 autoComplete="off" 
                                 autoFocus={true} 
                                 onChange={this.handleOnChange}/>
-                            <label>{this.state.query_string ? "" : <p>Type and hit enter to search<br />請輸入欲搜尋字串並按下Enter</p>}</label>
+                            <label>{this.state.has_value ? "" : this.state.labelMessage}</label>
                         </form>
                     </div>
                     <Logo /> 

@@ -89,6 +89,7 @@ class StarredResource(ModelResource):
     class Meta:
         queryset = Post.objects.filter(starred=True, published=True).order_by('order')
         resource_name = 'starred'
+        ordering = ['order', ]
 
 
 class PostResource(ModelResource):
