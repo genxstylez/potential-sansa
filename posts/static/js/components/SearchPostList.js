@@ -6,19 +6,11 @@ import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import PostTile from './Post/PostTile';
-import MansonryMixin from 'react-masonry-mixin';
 
 const Link = Router.Link;
 
-const mansonryOptions = {
-    transitionDuration: 0,
-    itemSelector: '.tile'
-}
-
 export default React.createClass({
-    mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin],
-
-    pollInterval: 60000,
+    mixins: [WebAPIMixin, ScrollListenerMixin],
 
     propTypes: {
         query : React.PropTypes.string
@@ -95,18 +87,15 @@ export default React.createClass({
                     category={post.category.name} />
             );
         });
-        var template = PostTileNodes
-        var no_results = "No results found for " + this.props.query;
-        if (PostTileNodes.length == 0) {
-            template = <div className="no-results">
-                <span className="circle-divider" />
-                {no_results} 
-                <span className="circle-divider" />
-            </div>
-        }
+        var results_string = this.state.posts.length > 0 ? "Results for " : "No results found for " ;
         return (
             <div id="tiles"className="mansonryContainer" ref="mansonryContainer">
-                {template}
+                <div className="no-results">
+                    <span className="circle-divider" />
+                    {results_string + this.props.query} 
+                    <span className="circle-divider" />
+                </div>
+                {PostTileNodes}
             </div>
         );
     }
