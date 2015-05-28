@@ -28,18 +28,11 @@ export default React.createClass({
             has_value: false,
         }
     },
-    _ScrollDown() {
-        var query = this.context.router.getCurrentQuery().q;
-        setTimeout( () => {
-            if (query && $('.tile').length > 0)
-                window.scrollTo(0, 600);
-        }, 200)
-    },
+
     componentDidMount() {
         this.setState({
             q: this.context.router.getCurrentQuery().q
         });
-        this._ScrollDown();
     },
     componentWillReceiveProps(){
         this.setState({
@@ -48,9 +41,6 @@ export default React.createClass({
         setTimeout( () => {
             React.findDOMNode(this.refs.query_input).focus();
         }, 500)
-    },
-    componentWillUpdate() {
-        this._ScrollDown();
     },
     handeClickOnCross() {
        if(!this.context.router.goBack()) {
@@ -62,7 +52,8 @@ export default React.createClass({
         var query_input = React.findDOMNode(this.refs.query_input).value.trim();
         this.context.router.transitionTo('search', null, {'q': query_input});
         this.setState({
-            q: query_input
+            q: query_input,
+            has_value: false
         });
 
         React.findDOMNode(this.refs.query_input).value = "";
@@ -89,7 +80,7 @@ export default React.createClass({
                             <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
                         </span>
                         <form className="search-form" onSubmit={this.handleSubmit}>
-                            <input className="tiny-input" 
+                            <input 
                                 ref="query_input" 
                                 name="q" 
                                 type="text" 

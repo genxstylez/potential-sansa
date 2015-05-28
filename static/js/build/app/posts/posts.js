@@ -45550,12 +45550,7 @@ exports['default'] = _React2['default'].createClass({
                 { key: photo.id },
                 _React2['default'].createElement('span', { className: 'align-helper' }),
                 _React2['default'].createElement('img', { src: photo.img.large,
-                    onClick: _this.handleClickOnPhoto.bind(_this, photo) }),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'caption' },
-                    photo.caption
-                )
+                    onClick: _this.handleClickOnPhoto.bind(_this, photo) })
             );
         });
         var thumbnailNodes = _import2['default'].map(this.props.photos, function (photo, index) {
@@ -45838,7 +45833,7 @@ var _classNames2 = _interopRequireWildcard(_classNames);
 
 'use strict';
 
-var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O’logy website. Check out the full license description below.</p>' + '<div class="license-footer-link">' + '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' + '</div>';
+var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O\'logy website. Check out the full license description below.</p>' + '<div class="license-footer-link">' + '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' + '</div>';
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'LicenseFooter',
@@ -45971,7 +45966,7 @@ var _classNames2 = _interopRequireWildcard(_classNames);
 
 'use strict';
 
-var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O’logy website. Check out the full license description below.</p>' + '<div class="license-footer-link">' + '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' + '</div>';
+var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' + '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' + '<p>And you shall provide a link or give appropriate credit to O\'logy website. Check out the full license description below.</p>' + '<div class="license-footer-link">' + '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' + '</div>';
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'PhotoFooter',
@@ -47203,7 +47198,12 @@ exports['default'] = _React2['default'].createClass({
      * React component lifecycle method
      */
     componentDidMount: function componentDidMount() {
+        var _this2 = this;
+
         this._getSearchPosts(null, this.props.query);
+        setTimeout(function () {
+            if (_this2.state.posts.length > 0) $.scrollTo('620px', 500);
+        }, 500);
     },
 
     /**
@@ -48101,17 +48101,11 @@ exports['default'] = _React2['default'].createClass({
             q: this.context.router.getCurrentQuery().q,
             has_value: false };
     },
-    _ScrollDown: function _ScrollDown() {
-        var query = this.context.router.getCurrentQuery().q;
-        setTimeout(function () {
-            if (query && $('.tile').length > 0) window.scrollTo(0, 600);
-        }, 200);
-    },
+
     componentDidMount: function componentDidMount() {
         this.setState({
             q: this.context.router.getCurrentQuery().q
         });
-        this._ScrollDown();
     },
     componentWillReceiveProps: function componentWillReceiveProps() {
         var _this = this;
@@ -48123,9 +48117,6 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].findDOMNode(_this.refs.query_input).focus();
         }, 500);
     },
-    componentWillUpdate: function componentWillUpdate() {
-        this._ScrollDown();
-    },
     handeClickOnCross: function handeClickOnCross() {
         if (!this.context.router.goBack()) {
             this.context.router.transitionTo('/');
@@ -48136,7 +48127,8 @@ exports['default'] = _React2['default'].createClass({
         var query_input = _React2['default'].findDOMNode(this.refs.query_input).value.trim();
         this.context.router.transitionTo('search', null, { q: query_input });
         this.setState({
-            q: query_input
+            q: query_input,
+            has_value: false
         });
 
         _React2['default'].findDOMNode(this.refs.query_input).value = '';
@@ -48172,7 +48164,7 @@ exports['default'] = _React2['default'].createClass({
                     _React2['default'].createElement(
                         'form',
                         { className: 'search-form', onSubmit: this.handleSubmit },
-                        _React2['default'].createElement('input', { className: 'tiny-input',
+                        _React2['default'].createElement('input', {
                             ref: 'query_input',
                             name: 'q',
                             type: 'text',

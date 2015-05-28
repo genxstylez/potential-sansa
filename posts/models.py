@@ -16,6 +16,7 @@ class Category(models.Model):
     name = models.CharField('標題', max_length=20)
     zh_name = models.CharField('中文標題', max_length=20)
     parent = models.ForeignKey('self', verbose_name='主類別', related_name='sub_categories', null=True, blank=True)
+    order = models.PositiveIntegerField(db_index=True, default=0)
 
     def __unicode__(self):
         if self.parent:
@@ -28,16 +29,6 @@ class Category(models.Model):
             name=self.name,
             parent=self.parent.to_json() if self.parent else None
         )
-
-
-credits_help_text = '''
-Example:<br>
-{<br>
-    "編輯": ["王阿貓", "Dog Chen", "Mr. Big"],<br>
-    "photography": ["小叮噹", "大雄"],<br>
-    "校稿": "只有一個人"<br>
-}
-'''
 
 
 class Post(models.Model):
@@ -65,11 +56,7 @@ class Post(models.Model):
         return '({category}) - {heading}'.format(category=self.category, heading=self.heading)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = self.heading[:14]
         self.is_shooting = self.category.name.lower() in ['shooting']
-        self.order = Post.objects.filter(starred=True).count() + 1
-
         super(Post, self).save(*args, **kwargs)
 
     def to_json(self):
@@ -144,6 +131,30 @@ class Image(models.Model):
         )
 
 
+class StarredPost(Post):
+
+    class Meta:
+        proxy = True
+
+
+def update_category_order(instance, created, **kwargs):
+    if created:
+        instance.order = 0
+        for category in Category.objects.all():
+            category.order += 1
+            category.save()
+        instance.save()
+
+
+def update_starredpost_order(instance, created, **kwargs):
+    if created:
+        instance.order = 0
+        for post in Post.objects.filter(starred=True):
+            post.order += 1
+            post.save()
+        instance.save()
+
+
 def update_image_index(instance, **kwargs):
     for image in instance.images.all():
         watson.default_search_engine.update_obj_index(image)
@@ -153,5 +164,7 @@ def update_credit_index(instance, **kwargs):
     for credit in instance.credits.all():
         watson.default_search_engine.update_obj_index(credit)
 
-post_save.connect(update_image_index, Post)
-post_save.connect(update_credit_index, Post)
+# post_save.connect(update_image_index, Post)
+# post_save.connect(update_credit_index, Post)
+post_save.connect(update_category_order, Category)
+post_save.connect(update_starredpost_order, StarredPost)

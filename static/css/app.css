@@ -232,6 +232,7 @@ div.logo img {
     position: absolute;
     margin-bottom: 20px;
     margin-top: -75px;
+    left: 0px;
 }
 
 .tile {
@@ -654,6 +655,7 @@ ul.thumbnails li img {
 .search-layer .search-form, .search-layer .subscribe-form {
     margin-top: 145px;
     text-align: center;
+    padding: 0 100px;
 }
 
 
@@ -838,14 +840,15 @@ ul.thumbnails li img {
 }
 
 .license-footer {
-    height: 150px;
-    transition: height 300ms ease-in;
+    height: auto;
+    max-height: 500px;
+    transition: max-height 300ms ease-in;
     line-height: 20px; 
     padding: 0 60px 20px;
 }
 
 .license-footer.collapsed{
-    height: 40px;
+    max-height: 40px;
     cursor: pointer;
 }
 
@@ -853,6 +856,7 @@ ul.thumbnails li img {
     font-size: 14px;
     margin-bottom: 24px;
     margin-top: 10px;
+    cursor: pointer;
 }
 
 .license-footer p {

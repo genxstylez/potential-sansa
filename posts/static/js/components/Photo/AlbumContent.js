@@ -64,7 +64,6 @@ export default React.createClass({
                     <span className="align-helper" />
                     <img src={photo.img.large} 
                         onClick={this.handleClickOnPhoto.bind(this, photo)} />
-                    <div className="caption">{photo.caption}</div>
                 </div>
             );
         });

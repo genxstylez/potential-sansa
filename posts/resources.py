@@ -61,12 +61,14 @@ class CreditResource(ModelResource):
 
 
 class CategoryResource(ModelResource):
-    children = fields.ToManyField('self', 'sub_categories', null=True, blank=True, full=True)
+    children = fields.ToManyField('self', lambda bundle: Category.objects.filter(parent=bundle.obj).order_by('order'),
+                                  null=True, blank=True, full=True)
 
     class Meta:
-        queryset = Category.objects.filter(parent__isnull=True)
+        queryset = Category.objects.filter(parent__isnull=True).order_by('order')
         resource_name = 'category'
         allowed_methods = ['get']
+        ordering = ['order', ]
 
 
 class SubCategoryResource(ModelResource):

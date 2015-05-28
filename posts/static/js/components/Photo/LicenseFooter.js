@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 var license_text = '<p>「Photo」區照片採創用 cc 之授權模式，可免費使用、轉載，惟需標明照片來源為本站。有關授權詳細內容請點選下方連結。 </p>' +
 '<p>All photos in this category are fall under the creative commons attribution 3.0 unported license which means you’re free to use photos for personal and commercial purposes.</p>' +
-'<p>And you shall provide a link or give appropriate credit to O’logy website. Check out the full license description below.</p>' +
+"<p>And you shall provide a link or give appropriate credit to O'logy website. Check out the full license description below.</p>" +
 '<div class="license-footer-link">'+
 '<a target="_blank" href="http://creativecommons.org/licenses/by/3.0">http://creativecommons.org/licenses/by/3.0</a>' +
 '</div>';

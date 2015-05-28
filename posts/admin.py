@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from posts.models import Category, Image, Post, Credit
+from posts.models import Category, Image, Post, Credit, StarredPost
 from posts.forms import PostForm, StarredPostForm
 
 from suit.admin import SortableModelAdmin
@@ -11,6 +11,7 @@ from suit.admin import SortableModelAdmin
 class ImageInline(admin.TabularInline):
     model = Image
     suit_classes = 'suit-tab suit-tab-images'
+    fields = ('caption', 'img', 'video_url', 'tag', 'is_cover')
 
     class Meta:
         verbose_name = ''
@@ -62,12 +63,6 @@ class PostAdmin(admin.ModelAdmin):
         }
 
 
-class StarredPost(Post):
-
-    class Meta:
-        proxy = True
-
-
 class StarredAdmin(SortableModelAdmin):
     form = StarredPostForm
     list_filter = ('category',)
@@ -108,8 +103,13 @@ class StarredAdmin(SortableModelAdmin):
         return qs.filter(starred=True)
 
 
+class CategoryAdmin(SortableModelAdmin):
+    model = Category
+    sortable = 'order'
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(StarredPost, StarredAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Image)
 admin.site.register(Credit)
