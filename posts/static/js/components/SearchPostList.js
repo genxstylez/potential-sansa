@@ -59,6 +59,7 @@ export default React.createClass({
             });
             this._getSearchPosts(null, nextProps.query);
         }
+
     },
     /**
      * React component lifecycle method
@@ -69,6 +70,14 @@ export default React.createClass({
             if (this.state.posts.length > 0)
                 $.scrollTo('620px', 500);
         }, 500)
+    },
+
+    componentWillUpdate(nextProps, nextState) {
+        if(nextState.posts != this.state.posts)
+            setTimeout(() => {
+                if (this.state.posts.length > 0)
+                    $.scrollTo('620px', 500);
+            }, 500)
     },
 
     /**

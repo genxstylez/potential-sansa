@@ -47206,6 +47206,14 @@ exports['default'] = _React2['default'].createClass({
         }, 500);
     },
 
+    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+        var _this3 = this;
+
+        if (nextState.posts != this.state.posts) setTimeout(function () {
+            if (_this3.state.posts.length > 0) $.scrollTo('620px', 500);
+        }, 500);
+    },
+
     /**
      * render
      * @returns {XML}
