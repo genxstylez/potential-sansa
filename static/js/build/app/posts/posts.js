@@ -47198,19 +47198,15 @@ exports['default'] = _React2['default'].createClass({
      * React component lifecycle method
      */
     componentDidMount: function componentDidMount() {
-        var _this2 = this;
-
         this._getSearchPosts(null, this.props.query);
         setTimeout(function () {
-            if (_this2.state.posts.length > 0) $.scrollTo('620px', 500);
+            $.scrollTo('620px', 500);
         }, 500);
     },
 
     componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
-        var _this3 = this;
-
         if (nextState.posts != this.state.posts) setTimeout(function () {
-            if (_this3.state.posts.length > 0) $.scrollTo('620px', 500);
+            $.scrollTo('620px', 500);
         }, 500);
     },
 

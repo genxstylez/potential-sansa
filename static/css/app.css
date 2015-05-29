@@ -984,6 +984,10 @@ ul.thumbnails li img {
     margin: 10px;
 }
 
+.slick-slide .align-helper {
+    height: 100%;
+}
+
 .slick-slide img {
     display: inline-block !important;
     height: 85%;

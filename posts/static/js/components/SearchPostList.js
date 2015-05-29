@@ -67,16 +67,14 @@ export default React.createClass({
     componentDidMount() {
         this._getSearchPosts(null, this.props.query);
         setTimeout( () => {
-            if (this.state.posts.length > 0)
-                $.scrollTo('620px', 500);
+            $.scrollTo('620px', 500);
         }, 500)
     },
 
     componentWillUpdate(nextProps, nextState) {
         if(nextState.posts != this.state.posts)
             setTimeout(() => {
-                if (this.state.posts.length > 0)
-                    $.scrollTo('620px', 500);
+                $.scrollTo('620px', 500);
             }, 500)
     },
 
