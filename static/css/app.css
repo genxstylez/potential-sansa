@@ -828,10 +828,14 @@ ul.thumbnails li img {
     height: 90%;
 }
 .photo-layer .align-helper {
-    height: 90%;
+    height: 100%;
 }
 .photo-layer img {
-    max-width: 1280px;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;
+    height: auto;
+    max-height: 95%;
 }
 .album-content .close {
     position: absolute;
