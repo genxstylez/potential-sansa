@@ -46203,7 +46203,7 @@ exports['default'] = _React2['default'].createClass({
                                 if (typeof index === 'number') that._setCover(index);
                             },
                             context: articleContent,
-                            offset: 'bottom-in-view'
+                            offset: '0px'
                         });
                     });
                 }, 1000);
@@ -46462,7 +46462,7 @@ exports['default'] = _React2['default'].createClass({
             { className: 'pull-right gallery' },
             _React2['default'].createElement(
                 TransitionGroup,
-                { transitionName: 'gallery' },
+                { transitionName: 'gallery', transitionLeave: false },
                 _React2['default'].createElement(SelectedImg, { key: this.state.on_deck.id, on_deck: this.state.on_deck })
             ),
             _React2['default'].createElement(
@@ -46820,12 +46820,7 @@ var SelectedImg = _React2['default'].createClass({
             'div',
             { className: 'on_deck' },
             _React2['default'].createElement('span', { className: 'align-helper' }),
-            onDeckNode,
-            _React2['default'].createElement(
-                'div',
-                { className: 'caption' },
-                this.props.on_deck.caption
-            )
+            onDeckNode
         );
     }
 });

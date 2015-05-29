@@ -59,7 +59,7 @@ export default React.createClass({
                                 that._setCover(index);
                         },
                         context: articleContent,
-                        offset: 'bottom-in-view'
+                        offset: '0px'
                     });
                 });
             }, 1000);

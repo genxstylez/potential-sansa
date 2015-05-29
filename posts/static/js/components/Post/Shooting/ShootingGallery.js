@@ -38,7 +38,6 @@ var SelectedImg = React.createClass({
             <div className="on_deck">
                 <span className="align-helper" />
                 {onDeckNode}
-                <div className="caption">{this.props.on_deck.caption}</div>
             </div>
         )
     }  
