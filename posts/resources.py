@@ -96,9 +96,9 @@ class StarredResource(ModelResource):
 
 class PostResource(ModelResource):
     category = fields.ForeignKey(SubCategoryResource, 'category', full=True, null=True, blank=True)
-    credits = fields.ToManyField(CreditResource, lambda bundle: bundle.obj.credits.order_by('id'), full=True, use_in='detail')
+    credits = fields.ToManyField(CreditResource, lambda bundle: bundle.obj.credits.order_by('id'), full=True, use_in='detail', null=True, blank=True)
     tags = fields.ToManyField(TagResource, lambda bundle: bundle.obj.tags.all(), use_in='detail', full=True, null=True, blank=True)
-    images = fields.ToManyField(ImageResource, lambda bundle: bundle.obj.images.order_by('id'), full=True, use_in='detail')
+    images = fields.ToManyField(ImageResource, lambda bundle: bundle.obj.images.order_by('id'), full=True, use_in='detail', null=True, blank=True)
     cover = fields.ToOneField(ImageResource,
                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True).first(),
                               use_in='list', full=True)
