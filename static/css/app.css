@@ -407,6 +407,7 @@ div.logo img {
     border-right: 1px solid #d5d5d5;
     outline: 0;
     overflow: auto;
+    height: 100%;
 }
 .article-box .article .article-content.overflow {
     border-right: none;
