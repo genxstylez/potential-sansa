@@ -41,7 +41,7 @@ div.logo img {
     position: fixed;
     left: 0;
     bottom: 0;
-    width: 100%;
+    right: 0;
 }
 
 .circle-divider {
@@ -217,9 +217,6 @@ div.logo img {
 .mansonryContainer {
     width: 90%;
     margin: 70px auto 50px auto;
-    -moz-column-gap: 0px;
-    -webkit-column-gap: 0px;
-    column-gap: 0px;
 }
 
 .no-results{
@@ -235,6 +232,48 @@ div.logo img {
     left: 0px;
 }
 
+.tile {
+    max-width: 500px;
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+}
+@media (min-width: 320px) and (max-width: 640px) {
+    .tile{
+        width: 100%;
+    }
+}
+@media (min-width: 640px) and (max-width: 960px) {
+    .tile{
+        width: 50%;
+    }
+}
+@media (min-width: 960px) and (max-width: 1680px)  {
+    .tile{
+        width: 33.31%;
+    }
+}
+@media (min-width: 1680px) and (max-width: 2000px) {
+    .tile{
+        width: 20%;
+    }
+}
+@media (min-width: 2000px) and (max-width: 2320px) {
+    .tile{
+        width: 16.6%;
+    }
+}
+@media (min-width: 2320px) and (max-width: 2640px) {
+    .tile{
+        width: 14.28%;
+    }
+}
+@media (min-width: 2640px) and (max-width: 2960px) {
+    .tile{
+        width: 11.1%;
+    }
+}
+/*
 .tile {
     width: 100%;
     max-width: 500px;
@@ -293,6 +332,7 @@ div.logo img {
         column-count: 8;
     }
 }
+*/
 .tile:hover {
     opacity: 0.7;
 }

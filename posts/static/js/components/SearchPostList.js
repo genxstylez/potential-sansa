@@ -5,12 +5,17 @@ import _ from 'lodash';
 import Router from 'react-router';
 import WebAPIMixin from '../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
+import MansonryMixin from 'react-masonry-mixin';
 import PostTile from './Post/PostTile';
 
 const Link = Router.Link;
 
+const mansonryOptions = {
+    transitionDuration: 0
+}
+
 export default React.createClass({
-    mixins: [WebAPIMixin, ScrollListenerMixin],
+    mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin],
 
     propTypes: {
         query : React.PropTypes.string
@@ -100,13 +105,15 @@ export default React.createClass({
         });
         var results_string = this.state.posts.length > 0 ? "Results for " : "No results found for " ;
         return (
-            <div id="tiles"className="mansonryContainer" ref="mansonryContainer">
+            <div>
                 <div className="no-results">
                     <span className="circle-divider" />
                     {results_string + this.props.query} 
                     <span className="circle-divider" />
                 </div>
-                {PostTileNodes}
+                <div id="tiles"className="mansonryContainer" ref="mansonryContainer">
+                    {PostTileNodes}
+                </div>
             </div>
         );
     }

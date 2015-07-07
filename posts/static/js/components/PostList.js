@@ -17,7 +17,7 @@ const mansonryOptions = {
 }
 
 export default React.createClass({
-    mixins: [WebAPIMixin, ScrollListenerMixin, State],
+    mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin, State],
 
     getInitialState() {
         return {
@@ -112,23 +112,20 @@ export default React.createClass({
     render() {
         const PostTileNodes = _.map(this.state.posts, post => {
             return (
-                <TransitionGroup transitionName="post" transitionLeave={false}>
-                    <PostTile 
-                        key={post.id} 
-                        id={post.id} 
-                        heading={post.heading}
-                        subheading={post.subheading}
-                        cover={post.cover}
-                        created_at={post.created_at}
-                        last_modified={post.last_modified}
-                        articletext={post.articletext}
-                        category={post.category.name}
-                        uri={post.resource_uri} />
-                </TransitionGroup>
+                <PostTile 
+                    key={post.id} 
+                    id={post.id} 
+                    heading={post.heading}
+                    subheading={post.subheading}
+                    cover={post.cover}
+                    created_at={post.created_at}
+                    last_modified={post.last_modified}
+                    articletext={post.articletext}
+                    category={post.category.name}
+                    uri={post.resource_uri} />
             );
         });
         return (
-             
             <div id="tiles" className="mansonryContainer" ref="mansonryContainer">
                 {PostTileNodes}
             </div>

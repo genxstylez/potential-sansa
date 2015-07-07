@@ -46978,7 +46978,7 @@ var mansonryOptions = {
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostList',
 
-    mixins: [_WebAPIMixin2['default'], _ScrollListenerMixin2['default'], State],
+    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default'], State],
 
     getInitialState: function getInitialState() {
         return {
@@ -47071,21 +47071,17 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         var PostTileNodes = _import2['default'].map(this.state.posts, function (post) {
-            return _React2['default'].createElement(
-                TransitionGroup,
-                { transitionName: 'post', transitionLeave: false },
-                _React2['default'].createElement(_PostTile2['default'], {
-                    key: post.id,
-                    id: post.id,
-                    heading: post.heading,
-                    subheading: post.subheading,
-                    cover: post.cover,
-                    created_at: post.created_at,
-                    last_modified: post.last_modified,
-                    articletext: post.articletext,
-                    category: post.category.name,
-                    uri: post.resource_uri })
-            );
+            return _React2['default'].createElement(_PostTile2['default'], {
+                key: post.id,
+                id: post.id,
+                heading: post.heading,
+                subheading: post.subheading,
+                cover: post.cover,
+                created_at: post.created_at,
+                last_modified: post.last_modified,
+                articletext: post.articletext,
+                category: post.category.name,
+                uri: post.resource_uri });
         });
         return _React2['default'].createElement(
             'div',
@@ -47126,6 +47122,10 @@ var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
 
 var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
 
+var _MansonryMixin = require('react-masonry-mixin');
+
+var _MansonryMixin2 = _interopRequireWildcard(_MansonryMixin);
+
 var _PostTile = require('./Post/PostTile');
 
 var _PostTile2 = _interopRequireWildcard(_PostTile);
@@ -47134,10 +47134,14 @@ var _PostTile2 = _interopRequireWildcard(_PostTile);
 
 var Link = _Router2['default'].Link;
 
+var mansonryOptions = {
+    transitionDuration: 0
+};
+
 exports['default'] = _React2['default'].createClass({
     displayName: 'SearchPostList',
 
-    mixins: [_WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
+    mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default']],
 
     propTypes: {
         query: _React2['default'].PropTypes.string
@@ -47226,7 +47230,7 @@ exports['default'] = _React2['default'].createClass({
         var results_string = this.state.posts.length > 0 ? 'Results for ' : 'No results found for ';
         return _React2['default'].createElement(
             'div',
-            { id: 'tiles', className: 'mansonryContainer', ref: 'mansonryContainer' },
+            null,
             _React2['default'].createElement(
                 'div',
                 { className: 'no-results' },
@@ -47234,14 +47238,18 @@ exports['default'] = _React2['default'].createClass({
                 results_string + this.props.query,
                 _React2['default'].createElement('span', { className: 'circle-divider' })
             ),
-            PostTileNodes
+            _React2['default'].createElement(
+                'div',
+                { id: 'tiles', className: 'mansonryContainer', ref: 'mansonryContainer' },
+                PostTileNodes
+            )
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
