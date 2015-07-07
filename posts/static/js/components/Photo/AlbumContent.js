@@ -7,6 +7,7 @@ import PhotoFooter from './PhotoFooter';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var Navigation = require('react-router').Navigation;
 
+
 export default React.createClass({
     mixins: [Navigation],
 
@@ -46,11 +47,11 @@ export default React.createClass({
     componentDidMount() {
         if(this.isMounted()) {
             $('.myslick-container').slick({
-                centerMode: true,
                 slidesToShow: 1,
                 variableWidth: true,
                 speed: 300,
                 inifinite: true,
+                initialSlide: 0,
                 prevArrow: '<button type="button" class="myslick-prev"><img src="' + STATIC_URL + 'img/banner-left.png" /></button>',
                 nextArrow: '<button type="button" class="myslick-next"><img src="' + STATIC_URL + 'img/banner-right.png" /></button>'
             });
@@ -104,7 +105,7 @@ export default React.createClass({
                 <div className="myslick-container">
                     {ImageNodes} 
                 </div>
-
+                
                 <div className="thumbnails-div">
                     <div className="arrow pull-left" onClick={this.handleLeftArrow}>
                         <span className="align-helper" />
