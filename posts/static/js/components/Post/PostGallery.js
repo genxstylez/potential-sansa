@@ -71,7 +71,7 @@ export default React.createClass({
     render() {
         return (
           <div className="pull-right gallery">
-            <TransitionGroup transitionName="gallery" transitionLeave={false}>
+            <TransitionGroup transitionName="gallery">
                 <SelectedImg key={this.state.on_deck.id} on_deck={this.state.on_deck} />
             </TransitionGroup>
             <div className="arrow left" onClick={this.handleLeftArrow}>

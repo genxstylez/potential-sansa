@@ -955,6 +955,8 @@ ul.thumbnails li img {
 
 .gallery-leave.gallery-leave-active {
     opacity: 0.01;
+    position: fixed;
+    left: -10000px;
 }
 
 

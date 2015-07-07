@@ -46462,7 +46462,7 @@ exports['default'] = _React2['default'].createClass({
             { className: 'pull-right gallery' },
             _React2['default'].createElement(
                 TransitionGroup,
-                { transitionName: 'gallery', transitionLeave: false },
+                { transitionName: 'gallery' },
                 _React2['default'].createElement(SelectedImg, { key: this.state.on_deck.id, on_deck: this.state.on_deck })
             ),
             _React2['default'].createElement(
