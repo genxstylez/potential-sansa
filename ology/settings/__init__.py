@@ -163,12 +163,16 @@ THUMBNAIL_ALIASES = {
     'posts.Image.img': {
         'small': {'size': (150, 0), 'crop': 'scale'},
         'medium': {'size': (320, 0), 'crop': 'scale'},
-        'large': {'size': (640, 0), 'crop': 'scale'}
+        'large': {'size': (640, 0), 'crop': 'scale'},
+        'xl': {'size': (1280, 0), 'crop': 'scale'},
+        'xxl': {'size': (1680, 0), 'crop': 'scale'}
     },
     'photos.Photo.img': {
         'small': {'size': (150, 0), 'crop': 'scale'},
         'medium': {'size': (320, 0), 'crop': 'scale'},
-        'large': {'size': (640, 0), 'crop': 'scale'}
+        'large': {'size': (640, 0), 'crop': 'scale'},
+        'xl': {'size': (1280, 0), 'crop': 'scale'},
+        'xxl': {'size': (1680, 0), 'crop': 'scale'}
     }
 }
 
