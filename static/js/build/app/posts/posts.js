@@ -46563,7 +46563,7 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             { className: 'tile', onClick: this.handleClick },
-            _React2['default'].createElement('img', { src: this.props.cover.img.medium }),
+            _React2['default'].createElement('img', { src: this.props.cover.img.large }),
             _React2['default'].createElement(
                 'div',
                 { className: 'intro' },

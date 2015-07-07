@@ -31,7 +31,7 @@ export default React.createClass({
 
         return (
             <div className="tile"  onClick={this.handleClick}>
-                <img src={this.props.cover.img.medium} ></img>
+                <img src={this.props.cover.img.large} ></img>
                 <div className="intro">
                     <div className="info">
                         { this.props.category} | {moment(this.props.created_at).format("YYYY.MM.DD")}
