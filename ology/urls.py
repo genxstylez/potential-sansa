@@ -28,7 +28,10 @@ urlpatterns = [
     url(r'^category/(?P<category_id>\d+)/$', 'ology.views.index', name='category'),
     url(r'^category/(?P<category_id>\d+)/(?P<subcategory_id>\d+)/$', 'ology.views.index', name='subcategory'),
     url(r'^post/(?P<post_id>\d+)/$', 'ology.views.post', name='post'),
+    url(r'^search/', TemplateView.as_view(template_name='search.html'), name='search_view'),
+    url(r'^subscribe/', TemplateView.as_view(template_name='subscribe.html'), name='subscribe'),
     url(r'^', 'ology.views.index', name='index'),
+
     url(r'^posts/', include('posts.urls')),
 
 ]

@@ -9,11 +9,11 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            labelMessage: <p>
-                <span style={{fontSize:"22px", letterSpacing:"0.05em"}}>Type your email and hit enter to subcribe</span>
-                <br />
-                <span style={{fontSize:"17px", letterSpacing:"0.05em"}}>請輸入您的email並按下Enter</span>
-                </p>,
+            labelMessage: 
+                <span>
+                    <div style={{fontSize:"22px", letterSpacing:"0.05em"}}>Type your email and hit enter to subcribe</div>
+                    <div style={{fontSize:"17px", letterSpacing:"0.05em", marginTop: "5px"}}>請輸入您的email並按下Enter</div>
+                </span>,
             has_value: false
         }
     },

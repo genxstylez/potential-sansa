@@ -48131,17 +48131,16 @@ exports['default'] = _React2['default'].createClass({
     getInitialState: function getInitialState() {
         return {
             labelMessage: _React2['default'].createElement(
-                'p',
+                'span',
                 null,
                 _React2['default'].createElement(
-                    'span',
+                    'div',
                     { style: { fontSize: '22px', letterSpacing: '0.05em' } },
                     'Type and hit enter to search'
                 ),
-                _React2['default'].createElement('br', null),
                 _React2['default'].createElement(
-                    'span',
-                    { style: { fontSize: '17px', letterSpacing: '0.05em' } },
+                    'div',
+                    { style: { fontSize: '17px', letterSpacing: '0.05em', marginTop: '5px' } },
                     '請輸入欲搜尋字串並按下Enter'
                 )
             ),
@@ -48269,17 +48268,16 @@ exports['default'] = _React2['default'].createClass({
     getInitialState: function getInitialState() {
         return {
             labelMessage: _React2['default'].createElement(
-                'p',
+                'span',
                 null,
                 _React2['default'].createElement(
-                    'span',
+                    'div',
                     { style: { fontSize: '22px', letterSpacing: '0.05em' } },
                     'Type your email and hit enter to subcribe'
                 ),
-                _React2['default'].createElement('br', null),
                 _React2['default'].createElement(
-                    'span',
-                    { style: { fontSize: '17px', letterSpacing: '0.05em' } },
+                    'div',
+                    { style: { fontSize: '17px', letterSpacing: '0.05em', marginTop: '5px' } },
                     '請輸入您的email並按下Enter'
                 )
             ),

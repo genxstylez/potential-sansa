@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div>
+        <div class="search-layer show">
+            <span class="close">
+                <img src="/static/img/cross.png">
+            </span>
+            <form class="search-form">
+                <input name="q" type="text" autocomplete="off">
+                <label>
+                    <span>
+                        <div style="font-size:22px;letter-spacing:0.05em;">Type and hit enter to search</div>
+                        <div style="font-size:17px;letter-spacing:0.05em;margin-top:5px;">請輸入欲搜尋字串並按下Enter</div>
+                    </span>
+                </label>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+{% if JS_DEBUG %}
+<script src="{% static 'js/build/app/posts/posts.js' %}"></script>
+{% else %}
+<script src="{% static 'js/build/app/posts/posts.min.js' %}"></script>
+{% endif %}
+{% endblock %}

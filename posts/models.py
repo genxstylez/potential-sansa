@@ -42,9 +42,9 @@ class Post(models.Model):
                          unique_with=['category__name', 'created_at__month'],
                          slugify=lambda value: value.replace(' ', '-'), db_index=True)
     category = models.ForeignKey(Category, related_name='posts', verbose_name='類別')
-    heading = models.CharField('主標題', max_length=30, help_text="若要分行請輸入\r")
+    heading = models.CharField('主標題', max_length=30)
     subheading = models.CharField('副標題', max_length=30, blank=True)
-    articletext = models.TextField('內容')
+    articletext = models.TextField('內容', help_text=('若要換行請輸入shift+enter, 分段落請輸入enter'))
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     starred = models.BooleanField('加入至橫幅', default=False)

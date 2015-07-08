@@ -19,11 +19,11 @@ export default React.createClass({
     },
     getInitialState() {
         return {
-            labelMessage: <p>
-                <span style={{fontSize:"22px", letterSpacing:"0.05em"}}>Type and hit enter to search</span>
-                <br />
-                <span style={{fontSize:"17px", letterSpacing:"0.05em"}}>請輸入欲搜尋字串並按下Enter</span>
-                </p>,
+            labelMessage:
+                <span>
+                    <div style={{fontSize:"22px", letterSpacing:"0.05em"}}>Type and hit enter to search</div>
+                    <div style={{fontSize:"17px", letterSpacing:"0.05em", marginTop:"5px"}}>請輸入欲搜尋字串並按下Enter</div>
+                </span>,
             q: this.context.router.getCurrentQuery().q,
             has_value: false,
         }
