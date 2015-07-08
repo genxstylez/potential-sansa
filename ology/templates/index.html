@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block logo %}
+    <div>
+        <div class="row top-black-bar" style="height:17px;background-color:#000000;"></div>
+        <div class="row logo" style="margin:50px auto 36px auto;width:222px;text-align:center;">
+            <img style="width:222px;" src="{% static 'img/logo.png' %}">
+        </div>
+    </div>
+{% endblock %}
+{% block nav %}
+<div class="row nav">
+    <div class="header col-xs-0 col-sm-12 col-md-12 col-lg-12">
+        <div class="pull-left">
+            <a class="" href="/search/">
+                <img class="search" src="{% static 'img/search.png' %}">
+            </a>
+        </div>
+        <div class="pull-right">
+            <a href="https://www.facebook.com/OlogyFashion" target="_blank" class="fb">
+                <img src="{% static 'img/fb.png' %}">
+            </a>
+            <a class="subscribe" href="/subscribe/">Subscribe</a>
+        </div>
+        <div class="navbar">
+            <a class=" active" href="/">Home</a>
+            <span class="circle-divider"></span>
+            {% for category in categories %}
+                <span class="navitems">
+                    <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                    <div class="sub-nav {% if category.sub_categories.all.count == 0 %}hidden{% endif %}">
+                        {% for subcategory in category.sub_categories.all %}
+                            <a class="" href="{{ subcategory.get_absolute_url }}">{{ subcategory.name }}</a>
+                            {% if not forloop.last %}
+                            <span class="circle-divider"></span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </span>
+                <span class="circle-divider"></span>
+            {% endfor %}
+             <a href="/albums/">Photo</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block banner %}
+ <div class="row banner-outer-container">
+    <img class="arrow left" src="{% static 'img/banner-left.png' %}" />
+    <img class="arrow right" src="{% static 'img/banner-right.png' %}" />
+    <div>
+        <div class="banner-inner-container">
+            {% for banner in starred_posts %}
+            <div class="banner-tile">
+                <img src="{{ banner.get_cover.img.large.url }}" />
+                <div class="title">
+                    <span>{{ banner.heading }}</span>
+                    <span class="circle-divider"></span>
+                    <span>{{ banner.subheading }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block content %}
+<div id="tiles" class="mansonryContainer">
+    {% for post in posts %}
+    <div class="tile">
+        <img src="{{ post.get_cover.img.large.url }}"></img>
+        <div class="intro">
+            <div class="info">
+                {{ post.category.name }} | {{ post.created_at|date:"Y.m.d" }}
+            </div>
+            <div className="heading">
+                {{ post.heading }}
+            </div>
+            <div class="sub-heading">
+                {{ post.subheading }}
+            </div>
+
+            <div class="divider">
+                <span class="twin circle-divider"></span>
+                <span class="twin circle-divider"></span>
+            </div>
+
+            <div class="synopsis">
+                {{ post.articletext|truncatechars_html:50|safe }}
+            </div>
+        </div>
+        <div class="triangle"></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="row footer">
+    &copy; O'logy Co.,Ltd All rights reserved.
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% if JS_DEBUG %}
+<script src="{% static 'js/build/app/posts/posts.js' %}"></script>
+{% else %}
+<script src="{% static 'js/build/app/posts/posts.min.js' %}"></script>
+{% endif %}
+{% endblock %}

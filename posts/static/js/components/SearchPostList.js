@@ -7,8 +7,7 @@ import WebAPIMixin from '../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import MansonryMixin from 'react-masonry-mixin';
 import PostTile from './Post/PostTile';
-
-const Link = Router.Link;
+import PostPage from '../routes/PostPage';
 
 const mansonryOptions = {
     transitionDuration: 0
@@ -66,27 +65,41 @@ export default React.createClass({
         }
 
     },
-    /**
-     * React component lifecycle method
-     */
     componentDidMount() {
         this._getSearchPosts(null, this.props.query);
         setTimeout( () => {
             $.scrollTo('620px', 500);
-        }, 500)
+        }, 50)
     },
 
     componentWillUpdate(nextProps, nextState) {
         if(nextState.posts != this.state.posts)
             setTimeout(() => {
                 $.scrollTo('620px', 500);
-            }, 500)
+            }, 50)
     },
 
-    /**
-     * render
-     * @returns {XML}
-     */
+    handleClick(post){
+        this.setState({
+            modal: true,
+            postId: post.id,
+            last_scrollTop: this.state.scrollTop
+        });
+        history.pushState(null, null, '/post/' + post.id + '/');
+        $('.react-container').addClass('modal-open');
+    },
+    handleClickonCross() {
+        this.setState({
+            modal:false,
+            postId: 0,
+        });
+        history.pushState(null, null, '/');
+        $('.react-container').removeClass('modal-open'); 
+        $.scrollTo(this.state.last_scrollTop, 500);
+        this.setState({
+            last_scrollTop: 0
+        });
+    },
 
     render() {
         const PostTileNodes = _.map(this.state.posts, post => {
@@ -100,10 +113,15 @@ export default React.createClass({
                     created_at={post.created_at}
                     last_modified={post.last_modified}
                     articletext={post.articletext}
-                    category={post.category.name} />
+                    category={post.category.name}
+                    onClick={this.handleClick.bind(this, post)} />
             );
         });
         var results_string = this.state.posts.length > 0 ? "Results for " : "No results found for " ;
+        var postModal;
+        if (this.state.modal && this.state.postId > 0) {
+            postModal = <PostPage key={this.state.postId} id={this.state.postId} onClickOnCross={this.handleClickonCross}/>;
+        }
         return (
             <div>
                 <div className="no-results">
@@ -114,6 +132,7 @@ export default React.createClass({
                 <div id="tiles"className="mansonryContainer" ref="mansonryContainer">
                     {PostTileNodes}
                 </div>
+                {{ postModal }}
             </div>
         );
     }

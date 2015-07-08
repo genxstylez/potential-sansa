@@ -25,11 +25,6 @@ export default React.createClass({
         last_modified: React.PropTypes.string,
     },
 
-    handeClickOnCross() {
-       if(!this.goBack()) {
-            this.transitionTo('/')
-       }
-    },
 
     handleClickOnToggle() {
         this.setState({
@@ -43,7 +38,7 @@ export default React.createClass({
         return (
             <div className="article-box" ref="articleBox">
                 <span className="close">
-                    <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
+                    <img src={STATIC_URL + "img/cross.png"} onClick={this.props.onClickOnCross} />
                 </span>
                 <div className="row article-header">
                     <span className="circle-divider"></span>

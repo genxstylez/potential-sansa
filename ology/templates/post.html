@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="article-box">
+    <span class="close">
+        <img src="{% static 'img/cross.png' %}" />
+    </span>
+    <div class="row article-header">
+        <span class="circle-divider"></span>
+        <span>{{ post.category }}</span>
+        <span class="circle-divider"></span>
+    </div>
+    <div class="row article">
+        <div id="articleContent" class="pull-left article-content">
+            <div class="inner-content">
+                <span class="label category">{{ post.category }}</span>
+                <p class="title">{{ post.heading }}</p>
+                <p class="sub-title">{{ post.subheading }}</p>
+                <div class="decorations">
+                    <span class="created_at">{{ post.created_at|date:"Y.m.d" }}</span>
+                </div>
+                <div class="text">
+                    {{ post.articletext|safe }}
+                </div>
+                <div class="decorations end"></div>
+                {% for credit in post.credits.all %}
+                <div class="credit">
+                    <span class="label role">{{ credit.role }}</span>
+                    <span class="name">{{ credit.name }}</span>
+                </div>
+                {% endfor %}
+                <div class="share">
+                    <a href="{{ share_url }}">
+                        <img src="{% static 'img/fb.png' %}" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right gallery">
+            <span>
+                <div class="on_deck">
+                    <span class="align-helper"></span>
+                    <span>{{ post.get_cover.video_id }}</span>
+                    {% if post.get_cover.video_id %}
+                        <div class="video-embed">
+                            {{ post.get_cover.generate_video_embed | safe }}
+                        </div>
+                    {% else %} 
+                        <img src="{{ post.get_cover.img.large.url }}" />
+                    {% endif %}
+                    <div class="caption">{{ post.get_cover.caption }}</div>
+                </div>
+            </span>
+            <div class="arrow left">
+                <span class="align-helper"></span>
+                <img src="{% static 'img/left-arrow.png' %}" />
+            </div>
+            <ul class="thumbnails">
+                {% for image in post.images.all %}
+                {% if image.video_id %}
+                    <li>
+                        <img src="https://i.ytimg.com/vi/{{ image.video_id }}/hqdefault.jpg" />
+                    </li>
+                {% else %}
+                    <li>
+                        <img src="{{ image.img.small.url }}" />
+                    </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            <div class="arrow right"> 
+                <span class="align-helper"></span>
+                <img src="{% static 'img/right-arrow.png' %}" />
+            </div>
+          </div>
+        <div class="triangle"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+
+{% if JS_DEBUG %}
+<script src="{% static 'js/build/app/posts/posts.js' %}"></script>
+{% else %}
+<script src="{% static 'js/build/app/posts/posts.min.js' %}"></script>
+{% endif %}
+{% endblock %}

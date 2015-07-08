@@ -4,11 +4,9 @@ import React from 'react/addons';
 import _ from 'lodash';
 import truncate from 'html-truncate';
 import Router from 'react-router';
+import PostPage from '../../routes/PostPage';
 import WebAPIMixin from '../../mixins/WebAPIMixin';
 import BannerTile from './BannerTile';
-
-
-const Link = Router.Link;
 
 export default React.createClass({
     mixins: [WebAPIMixin],
@@ -18,10 +16,12 @@ export default React.createClass({
     },
     getInitialState() {
         return {
-            posts: []
+            posts: [],
+            modal: false,
+            postId: 0,
         }
     },
-     _getStarred() {
+    _getStarred() {
         this.getStarred((error, response) => {
             this.setState({posts: error ? [] : response.body.objects});
         });
@@ -51,6 +51,28 @@ export default React.createClass({
             scrollLeft: "+=1280"
         }, 200);
     },
+    handleOnClick(post) {
+        this.setState({
+            modal: true,
+            postId: post.id,
+            last_scrollTop: this.state.scrollTop
+        });
+        history.pushState(null, null, '/post/' + post.id + '/');
+        $('.react-container').addClass('modal-open');
+    },
+    handleClickonCross() {
+        this.setState({
+            modal:false,
+            postId: 0,
+        });
+        history.pushState(null, null, '/');
+        $('.react-container').removeClass('modal-open'); 
+        $.scrollTo(this.state.last_scrollTop, 500);
+        this.setState({
+            last_scrollTop: 0
+        });
+    },
+
     render() {
         const tileNodes = _.map(this.state.posts, post => {
             return (
@@ -59,9 +81,14 @@ export default React.createClass({
                     id={post.id} 
                     heading={post.heading}
                     subheading={post.subheading}
-                    cover={post.cover} />
+                    cover={post.cover} 
+                    onClick={this.handleOnClick.bind(this, post)} />
             );
         });
+        var postModal;
+        if (this.state.modal && this.state.postId > 0) {
+            postModal = <PostPage key={this.state.postId} id={this.state.postId} onClickOnCross={this.handleClickonCross}/>;
+        }
         return (
             <div className="row banner-outer-container">
                 <img className="arrow left" onClick={this.handleLeftArrow} src={STATIC_URL + "img/banner-left.png"} />
@@ -71,6 +98,7 @@ export default React.createClass({
                         {tileNodes}
                     </div>
                 </div>
+                {postModal}
             </div>
         );
     }

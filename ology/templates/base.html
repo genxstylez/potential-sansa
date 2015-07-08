@@ -15,7 +15,11 @@
 </head>
 <body>
     <div class="container-fluid react-container">
+        {% block logo %}{% endblock %}
         {% block nav %}{% endblock %}
+        {% block banner %}{% endblock %}
+        {% block content %}{% endblock %}
+        {% block footer %}{% endblock %}
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="{% static 'thirdparty/core.js' %}"></script>

@@ -63,6 +63,8 @@ export default React.createClass({
     },
 
     render() {
+        
+
         var header_classes = classNames({
             'header': true,
             'col-xs-0': true,
@@ -99,7 +101,8 @@ export default React.createClass({
         NavItemNodes.push(<Link key="albums" to="albums"
             onMouseEnter={this.handlePhotoOnMouseEnter}
             onMouseOut={this.handlePhotoOnMouseOut}>Photo</Link>);
-        
+
+
         var fb_icon = STATIC_URL + "img/fb.png";
         var search_icon = STATIC_URL + "img/search.png";
             

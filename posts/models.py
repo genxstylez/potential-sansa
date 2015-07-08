@@ -7,6 +7,7 @@ import urlparse
 
 from django.db import models
 from django.db.models.signals import post_save
+from django.core.urlresolvers import reverse
 from taggit.managers import TaggableManager
 from easy_thumbnails import fields
 from autoslug import AutoSlugField
@@ -29,6 +30,11 @@ class Category(models.Model):
             name=self.name,
             parent=self.parent.to_json() if self.parent else None
         )
+
+    def get_absolute_url(self):
+        if self.parent is None:
+            return reverse('category', args=(self.id,))
+        return reverse('subcategory', args=(self.parent.id, self.id))
 
 
 class Post(models.Model):
@@ -59,7 +65,12 @@ class Post(models.Model):
         self.is_shooting = self.category.name.lower() in ['shooting']
         super(Post, self).save(*args, **kwargs)
 
+    def get_cover(self):
+        image = self.images.filter(is_cover=True).first()
+        return image
+
     def to_json(self):
+        cover_image = self.images.filter(is_cover=True).first()
         return dict(
             id=self.id,
             slug=self.slug,
@@ -73,10 +84,10 @@ class Post(models.Model):
             images=[image.to_json() for image in self.images.all()],
             cover=dict(
                 img=dict(
-                    original=self.images.filter(is_cover=True)[0].img.url,
-                    small=self.images.filter(is_cover=True)[0].img['small'].url,
-                    medium=self.images.filter(is_cover=True)[0].img['medium'].url,
-                    large=self.images.filter(is_cover=True)[0].img['large'].url,
+                    original=cover_image.img.url,
+                    small=cover_image.img['small'].url,
+                    medium=cover_image.img['medium'].url,
+                    large=cover_image.img['large'].url,
                 )
             )
         )
@@ -115,6 +126,9 @@ class Image(models.Model):
                 self.video_id = urlparse.parse_qs(url_obj.query)['v'][0]
             elif url_obj.netloc.lower() == 'youtu.be':
                 self.video_id = url_obj.path.strip('/')
+        else:
+            if self.video_id:
+                self.video_id = ''
         super(Image, self).save(*args, **kwargs)
 
     def __unicode__(self):
@@ -129,6 +143,15 @@ class Image(models.Model):
             img=self.img.url if self.img else '',
             video_id=self.video_id
         )
+
+    def generate_video_embed(self, width=600, height=450):
+        return '<iframe width="{width}" height="{height}" ' \
+            'src="https://www.youtube.com/embed/{video_id}" ' \
+            'frameborder="0" allowfullscreen></iframe>'.format(
+                width=width,
+                height=height,
+                video_id=self.video_id
+            )
 
 
 class StarredPost(Post):

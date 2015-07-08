@@ -25,7 +25,6 @@ div .top-black-bar {
 div.logo {
     margin: 50px auto 36px auto;
     text-align: center;
-    cursor: pointer;
 }
 div.logo img {
     width: 222px;
@@ -179,6 +178,7 @@ div.logo img {
     float: left;
     position: relative;
     height: 450px;
+    cursor: pointer;
     /* width: 640px; */
 }
 .banner-inner-container .banner-tile img {
@@ -395,6 +395,7 @@ div.logo img {
     left: 0;
     height: 100%;
     overflow: hidden;
+    z-index: 3;
 }
 .article-box .close {
     position: absolute;
@@ -935,7 +936,7 @@ ul.thumbnails li img {
 }
 
 .post-leave.post-leave-active {
-  opacity: 0;
+  opacity: 0.01;
 }
 
 .gallery-enter {

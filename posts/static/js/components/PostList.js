@@ -3,6 +3,7 @@
 import React from 'react/addons';
 import _ from 'lodash';
 import Router from 'react-router';
+import PostPage from '../routes/PostPage';
 import WebAPIMixin from '../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import PostTile from './Post/PostTile';
@@ -28,6 +29,9 @@ export default React.createClass({
             has_next: false,
             is_loading: false,
             is_animating_scrolling: false,
+            modal: false,
+            postId: 0,
+            last_scrollTop: 0
         }
     },
 
@@ -40,9 +44,6 @@ export default React.createClass({
             this._getMorePosts(this.state.next_page);
         }
     },
-
-    processResponse(error, response) {
-           },
 
     _getMorePosts(url) {
         this.getMorePosts(url, (error, response) => {
@@ -81,7 +82,8 @@ export default React.createClass({
                 next_page: null,
                 is_animating_scrolling: false,
                 categoryId: this.getParams().categoryId,
-                subcategoryId: this.getParams().subcategoryId
+                subcategoryId: this.getParams().subcategoryId,
+                posts: [],
             });
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
@@ -104,10 +106,27 @@ export default React.createClass({
         }; 
     },
 
-    /**
-     * render
-     * @returns {XML}
-     */
+    handleClick(post){
+        this.setState({
+            modal: true,
+            postId: post.id,
+            last_scrollTop: this.state.scrollTop
+        });
+        history.pushState(null, null, '/post/' + post.id + '/');
+        $('.react-container').addClass('modal-open');
+    },
+    handleClickonCross() {
+        this.setState({
+            modal:false,
+            postId: 0,
+        });
+        history.pushState(null, null, '/');
+        $('.react-container').removeClass('modal-open'); 
+        $.scrollTo(this.state.last_scrollTop, 500);
+        this.setState({
+            last_scrollTop: 0
+        });
+    },
 
     render() {
         const PostTileNodes = _.map(this.state.posts, post => {
@@ -122,12 +141,20 @@ export default React.createClass({
                     last_modified={post.last_modified}
                     articletext={post.articletext}
                     category={post.category.name}
-                    uri={post.resource_uri} />
+                    uri={post.resource_uri} 
+                    onClick={this.handleClick.bind(this, post)} />
             );
         });
+        var postModal;
+        if (this.state.modal && this.state.postId > 0) {
+            postModal = <PostPage key={this.state.postId} id={this.state.postId} onClickOnCross={this.handleClickonCross}/>;
+        }
         return (
-            <div id="tiles" className="mansonryContainer" ref="mansonryContainer">
-                {PostTileNodes}
+            <div>
+                <div id="tiles" className="mansonryContainer" ref="mansonryContainer">
+                    {PostTileNodes}
+                </div>
+                {postModal}
             </div>
         );
     }

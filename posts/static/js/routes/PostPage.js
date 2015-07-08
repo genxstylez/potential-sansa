@@ -7,9 +7,14 @@ var State = require('react-router').State;
 import PostContent from '../components/Post/PostContent';
 import ShootingContent from '../components/Post/Shooting/ShootingContent';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
-    mixins: [WebAPIMixin, State],
+    mixins: [WebAPIMixin, State, Navigation],
+
+    propTypes: {
+        id: React.PropTypes.number
+    },
 
     getInitialState() {
         return {
@@ -46,7 +51,17 @@ export default React.createClass({
     },
 
     componentDidMount() {
-        this._getPost(this.getParams().postId);
+        this._getPost(this.props.id || this.getParams().postId);
+    },
+
+    handleClickOnCross() {
+        if(this.props.id) {
+            this.props.onClickOnCross();
+        } else {
+            if(!this.goBack()) {
+                this.transitionTo('/')
+            }
+       }
     },
 
     render() {
@@ -63,7 +78,8 @@ export default React.createClass({
                         credits={this.state.credits}
                         created_at={this.state.created_at}
                         last_modified={this.state.last_modified}
-                        category={this.state.category} />
+                        category={this.state.category}
+                        onClickOnCross={this.handleClickOnCross} />
                 </TransitionGroup>
                 )
         }
@@ -79,7 +95,8 @@ export default React.createClass({
                     credits={this.state.credits}
                     created_at={this.state.created_at}
                     last_modified={this.state.last_modified}
-                    category={this.state.category} />
+                    category={this.state.category} 
+                    onClickOnCross={this.handleClickOnCross} />
             </TransitionGroup>
         );
     }

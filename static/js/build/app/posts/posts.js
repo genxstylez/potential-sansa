@@ -47,13 +47,13 @@ var routes = _React2['default'].createElement(
     Route,
     { name: 'app', path: '/', handler: _Application2['default'], ignoreScrollBehavior: true },
     _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'search', path: 'search', handler: _SearchPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'albums', path: 'albums', handler: _AlbumsPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId', handler: _AlbumPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'subscribe', path: 'subscribe', handler: _SubscribePage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId', handler: _PostPage2['default'] })
+    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _IndexPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _IndexPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'search', path: 'search/', handler: _SearchPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'albums', path: 'albums/', handler: _AlbumsPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId/', handler: _AlbumPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'subscribe', path: 'subscribe/', handler: _SubscribePage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] })
 );
 
 _Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Handler) {
@@ -44936,6 +44936,10 @@ var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
 
+var _PostPage = require('../../routes/PostPage');
+
+var _PostPage2 = _interopRequireWildcard(_PostPage);
+
 var _WebAPIMixin = require('../../mixins/WebAPIMixin');
 
 var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
@@ -44945,8 +44949,6 @@ var _BannerTile = require('./BannerTile');
 var _BannerTile2 = _interopRequireWildcard(_BannerTile);
 
 'use strict';
-
-var Link = _Router2['default'].Link;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'BannerList',
@@ -44958,8 +44960,9 @@ exports['default'] = _React2['default'].createClass({
     },
     getInitialState: function getInitialState() {
         return {
-            posts: []
-        };
+            posts: [],
+            modal: false,
+            postId: 0 };
     },
     _getStarred: function _getStarred() {
         var _this = this;
@@ -44997,15 +45000,43 @@ exports['default'] = _React2['default'].createClass({
             scrollLeft: '+=1280'
         }, 200);
     },
+    handleOnClick: function handleOnClick(post) {
+        this.setState({
+            modal: true,
+            postId: post.id,
+            last_scrollTop: this.state.scrollTop
+        });
+        history.pushState(null, null, '/post/' + post.id + '/');
+        $('.react-container').addClass('modal-open');
+    },
+    handleClickonCross: function handleClickonCross() {
+        this.setState({
+            modal: false,
+            postId: 0 });
+        history.pushState(null, null, '/');
+        $('.react-container').removeClass('modal-open');
+        $.scrollTo(this.state.last_scrollTop, 500);
+        this.setState({
+            last_scrollTop: 0
+        });
+    },
+
     render: function render() {
+        var _this4 = this;
+
         var tileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_BannerTile2['default'], {
                 key: post.id,
                 id: post.id,
                 heading: post.heading,
                 subheading: post.subheading,
-                cover: post.cover });
+                cover: post.cover,
+                onClick: _this4.handleOnClick.bind(_this4, post) });
         });
+        var postModal;
+        if (this.state.modal && this.state.postId > 0) {
+            postModal = _React2['default'].createElement(_PostPage2['default'], { key: this.state.postId, id: this.state.postId, onClickOnCross: this.handleClickonCross });
+        }
         return _React2['default'].createElement(
             'div',
             { className: 'row banner-outer-container' },
@@ -45019,13 +45050,14 @@ exports['default'] = _React2['default'].createClass({
                     { className: 'banner-inner-container', ref: 'InnerContainer' },
                     tileNodes
                 )
-            )
+            ),
+            postModal
         );
     }
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"./BannerTile":237,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"../../routes/PostPage":265,"./BannerTile":237,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45046,17 +45078,11 @@ var _truncate = require('html-truncate');
 
 var _truncate2 = _interopRequireWildcard(_truncate);
 
-var _Router = require('react-router');
-
-var _Router2 = _interopRequireWildcard(_Router);
-
 var _WebAPIMixin = require('../../mixins/WebAPIMixin');
 
 var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
 
 'use strict';
-
-var Link = _Router2['default'].Link;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'BannerTile',
@@ -45069,25 +45095,21 @@ exports['default'] = _React2['default'].createClass({
     render: function render() {
         return _React2['default'].createElement(
             'div',
-            { className: 'banner-tile' },
+            { className: 'banner-tile', onClick: this.props.onClick },
+            _React2['default'].createElement('img', { src: this.props.cover.img.large }),
             _React2['default'].createElement(
-                Link,
-                { key: this.props.id, to: 'post', params: { postId: this.props.id } },
-                _React2['default'].createElement('img', { src: this.props.cover.img.large }),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'title' },
-                    this.props.heading,
-                    _React2['default'].createElement('span', { className: 'circle-divider' }),
-                    this.props.subheading
-                )
+                'div',
+                { className: 'title' },
+                this.props.heading,
+                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                this.props.subheading
             )
         );
     }
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],238:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"react/addons":60}],238:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45143,23 +45165,11 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-var _Router = require('react-router');
-
-var _Router2 = _interopRequireWildcard(_Router);
-
 'use strict';
-
-var Link = _Router2['default'].Link;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'Logo',
 
-    contextTypes: {
-        router: _React2['default'].PropTypes.func
-    },
-    handleClick: function handleClick() {
-        this.context.router.transitionTo('/');
-    },
     render: function render() {
         var styles = {
             TopBlackBar: {
@@ -45172,6 +45182,7 @@ exports['default'] = _React2['default'].createClass({
             logoImg: {
                 width: '222px' }
         };
+
         var logo_src = STATIC_URL + 'img/logo.png';
 
         return _React2['default'].createElement(
@@ -45180,7 +45191,7 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement('div', { className: 'row top-black-bar', style: styles.TopBlackBar }),
             _React2['default'].createElement(
                 'div',
-                { className: 'row logo', style: styles.logo, onClick: this.handleClick },
+                { className: 'row logo', style: styles.logo },
                 _React2['default'].createElement('img', { style: styles.logoImg, src: logo_src })
             )
         );
@@ -45189,7 +45200,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":6,"react-router":45,"react/addons":60}],240:[function(require,module,exports){
+},{"lodash":6,"react/addons":60}],240:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45285,6 +45296,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
+
         var header_classes = _classNames2['default']({
             header: true,
             'col-xs-0': true,
@@ -45433,20 +45445,12 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
-        var styles = {
-            anchor: {
-                fontSize: '14px',
-                color: '#000',
-                letterSpacing: '0.1em',
-                lineHeight: '1.5' }
-        };
         return _React2['default'].createElement(
             'span',
             { className: 'navitems' },
             _React2['default'].createElement(
                 Link,
                 { key: this.props.id,
-                    style: styles.anchor,
                     to: 'category',
                     params: { categoryId: this.props.id },
                     onMouseEnter: this.handleOnMouseEnter,
@@ -46209,25 +46213,9 @@ exports['default'] = _React2['default'].createClass({
                 }, 1000);
             })();
         };
-
-        //window.addEventListener('resize', this.handleResize);
     },
     componentWillUnmount: function componentWillUnmount() {
         Waypoint.destroyAll();
-        //window.removeEventListener('resize', this.handleResize);
-    },
-
-    /* 
-    handleResize() {
-        if($(React.findDOMNode(this.refs.articleContent)).data('jsp') != undefined)
-            $(React.findDOMNode(this.refs.articleContent)).data('jsp').reinitialise();
-    },
-    */
-
-    handeClickOnCross: function handeClickOnCross() {
-        if (!this.goBack()) {
-            this.transitionTo('/');
-        }
     },
 
     render: function render() {
@@ -46245,7 +46233,7 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'span',
                 { className: 'close' },
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.props.onClickOnCross })
             ),
             _React2['default'].createElement(
                 'div',
@@ -46538,8 +46526,6 @@ var _moment2 = _interopRequireWildcard(_moment);
 
 'use strict';
 
-var Link = _Router2['default'].Link;
-
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostTile',
 
@@ -46552,17 +46538,10 @@ exports['default'] = _React2['default'].createClass({
         created_at: _React2['default'].PropTypes.string.isRequired,
         last_modified: _React2['default'].PropTypes.string.isRequired,
         uri: _React2['default'].PropTypes.string },
-    contextTypes: {
-        router: _React2['default'].PropTypes.func
-    },
-    handleClick: function handleClick() {
-        this.context.router.transitionTo('post', { postId: this.props.id });
-    },
     render: function render() {
-
         return _React2['default'].createElement(
             'div',
-            { className: 'tile', onClick: this.handleClick },
+            { className: 'tile', onClick: this.props.onClick },
             _React2['default'].createElement('img', { src: this.props.cover.img.large }),
             _React2['default'].createElement(
                 'div',
@@ -46647,12 +46626,6 @@ exports['default'] = _React2['default'].createClass({
         created_at: _React2['default'].PropTypes.string,
         last_modified: _React2['default'].PropTypes.string },
 
-    handeClickOnCross: function handeClickOnCross() {
-        if (!this.goBack()) {
-            this.transitionTo('/');
-        }
-    },
-
     handleClickOnToggle: function handleClickOnToggle() {
         this.setState({
             show_credits: true
@@ -46667,7 +46640,7 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'span',
                 { className: 'close' },
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handeClickOnCross })
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.props.onClickOnCross })
             ),
             _React2['default'].createElement(
                 'div',
@@ -46948,6 +46921,10 @@ var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
 
+var _PostPage = require('../routes/PostPage');
+
+var _PostPage2 = _interopRequireWildcard(_PostPage);
+
 var _WebAPIMixin = require('../mixins/WebAPIMixin');
 
 var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
@@ -46988,7 +46965,11 @@ exports['default'] = _React2['default'].createClass({
             next_page: null,
             has_next: false,
             is_loading: false,
-            is_animating_scrolling: false };
+            is_animating_scrolling: false,
+            modal: false,
+            postId: 0,
+            last_scrollTop: 0
+        };
     },
 
     onPageScroll: function onPageScroll() {
@@ -47000,8 +46981,6 @@ exports['default'] = _React2['default'].createClass({
             this._getMorePosts(this.state.next_page);
         }
     },
-
-    processResponse: function processResponse(error, response) {},
 
     _getMorePosts: function _getMorePosts(url) {
         var _this = this;
@@ -47041,8 +47020,8 @@ exports['default'] = _React2['default'].createClass({
                 next_page: null,
                 is_animating_scrolling: false,
                 categoryId: this.getParams().categoryId,
-                subcategoryId: this.getParams().subcategoryId
-            });
+                subcategoryId: this.getParams().subcategoryId,
+                posts: [] });
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
     },
@@ -47064,12 +47043,30 @@ exports['default'] = _React2['default'].createClass({
         };
     },
 
-    /**
-     * render
-     * @returns {XML}
-     */
+    handleClick: function handleClick(post) {
+        this.setState({
+            modal: true,
+            postId: post.id,
+            last_scrollTop: this.state.scrollTop
+        });
+        history.pushState(null, null, '/post/' + post.id + '/');
+        $('.react-container').addClass('modal-open');
+    },
+    handleClickonCross: function handleClickonCross() {
+        this.setState({
+            modal: false,
+            postId: 0 });
+        history.pushState(null, null, '/');
+        $('.react-container').removeClass('modal-open');
+        $.scrollTo(this.state.last_scrollTop, 500);
+        this.setState({
+            last_scrollTop: 0
+        });
+    },
 
     render: function render() {
+        var _this3 = this;
+
         var PostTileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_PostTile2['default'], {
                 key: post.id,
@@ -47081,19 +47078,29 @@ exports['default'] = _React2['default'].createClass({
                 last_modified: post.last_modified,
                 articletext: post.articletext,
                 category: post.category.name,
-                uri: post.resource_uri });
+                uri: post.resource_uri,
+                onClick: _this3.handleClick.bind(_this3, post) });
         });
+        var postModal;
+        if (this.state.modal && this.state.postId > 0) {
+            postModal = _React2['default'].createElement(_PostPage2['default'], { key: this.state.postId, id: this.state.postId, onClickOnCross: this.handleClickonCross });
+        }
         return _React2['default'].createElement(
             'div',
-            { id: 'tiles', className: 'mansonryContainer', ref: 'mansonryContainer' },
-            PostTileNodes
+            null,
+            _React2['default'].createElement(
+                'div',
+                { id: 'tiles', className: 'mansonryContainer', ref: 'mansonryContainer' },
+                PostTileNodes
+            ),
+            postModal
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],255:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"../routes/PostPage":265,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],255:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47130,9 +47137,11 @@ var _PostTile = require('./Post/PostTile');
 
 var _PostTile2 = _interopRequireWildcard(_PostTile);
 
-'use strict';
+var _PostPage = require('../routes/PostPage');
 
-var Link = _Router2['default'].Link;
+var _PostPage2 = _interopRequireWildcard(_PostPage);
+
+'use strict';
 
 var mansonryOptions = {
     transitionDuration: 0
@@ -47193,28 +47202,43 @@ exports['default'] = _React2['default'].createClass({
             this._getSearchPosts(null, nextProps.query);
         }
     },
-    /**
-     * React component lifecycle method
-     */
     componentDidMount: function componentDidMount() {
         this._getSearchPosts(null, this.props.query);
         setTimeout(function () {
             $.scrollTo('620px', 500);
-        }, 500);
+        }, 50);
     },
 
     componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
         if (nextState.posts != this.state.posts) setTimeout(function () {
             $.scrollTo('620px', 500);
-        }, 500);
+        }, 50);
     },
 
-    /**
-     * render
-     * @returns {XML}
-     */
+    handleClick: function handleClick(post) {
+        this.setState({
+            modal: true,
+            postId: post.id,
+            last_scrollTop: this.state.scrollTop
+        });
+        history.pushState(null, null, '/post/' + post.id + '/');
+        $('.react-container').addClass('modal-open');
+    },
+    handleClickonCross: function handleClickonCross() {
+        this.setState({
+            modal: false,
+            postId: 0 });
+        history.pushState(null, null, '/');
+        $('.react-container').removeClass('modal-open');
+        $.scrollTo(this.state.last_scrollTop, 500);
+        this.setState({
+            last_scrollTop: 0
+        });
+    },
 
     render: function render() {
+        var _this2 = this;
+
         var PostTileNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(_PostTile2['default'], {
                 key: post.id,
@@ -47225,9 +47249,14 @@ exports['default'] = _React2['default'].createClass({
                 created_at: post.created_at,
                 last_modified: post.last_modified,
                 articletext: post.articletext,
-                category: post.category.name });
+                category: post.category.name,
+                onClick: _this2.handleClick.bind(_this2, post) });
         });
         var results_string = this.state.posts.length > 0 ? 'Results for ' : 'No results found for ';
+        var postModal;
+        if (this.state.modal && this.state.postId > 0) {
+            postModal = _React2['default'].createElement(_PostPage2['default'], { key: this.state.postId, id: this.state.postId, onClickOnCross: this.handleClickonCross });
+        }
         return _React2['default'].createElement(
             'div',
             null,
@@ -47242,14 +47271,15 @@ exports['default'] = _React2['default'].createClass({
                 'div',
                 { id: 'tiles', className: 'mansonryContainer', ref: 'mansonryContainer' },
                 PostTileNodes
-            )
+            ),
+            { postModal: postModal }
         );
     }
 
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"../routes/PostPage":265,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47836,28 +47866,18 @@ var _Router2 = _interopRequireWildcard(_Router);
 
 'use strict';
 
-var State = require('react-router').State;
-var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-
 var RouteHandler = _Router2['default'].RouteHandler;
 exports['default'] = _React2['default'].createClass({
     displayName: 'Application',
 
-    mixins: [State],
-
     render: function render() {
-        var name = this.getPath();
-        return _React2['default'].createElement(
-            TransitionGroup,
-            { transitionName: 'post', transitionLeave: false },
-            _React2['default'].createElement(RouteHandler, null)
-        );
+        return _React2['default'].createElement(RouteHandler, null);
     }
 
 });
 module.exports = exports['default'];
 
-},{"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],264:[function(require,module,exports){
+},{"react-router":45,"react/addons":60}],264:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47899,14 +47919,17 @@ var _Footer2 = _interopRequireWildcard(_Footer);
 exports['default'] = _React2['default'].createClass({
     displayName: 'IndexPage',
 
+    propTypes: {
+        static_url: _React2['default'].PropTypes.string
+    },
     render: function render() {
         return _React2['default'].createElement(
             'div',
             null,
-            _React2['default'].createElement(_Logo2['default'], null),
-            _React2['default'].createElement(_NavBar2['default'], null),
-            _React2['default'].createElement(_BannerList2['default'], null),
-            _React2['default'].createElement(_PostList2['default'], null),
+            _React2['default'].createElement(_Logo2['default'], { static_url: this.props.static_url }),
+            _React2['default'].createElement(_NavBar2['default'], { static_url: this.props.static_url }),
+            _React2['default'].createElement(_BannerList2['default'], { static_url: this.props.static_url }),
+            _React2['default'].createElement(_PostList2['default'], { static_url: this.props.static_url }),
             _React2['default'].createElement(_Footer2['default'], null)
         );
     }
@@ -47948,11 +47971,16 @@ var _ShootingContent2 = _interopRequireWildcard(_ShootingContent);
 var State = require('react-router').State;
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var Navigation = require('react-router').Navigation;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostPage',
 
-    mixins: [_WebAPIMixin2['default'], State],
+    mixins: [_WebAPIMixin2['default'], State, Navigation],
+
+    propTypes: {
+        id: _React2['default'].PropTypes.number
+    },
 
     getInitialState: function getInitialState() {
         return {
@@ -47990,7 +48018,17 @@ exports['default'] = _React2['default'].createClass({
     },
 
     componentDidMount: function componentDidMount() {
-        this._getPost(this.getParams().postId);
+        this._getPost(this.props.id || this.getParams().postId);
+    },
+
+    handleClickOnCross: function handleClickOnCross() {
+        if (this.props.id) {
+            this.props.onClickOnCross();
+        } else {
+            if (!this.goBack()) {
+                this.transitionTo('/');
+            }
+        }
     },
 
     render: function render() {
@@ -48008,7 +48046,8 @@ exports['default'] = _React2['default'].createClass({
                     credits: this.state.credits,
                     created_at: this.state.created_at,
                     last_modified: this.state.last_modified,
-                    category: this.state.category })
+                    category: this.state.category,
+                    onClickOnCross: this.handleClickOnCross })
             );
         }
         return _React2['default'].createElement(
@@ -48024,7 +48063,8 @@ exports['default'] = _React2['default'].createClass({
                 credits: this.state.credits,
                 created_at: this.state.created_at,
                 last_modified: this.state.last_modified,
-                category: this.state.category })
+                category: this.state.category,
+                onClickOnCross: this.handleClickOnCross })
         );
     }
 

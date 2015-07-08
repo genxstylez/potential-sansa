@@ -7,9 +7,6 @@ import Router from 'react-router';
 import WebAPIMixin from '../../mixins/WebAPIMixin';
 import moment from 'moment';
 
-
-const Link = Router.Link;
-
 export default React.createClass({
     propTypes: {
         id: React.PropTypes.number.isRequired,
@@ -21,16 +18,9 @@ export default React.createClass({
         last_modified: React.PropTypes.string.isRequired,
         uri: React.PropTypes.string,
     },
-    contextTypes: {
-        router: React.PropTypes.func
-    },
-    handleClick() {
-        this.context.router.transitionTo('post', {postId: this.props.id});
-    },
     render() {
-
         return (
-            <div className="tile"  onClick={this.handleClick}>
+            <div className="tile" onClick={this.props.onClick}>
                 <img src={this.props.cover.img.large} ></img>
                 <div className="intro">
                     <div className="info">

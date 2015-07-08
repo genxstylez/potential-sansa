@@ -65,25 +65,9 @@ export default React.createClass({
             }, 1000);
         };
 
-        //window.addEventListener('resize', this.handleResize);
-
     },
     componentWillUnmount () {
         Waypoint.destroyAll();
-        //window.removeEventListener('resize', this.handleResize);
-    },
-
-    /* 
-    handleResize() {
-        if($(React.findDOMNode(this.refs.articleContent)).data('jsp') != undefined)
-            $(React.findDOMNode(this.refs.articleContent)).data('jsp').reinitialise();
-    },
-    */
-
-    handeClickOnCross() {
-       if(!this.goBack()) {
-            this.transitionTo('/')
-       }
     },
 
     render() {
@@ -100,7 +84,7 @@ export default React.createClass({
         return (
             <div className="article-box" ref="articleBox">
                 <span className="close">
-                    <img src={STATIC_URL + "img/cross.png"} onClick={this.handeClickOnCross} />
+                    <img src={STATIC_URL + "img/cross.png"} onClick={this.props.onClickOnCross} />
                 </span>
                 <div className="row article-header">
                     <span className="circle-divider"></span>
