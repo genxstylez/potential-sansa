@@ -47919,17 +47919,14 @@ var _Footer2 = _interopRequireWildcard(_Footer);
 exports['default'] = _React2['default'].createClass({
     displayName: 'IndexPage',
 
-    propTypes: {
-        static_url: _React2['default'].PropTypes.string
-    },
     render: function render() {
         return _React2['default'].createElement(
             'div',
             null,
-            _React2['default'].createElement(_Logo2['default'], { static_url: this.props.static_url }),
-            _React2['default'].createElement(_NavBar2['default'], { static_url: this.props.static_url }),
-            _React2['default'].createElement(_BannerList2['default'], { static_url: this.props.static_url }),
-            _React2['default'].createElement(_PostList2['default'], { static_url: this.props.static_url }),
+            _React2['default'].createElement(_Logo2['default'], null),
+            _React2['default'].createElement(_NavBar2['default'], null),
+            _React2['default'].createElement(_BannerList2['default'], null),
+            _React2['default'].createElement(_PostList2['default'], null),
             _React2['default'].createElement(_Footer2['default'], null)
         );
     }
