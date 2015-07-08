@@ -45007,7 +45007,7 @@ exports['default'] = _React2['default'].createClass({
             postId: post.id,
             last_scrollTop: this.state.scrollTop
         });
-        history.pushState(null, null, '/post/' + post.id + '/');
+        history.pushState(null, 'O\'logy' + post.heading, '/post/' + post.id + '/');
         ga('send', 'pageview', { page: '/post/' + post.id + '/', title: post.heading });
         $('.react-container').addClass('modal-open');
     },
@@ -45015,7 +45015,7 @@ exports['default'] = _React2['default'].createClass({
         this.setState({
             modal: false,
             postId: 0 });
-        history.pushState(null, null, '/');
+        history.pushState(null, 'O\'logy', '/');
         ga('send', 'pageview', { page: '/' });
         $('.react-container').removeClass('modal-open');
         $.scrollTo(this.state.last_scrollTop, 500);
@@ -45256,7 +45256,11 @@ exports['default'] = _React2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            categories: [] };
+            categories: [],
+            home_text: 'Home',
+            subscribe_text: 'Subscribe',
+            photo_text: 'Photo'
+        };
     },
     /**
      * gets users from web API
@@ -45275,31 +45279,42 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleSubscribeOnMouseEnter: function handleSubscribeOnMouseEnter(e) {
-        e.target.text = '訂閱';
+        this.setState({
+            subscribe_text: '訂閱'
+        });
     },
 
     handleSubscribeOnMouseOut: function handleSubscribeOnMouseOut(e) {
-        e.target.text = 'Subscribe';
+        this.setState({
+            subscribe_text: 'Subscribe'
+        });
     },
 
     handleHomeOnMouseEnter: function handleHomeOnMouseEnter(e) {
-        e.target.text = '首頁';
+        this.setState({
+            home_text: '首頁'
+        });
     },
 
     handleHomeOnMouseOut: function handleHomeOnMouseOut(e) {
-        e.target.text = 'Home';
+        this.setState({
+            home_text: 'Home'
+        });
     },
 
     handlePhotoOnMouseEnter: function handlePhotoOnMouseEnter(e) {
-        e.target.text = '免費圖庫';
+        this.setState({
+            photo_text: '免費圖庫'
+        });
     },
 
     handlePhotoOnMouseOut: function handlePhotoOnMouseOut(e) {
-        e.target.text = 'Photo';
+        this.setState({
+            photo_text: 'Photo'
+        });
     },
 
     render: function render() {
-
         var header_classes = _classNames2['default']({
             header: true,
             'col-xs-0': true,
@@ -45311,13 +45326,7 @@ exports['default'] = _React2['default'].createClass({
             row: true,
             nav: true,
             fixed: this.state.scrollTop > 200 });
-        var NavItemNodes = [_React2['default'].createElement(
-            Link,
-            { key: 'home', to: '/',
-                onMouseEnter: this.handleHomeOnMouseEnter,
-                onMouseOut: this.handleHomeOnMouseOut },
-            'Home'
-        ), _React2['default'].createElement('span', { key: '80010', className: 'circle-divider' })];
+        var NavItemNodes = [];
         for (var x in this.state.categories) {
             var category = this.state.categories[x];
             NavItemNodes.push(_React2['default'].createElement(_NavItem2['default'], {
@@ -45331,14 +45340,6 @@ exports['default'] = _React2['default'].createClass({
                 NavItemNodes.push(_React2['default'].createElement('span', { key: x + 800, className: 'circle-divider' }));
             };
         };
-        NavItemNodes.push(_React2['default'].createElement('span', { key: '80011', className: 'circle-divider' }));
-        NavItemNodes.push(_React2['default'].createElement(
-            Link,
-            { key: 'albums', to: 'albums',
-                onMouseEnter: this.handlePhotoOnMouseEnter,
-                onMouseOut: this.handlePhotoOnMouseOut },
-            'Photo'
-        ));
 
         var fb_icon = STATIC_URL + 'img/fb.png';
         var search_icon = STATIC_URL + 'img/search.png';
@@ -45371,13 +45372,29 @@ exports['default'] = _React2['default'].createClass({
                         { to: 'subscribe', className: 'subscribe',
                             onMouseEnter: this.handleSubscribeOnMouseEnter,
                             onMouseOut: this.handleSubscribeOnMouseOut },
-                        'Subscribe'
+                        this.state.subscribe_text
                     )
                 ),
                 _React2['default'].createElement(
                     'div',
                     { className: 'navbar' },
-                    NavItemNodes
+                    _React2['default'].createElement(
+                        'a',
+                        { href: '/',
+                            onMouseEnter: this.handleHomeOnMouseEnter,
+                            onMouseOut: this.handleHomeOnMouseOut },
+                        this.state.home_text
+                    ),
+                    _React2['default'].createElement('span', { className: 'circle-divider' }),
+                    NavItemNodes,
+                    _React2['default'].createElement('span', { className: 'circle-divider' }),
+                    _React2['default'].createElement(
+                        Link,
+                        { key: 'albums', to: 'albums',
+                            onMouseEnter: this.handlePhotoOnMouseEnter,
+                            onMouseOut: this.handlePhotoOnMouseOut },
+                        this.state.photo_text
+                    )
                 )
             )
         );
@@ -47052,7 +47069,7 @@ exports['default'] = _React2['default'].createClass({
             postId: post.id,
             last_scrollTop: this.state.scrollTop
         });
-        history.pushState(null, null, '/post/' + post.id + '/');
+        history.pushState(null, 'O\'logy - ' + post.heading, '/post/' + post.id + '/');
         ga('send', 'pageview', { page: '/post/' + post.id + '/', title: post.heading });
         $('.react-container').addClass('modal-open');
     },
@@ -47060,7 +47077,7 @@ exports['default'] = _React2['default'].createClass({
         this.setState({
             modal: false,
             postId: 0 });
-        history.pushState(null, null, '/');
+        history.pushState(null, 'O\'logy', '/');
         ga('send', 'pageview', { page: '/' });
         $('.react-container').removeClass('modal-open');
         $.scrollTo(this.state.last_scrollTop, 500);
@@ -47226,7 +47243,7 @@ exports['default'] = _React2['default'].createClass({
             postId: post.id,
             last_scrollTop: this.state.scrollTop
         });
-        history.pushState(null, null, '/post/' + post.id + '/');
+        history.pushState(null, 'O\'logy' + post.heading, '/post/' + post.id + '/');
         ga('send', 'pageview', { page: '/post/' + post.id + '/', title: post.heading });
         $('.react-container').addClass('modal-open');
     },
@@ -47234,7 +47251,7 @@ exports['default'] = _React2['default'].createClass({
         this.setState({
             modal: false,
             postId: 0 });
-        history.pushState(null, null, '/');
+        history.pushState(null, 'O\'logy', '/');
         ga('send', 'pageview', { page: '/' });
         $('.react-container').removeClass('modal-open');
         $.scrollTo(this.state.last_scrollTop, 500);

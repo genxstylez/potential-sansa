@@ -9,7 +9,7 @@ import NavItem from './NavItem';
 import WebAPIMixin from '../../mixins/WebAPIMixin';
 import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
 
-const Link = Router.Link;
+var Link = Router.Link;
 
 export default React.createClass({
     categories: [],
@@ -22,6 +22,9 @@ export default React.createClass({
     getInitialState() {
         return {
             categories: [],
+            home_text: 'Home',
+            subscribe_text: 'Subscribe',
+            photo_text: 'Photo'
         }
     },
     /**
@@ -39,32 +42,42 @@ export default React.createClass({
     },
 
     handleSubscribeOnMouseEnter(e) {
-        e.target.text = '訂閱';
+        this.setState({
+            subscribe_text: '訂閱'
+        });
     },
 
     handleSubscribeOnMouseOut(e) {
-        e.target.text = 'Subscribe';
+        this.setState({
+            subscribe_text: 'Subscribe'
+        });
     },
 
     handleHomeOnMouseEnter(e) {
-        e.target.text = '首頁';
+        this.setState({
+            home_text: '首頁'
+        });
     },
 
     handleHomeOnMouseOut(e) {
-        e.target.text = 'Home';
+        this.setState({
+            home_text: 'Home'
+        });
     },
 
     handlePhotoOnMouseEnter(e) {
-        e.target.text = '免費圖庫';
+        this.setState({
+            photo_text: '免費圖庫'
+        });
     },
 
     handlePhotoOnMouseOut(e) {
-        e.target.text = 'Photo';
+        this.setState({
+            photo_text: 'Photo'
+        });
     },
 
     render() {
-        
-
         var header_classes = classNames({
             'header': true,
             'col-xs-0': true,
@@ -77,10 +90,7 @@ export default React.createClass({
             'nav': true,
             'fixed': this.state.scrollTop > 200,
         });
-        const NavItemNodes = [<Link key="home" to="/"
-                onMouseEnter={this.handleHomeOnMouseEnter}
-                onMouseOut={this.handleHomeOnMouseOut}>Home</Link>, 
-            <span key="80010" className="circle-divider"/>];
+        var NavItemNodes = [];
         for(var x in this.state.categories) {
             var category = this.state.categories[x]
             NavItemNodes.push(
@@ -97,11 +107,6 @@ export default React.createClass({
             };
 
         };
-        NavItemNodes.push(<span key="80011" className="circle-divider"/>);
-        NavItemNodes.push(<Link key="albums" to="albums"
-            onMouseEnter={this.handlePhotoOnMouseEnter}
-            onMouseOut={this.handlePhotoOnMouseOut}>Photo</Link>);
-
 
         var fb_icon = STATIC_URL + "img/fb.png";
         var search_icon = STATIC_URL + "img/search.png";
@@ -121,11 +126,19 @@ export default React.createClass({
                         <Link to="subscribe" className="subscribe"
                             onMouseEnter={this.handleSubscribeOnMouseEnter}
                             onMouseOut={this.handleSubscribeOnMouseOut}>
-                            Subscribe
+                            {this.state.subscribe_text} 
                         </Link>
                     </div>
                     <div className="navbar">
+                        <a href="/"
+                            onMouseEnter={this.handleHomeOnMouseEnter}
+                            onMouseOut={this.handleHomeOnMouseOut}>{this.state.home_text}</a>
+                        <span className="circle-divider"/>
                         {NavItemNodes}
+                        <span className="circle-divider"/>
+                        <Link key="albums" to="albums"
+                            onMouseEnter={this.handlePhotoOnMouseEnter}
+                            onMouseOut={this.handlePhotoOnMouseOut}>{this.state.photo_text}</Link>
                     </div>
                 </div>
             </div>
