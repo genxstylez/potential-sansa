@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block title %}O'logy - Subscribe{% endblock %}
+{% block metas %}
 <meta property="og:title" content="O'logy - Subscribe" /> 
 <meta property="og:image" content="{% static 'img/logo.png' %}" /> 
 <meta property="og:description" content="訂閱" /> 
 <meta property="og:url" content="http://o-logy.com/subscribe/">
+{% endblock %}
 {% block content %}
     <div>
         <div class="search-layer show">
