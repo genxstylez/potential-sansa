@@ -27,6 +27,7 @@ const routes = (
     </Route>
 );
 
-Router.run(routes, Router.HistoryLocation, Handler => {
-    React.render(<Handler/>, document.querySelector('.react-container'));
+Router.run(routes, Router.HistoryLocation, (Root, state) => {
+    React.render(<Root />, document.querySelector('.react-container'));
+    ga('send', 'pageview', {'page': state.path})
 });

@@ -112,7 +112,8 @@ export default React.createClass({
             postId: post.id,
             last_scrollTop: this.state.scrollTop
         });
-        history.pushState(null, null, '/post/' + post.id + '/');
+        history.pushState(null, "O'logy - " + post.heading, '/post/' + post.id + '/');
+        ga('send', 'pageview', {'page': '/post/' + post.id + '/', 'title': post.heading});
         $('.react-container').addClass('modal-open');
     },
     handleClickonCross() {
@@ -120,7 +121,8 @@ export default React.createClass({
             modal:false,
             postId: 0,
         });
-        history.pushState(null, null, '/');
+        history.pushState(null, "O'logy", '/');
+        ga('send', 'pageview', {'page': '/'});
         $('.react-container').removeClass('modal-open'); 
         $.scrollTo(this.state.last_scrollTop, 500);
         this.setState({

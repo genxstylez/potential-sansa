@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block title %}O'logy - {{ post.heading }}{% endblock %}
+{% block metas %}
+<meta property="og:title" content="O'logy - {{ post.heading }}" /> 
+<meta property="og:image" content="{{ post.get_cover.img.medium.url }}" /> 
+<meta property="og:description" content="{{ post.articletext|striptags }}" /> 
+<meta property="og:url" content="http://o-logy.com{% url 'post' post.id %}">
+{% endblock %}
 {% block content %}
 <div class="article-box">
     <span class="close">

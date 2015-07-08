@@ -56,8 +56,9 @@ var routes = _React2['default'].createElement(
     _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] })
 );
 
-_Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Handler) {
-    _React2['default'].render(_React2['default'].createElement(Handler, null), document.querySelector('.react-container'));
+_Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Root, state) {
+    _React2['default'].render(_React2['default'].createElement(Root, null), document.querySelector('.react-container'));
+    ga('send', 'pageview', { page: state.path });
 });
 
 },{"./routes/AlbumPage":261,"./routes/AlbumsPage":262,"./routes/Application":263,"./routes/IndexPage":264,"./routes/PostPage":265,"./routes/SearchPage":266,"./routes/SubscribePage":267,"react-router":45,"react/addons":60}],2:[function(require,module,exports){
@@ -45007,6 +45008,7 @@ exports['default'] = _React2['default'].createClass({
             last_scrollTop: this.state.scrollTop
         });
         history.pushState(null, null, '/post/' + post.id + '/');
+        ga('send', 'pageview', { page: '/post/' + post.id + '/', title: post.heading });
         $('.react-container').addClass('modal-open');
     },
     handleClickonCross: function handleClickonCross() {
@@ -45014,6 +45016,7 @@ exports['default'] = _React2['default'].createClass({
             modal: false,
             postId: 0 });
         history.pushState(null, null, '/');
+        ga('send', 'pageview', { page: '/' });
         $('.react-container').removeClass('modal-open');
         $.scrollTo(this.state.last_scrollTop, 500);
         this.setState({
@@ -46450,7 +46453,7 @@ exports['default'] = _React2['default'].createClass({
             { className: 'pull-right gallery' },
             _React2['default'].createElement(
                 TransitionGroup,
-                { transitionName: 'gallery' },
+                { transitionName: 'gallery', transitionLeave: false },
                 _React2['default'].createElement(SelectedImg, { key: this.state.on_deck.id, on_deck: this.state.on_deck })
             ),
             _React2['default'].createElement(
@@ -47050,6 +47053,7 @@ exports['default'] = _React2['default'].createClass({
             last_scrollTop: this.state.scrollTop
         });
         history.pushState(null, null, '/post/' + post.id + '/');
+        ga('send', 'pageview', { page: '/post/' + post.id + '/', title: post.heading });
         $('.react-container').addClass('modal-open');
     },
     handleClickonCross: function handleClickonCross() {
@@ -47057,6 +47061,7 @@ exports['default'] = _React2['default'].createClass({
             modal: false,
             postId: 0 });
         history.pushState(null, null, '/');
+        ga('send', 'pageview', { page: '/' });
         $('.react-container').removeClass('modal-open');
         $.scrollTo(this.state.last_scrollTop, 500);
         this.setState({
@@ -47222,6 +47227,7 @@ exports['default'] = _React2['default'].createClass({
             last_scrollTop: this.state.scrollTop
         });
         history.pushState(null, null, '/post/' + post.id + '/');
+        ga('send', 'pageview', { page: '/post/' + post.id + '/', title: post.heading });
         $('.react-container').addClass('modal-open');
     },
     handleClickonCross: function handleClickonCross() {
@@ -47229,6 +47235,7 @@ exports['default'] = _React2['default'].createClass({
             modal: false,
             postId: 0 });
         history.pushState(null, null, '/');
+        ga('send', 'pageview', { page: '/' });
         $('.react-container').removeClass('modal-open');
         $.scrollTo(this.state.last_scrollTop, 500);
         this.setState({

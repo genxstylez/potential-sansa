@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% block title %}O'logy - Search{% endblock %}
+{% block metas %}
+<meta property="og:title" content="O'logy - Search" /> 
+<meta property="og:image" content="{% static 'img/logo.png' %}" /> 
+<meta property="og:description" content="搜尋" /> 
+<meta property="og:url" content="http://o-logy.com/search/">
+{% endblock %}
 {% block content %}
     <div>
         <div class="search-layer show">

@@ -514,10 +514,18 @@ div.logo img {
     margin-bottom: 0px;
 }
 .gallery .arrow {
-    float: left;
     width: 10%;
     height: 12%;
     cursor: pointer;
+    position: absolute;
+    bottom: 0;
+}
+.gallery .arrow.left {
+    left: 0;
+}
+
+.gallery .arrow.right {
+    right: 0;
 }
 
 .gallery .arrow img {
@@ -533,7 +541,8 @@ ul.thumbnails {
     width: 80%;
     height: 12%;
     overflow: hidden;
-    float: left;
+    position: absolute;
+    bottom: 0;
 }
 ul.thumbnails li {
     display: inline;
@@ -555,11 +564,11 @@ ul.thumbnails li img {
 }
 .on_deck{
     text-align: center;
-    display: inline-block;
     vertical-align: middle;
     height: 90%;
     white-space: nowrap;
-    width: 100%;
+    width: 90%;
+    position: absolute;
 }
 .on_deck img {
     max-width: 100%;
@@ -593,6 +602,7 @@ ul.thumbnails li img {
     width: 50%;
     padding: 0px 40px;
     height: 100%;
+    position: relative;
 }
 .article-box .article .gallery.shooting {
     width: 62.5%;
@@ -630,7 +640,7 @@ ul.thumbnails li img {
 
 .article-box .shooting-credits .shooting-credits-inner .role {
     font-size: 15px;
-    letter-spacing: 0.075em;
+    letter-spacing: 0.15em;
     border-radius: 0px;
     background-color: transparent;
     color: #6e6e6e;
@@ -661,7 +671,7 @@ ul.thumbnails li img {
 }
 .article-box .credit .role {
     font-size: 10.5px;
-    letter-spacing: 0.075em;
+    letter-spacing: 0.15em;
     color: #ffffff;
     height: 17px;
     font-size: 10.5px;
@@ -950,14 +960,11 @@ ul.thumbnails li img {
 
 .gallery-leave {
     opacity: 1;
-    visibility: hidden;
     transition: opacity .3s ease-in;
 }
 
 .gallery-leave.gallery-leave-active {
     opacity: 0.01;
-    position: fixed;
-    left: -10000px;
 }
 
 
