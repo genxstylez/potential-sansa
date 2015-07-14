@@ -2,7 +2,6 @@
 
 import React from 'react/addons';
 import _ from 'lodash';
-import classNames from 'classnames';
 import PhotoFooter from './PhotoFooter';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var Navigation = require('react-router').Navigation;
@@ -63,7 +62,7 @@ export default React.createClass({
             return (
                 <div key={photo.id}>
                     <span className="align-helper" />
-                    <img src={photo.img.large} 
+                    <img src={photo.img.xxl} 
                         onClick={this.handleClickOnPhoto.bind(this, photo)} />
                 </div>
             );
@@ -85,7 +84,7 @@ export default React.createClass({
                 <div className="caption">{this.state.current_photo.caption}</div>
                 <div className="photo-content">
                     <span className="align-helper" />
-                    <img src={this.state.current_photo.img.original} />
+                    <img src={this.state.current_photo.img.xxl} />
                 </div>
                 <PhotoFooter photo={this.state.current_photo} photographer={this.props.photographer} />
             </div>
@@ -111,13 +110,14 @@ export default React.createClass({
                         <span className="align-helper" />
                         <img src={STATIC_URL + "img/left-arrow.png"} />
                     </div>
-                    <ul className="thumbnails" ref="thumbnailsRow">
-                        {thumbnailNodes}
-                    </ul>
-                    <div className="arrow pull-left right" onClick={this.handlerRightArrow}>
+                    <div className="arrow right" onClick={this.handlerRightArrow}>
                         <span className="align-helper" />
                         <img src={STATIC_URL + "img/right-arrow.png"} />
                     </div>
+                    <ul className="thumbnails" ref="thumbnailsRow">
+                        {thumbnailNodes}
+                    </ul>
+                   
                 </div>
                 <TransitionGroup transitionName="post">
                     {PhotoNode}

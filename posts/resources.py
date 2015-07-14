@@ -9,28 +9,6 @@ from taggit.models import Tag
 from posts.models import Category, Post, Image, Credit
 
 
-class AdminCategoryResource(ModelResource):
-
-    class Meta:
-        queryset = Category.objects.all()
-        resource_name = 'admin_posts'
-        list_allowed_methods = ['get', 'post']
-        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
-        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
-        authorization = DjangoAuthorization()
-
-
-class AdminPostResource(ModelResource):
-
-    class Meta:
-        queryset = Post.objects.all()
-        resource_name = 'admin_posts'
-        list_allowed_methods = ['get', 'post']
-        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
-        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
-        authorization = DjangoAuthorization()
-
-
 class ImageResource(ModelResource):
 
     class Meta:
@@ -43,7 +21,9 @@ class ImageResource(ModelResource):
                 'original': bundle.obj.img.url,
                 'small': bundle.obj.img['small'].url,
                 'medium': bundle.obj.img['medium'].url,
-                'large': bundle.obj.img['large'].url
+                'large': bundle.obj.img['large'].url,
+                'xl': bundle.obj.img['xl'].url,
+                'xxl': bundle.obj.img['xxl'].url
             }
             return bundle.data['img']
 
@@ -108,6 +88,34 @@ class PostResource(ModelResource):
         resource_name = 'posts'
         list_allowed_methods = ['get', ]
         detailed_allowed_methods = ['get', ]
+        filtering = {
+            'category': ALL_WITH_RELATIONS,
+        }
+
+
+class AdminCategoryResource(ModelResource):
+    children = fields.ToManyField('self', lambda bundle: Category.objects.filter(parent=bundle.obj).order_by('order'),
+                                  null=True, blank=True, full=True)
+
+    class Meta:
+        queryset = Category.objects.filter(parent__isnull=True).order_by('order')
+        resource_name = 'categories'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
+
+
+class AdminPostResource(ModelResource):
+    category = fields.ForeignKey(SubCategoryResource, 'category', full=True, null=True, blank=True)
+
+    class Meta:
+        queryset = Post.objects.all()
+        resource_name = 'admin_posts'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
         filtering = {
             'category': ALL_WITH_RELATIONS,
         }

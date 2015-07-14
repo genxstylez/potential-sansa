@@ -45501,10 +45501,6 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
-var _classNames = require('classnames');
-
-var _classNames2 = _interopRequireWildcard(_classNames);
-
 var _PhotoFooter = require('./PhotoFooter');
 
 var _PhotoFooter2 = _interopRequireWildcard(_PhotoFooter);
@@ -45573,7 +45569,7 @@ exports['default'] = _React2['default'].createClass({
                 'div',
                 { key: photo.id },
                 _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: photo.img.large,
+                _React2['default'].createElement('img', { src: photo.img.xxl,
                     onClick: _this.handleClickOnPhoto.bind(_this, photo) })
             );
         });
@@ -45604,7 +45600,7 @@ exports['default'] = _React2['default'].createClass({
                     'div',
                     { className: 'photo-content' },
                     _React2['default'].createElement('span', { className: 'align-helper' }),
-                    _React2['default'].createElement('img', { src: this.state.current_photo.img.original })
+                    _React2['default'].createElement('img', { src: this.state.current_photo.img.xxl })
                 ),
                 _React2['default'].createElement(_PhotoFooter2['default'], { photo: this.state.current_photo, photographer: this.props.photographer })
             );
@@ -45640,15 +45636,15 @@ exports['default'] = _React2['default'].createClass({
                     _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
                 ),
                 _React2['default'].createElement(
+                    'div',
+                    { className: 'arrow right', onClick: this.handlerRightArrow },
+                    _React2['default'].createElement('span', { className: 'align-helper' }),
+                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
+                ),
+                _React2['default'].createElement(
                     'ul',
                     { className: 'thumbnails', ref: 'thumbnailsRow' },
                     thumbnailNodes
-                ),
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'arrow pull-left right', onClick: this.handlerRightArrow },
-                    _React2['default'].createElement('span', { className: 'align-helper' }),
-                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
                 )
             ),
             _React2['default'].createElement(
@@ -45661,7 +45657,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./PhotoFooter":246,"classnames":3,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],243:[function(require,module,exports){
+},{"./PhotoFooter":246,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],243:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };

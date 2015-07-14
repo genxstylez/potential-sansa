@@ -543,6 +543,7 @@ ul.thumbnails {
     overflow: hidden;
     position: absolute;
     bottom: 0;
+    left: 10%;
 }
 ul.thumbnails li {
     display: inline;
@@ -863,12 +864,14 @@ ul.thumbnails li img {
 }
 .album-content .thumbnails-div .arrow.right {
     text-align: right;
+    float: right;
 }
 .album-content .thumbnails-div .thumbnails {
-    margin: 0 auto;
     height: 100%;
     width: 93%;
     text-align: center;
+    position: relative;
+    bottom: none;
 }
 .photo-layer {
     height: 100%;

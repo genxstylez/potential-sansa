@@ -17,7 +17,9 @@ class PhotoResource(ModelResource):
                 'original': bundle.obj.img.url,
                 'small': bundle.obj.img['small'].url,
                 'medium': bundle.obj.img['medium'].url,
-                'large': bundle.obj.img['large'].url
+                'large': bundle.obj.img['large'].url,
+                'xl': bundle.obj.img['xl'].url,
+                'xxl': bundle.obj.img['xxl'].url
             }
             return bundle.data['img']
 

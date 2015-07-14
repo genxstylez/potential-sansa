@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'storages',
     'watson',
     'taggit',
+    'staff',
 )
 
 MIDDLEWARE_CLASSES = (

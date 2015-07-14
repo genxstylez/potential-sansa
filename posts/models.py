@@ -88,6 +88,8 @@ class Post(models.Model):
                     small=cover_image.img['small'].url,
                     medium=cover_image.img['medium'].url,
                     large=cover_image.img['large'].url,
+                    xl=cover_image.img['xl'].url,
+                    xxl=cover_image.img['xxl'].url
                 )
             )
         )
