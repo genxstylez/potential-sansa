@@ -45247,8 +45247,6 @@ var Link = _Router2['default'].Link;
 exports['default'] = _React2['default'].createClass({
     displayName: 'NavBar',
 
-    categories: [],
-
     /**
      * @type {object[]}
      */
@@ -45256,7 +45254,6 @@ exports['default'] = _React2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            categories: [],
             home_text: 'Home',
             subscribe_text: 'Subscribe',
             photo_text: 'Photo'
@@ -45266,17 +45263,6 @@ exports['default'] = _React2['default'].createClass({
      * gets users from web API
      * @private
      */
-    _getCategories: function _getCategories() {
-        var _this = this;
-
-        this.getCategories(function (error, response) {
-            _this.setState({ categories: error ? [] : response.body.objects });
-        });
-    },
-
-    componentDidMount: function componentDidMount() {
-        this._getCategories();
-    },
 
     handleSubscribeOnMouseEnter: function handleSubscribeOnMouseEnter(e) {
         this.setState({
@@ -45327,8 +45313,8 @@ exports['default'] = _React2['default'].createClass({
             nav: true,
             fixed: this.state.scrollTop > 200 });
         var NavItemNodes = [];
-        for (var x in this.state.categories) {
-            var category = this.state.categories[x];
+        for (var x in this.props.categories) {
+            var category = this.props.categories[x];
             NavItemNodes.push(_React2['default'].createElement(_NavItem2['default'], {
                 key: category.id,
                 id: category.id,
@@ -45336,7 +45322,7 @@ exports['default'] = _React2['default'].createClass({
                 zh_name: category.zh_name,
                 children: category.children,
                 uri: category.resource_uri }));
-            if (x < this.state.categories.length - 1) {
+            if (x < this.props.categories.length - 1) {
                 NavItemNodes.push(_React2['default'].createElement('span', { key: x + 800, className: 'circle-divider' }));
             };
         };
@@ -46972,7 +46958,7 @@ exports['default'] = _React2['default'].createClass({
     displayName: 'PostList',
 
     mixins: [_MansonryMixin2['default']('mansonryContainer', mansonryOptions), _WebAPIMixin2['default'], _ScrollListenerMixin2['default'], State],
-
+    categories: [],
     getInitialState: function getInitialState() {
         return {
             posts: [],
@@ -47016,16 +47002,24 @@ exports['default'] = _React2['default'].createClass({
     _getPosts: function _getPosts(categoryId, subcategoryId) {
         var _this2 = this;
 
-        this.getPosts(categoryId, subcategoryId, function (error, response) {
-            var new_elements = error ? [] : response.body.objects,
-                next_page = response.body.meta.next,
-                has_next = response.body.meta.next != null;
-            _this2.setState({
-                posts: new_elements,
-                next_page: next_page,
-                has_next: has_next,
-                is_loading: false });
-        });
+        console.log(this.categories);
+        if (this.categories.length > 0) {
+            var category = _import2['default'].find(this.categories, { id: parseInt(categoryId) });
+            if (category && category.children.length == 0) {
+                subcategoryId = categoryId;
+                categoryId = null;
+            }
+            this.getPosts(categoryId, subcategoryId, function (error, response) {
+                var new_elements = error ? [] : response.body.objects,
+                    next_page = response.body.meta.next,
+                    has_next = response.body.meta.next != null;
+                _this2.setState({
+                    posts: new_elements,
+                    next_page: next_page,
+                    has_next: has_next,
+                    is_loading: false });
+            });
+        }
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
@@ -47040,6 +47034,13 @@ exports['default'] = _React2['default'].createClass({
                 posts: [] });
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
+        if (nextProps.categories != this.props.categories) {
+            console.log('123123');
+            console.log(nextProps);
+            console.log(nextProps.categories);
+            this.categories = nextProps.categories;
+            this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
+        }
     },
     /**
      * React component lifecycle method
@@ -47048,8 +47049,8 @@ exports['default'] = _React2['default'].createClass({
         this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         this.setState({
             categoryId: this.getParams().categoryId,
-            subcategoryId: this.getParams().subcategoryId
-        });
+            subcategoryId: this.getParams().subcategoryId });
+        this.categories = this.props.categories;
     },
 
     componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
@@ -47836,15 +47837,38 @@ var _LicenseFooter = require('../components/Photo/LicenseFooter');
 
 var _LicenseFooter2 = _interopRequireWildcard(_LicenseFooter);
 
+var _WebAPIMixin = require('../mixins/WebAPIMixin');
+
+var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+
 'use strict';
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
 var Navigation = require('react-router').Navigation;
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'AlbumsPage',
 
-    mixins: [Navigation],
+    mixins: [_WebAPIMixin2['default'], Navigation],
+
+    getInitialState: function getInitialState() {
+        return {
+            categories: []
+        };
+    },
+
+    _getCategories: function _getCategories() {
+        var _this = this;
+
+        this.getCategories(function (error, response) {
+            _this.setState({ categories: error ? [] : response.body.objects });
+        });
+    },
+
+    componentDidMount: function componentDidMount() {
+        this._getCategories();
+    },
     handeClickOnCross: function handeClickOnCross() {
         if (!this.goBack()) {
             this.transitionTo('/');
@@ -47857,7 +47881,7 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 TransitionGroup,
                 { transitionName: 'post' },
-                _React2['default'].createElement(_NavBar2['default'], null),
+                _React2['default'].createElement(_NavBar2['default'], { categories: this.state.categories }),
                 _React2['default'].createElement(_AlbumList2['default'], null)
             ),
             _React2['default'].createElement(_LicenseFooter2['default'], null)
@@ -47867,7 +47891,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
+},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47934,19 +47958,43 @@ var _Footer = require('../components/Footer');
 
 var _Footer2 = _interopRequireWildcard(_Footer);
 
+var _WebAPIMixin = require('../mixins/WebAPIMixin');
+
+var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+
 'use strict';
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'IndexPage',
+
+    mixins: [_WebAPIMixin2['default']],
+
+    getInitialState: function getInitialState() {
+        return {
+            categories: []
+        };
+    },
+
+    _getCategories: function _getCategories() {
+        var _this = this;
+
+        this.getCategories(function (error, response) {
+            _this.setState({ categories: error ? [] : response.body.objects });
+        });
+    },
+
+    componentDidMount: function componentDidMount() {
+        this._getCategories();
+    },
 
     render: function render() {
         return _React2['default'].createElement(
             'div',
             null,
             _React2['default'].createElement(_Logo2['default'], null),
-            _React2['default'].createElement(_NavBar2['default'], null),
+            _React2['default'].createElement(_NavBar2['default'], { categories: this.state.categories }),
             _React2['default'].createElement(_BannerList2['default'], null),
-            _React2['default'].createElement(_PostList2['default'], null),
+            _React2['default'].createElement(_PostList2['default'], { categories: this.state.categories }),
             _React2['default'].createElement(_Footer2['default'], null)
         );
     }
@@ -47954,7 +48002,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":254,"lodash":6,"react/addons":60}],265:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":254,"../mixins/WebAPIMixin":260,"lodash":6,"react/addons":60}],265:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };

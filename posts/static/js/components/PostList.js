@@ -19,7 +19,7 @@ const mansonryOptions = {
 
 export default React.createClass({
     mixins: [MansonryMixin('mansonryContainer', mansonryOptions), WebAPIMixin, ScrollListenerMixin, State],
-
+    categories: [],
     getInitialState() {
         return {
             posts: [],
@@ -61,17 +61,25 @@ export default React.createClass({
     },
                 
     _getPosts(categoryId, subcategoryId) {
-        this.getPosts(categoryId, subcategoryId, (error, response) => {
-            var new_elements = error ? [] : response.body.objects,
-            next_page = response.body.meta.next, 
-            has_next = response.body.meta.next != null;
-            this.setState({
-                posts: new_elements,
-                next_page: next_page,
-                has_next: has_next,
-                is_loading: false,
+        console.log(this.categories);
+        if (this.categories.length > 0) {
+            var category = _.find(this.categories, {id: parseInt(categoryId)})
+            if(category && category.children.length == 0) {
+                subcategoryId = categoryId;
+                categoryId = null;
+            }
+            this.getPosts(categoryId, subcategoryId, (error, response) => {
+                var new_elements = error ? [] : response.body.objects,
+                next_page = response.body.meta.next, 
+                has_next = response.body.meta.next != null;
+                this.setState({
+                    posts: new_elements,
+                    next_page: next_page,
+                    has_next: has_next,
+                    is_loading: false,
+                });
             });
-        });
+        }
     },
 
     componentWillReceiveProps(nextProps) {
@@ -87,6 +95,13 @@ export default React.createClass({
             });
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
+        if(nextProps.categories != this.props.categories) {
+            console.log('123123');
+            console.log(nextProps);
+            console.log(nextProps.categories);
+            this.categories = nextProps.categories;
+            this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
+        }
     },
     /**
      * React component lifecycle method
@@ -95,8 +110,9 @@ export default React.createClass({
         this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         this.setState({
             categoryId: this.getParams().categoryId,
-            subcategoryId: this.getParams().subcategoryId
+            subcategoryId: this.getParams().subcategoryId,
         });
+        this.categories = this.props.categories
     },
 
     componentWillUpdate(nextProps, nextState) {

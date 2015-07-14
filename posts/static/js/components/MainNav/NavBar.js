@@ -12,8 +12,6 @@ import ScrollListenerMixin from '../../mixins/ScrollListenerMixin';
 var Link = Router.Link;
 
 export default React.createClass({
-    categories: [],
-
     /**
      * @type {object[]}
      */
@@ -21,7 +19,6 @@ export default React.createClass({
 
     getInitialState() {
         return {
-            categories: [],
             home_text: 'Home',
             subscribe_text: 'Subscribe',
             photo_text: 'Photo'
@@ -31,15 +28,7 @@ export default React.createClass({
      * gets users from web API
      * @private
      */
-    _getCategories() {
-        this.getCategories((error, response) => {
-            this.setState({ categories: error ? [] : response.body.objects });
-        });
-    },
 
-    componentDidMount() {
-        this._getCategories();
-    },
 
     handleSubscribeOnMouseEnter(e) {
         this.setState({
@@ -91,8 +80,8 @@ export default React.createClass({
             'fixed': this.state.scrollTop > 200,
         });
         var NavItemNodes = [];
-        for(var x in this.state.categories) {
-            var category = this.state.categories[x]
+        for(var x in this.props.categories) {
+            var category = this.props.categories[x]
             NavItemNodes.push(
                 <NavItem 
                     key={category.id} 
@@ -102,7 +91,7 @@ export default React.createClass({
                     children={category.children}
                     uri={category.resource_uri} />
             );
-            if (x < this.state.categories.length -1) {
+            if (x < this.props.categories.length -1) {
                 NavItemNodes.push(<span key={x + 800} className="circle-divider"/>);
             };
 

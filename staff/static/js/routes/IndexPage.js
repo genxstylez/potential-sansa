@@ -51,10 +51,16 @@ export default React.createClass({
     _getCategories() {
         this.getCategories((error, response) => {
             this.setState({ categories: error ? [] : response.body.objects });
+            this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         });
     },
 
     _getPosts(categoryId, subcategoryId) {
+        var category = _.find(this.state.categories, {id: parseInt(categoryId)})
+        if(category.children.length == 0) {
+            subcategoryId = categoryId;
+            categoryId = null;
+        }
         this.getPosts(categoryId, subcategoryId, (error, response) => {
             var new_elements = error ? [] : response.body.objects,
             next_page = response.body.meta.next, 
@@ -69,7 +75,6 @@ export default React.createClass({
     },
     componentDidMount() {
         this._getCategories();
-        this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         this.setState({
             categoryId: this.getParams().categoryId,
             subcategoryId: this.getParams().subcategoryId

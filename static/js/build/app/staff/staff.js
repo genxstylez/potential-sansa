@@ -41918,12 +41918,18 @@ exports['default'] = _React2['default'].createClass({
 
         this.getCategories(function (error, response) {
             _this2.setState({ categories: error ? [] : response.body.objects });
+            _this2._getPosts(_this2.getParams().categoryId, _this2.getParams().subcategoryId);
         });
     },
 
     _getPosts: function _getPosts(categoryId, subcategoryId) {
         var _this3 = this;
 
+        var category = _import2['default'].find(this.state.categories, { id: parseInt(categoryId) });
+        if (category.children.length == 0) {
+            subcategoryId = categoryId;
+            categoryId = null;
+        }
         this.getPosts(categoryId, subcategoryId, function (error, response) {
             var new_elements = error ? [] : response.body.objects,
                 next_page = response.body.meta.next,
@@ -41937,7 +41943,6 @@ exports['default'] = _React2['default'].createClass({
     },
     componentDidMount: function componentDidMount() {
         this._getCategories();
-        this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         this.setState({
             categoryId: this.getParams().categoryId,
             subcategoryId: this.getParams().subcategoryId
