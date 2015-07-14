@@ -6,6 +6,7 @@ import moment from 'moment';
 import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
 import classNames from 'classnames';
+import ClickableP from './ClickableP';
 var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
@@ -69,6 +70,14 @@ export default React.createClass({
     componentWillUnmount () {
         Waypoint.destroyAll();
     },
+    toggleForm(content) {
+        return 
+    },
+    handleOnClick(e) {
+        console.log(e.target);
+        e.target.text = "";
+        e.target.style = "display:none";
+    },
 
     render() {
         const creditNodes = _.map(this.props.credits, credit => {
@@ -95,8 +104,8 @@ export default React.createClass({
                     <div id="articleContent" className={articleContent_class} ref="articleContent">
                         <div className="inner-content">
                             <span className="label category">{this.props.category}</span>
-                            <p className="title">{this.props.heading}</p>
-                            <p className="sub-title">{this.props.subheading}</p>
+                            <ClickableP className="title" content={this.props.heading} />
+                            <ClickableP className="sub-title" content={this.props.subheading} />
                             <div className="decorations">
                                 <span className="created_at">{moment(this.props.created_at).format("YYYY.MM.DD")}</span>
                             </div>
