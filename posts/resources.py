@@ -84,12 +84,13 @@ class PostResource(ModelResource):
                               use_in='list', full=True)
 
     class Meta:
-        queryset = Post.objects.filter(published=True).order_by('-created_at')
+        queryset = Post.objects.order_by('-id')
         resource_name = 'posts'
         list_allowed_methods = ['get', ]
         detailed_allowed_methods = ['get', ]
         filtering = {
             'category': ALL_WITH_RELATIONS,
+            'published': ['exact']
         }
 
 
@@ -106,8 +107,19 @@ class AdminCategoryResource(ModelResource):
         authorization = DjangoAuthorization()
 
 
+class ExtraAdminCategoryResource(ModelResource):
+
+    class Meta:
+        queryset = Category.objects.all()
+        resource_name = 'admin_categories'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
+
+
 class AdminPostResource(ModelResource):
-    category = fields.ForeignKey(SubCategoryResource, 'category', full=True, null=True, blank=True)
+    category = fields.ForeignKey(ExtraAdminCategoryResource, 'category', full=True, null=True, blank=True)
 
     class Meta:
         queryset = Post.objects.all()
@@ -116,6 +128,3 @@ class AdminPostResource(ModelResource):
         detailed_allowed_methods = ['get', 'post', 'put', 'delete']
         authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
         authorization = DjangoAuthorization()
-        filtering = {
-            'category': ALL_WITH_RELATIONS,
-        }

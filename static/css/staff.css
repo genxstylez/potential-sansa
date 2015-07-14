@@ -7,3 +7,33 @@
 .list-group-item.sub {
     padding-left: 35px
 }
+
+.glyphicon {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.glyphicon:hover {
+    opacity: 0.6;
+}
+
+.glyphicon-ok.selected {
+    color: #3c763d;
+}
+
+.glyphicon-star.selected {
+    color: rgb(232, 163, 13);
+}
+
+.inner-content .label.category {
+    cursor: pointer;
+}
+
+.inner-content .label.category:hover {
+    opacity: 0.6;
+}
+
+.inner-content .btn-group .dropdown-menu{
+    top: 50%;
+}

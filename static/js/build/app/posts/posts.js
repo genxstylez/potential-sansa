@@ -47685,7 +47685,7 @@ exports['default'] = {
         } else if (category_id) {
             qs = '&category__parent=' + category_id;
         };
-        _request2['default'].get('/api/v1/posts/').query('format=json').query(qs).type('application/json').accept('application/json').end(cb);
+        _request2['default'].get('/api/v1/posts/').query('published=true').query('format=json').query(qs).type('application/json').accept('application/json').end(cb);
     },
 
     getMorePosts: function getMorePosts(url, cb) {
@@ -47710,7 +47710,7 @@ exports['default'] = {
      * @param {function} cb
      */
     getPost: function getPost(id, cb) {
-        _request2['default'].get('/api/v1/posts/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+        _request2['default'].get('/api/v1/posts/' + id + '/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     searchPosts: function searchPosts(url, query, cb) {

@@ -35,6 +35,7 @@ export default {
             qs = '&category__parent=' + category_id;
         };
         request.get('/api/v1/posts/')
+            .query('published=true')
             .query('format=json')
             .query(qs)
             .type('application/json')
@@ -79,7 +80,8 @@ export default {
      * @param {function} cb
      */
     getPost(id, cb) {
-        request.get('/api/v1/posts/' + id + '/?format=json')
+        request.get('/api/v1/posts/' + id + '/')
+            .query('format=json')
             .type('application/json')
             .accept('application/json')
             .end(cb);

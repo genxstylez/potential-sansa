@@ -45,7 +45,9 @@ export default React.createClass({
                 last_modified: post.last_modified,
                 category: post.category.name,
                 uri: post.resource_uri,
-                is_shooting: post.is_shooting
+                is_shooting: post.is_shooting,
+                starred: post.starred,
+                published: post.published
             });
         });
     },
@@ -80,6 +82,8 @@ export default React.createClass({
                         created_at={this.state.created_at}
                         last_modified={this.state.last_modified}
                         category={this.state.category}
+                        starred={this.state.starred}
+                        published={this.state.published}
                         onClickOnCross={this.handleClickOnCross} />
                 </TransitionGroup>
                 )
@@ -96,7 +100,9 @@ export default React.createClass({
                     credits={this.state.credits}
                     created_at={this.state.created_at}
                     last_modified={this.state.last_modified}
-                    category={this.state.category} 
+                    category={this.state.category}
+                    starred={this.state.starred}
+                    published={this.state.published}
                     onClickOnCross={this.handleClickOnCross} />
             </TransitionGroup>
         );

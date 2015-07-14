@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib import admin
 from tastypie.api import Api
 from posts.resources import CategoryResource, PostResource, StarredResource, ImageResource
-from posts.resources import AdminCategoryResource, AdminPostResource
+from posts.resources import AdminCategoryResource, AdminPostResource, ExtraAdminCategoryResource
 from photos.resources import AlbumResource
 from subscriptions.resources import SubscriberResource
 
@@ -19,6 +19,7 @@ v1_api.register(AlbumResource())
 
 staff_api = Api(api_name='v1')
 staff_api.register(AdminCategoryResource())
+staff_api.register(ExtraAdminCategoryResource())
 staff_api.register(AdminPostResource())
 
 

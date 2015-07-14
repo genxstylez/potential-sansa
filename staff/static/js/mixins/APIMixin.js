@@ -32,7 +32,7 @@ export default {
         } else if(category_id) {
             qs = '&category__parent=' + category_id;
         };
-        request.get('/staff_api/v1/admin_posts/')
+        request.get('/api/v1/posts/')
             .query('format=json')
             .query('limit=50')
             .query(qs)
@@ -47,6 +47,8 @@ export default {
             .accept('application/json')
             .end(cb);
     },
+
+
 
     getAlbums(cb) {
         request.get('/api/v1/albums/')
@@ -83,5 +85,13 @@ export default {
             .accept('application/json')
             .end(cb);
     },
+
+    updatePost(id, params, cb) {
+        request.put('/staff_api/v1/admin_posts/' + id +'/')
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    }
 
 };

@@ -7,6 +7,8 @@ import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
 import classNames from 'classnames';
 import ClickableP from './ClickableP';
+import ToggableIcon from './ToggableIcon';
+import DropdownSpan from './DropdownSpan';
 var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
@@ -25,7 +27,8 @@ export default React.createClass({
     getInitialState() {
         return ({
             overflow: false,
-            cover: {id:0}
+            cover: {id:0},
+            hasError: false
         })
     },
     _setCover(index) {
@@ -65,18 +68,23 @@ export default React.createClass({
                 });
             }, 1000);
         };
-
     },
     componentWillUnmount () {
         Waypoint.destroyAll();
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        })
     },
-    toggleForm(content) {
-        return 
-    },
-    handleOnClick(e) {
-        console.log(e.target);
-        e.target.text = "";
-        e.target.style = "display:none";
+
+    hasError() {
+        this.setState({
+            hasError: true
+        });
+        setTimeout(() => {
+            this.setState({
+                hasError: false
+            });
+        }, 3000);
     },
 
     render() {
@@ -90,6 +98,23 @@ export default React.createClass({
             'article-content': true,
             'overflow': this.state.overflow
         });
+
+        const alert_cls = classNames({
+            'alert': true,
+            'alert-danger': true,
+            'hidden': !this.state.hasError
+        });
+        const alert_style = {
+            position: "absolute",
+            width: "90%",
+            left: "5%",
+            top: "0%"
+        }
+        const alert_close_style = {
+            position: "relative",
+            top: "-2px",
+            right: "-21px"
+        }
         return (
             <div className="article-box" ref="articleBox">
                 <span className="close">
@@ -97,15 +122,25 @@ export default React.createClass({
                 </span>
                 <div className="row article-header">
                     <span className="circle-divider"></span>
-                    {this.props.category}
+                    編輯模式
                     <span className="circle-divider"></span>
                 </div>
                 <div className="row article">
+                    <div className={alert_cls} style={alert_style} role="alert" ref="alert">
+                        發生錯誤, 請再嘗試一次
+                    </div>
                     <div id="articleContent" className={articleContent_class} ref="articleContent">
                         <div className="inner-content">
-                            <span className="label category">{this.props.category}</span>
-                            <ClickableP className="title" content={this.props.heading} />
-                            <ClickableP className="sub-title" content={this.props.subheading} />
+                            <ToggableIcon tooltip="加入至橫幅"className="glyphicon glyphicon-star" name="starred" element_id={this.props.id} selected={this.props.starred} />
+                            <ToggableIcon tooltip="發表" className="glyphicon glyphicon-ok" name="published" element_id={this.props.id} selected={this.props.published} />
+                            <br />
+                            <br />
+                            <DropdownSpan className="label category" name="category" element_id={this.props.id} content={this.props.category} />
+                            <ClickableP className="title" 
+                                element_id={this.props.id} name="heading" 
+                                content={this.props.heading} hasError={this.hasError} />
+                            <ClickableP className="sub-title" element_id={this.props.id} name="subheading" 
+                                content={this.props.subheading} hasError={this.hasError} />
                             <div className="decorations">
                                 <span className="created_at">{moment(this.props.created_at).format("YYYY.MM.DD")}</span>
                             </div>
