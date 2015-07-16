@@ -3,12 +3,13 @@
 import React from 'react/addons';
 import _ from 'lodash';
 import moment from 'moment';
-import PostCredit from './PostCredit';
 import PostGallery from './PostGallery';
 import classNames from 'classnames';
 import ClickableP from './ClickableP';
 import ToggableIcon from './ToggableIcon';
 import DropdownSpan from './DropdownSpan';
+import EditableDiv from './EditableDiv';
+import MutableCredit from './MutableCredit';
 var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
@@ -86,13 +87,7 @@ export default React.createClass({
             });
         }, 3000);
     },
-
     render() {
-        const creditNodes = _.map(this.props.credits, credit => {
-            return (
-                <PostCredit key={credit.id} role={credit.role} name={credit.name} />
-            );
-        });
         const articleContent_class = classNames({
             'pull-left': true,
             'article-content': true,
@@ -102,18 +97,15 @@ export default React.createClass({
         const alert_cls = classNames({
             'alert': true,
             'alert-danger': true,
-            'hidden': !this.state.hasError
+            'fadeout': !this.state.hasError
         });
         const alert_style = {
             position: "absolute",
-            width: "90%",
-            left: "5%",
-            top: "0%"
-        }
-        const alert_close_style = {
-            position: "relative",
-            top: "-2px",
-            right: "-21px"
+            width: "200px",
+            right: "-4%",
+            top: "-3%",
+            zIndex: "999999",
+            padding: "15px 0"
         }
         return (
             <div className="article-box" ref="articleBox">
@@ -131,8 +123,8 @@ export default React.createClass({
                     </div>
                     <div id="articleContent" className={articleContent_class} ref="articleContent">
                         <div className="inner-content">
-                            <ToggableIcon tooltip="加入至橫幅"className="glyphicon glyphicon-star" name="starred" element_id={this.props.id} selected={this.props.starred} />
-                            <ToggableIcon tooltip="發表" className="glyphicon glyphicon-ok" name="published" element_id={this.props.id} selected={this.props.published} />
+                            <ToggableIcon tooltip="加入至橫幅" className="glyphicon glyphicon-star-empty" name="starred" hasError={this.hasError} element_id={this.props.id} selected={this.props.starred} />
+                            <ToggableIcon tooltip="發表" className="glyphicon glyphicon-ok" name="published" hasError={this.hasError} element_id={this.props.id} selected={this.props.published} />
                             <br />
                             <br />
                             <DropdownSpan className="label category" name="category" element_id={this.props.id} content={this.props.category} />
@@ -144,14 +136,10 @@ export default React.createClass({
                             <div className="decorations">
                                 <span className="created_at">{moment(this.props.created_at).format("YYYY.MM.DD")}</span>
                             </div>
-                            <div className="text" dangerouslySetInnerHTML={{__html: this.props.articletext}} />
+                            <EditableDiv element_id={this.props.id} name="articletext" className="text" content={this.props.articletext} hasError={this.hasError} />
                             <div className="decorations end"></div>
-                            {creditNodes}
-                            <div className="share">
-                                <a href={"https://www.facebook.com/sharer/sharer.php?u=" + window.location.href + "&title=" + this.props.heading}>
-                                    <img src={STATIC_URL + "img/fb.png"} />
-                                </a>
-                            </div>
+                            <MutableCredit element_uri={this.props.uri} element_id={this.props.id} 
+                                hasError={this.hasError} credits={this.props.credits} />
                         </div>
                     </div>
                     <PostGallery imgs={this.props.imgs} on_deck={this.state.cover}/>

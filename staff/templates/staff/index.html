@@ -7,8 +7,10 @@
     <link rel="icon" type="image/ico" href="{% static 'favicon.ico' %}">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css">
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <link href="{% static 'css/staff.css' %}" rel="stylesheet">
+    <link href="{% static 'redactor/css/redactor.css' %}" rel="stylesheet">
     {% block css %}{% endblock %}
 </head>
 <body>
@@ -20,12 +22,17 @@
         {% block footer %}{% endblock %}
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{% static 'redactor/redactor.js' %}"></script>
+    <script src="{% static 'redactor/langs/zh_tw.js' %}"></script>
+    <script src="{% static 'redactor/plugins/scriptbuttons.js' %}"></script>
+    <script src="{% static 'redactor/plugins/fullscreen.js' %}"></script>
     <script src="{% static 'thirdparty/core.js' %}"></script>
     <script src="{% static 'thirdparty/scrollbar.js' %}"></script>
     <script src="{% static 'thirdparty/noframework.waypoints.min.js' %}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.0/es5-shim.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.min.js"></script>
+
    
     <script>var STATIC_URL = "{{ STATIC_URL }}";</script>
     {% block js %}

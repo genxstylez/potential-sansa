@@ -128,3 +128,15 @@ class AdminPostResource(ModelResource):
         detailed_allowed_methods = ['get', 'post', 'put', 'delete']
         authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
         authorization = DjangoAuthorization()
+
+
+class AdminCreditResource(ModelResource):
+    post = fields.ForeignKey(AdminPostResource, 'post', full=True, null=True, blank=True)
+
+    class Meta:
+        queryset = Credit.objects.all()
+        resource_name = 'admin_credits'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()

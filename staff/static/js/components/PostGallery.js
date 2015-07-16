@@ -2,6 +2,7 @@
 
 import React from 'react/addons';
 import _ from 'lodash';
+import EditableImg from './EditableImg';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 
@@ -56,10 +57,18 @@ export default React.createClass({
             scrollLeft: "+=250"
         }, 200);
     },
+
+    toggleEditMode() {
+        this.setState({
+            editing: !this.state.editing
+        });
+    },
+    
     getInitialState() {
         return {
             on_deck: {'id': '99-00-11'},
-            imgs: []
+            imgs: [],
+            editing: false
         }
     },
     componentDidMount() {
@@ -68,40 +77,57 @@ export default React.createClass({
             imgs: this.props.imgs
         });
     },
+
     render() {
+        var contentNode = ''
+        if(this.state.editing) {
+            contentNode = <div className="gallery-edit">
+                    {this.state.imgs.map(function(image) {
+                        return(<EditableImg key={image.id} 
+                            id={image.id} 
+                            img={image.img}
+                            caption={image.caption}
+                            tag={image.tag}
+                            video_id={image.video_id}
+                            video_url={image.video_url} />);
+                    }, this)}
+                </div>
+        } else {
+            contentNode = <span>
+                <TransitionGroup transitionName="gallery" transitionLeave={false}>
+                    <SelectedImg key={this.state.on_deck.id} on_deck={this.state.on_deck} />
+                </TransitionGroup>
+                <div className="arrow left" onClick={this.handleLeftArrow}>
+                    <span className="align-helper" />
+                    <img src={STATIC_URL + "img/left-arrow.png"} />
+                </div>
+                <ul className="thumbnails" ref="thumbnailsRow">
+                  {this.state.imgs.map(function(image) {
+                        var src = image.img.small;
+                        if (image.video_id) {
+                            src = "https://i.ytimg.com/vi/" + image.video_id + "/hqdefault.jpg"
+                        }
+                        return (
+                            <li key={image.id}>
+                                <img src={src} 
+                                    onClick={this.handleClick.bind(this, image)} />
+                            </li>
+                        )
+                    }, this)}
+                </ul>
+                <div className="arrow right" onClick={this.handlerRightArrow}>
+                    <span className="align-helper" />
+                    <img src={STATIC_URL + "img/right-arrow.png"} />
+                </div>
+            </span>
+        }
         return (
-          <div className="pull-right gallery">
-            <TransitionGroup transitionName="gallery" transitionLeave={false}>
-                <SelectedImg key={this.state.on_deck.id} on_deck={this.state.on_deck} />
-            </TransitionGroup>
-            <div className="arrow left" onClick={this.handleLeftArrow}>
-                <span className="align-helper" />
-                <img src={STATIC_URL + "img/left-arrow.png"} />
+            <div className="pull-right gallery">
+                <button className="btn btn-primary" 
+                    style={{position:"absolute", right:"10px", zIndex: "999"}}
+                    onClick={this.toggleEditMode}>{this.state.editing? "Done": "Edit"}</button>
+                {contentNode}  
             </div>
-            <ul className="thumbnails" ref="thumbnailsRow">
-              {this.state.imgs.map(function(image) {
-                    if (image.video_id) {
-                        return (
-                            <li key={image.id}>
-                                <img src={"https://i.ytimg.com/vi/" + image.video_id + "/hqdefault.jpg"}
-                                    onClick={this.handleClick.bind(this, image)} />
-                            </li>
-                        )
-                    } else {
-                        return (
-                            <li key={image.id}>
-                                <img src={image.img.small} 
-                                    onClick={this.handleClick.bind(this, image)} />
-                            </li>
-                        )
-                    }
-                }, this)}
-            </ul>
-            <div className="arrow right" onClick={this.handlerRightArrow}>
-                <span className="align-helper" />
-                <img src={STATIC_URL + "img/right-arrow.png"} />
-            </div>
-          </div>
         );
     }
 });

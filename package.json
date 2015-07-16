@@ -41,7 +41,8 @@
   "dependencies": {
     "cookies-js": "1.2.1",
     "lodash": "3.6.0",
-    "react": "0.13.1",
+    "react": "0.13.3",
+    "react-modal": "0.3.0",
     "react-router": "0.13.3",
     "superagent": "1.1.0",
     "react-masonry-mixin": "0.5.6",

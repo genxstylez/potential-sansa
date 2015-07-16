@@ -96,6 +96,7 @@ export default React.createClass({
                     created_at={this.state.created_at}
                     last_modified={this.state.last_modified}
                     category={this.state.category} 
+                    uri={this.state.uri}
                     onClickOnCross={this.handleClickOnCross} />
             </TransitionGroup>
         );

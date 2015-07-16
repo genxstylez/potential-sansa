@@ -8,6 +8,15 @@
     padding-left: 35px
 }
 
+.alert{
+    opacity: 1;
+    transition: opacity 300ms ease-in;
+}
+
+.alert.fadeout {
+    opacity: 0
+}
+
 .glyphicon {
     margin-left: 10px;
     cursor: pointer;
@@ -22,8 +31,12 @@
     color: #3c763d;
 }
 
-.glyphicon-star.selected {
+.glyphicon-star-empty {
     color: rgb(232, 163, 13);
+}
+
+.glyphicon-star-empty.selected:before {
+    content: "\e006";
 }
 
 .inner-content .label.category {
@@ -36,4 +49,37 @@
 
 .inner-content .btn-group .dropdown-menu{
     top: 50%;
+}
+
+.gallery-edit {
+    margin-top: 10%;
+}
+
+.imgTile {
+    cursor: pointer;
+}
+
+.imgTile:hover {
+    opacity: 0.6;
+}
+
+.imgDiv {
+    height: 150px;
+}
+
+.imgDiv img {
+    width: 100%;
+}
+
+.imgDiv .align-helper {
+    height: 100%;
+}
+
+.ReactModal__Overlay--after-open {
+    z-index: 9;
+}
+
+.ReactModal__Content {
+    left: 25% !important;
+    right: 25% !important;
 }

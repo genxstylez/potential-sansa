@@ -12,7 +12,13 @@ import Footer from '../components/Footer';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 export default React.createClass({
-    mixins: [],
+    mixins: [WebAPIMixin], 
+
+    _getCategories() {
+        this.getCategories((error, response) => {
+            this.setState({ categories: error ? [] : response.body.objects });
+        });
+    },
 
     contextTypes: {
         router: React.PropTypes.func
@@ -26,6 +32,7 @@ export default React.createClass({
                 </span>,
             q: this.context.router.getCurrentQuery().q,
             has_value: false,
+            categories: []
         }
     },
 
@@ -33,6 +40,7 @@ export default React.createClass({
         this.setState({
             q: this.context.router.getCurrentQuery().q
         });
+        this._getCategories();
     },
     componentWillReceiveProps(){
         this.setState({
@@ -91,7 +99,7 @@ export default React.createClass({
                         </form>
                     </div>
                     <Logo /> 
-                    <NavBar />
+                    <NavBar categories={this.state.categories} />
                     <BannerList />
                     <SearchSubNavBar query={this.state.q}/>
                     <SearchPostList ref="postlist" query={this.state.q} />

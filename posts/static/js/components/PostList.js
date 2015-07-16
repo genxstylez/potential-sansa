@@ -61,7 +61,6 @@ export default React.createClass({
     },
                 
     _getPosts(categoryId, subcategoryId) {
-        console.log(this.categories);
         if (this.categories.length > 0) {
             var category = _.find(this.categories, {id: parseInt(categoryId)})
             if(category && category.children.length == 0) {
@@ -96,9 +95,6 @@ export default React.createClass({
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
         if(nextProps.categories != this.props.categories) {
-            console.log('123123');
-            console.log(nextProps);
-            console.log(nextProps.categories);
             this.categories = nextProps.categories;
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }

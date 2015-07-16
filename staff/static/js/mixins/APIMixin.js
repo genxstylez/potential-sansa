@@ -92,6 +92,21 @@ export default {
             .type('application/json')
             .accept('application/json')
             .end(cb);
+    },
+
+    createCredit(params, cb) {
+        request.post('/staff_api/v1/admin_credits/')
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    deleteCredit(id, cb) {
+        request.del('/staff_api/v1/admin_credits/' + id + '/')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
     }
 
 };

@@ -2,7 +2,7 @@
 
 import React from 'react/addons';
 import _ from 'lodash';
-import WebAPIMixin from '../mixins/APIMixin';
+import APIMixin from '../mixins/APIMixin';
 var State = require('react-router').State;
 import PostContent from '../components/PostContent';
 //import ShootingContent from '../components/Post/Shooting/ShootingContent';
@@ -10,7 +10,7 @@ var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var Navigation = require('react-router').Navigation;
 
 export default React.createClass({
-    mixins: [WebAPIMixin, State, Navigation],
+    mixins: [APIMixin, State, Navigation],
 
     propTypes: {
         id: React.PropTypes.number
@@ -103,6 +103,7 @@ export default React.createClass({
                     category={this.state.category}
                     starred={this.state.starred}
                     published={this.state.published}
+                    uri={this.state.uri}
                     onClickOnCross={this.handleClickOnCross} />
             </TransitionGroup>
         );
