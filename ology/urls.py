@@ -6,7 +6,7 @@ from django.contrib import admin
 from tastypie.api import Api
 from posts.resources import CategoryResource, PostResource, StarredResource, ImageResource
 from posts.resources import AdminCategoryResource, AdminPostResource, ExtraAdminCategoryResource
-from posts.resources import AdminCreditResource
+from posts.resources import AdminCreditResource, AdminImageResource, AdminEditImageResource
 from photos.resources import AlbumResource
 from subscriptions.resources import SubscriberResource
 
@@ -23,6 +23,8 @@ staff_api.register(AdminCategoryResource())
 staff_api.register(ExtraAdminCategoryResource())
 staff_api.register(AdminPostResource())
 staff_api.register(AdminCreditResource())
+staff_api.register(AdminImageResource())
+staff_api.register(AdminEditImageResource())
 
 urlpatterns = [
     # Examples:
@@ -30,6 +32,7 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^_search/', 'ology.views.search', name='search'),
+    url(r'^post_image/edit/', 'posts.views.image_edit', name='post-image-edit'),
     url(r'^staff_api/', include(staff_api.urls)),
     url(r'^api/', include(v1_api.urls)),
     url(r'^redactor/', include('redactor.urls')),

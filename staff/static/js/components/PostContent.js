@@ -142,7 +142,11 @@ export default React.createClass({
                                 hasError={this.hasError} credits={this.props.credits} />
                         </div>
                     </div>
-                    <PostGallery imgs={this.props.imgs} on_deck={this.state.cover}/>
+                    <PostGallery 
+                        element_id={this.props.id} 
+                        element_uri={this.props.uri} 
+                        imgs={this.props.imgs} 
+                        on_deck={this.state.cover} />
                     <div className="triangle"></div>
                 </div>
             </div>

@@ -107,6 +107,41 @@ export default {
             .type('application/json')
             .accept('application/json')
             .end(cb);
-    }
+    },
 
+    getImage(id, cb) {
+        request.get('/staff_api/v1/admin_images/' + id + '/?format=json')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
+        if (changed)
+            request.post('/staff_api/v1/admin_images/')
+                .attach('img', img)
+                .field('id', id)
+                .field('caption', caption)
+                .field('tag', tag)
+                .field('video_url', video_url)
+                .field('post', post_uri)
+                .accept('application/json')
+                .end(cb);
+        else {
+            var params = {
+                id: id,
+                caption: caption,
+                tag: tag,
+                video_url: video_url,
+                post: post_id
+            };
+            request.post('/post_image/edit/')
+                .set('X-CSRFToken', csrfToken)
+                .type('form')
+                .send(params)
+                .accept('application/json')
+                .end(cb);
+        }
+
+    }
 };

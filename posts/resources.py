@@ -7,6 +7,7 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ModelResource, fields, ALL_WITH_RELATIONS
 from taggit.models import Tag
 from posts.models import Category, Post, Image, Credit
+from ology.resources import MultipartResource
 
 
 class ImageResource(ModelResource):
@@ -140,3 +141,28 @@ class AdminCreditResource(ModelResource):
         detailed_allowed_methods = ['get', 'post', 'put', 'delete']
         authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
         authorization = DjangoAuthorization()
+
+
+class AdminImageResource(MultipartResource, ModelResource):
+    post = fields.ForeignKey(AdminPostResource, 'post', full=True, null=True, blank=True)
+
+    class Meta:
+        queryset = Image.objects.all()
+        resource_name = 'admin_images'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
+
+
+class AdminEditImageResource(MultipartResource, ModelResource):
+    post = fields.ForeignKey(AdminPostResource, 'post', full=True, null=True, blank=True)
+
+    class Meta:
+        queryset = Image.objects.all()
+        resource_name = 'admin_imagess'
+        list_allowed_methods = ['get', 'post']
+        detailed_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
+        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
+        excludes = ['img']

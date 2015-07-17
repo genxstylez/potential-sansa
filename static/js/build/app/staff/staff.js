@@ -19243,7 +19243,9 @@ var isUnitlessNumber = {
   columnCount: true,
   flex: true,
   flexGrow: true,
+  flexPositive: true,
   flexShrink: true,
+  flexNegative: true,
   fontWeight: true,
   lineClamp: true,
   lineHeight: true,
@@ -19256,7 +19258,9 @@ var isUnitlessNumber = {
 
   // SVG-related properties
   fillOpacity: true,
-  strokeOpacity: true
+  strokeDashoffset: true,
+  strokeOpacity: true,
+  strokeWidth: true
 };
 
 /**
@@ -22321,6 +22325,7 @@ var HTMLDOMPropertyConfig = {
     headers: null,
     height: MUST_USE_ATTRIBUTE,
     hidden: MUST_USE_ATTRIBUTE | HAS_BOOLEAN_VALUE,
+    high: null,
     href: null,
     hrefLang: null,
     htmlFor: null,
@@ -22331,6 +22336,7 @@ var HTMLDOMPropertyConfig = {
     lang: null,
     list: MUST_USE_ATTRIBUTE,
     loop: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
+    low: null,
     manifest: MUST_USE_ATTRIBUTE,
     marginHeight: null,
     marginWidth: null,
@@ -22345,6 +22351,7 @@ var HTMLDOMPropertyConfig = {
     name: null,
     noValidate: HAS_BOOLEAN_VALUE,
     open: HAS_BOOLEAN_VALUE,
+    optimum: null,
     pattern: null,
     placeholder: null,
     poster: null,
@@ -22358,6 +22365,7 @@ var HTMLDOMPropertyConfig = {
     rowSpan: null,
     sandbox: null,
     scope: null,
+    scoped: HAS_BOOLEAN_VALUE,
     scrolling: null,
     seamless: MUST_USE_ATTRIBUTE | HAS_BOOLEAN_VALUE,
     selected: MUST_USE_PROPERTY | HAS_BOOLEAN_VALUE,
@@ -22399,7 +22407,9 @@ var HTMLDOMPropertyConfig = {
     itemID: MUST_USE_ATTRIBUTE,
     itemRef: MUST_USE_ATTRIBUTE,
     // property is supported for OpenGraph in meta tags.
-    property: null
+    property: null,
+    // IE-only attribute that controls focus behavior
+    unselectable: MUST_USE_ATTRIBUTE
   },
   DOMAttributeNames: {
     acceptCharset: 'accept-charset',
@@ -23008,7 +23018,7 @@ if ("production" !== "development") {
       if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined') {
         console.debug(
           'Download the React DevTools for a better development experience: ' +
-          'http://fb.me/react-devtools'
+          'https://fb.me/react-devtools'
         );
       }
     }
@@ -23035,7 +23045,7 @@ if ("production" !== "development") {
       if (!expectedFeatures[i]) {
         console.error(
           'One or more ES5 shim/shams expected by React are not available: ' +
-          'http://fb.me/react-warning-polyfills'
+          'https://fb.me/react-warning-polyfills'
         );
         break;
       }
@@ -23043,7 +23053,7 @@ if ("production" !== "development") {
   }
 }
 
-React.version = '0.13.1';
+React.version = '0.13.3';
 
 module.exports = React;
 
@@ -24762,7 +24772,7 @@ var ReactClass = {
         ("production" !== "development" ? warning(
           this instanceof Constructor,
           'Something is calling a React component directly. Use a factory or ' +
-          'JSX instead. See: http://fb.me/react-legacyfactory'
+          'JSX instead. See: https://fb.me/react-legacyfactory'
         ) : null);
       }
 
@@ -24972,20 +24982,38 @@ ReactComponent.prototype.forceUpdate = function(callback) {
  */
 if ("production" !== "development") {
   var deprecatedAPIs = {
-    getDOMNode: 'getDOMNode',
-    isMounted: 'isMounted',
-    replaceProps: 'replaceProps',
-    replaceState: 'replaceState',
-    setProps: 'setProps'
+    getDOMNode: [
+      'getDOMNode',
+      'Use React.findDOMNode(component) instead.'
+    ],
+    isMounted: [
+      'isMounted',
+      'Instead, make sure to clean up subscriptions and pending requests in ' +
+      'componentWillUnmount to prevent memory leaks.'
+    ],
+    replaceProps: [
+      'replaceProps',
+      'Instead, call React.render again at the top level.'
+    ],
+    replaceState: [
+      'replaceState',
+      'Refactor your code to use setState instead (see ' +
+      'https://github.com/facebook/react/issues/3236).'
+    ],
+    setProps: [
+      'setProps',
+      'Instead, call React.render again at the top level.'
+    ]
   };
-  var defineDeprecationWarning = function(methodName, displayName) {
+  var defineDeprecationWarning = function(methodName, info) {
     try {
       Object.defineProperty(ReactComponent.prototype, methodName, {
         get: function() {
           ("production" !== "development" ? warning(
             false,
-            '%s(...) is deprecated in plain JavaScript React classes.',
-            displayName
+            '%s(...) is deprecated in plain JavaScript React classes. %s',
+            info[0],
+            info[1]
           ) : null);
           return undefined;
         }
@@ -25336,6 +25364,14 @@ var ReactCompositeComponentMixin = {
         this.getName() || 'a component'
       ) : null);
       ("production" !== "development" ? warning(
+        !inst.getDefaultProps ||
+        inst.getDefaultProps.isReactClassApproved,
+        'getDefaultProps was defined on %s, a plain JavaScript class. ' +
+        'This is only supported for classes created using React.createClass. ' +
+        'Use a static property to define defaultProps instead.',
+        this.getName() || 'a component'
+      ) : null);
+      ("production" !== "development" ? warning(
         !inst.propTypes,
         'propTypes was defined as an instance property on %s. Use a static ' +
         'property to define propTypes instead.',
@@ -25371,6 +25407,7 @@ var ReactCompositeComponentMixin = {
     this._pendingReplaceState = false;
     this._pendingForceUpdate = false;
 
+    var childContext;
     var renderedElement;
 
     var previouslyMounting = ReactLifeCycle.currentlyMountingInstance;
@@ -25385,7 +25422,8 @@ var ReactCompositeComponentMixin = {
         }
       }
 
-      renderedElement = this._renderValidatedComponent();
+      childContext = this._getValidatedChildContext(context);
+      renderedElement = this._renderValidatedComponent(childContext);
     } finally {
       ReactLifeCycle.currentlyMountingInstance = previouslyMounting;
     }
@@ -25399,7 +25437,7 @@ var ReactCompositeComponentMixin = {
       this._renderedComponent,
       rootID,
       transaction,
-      this._processChildContext(context)
+      this._mergeChildContext(context, childContext)
     );
     if (inst.componentDidMount) {
       transaction.getReactMountReady().enqueue(inst.componentDidMount, inst);
@@ -25529,7 +25567,7 @@ var ReactCompositeComponentMixin = {
    * @return {object}
    * @private
    */
-  _processChildContext: function(currentContext) {
+  _getValidatedChildContext: function(currentContext) {
     var inst = this._instance;
     var childContext = inst.getChildContext && inst.getChildContext();
     if (childContext) {
@@ -25554,6 +25592,13 @@ var ReactCompositeComponentMixin = {
           name
         ) : invariant(name in inst.constructor.childContextTypes));
       }
+      return childContext;
+    }
+    return null;
+  },
+
+  _mergeChildContext: function(currentContext, childContext) {
+    if (childContext) {
       return assign({}, currentContext, childContext);
     }
     return currentContext;
@@ -25813,6 +25858,10 @@ var ReactCompositeComponentMixin = {
       return inst.state;
     }
 
+    if (replace && queue.length === 1) {
+      return queue[0];
+    }
+
     var nextState = assign({}, replace ? queue[0] : inst.state);
     for (var i = replace ? 1 : 0; i < queue.length; i++) {
       var partial = queue[i];
@@ -25882,13 +25931,14 @@ var ReactCompositeComponentMixin = {
   _updateRenderedComponent: function(transaction, context) {
     var prevComponentInstance = this._renderedComponent;
     var prevRenderedElement = prevComponentInstance._currentElement;
-    var nextRenderedElement = this._renderValidatedComponent();
+    var childContext = this._getValidatedChildContext();
+    var nextRenderedElement = this._renderValidatedComponent(childContext);
     if (shouldUpdateReactComponent(prevRenderedElement, nextRenderedElement)) {
       ReactReconciler.receiveComponent(
         prevComponentInstance,
         nextRenderedElement,
         transaction,
-        this._processChildContext(context)
+        this._mergeChildContext(context, childContext)
       );
     } else {
       // These two IDs are actually the same! But nothing should rely on that.
@@ -25904,7 +25954,7 @@ var ReactCompositeComponentMixin = {
         this._renderedComponent,
         thisID,
         transaction,
-        context
+        this._mergeChildContext(context, childContext)
       );
       this._replaceNodeWithMarkupByID(prevComponentID, nextMarkup);
     }
@@ -25942,11 +25992,12 @@ var ReactCompositeComponentMixin = {
   /**
    * @private
    */
-  _renderValidatedComponent: function() {
+  _renderValidatedComponent: function(childContext) {
     var renderedComponent;
     var previousContext = ReactContext.current;
-    ReactContext.current = this._processChildContext(
-      this._currentElement._context
+    ReactContext.current = this._mergeChildContext(
+      this._currentElement._context,
+      childContext
     );
     ReactCurrentOwner.current = this;
     try {
@@ -26311,6 +26362,7 @@ var ReactDOM = mapObject({
 
   // SVG
   circle: 'circle',
+  clipPath: 'clipPath',
   defs: 'defs',
   ellipse: 'ellipse',
   g: 'g',
@@ -26460,11 +26512,13 @@ function assertValidProps(props) {
       'Can only set one of `children` or `props.dangerouslySetInnerHTML`.'
     ) : invariant(props.children == null));
     ("production" !== "development" ? invariant(
-      props.dangerouslySetInnerHTML.__html != null,
+      typeof props.dangerouslySetInnerHTML === 'object' &&
+      '__html' in props.dangerouslySetInnerHTML,
       '`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. ' +
-      'Please visit http://fb.me/react-invariant-dangerously-set-inner-html ' +
+      'Please visit https://fb.me/react-invariant-dangerously-set-inner-html ' +
       'for more information.'
-    ) : invariant(props.dangerouslySetInnerHTML.__html != null));
+    ) : invariant(typeof props.dangerouslySetInnerHTML === 'object' &&
+    '__html' in props.dangerouslySetInnerHTML));
   }
   if ("production" !== "development") {
     ("production" !== "development" ? warning(
@@ -26772,6 +26826,8 @@ ReactDOMComponent.Mixin = {
       if (propKey === STYLE) {
         if (nextProp) {
           nextProp = this._previousStyleCopy = assign({}, nextProp);
+        } else {
+          this._previousStyleCopy = null;
         }
         if (lastProp) {
           // Unset styles on `lastProp` but not on `nextProp`.
@@ -29254,7 +29310,7 @@ function warnAndMonitorForKeyUse(message, element, parentType) {
 
   ("production" !== "development" ? warning(
     false,
-    message + '%s%s See http://fb.me/react-warning-keys for more information.',
+    message + '%s%s See https://fb.me/react-warning-keys for more information.',
     parentOrOwnerAddendum,
     childOwnerAddendum
   ) : null);
@@ -29378,9 +29434,9 @@ function warnForPropsMutation(propName, element) {
 
   ("production" !== "development" ? warning(
     false,
-    'Don\'t set .props.%s of the React component%s. ' +
-    'Instead, specify the correct value when ' +
-    'initially creating the element.%s',
+    'Don\'t set .props.%s of the React component%s. Instead, specify the ' +
+    'correct value when initially creating the element or use ' +
+    'React.cloneElement to make a new element with updated props.%s',
     propName,
     elementInfo,
     ownerInfo
@@ -33769,6 +33825,7 @@ var ReactUpdates = require("./ReactUpdates");
 var SyntheticEvent = require("./SyntheticEvent");
 
 var assign = require("./Object.assign");
+var emptyObject = require("./emptyObject");
 
 var topLevelTypes = EventConstants.topLevelTypes;
 
@@ -34110,6 +34167,9 @@ assign(
 );
 
 ReactShallowRenderer.prototype.render = function(element, context) {
+  if (!context) {
+    context = emptyObject;
+  }
   var transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
   this._render(element, transaction, context);
   ReactUpdates.ReactReconcileTransaction.release(transaction);
@@ -34250,7 +34310,7 @@ for (eventType in topLevelTypes) {
 
 module.exports = ReactTestUtils;
 
-},{"./EventConstants":70,"./EventPluginHub":72,"./EventPropagators":75,"./Object.assign":83,"./React":85,"./ReactBrowserEventEmitter":87,"./ReactCompositeComponent":97,"./ReactElement":117,"./ReactEmptyComponent":119,"./ReactInstanceHandles":126,"./ReactInstanceMap":127,"./ReactMount":131,"./ReactUpdates":154,"./SyntheticEvent":163}],150:[function(require,module,exports){
+},{"./EventConstants":70,"./EventPluginHub":72,"./EventPropagators":75,"./Object.assign":83,"./React":85,"./ReactBrowserEventEmitter":87,"./ReactCompositeComponent":97,"./ReactElement":117,"./ReactEmptyComponent":119,"./ReactInstanceHandles":126,"./ReactInstanceMap":127,"./ReactMount":131,"./ReactUpdates":154,"./SyntheticEvent":163,"./emptyObject":185}],150:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -35349,6 +35409,7 @@ var MUST_USE_ATTRIBUTE = DOMProperty.injection.MUST_USE_ATTRIBUTE;
 
 var SVGDOMPropertyConfig = {
   Properties: {
+    clipPath: MUST_USE_ATTRIBUTE,
     cx: MUST_USE_ATTRIBUTE,
     cy: MUST_USE_ATTRIBUTE,
     d: MUST_USE_ATTRIBUTE,
@@ -35394,6 +35455,7 @@ var SVGDOMPropertyConfig = {
     y: MUST_USE_ATTRIBUTE
   },
   DOMAttributeNames: {
+    clipPath: 'clip-path',
     fillOpacity: 'fill-opacity',
     fontFamily: 'font-family',
     fontSize: 'font-size',
@@ -38300,6 +38362,7 @@ var shouldWrap = {
   // Force wrapping for SVG elements because if they get created inside a <div>,
   // they will be initialized in the wrong namespace (and will not display).
   'circle': true,
+  'clipPath': true,
   'defs': true,
   'ellipse': true,
   'g': true,
@@ -38342,6 +38405,7 @@ var markupWrap = {
   'th': trWrap,
 
   'circle': svgWrap,
+  'clipPath': svgWrap,
   'defs': svgWrap,
   'ellipse': svgWrap,
   'g': svgWrap,
@@ -38687,6 +38751,7 @@ assign(
 function isInternalComponentType(type) {
   return (
     typeof type === 'function' &&
+    typeof type.prototype !== 'undefined' &&
     typeof type.prototype.mountComponent === 'function' &&
     typeof type.prototype.receiveComponent === 'function'
   );
@@ -39942,11 +40007,14 @@ module.exports = traverseAllChildren;
  * @providesModule update
  */
 
+ /* global hasOwnProperty:true */
+
 'use strict';
 
 var assign = require("./Object.assign");
 var keyOf = require("./keyOf");
 var invariant = require("./invariant");
+var hasOwnProperty = {}.hasOwnProperty;
 
 function shallowCopy(x) {
   if (Array.isArray(x)) {
@@ -40006,7 +40074,7 @@ function update(value, spec) {
     COMMAND_SET
   ) : invariant(typeof spec === 'object'));
 
-  if (spec.hasOwnProperty(COMMAND_SET)) {
+  if (hasOwnProperty.call(spec, COMMAND_SET)) {
     ("production" !== "development" ? invariant(
       Object.keys(spec).length === 1,
       'Cannot have more than one key in an object with %s',
@@ -40018,7 +40086,7 @@ function update(value, spec) {
 
   var nextValue = shallowCopy(value);
 
-  if (spec.hasOwnProperty(COMMAND_MERGE)) {
+  if (hasOwnProperty.call(spec, COMMAND_MERGE)) {
     var mergeObj = spec[COMMAND_MERGE];
     ("production" !== "development" ? invariant(
       mergeObj && typeof mergeObj === 'object',
@@ -40035,21 +40103,21 @@ function update(value, spec) {
     assign(nextValue, spec[COMMAND_MERGE]);
   }
 
-  if (spec.hasOwnProperty(COMMAND_PUSH)) {
+  if (hasOwnProperty.call(spec, COMMAND_PUSH)) {
     invariantArrayCase(value, spec, COMMAND_PUSH);
     spec[COMMAND_PUSH].forEach(function(item) {
       nextValue.push(item);
     });
   }
 
-  if (spec.hasOwnProperty(COMMAND_UNSHIFT)) {
+  if (hasOwnProperty.call(spec, COMMAND_UNSHIFT)) {
     invariantArrayCase(value, spec, COMMAND_UNSHIFT);
     spec[COMMAND_UNSHIFT].forEach(function(item) {
       nextValue.unshift(item);
     });
   }
 
-  if (spec.hasOwnProperty(COMMAND_SPLICE)) {
+  if (hasOwnProperty.call(spec, COMMAND_SPLICE)) {
     ("production" !== "development" ? invariant(
       Array.isArray(value),
       'Expected %s target to be an array; got %s',
@@ -40075,7 +40143,7 @@ function update(value, spec) {
     });
   }
 
-  if (spec.hasOwnProperty(COMMAND_APPLY)) {
+  if (hasOwnProperty.call(spec, COMMAND_APPLY)) {
     ("production" !== "development" ? invariant(
       typeof spec[COMMAND_APPLY] === 'function',
       'update(): expected spec of %s to be a function; got %s.',
@@ -41843,6 +41911,10 @@ var _APIMixin = require('../mixins/APIMixin');
 
 var _APIMixin2 = _interopRequireWildcard(_APIMixin);
 
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
 var _classNames = require('classnames');
 
 var _classNames2 = _interopRequireWildcard(_classNames);
@@ -41864,27 +41936,46 @@ exports['default'] = _React2['default'].createClass({
         return {
             editing: false,
             id: 0,
-            img: { small: '' },
+            img: '',
             caption: '',
             tag: '',
             video_id: '',
-            video_url: ''
+            video_url: '',
+            img_changed: false,
+            display_img: ''
         };
     },
 
-    _updatePost: function _updatePost(element_id, params) {
+    _getImage: function _getImage(id) {
         var _this = this;
 
-        this.updatePost(element_id, params, function (error, response) {
+        this.getImage(id, function (error, response) {
             if (error) {
-                _this.props.hasError();
-                _this.setState({
-                    value: _this.state.db_value
-                });
+                alert('Please try again!');
             } else {
                 _this.setState({
-                    db_value: _this.state.value
+                    img_changed: false,
+                    id: response.body.id,
+                    img: response.body.img,
+                    caption: response.body.caption,
+                    tag: response.body.tag,
+                    video_url: response.body.video_url,
+                    video_id: response.body.video_id
                 });
+            }
+        });
+    },
+    _updateImage: function _updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed) {
+        var _this2 = this;
+
+        this.updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, function (error, response) {
+            if (error) {
+                _this2.props.hasError();
+                _this2.setState({
+                    img_changed: false
+                });
+            } else {
+                _this2._getImage(id);
             }
         });
     },
@@ -41901,15 +41992,6 @@ exports['default'] = _React2['default'].createClass({
         });
     },
 
-    handleOnBlur: function handleOnBlur() {
-        this.setState({
-            editing: false
-        });
-        var params = {};
-        params[this.props.name] = this.state.value;
-        this._updatePost(this.props.element_id, params);
-    },
-
     handleChangeCaption: function handleChangeCaption(e) {
         this.setState({
             caption: e.target.value
@@ -41922,10 +42004,31 @@ exports['default'] = _React2['default'].createClass({
         });
     },
 
+    handleChangeImg: function handleChangeImg(e) {
+        var self = this;
+        var reader = new FileReader();
+        var file = e.target.files[0];
+
+        reader.onload = function (upload) {
+            self.setState({
+                img: file,
+                display_img: upload.target.result,
+                img_changed: true
+            });
+        };
+
+        reader.readAsDataURL(file);
+    },
+
     handleChangeVideo: function handleChangeVideo(e) {
         this.setState({
             video_url: e.target.value
         });
+    },
+
+    handleSubmit: function handleSubmit(e) {
+        e.preventDefault();
+        this._updateImage(this.props.id, this.state.img, this.state.caption, this.state.tag, this.state.video_url, this.props.post_uri.replace('posts', 'admin_posts'), this.props.post_id, this.state.img_changed);
     },
 
     handleKeyUp: function handleKeyUp(e) {
@@ -41933,9 +42036,11 @@ exports['default'] = _React2['default'].createClass({
     },
 
     componentDidMount: function componentDidMount() {
+        var img = _import2['default'].has(this.props.img, 'original') ? this.props.img.original : '';
         this.setState({
             id: this.props.id,
-            img: this.props.img,
+            img: img,
+            display_img: img,
             caption: this.props.caption,
             tag: this.props.tag,
             video_id: this.props.video_id,
@@ -41944,29 +42049,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
-        /*
-        <input
-            name={this.props.name}
-            style={{margin: "10px 0"}} 
-            className="form-control" 
-            type="text" 
-            value={this.state.value} 
-            onBlur={this.handleOnBlur}
-            onChange={this.handleChange}
-            onKeyUp={this.handleKeyUp} />
-            <div className="modal fade" ref="Modal">
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-body">
-                                <form>
-                                    goes
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        */
-        var src = this.state.img.small;
+        var src = this.state.display_img;
         if (this.state.video_id) {
             src = 'https://i.ytimg.com/vi/' + this.state.video_id + '/hqdefault.jpg';
         }
@@ -41983,19 +42066,19 @@ exports['default'] = _React2['default'].createClass({
                     _React2['default'].createElement('img', { src: src })
                 ),
                 _React2['default'].createElement(
-                    'p',
+                    'div',
                     null,
                     '註解: ',
                     this.state.caption
                 ),
                 _React2['default'].createElement(
-                    'p',
+                    'div',
                     null,
                     '書籤位置: ',
                     this.state.tag
                 ),
                 _React2['default'].createElement(
-                    'p',
+                    'div',
                     null,
                     'Youtube 網址: ',
                     this.state.video_url
@@ -42008,12 +42091,12 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeModal }),
                 _React2['default'].createElement(
                     'form',
-                    { className: 'form-horizontal', style: { margin: '20px auto', width: '80%' } },
+                    { className: 'form-horizontal', onSubmit: this.handleSubmit, style: { margin: '20px auto', width: '80%' } },
                     _React2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement('img', { src: this.state.img.small, style: { marginBottom: '5px' } }),
-                        _React2['default'].createElement('input', { type: 'file' })
+                        _React2['default'].createElement('img', { src: src, style: { marginBottom: '5px', width: '150px' } }),
+                        _React2['default'].createElement('input', { type: 'file', onChange: this.handleChangeImg })
                     ),
                     _React2['default'].createElement(
                         'div',
@@ -42071,7 +42154,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":241,"classnames":3,"react-modal":13,"react/addons":55}],235:[function(require,module,exports){
+},{"../mixins/APIMixin":241,"classnames":3,"lodash":4,"react-modal":13,"react/addons":55}],235:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42636,7 +42719,11 @@ exports['default'] = _React2['default'].createClass({
                             hasError: this.hasError, credits: this.props.credits })
                     )
                 ),
-                _React2['default'].createElement(_PostGallery2['default'], { imgs: this.props.imgs, on_deck: this.state.cover }),
+                _React2['default'].createElement(_PostGallery2['default'], {
+                    element_id: this.props.id,
+                    element_uri: this.props.uri,
+                    imgs: this.props.imgs,
+                    on_deck: this.state.cover }),
                 _React2['default'].createElement('div', { className: 'triangle' })
             )
         );
@@ -42756,7 +42843,9 @@ exports['default'] = _React2['default'].createClass({
                         caption: image.caption,
                         tag: image.tag,
                         video_id: image.video_id,
-                        video_url: image.video_url });
+                        video_url: image.video_url,
+                        post_id: this.props.element_id,
+                        post_uri: this.props.element_uri });
                 }, this)
             );
         } else {
@@ -42778,7 +42867,7 @@ exports['default'] = _React2['default'].createClass({
                     'ul',
                     { className: 'thumbnails', ref: 'thumbnailsRow' },
                     this.state.imgs.map(function (image) {
-                        var src = image.img.small;
+                        var src = _import2['default'].has(image.img, 'small') ? image.img.small : '';
                         if (image.video_id) {
                             src = 'https://i.ytimg.com/vi/' + image.video_id + '/hqdefault.jpg';
                         }
@@ -42955,8 +43044,24 @@ exports['default'] = {
 
     deleteCredit: function deleteCredit(id, cb) {
         _request2['default'].del('/staff_api/v1/admin_credits/' + id + '/').type('application/json').accept('application/json').end(cb);
-    }
+    },
 
+    getImage: function getImage(id, cb) {
+        _request2['default'].get('/staff_api/v1/admin_images/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+    },
+
+    updateImage: function updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
+        if (changed) _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('post', post_uri).accept('application/json').end(cb);else {
+            var params = {
+                id: id,
+                caption: caption,
+                tag: tag,
+                video_url: video_url,
+                post: post_id
+            };
+            _request2['default'].post('/post_image/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+        }
+    }
 };
 module.exports = exports['default'];
 

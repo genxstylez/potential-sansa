@@ -89,7 +89,9 @@ export default React.createClass({
                             caption={image.caption}
                             tag={image.tag}
                             video_id={image.video_id}
-                            video_url={image.video_url} />);
+                            video_url={image.video_url}
+                            post_id={this.props.element_id}
+                            post_uri={this.props.element_uri} />);
                     }, this)}
                 </div>
         } else {
@@ -102,8 +104,8 @@ export default React.createClass({
                     <img src={STATIC_URL + "img/left-arrow.png"} />
                 </div>
                 <ul className="thumbnails" ref="thumbnailsRow">
-                  {this.state.imgs.map(function(image) {
-                        var src = image.img.small;
+                    {this.state.imgs.map(function(image) {
+                        var src = _.has(image.img, 'small') ? image.img.small: "";
                         if (image.video_id) {
                             src = "https://i.ytimg.com/vi/" + image.video_id + "/hqdefault.jpg"
                         }
