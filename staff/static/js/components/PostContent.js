@@ -125,6 +125,7 @@ export default React.createClass({
                         <div className="inner-content">
                             <ToggableIcon tooltip="加入至橫幅" className="glyphicon glyphicon-star-empty" name="starred" hasError={this.hasError} element_id={this.props.id} selected={this.props.starred} />
                             <ToggableIcon tooltip="發表" className="glyphicon glyphicon-ok" name="published" hasError={this.hasError} element_id={this.props.id} selected={this.props.published} />
+                            <a target="_blank" href={"/post/" + this.props.id + "/"}><span  data-toggle="tooltip" data-placement="top" title="預覽" className="glyphicon glyphicon-eye-open" /></a>
                             <br />
                             <br />
                             <DropdownSpan className="label category" name="category" element_id={this.props.id} content={this.props.category} />

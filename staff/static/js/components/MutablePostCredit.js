@@ -58,6 +58,18 @@ export default React.createClass({
         });
     },
 
+    _updateCredit(id, params) {
+        this.updateCredit(id, params, (error, response) => {
+            if(error) {
+                this.props.hasError(); 
+            } else {
+                this.setState({
+                    editing: false,
+                });
+            }
+        });
+    },
+
     handleClickMinus() {
         this.props.onClickRemove();
     },
@@ -67,13 +79,15 @@ export default React.createClass({
     },
 
     handleClickOk() {
+        var params = {
+            'role': this.state.role,
+            'name': this.state.name,
+            'post': this.props.element_uri.replace("posts", "admin_posts")
+        };
         if(this.props.new_entry) { // means new entry
-            var params = {
-                'role': this.state.role,
-                'name': this.state.name,
-                'post': this.props.element_uri.replace("posts", "admin_posts")
-            };
             this._createCredit(params);
+        } else {
+            this._updateCredit(this.state.id, params);
         }
     },
 
@@ -89,6 +103,11 @@ export default React.createClass({
         });
     },
 
+    handleClick() {
+        this.setState({
+            editing: true
+        })
+    },
 
     componentDidUpdate() {
         $('[data-toggle="tooltip"]').tooltip()
@@ -130,8 +149,8 @@ export default React.createClass({
         } else {
             return (
                 <div className="credit">
-                    <span className="label role">{this.state.role}</span>
-                    <span className="name">{this.state.name}</span>
+                    <span className="label role" onClick={this.handleClick}>{this.state.role}</span>
+                    <span className="name" onClick={this.handleClick}>{this.state.name}</span>
                     <span data-toggle="tooltip" data-placement="top" title="移除" 
                         className="glyphicon glyphicon-remove" style={{fontSize:"12px"}} onClick={this.handleClickRemove} />
                 </div>

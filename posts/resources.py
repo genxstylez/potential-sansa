@@ -153,16 +153,18 @@ class AdminImageResource(MultipartResource, ModelResource):
         detailed_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
         authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
         authorization = DjangoAuthorization()
+        filtering = {
+            'post': ALL_WITH_RELATIONS
+        }
 
-
-class AdminEditImageResource(MultipartResource, ModelResource):
-    post = fields.ForeignKey(AdminPostResource, 'post', full=True, null=True, blank=True)
-
-    class Meta:
-        queryset = Image.objects.all()
-        resource_name = 'admin_imagess'
-        list_allowed_methods = ['get', 'post']
-        detailed_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']
-        authentication = MultiAuthentication(BasicAuthentication(), ApiKeyAuthentication())
-        authorization = DjangoAuthorization()
-        excludes = ['img']
+    def dehydrate_img(self, bundle):
+        if bundle.obj.img:
+            bundle.data['img'] = {
+                'original': bundle.obj.img.url,
+                'small': bundle.obj.img['small'].url,
+                'medium': bundle.obj.img['medium'].url,
+                'large': bundle.obj.img['large'].url,
+                'xl': bundle.obj.img['xl'].url,
+                'xxl': bundle.obj.img['xxl'].url
+            }
+            return bundle.data['img']

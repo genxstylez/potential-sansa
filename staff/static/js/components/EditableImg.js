@@ -57,6 +57,21 @@ export default React.createClass({
         });
     },
 
+    _deleteImage(id) {
+        this.deleteImage(id, (error, response) => {
+            if(!error) {
+                this.props.refreshImage(this.props.post_id);
+                this.closeModal();
+            }
+        });
+    },
+
+    handleDelete() {
+        var res = confirm('確定要刪除此圖片？');
+        if (res)
+            this._deleteImage(this.state.id);
+    },
+
     handleClickTile() {
         this.setState({
             editing: true
@@ -105,7 +120,7 @@ export default React.createClass({
 
     handleSubmit(e) {
         e.preventDefault();
-        this._updateImage(this.props.id, 
+        this._updateImage(this.state.id,
             this.state.img,
             this.state.caption, 
             this.state.tag, 
@@ -121,34 +136,45 @@ export default React.createClass({
             this.handleOnBlur();
     },
 
+    generate_embed(youtube_id) {
+        var width = $('.on_deck').width();
+        var height = width / 1.5;
+
+        return '<iframe width="' + width + '" height="' + height + '" ' +
+                'src="https://www.youtube.com/embed/' + youtube_id + '" ' +
+                'frameborder="0" allowfullscreen></iframe>';
+    },
+
     componentDidMount() {
-        var img = _.has(this.props.img, 'original') ? this.props.img.original: "";
+        var img = _.has(this.props.image.img, 'original') ? this.props.image.img.original: "";
         this.setState({
-            id: this.props.id,
+            id: this.props.image.id,
             img: img,
             display_img: img,
-            caption: this.props.caption,
-            tag: this.props.tag,
-            video_id: this.props.video_id,
-            video_url: this.props.video_url
+            caption: this.props.image.caption,
+            tag: this.props.image.tag,
+            video_id: this.props.image.video_id,
+            video_url: this.props.image.video_url
         });
     },
 
     render() {
         var src = this.state.display_img;
+
+        var onDeckNode = <img src={this.state.img} />
         if (this.state.video_id) {
-            src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg"
+            src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg";
+            onDeckNode = <div key={this.state.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.generate_embed(this.state.video_id)}} />;
         }
         return (
             <div>
-                <div className="col-md-4 col-sm-4 col-lg-4 imgTile" onClick={this.handleClickTile}>
-                    <div className="imgDiv">
-                        <span className="align-helper" />
-                        <img src={src} />
-                    </div>
-                    <div>註解: {this.state.caption}</div>
-                    <div>書籤位置: {this.state.tag}</div>
-                    <div>Youtube 網址: {this.state.video_url}</div>
+                <button className="btn btn-primary" 
+                    style={{position:"absolute", right:"10px", zIndex: "999", top: "-25px"}} 
+                    onClick={this.handleClickTile}>編輯圖片</button>
+                <div className="on_deck">
+                    <span className="align-helper" />
+                    {onDeckNode}
+                    <div className="caption">{this.state.caption}</div>
                 </div>
                 <Modal isOpen={this.state.editing}
                     onRequestClose={this.closeModal}>

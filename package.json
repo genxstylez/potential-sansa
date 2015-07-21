@@ -1,13 +1,13 @@
 {
   "name": "ology",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ology homepage",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/genxstylez/ology"
+    "url": "https://github.com/genxstylez/potential-sansa"
   },
   "devDependencies": {
     "babel-eslint": "2.0.2",
@@ -43,6 +43,7 @@
     "lodash": "3.6.0",
     "react": "0.13.3",
     "react-modal": "0.3.0",
+    "react-dropzone": "1.2.2",
     "react-router": "0.13.3",
     "superagent": "1.1.0",
     "react-masonry-mixin": "0.5.6",

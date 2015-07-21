@@ -83,3 +83,8 @@
     left: 25% !important;
     right: 25% !important;
 }
+
+.dropzone.active {
+    border-color: #000000 !important;
+    color: #000000 !important;
+}

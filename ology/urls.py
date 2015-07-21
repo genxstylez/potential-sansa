@@ -6,7 +6,7 @@ from django.contrib import admin
 from tastypie.api import Api
 from posts.resources import CategoryResource, PostResource, StarredResource, ImageResource
 from posts.resources import AdminCategoryResource, AdminPostResource, ExtraAdminCategoryResource
-from posts.resources import AdminCreditResource, AdminImageResource, AdminEditImageResource
+from posts.resources import AdminCreditResource, AdminImageResource
 from photos.resources import AlbumResource
 from subscriptions.resources import SubscriberResource
 
@@ -24,7 +24,6 @@ staff_api.register(ExtraAdminCategoryResource())
 staff_api.register(AdminPostResource())
 staff_api.register(AdminCreditResource())
 staff_api.register(AdminImageResource())
-staff_api.register(AdminEditImageResource())
 
 urlpatterns = [
     # Examples:

@@ -102,8 +102,33 @@ export default {
             .end(cb);
     },
 
+    updateCredit(id, params, cb){
+        request.put('/staff_api/v1/admin_credits/' + id + '/')
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
     deleteCredit(id, cb) {
         request.del('/staff_api/v1/admin_credits/' + id + '/')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    createVideo(params, cb) {
+        request.post('/staff_api/v1/admin_images/')
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    getImages(post_id, cb)  {
+        request.get('/staff_api/v1/admin_images/')
+            .query('post=' + post_id)
+            .query('format=json')
             .type('application/json')
             .accept('application/json')
             .end(cb);
@@ -114,6 +139,15 @@ export default {
             .type('application/json')
             .accept('application/json')
             .end(cb);
+    },
+
+    createImage(post_uri, img, progress_cb, cb) {
+        request.post('/staff_api/v1/admin_images/')
+            .attach('img', img)
+            .field('post', post_uri)
+            .accept('application/json')
+            .end(cb)
+            .on('progress', progress_cb)
     },
 
     updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
@@ -143,5 +177,18 @@ export default {
                 .end(cb);
         }
 
+    },
+
+    deleteImage(id, cb) {
+        var params = {
+            id: id
+        };
+        request.post('/post_image/delete/')
+            .set('X-CSRFToken', csrfToken)
+            .type('form')
+            .send(params)
+            .accept('application/json')
+            .end(cb);
+        
     }
 };
