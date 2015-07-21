@@ -12,7 +12,7 @@ import Footer from '../components/Footer';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 export default React.createClass({
-    mixins: [WebAPIMixin], 
+    mixins: [], 
 
     _getCategories() {
         this.getCategories((error, response) => {

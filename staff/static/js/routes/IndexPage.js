@@ -57,9 +57,11 @@ export default React.createClass({
 
     _getPosts(categoryId, subcategoryId) {
         var category = _.find(this.state.categories, {id: parseInt(categoryId)})
-        if(category.children.length == 0) {
-            subcategoryId = categoryId;
-            categoryId = null;
+        if(_.has(category, 'children')) {
+            if(category.children.length == 0) {
+                subcategoryId = categoryId;
+                categoryId = null;
+            }
         }
         this.getPosts(categoryId, subcategoryId, (error, response) => {
             var new_elements = error ? [] : response.body.objects,

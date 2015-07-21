@@ -1,43 +1,43 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React = require('react/addons');
+var _reactAddons = require('react/addons');
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router = require('react-router');
+var _reactRouter = require('react-router');
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _Application = require('./routes/Application');
+var _routesApplication = require('./routes/Application');
 
-var _Application2 = _interopRequireWildcard(_Application);
+var _routesApplication2 = _interopRequireDefault(_routesApplication);
 
-var _IndexPage = require('./routes/IndexPage');
+var _routesIndexPage = require('./routes/IndexPage');
 
-var _IndexPage2 = _interopRequireWildcard(_IndexPage);
+var _routesIndexPage2 = _interopRequireDefault(_routesIndexPage);
 
-var _PostPage = require('./routes/PostPage');
+var _routesPostPage = require('./routes/PostPage');
 
-var _PostPage2 = _interopRequireWildcard(_PostPage);
+var _routesPostPage2 = _interopRequireDefault(_routesPostPage);
 
-var Route = _Router2['default'].Route;
-var DefaultRoute = _Router2['default'].DefaultRoute;
-var NotFoundRoute = _Router2['default'].NotFoundRoute;
+var Route = _reactRouter2['default'].Route;
+var DefaultRoute = _reactRouter2['default'].DefaultRoute;
+var NotFoundRoute = _reactRouter2['default'].NotFoundRoute;
 
-var routes = _React2['default'].createElement(
+var routes = _reactAddons2['default'].createElement(
     Route,
-    { name: 'app', path: '/staff/', handler: _Application2['default'], ignoreScrollBehavior: true },
-    _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] })
+    { name: 'app', path: '/staff/', handler: _routesApplication2['default'], ignoreScrollBehavior: true },
+    _reactAddons2['default'].createElement(DefaultRoute, { handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _routesPostPage2['default'] })
 );
 
-_Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Root, state) {
-    _React2['default'].render(_React2['default'].createElement(Root, null), document.querySelector('.react-container'));
+_reactRouter2['default'].run(routes, _reactRouter2['default'].HistoryLocation, function (Root, state) {
+    _reactAddons2['default'].render(_reactAddons2['default'].createElement(Root, null), document.querySelector('.react-container'));
 });
 
 },{"./routes/Application":243,"./routes/IndexPage":244,"./routes/PostPage":245,"react-router":40,"react/addons":55}],2:[function(require,module,exports){
@@ -41535,30 +41535,28 @@ module.exports = function(arr, fn, initial){
 },{}],231:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'ClickableP',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -41619,7 +41617,7 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.editing) {
-            return _React2['default'].createElement('input', {
+            return _reactAddons2['default'].createElement('input', {
                 name: this.props.name,
                 style: { margin: '10px 0' },
                 className: 'form-control',
@@ -41629,7 +41627,7 @@ exports['default'] = _React2['default'].createClass({
                 onChange: this.handleChange,
                 onKeyUp: this.handleKeyUp });
         } else {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'p',
                 { className: this.props.className,
                     onClick: this.handleOnClick },
@@ -41643,34 +41641,32 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"classnames":3,"react/addons":55}],232:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'DropdownSpan',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -41728,22 +41724,22 @@ exports['default'] = _React2['default'].createClass({
         var _this3 = this;
 
         var CategoryNodes = [];
-        _import2['default'].map(this.state.categories, function (category) {
-            CategoryNodes.push(_React2['default'].createElement(
+        _lodash2['default'].map(this.state.categories, function (category) {
+            CategoryNodes.push(_reactAddons2['default'].createElement(
                 'li',
                 {
                     className: _this3.props.content == category.name ? 'active' : '',
                     key: category.id,
                     id: category.id,
                     onClick: _this3.handleClick.bind(_this3, category) },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'a',
                     { href: '#' },
                     category.name
                 )
             ));
-            _import2['default'].map(category.children, function (subcategory) {
-                CategoryNodes.push(_React2['default'].createElement(
+            _lodash2['default'].map(category.children, function (subcategory) {
+                CategoryNodes.push(_reactAddons2['default'].createElement(
                     'li',
                     {
                         className: _this3.props.content == subcategory.name ? 'active' : '',
@@ -41752,7 +41748,7 @@ exports['default'] = _React2['default'].createClass({
                         id: subcategory.id,
                         style: { textIndent: '15px' },
                         onClick: _this3.handleClick.bind(_this3, subcategory) },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'a',
                         { href: '#' },
                         subcategory.name
@@ -41760,16 +41756,16 @@ exports['default'] = _React2['default'].createClass({
                 ));
             });
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'btn-group' },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'span',
                 { 'data-toggle': 'dropdown', className: this.props.className },
                 this.state.value,
-                _React2['default'].createElement('span', { className: 'caret' })
+                _reactAddons2['default'].createElement('span', { className: 'caret' })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'ul',
                 { className: 'dropdown-menu' },
                 CategoryNodes
@@ -41782,30 +41778,28 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"classnames":3,"lodash":4,"react/addons":55}],233:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'EditableDiv',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -41828,7 +41822,7 @@ exports['default'] = _React2['default'].createClass({
                 _this.setState({
                     db_value: _this.state.value
                 });
-                $(_React2['default'].findDOMNode(_this.refs.TextArea)).redactor('core.destroy');
+                $(_reactAddons2['default'].findDOMNode(_this.refs.TextArea)).redactor('core.destroy');
             }
         });
     },
@@ -41858,13 +41852,13 @@ exports['default'] = _React2['default'].createClass({
 
     componentDidUpdate: function componentDidUpdate() {
         var that = this;
-        $(_React2['default'].findDOMNode(this.refs.TextArea)).redactor({
-            lang: 'zh_tw',
-            focus: 'true',
-            minHeight: '500',
-            buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
-            plugins: ['scriptbuttons', 'fullscreen'],
-            blurCallback: function blurCallback() {
+        $(_reactAddons2['default'].findDOMNode(this.refs.TextArea)).redactor({
+            'lang': 'zh_tw',
+            'focus': 'true',
+            'minHeight': '500',
+            'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+            'plugins': ['scriptbuttons', 'fullscreen'],
+            'blurCallback': function blurCallback() {
                 that.handleBlur(this.code.get());
             }
         });
@@ -41872,21 +41866,21 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.editing) {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'span',
                 null,
-                _React2['default'].createElement('textarea', {
+                _reactAddons2['default'].createElement('textarea', {
                     ref: 'TextArea',
                     name: this.props.name,
                     defaultValue: this.state.value }),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'p',
                     { className: 'help-block' },
                     '若要換行請輸入shift+enter, 分段落請輸入enter'
                 )
             );
         } else {
-            return _React2['default'].createElement('div', { className: this.props.className,
+            return _reactAddons2['default'].createElement('div', { className: this.props.className,
                 onClick: this.handleClick,
                 dangerouslySetInnerHTML: { __html: this.state.value } });
         }
@@ -41897,29 +41891,27 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"classnames":3,"react/addons":55}],234:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _import = require('lodash');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _classNames = require('classnames');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var Modal = require('react-modal');
 
@@ -41927,10 +41919,10 @@ var appElement = document.querySelector('.react-container');
 Modal.setAppElement(appElement);
 Modal.injectCSS();
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'EditableImg',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -42036,7 +42028,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     componentDidMount: function componentDidMount() {
-        var img = _import2['default'].has(this.props.img, 'original') ? this.props.img.original : '';
+        var img = _lodash2['default'].has(this.props.img, 'original') ? this.props.img.original : '';
         this.setState({
             id: this.props.id,
             img: img,
@@ -42053,95 +42045,95 @@ exports['default'] = _React2['default'].createClass({
         if (this.state.video_id) {
             src = 'https://i.ytimg.com/vi/' + this.state.video_id + '/hqdefault.jpg';
         }
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             null,
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-md-4 col-sm-4 col-lg-4 imgTile', onClick: this.handleClickTile },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'imgDiv' },
-                    _React2['default'].createElement('span', { className: 'align-helper' }),
-                    _React2['default'].createElement('img', { src: src })
+                    _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
+                    _reactAddons2['default'].createElement('img', { src: src })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     null,
                     '註解: ',
                     this.state.caption
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     null,
                     '書籤位置: ',
                     this.state.tag
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     null,
                     'Youtube 網址: ',
                     this.state.video_url
                 )
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 Modal,
                 { isOpen: this.state.editing,
                     onRequestClose: this.closeModal },
-                _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeModal }),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeModal }),
+                _reactAddons2['default'].createElement(
                     'form',
                     { className: 'form-horizontal', onSubmit: this.handleSubmit, style: { margin: '20px auto', width: '80%' } },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement('img', { src: src, style: { marginBottom: '5px', width: '150px' } }),
-                        _React2['default'].createElement('input', { type: 'file', onChange: this.handleChangeImg })
+                        _reactAddons2['default'].createElement('img', { src: src, style: { marginBottom: '5px', width: '150px' } }),
+                        _reactAddons2['default'].createElement('input', { type: 'file', onChange: this.handleChangeImg })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             '註解'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption, value: this.state.caption })
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption, value: this.state.caption })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             '書籤位置'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeTag, value: this.state.tag })
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeTag, value: this.state.tag })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             'Youtube 網址'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeVideo, value: this.state.video_url })
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeVideo, value: this.state.video_url })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'button',
                             { type: 'submit', className: 'btn btn-primary', style: { marginRight: '10px' } },
                             '儲存'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'button',
-                            { type: 'button', className: 'btn btn-danger', style: { marginRight: '10px' } },
+                            { type: 'button', className: 'btn btn-danger', onClick: this.handleDelete, style: { marginRight: '10px' } },
                             '刪除'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'button',
                             { type: 'button', className: 'btn btn-default', onClick: this.closeModal },
                             '取消'
@@ -42157,38 +42149,36 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"classnames":3,"lodash":4,"react-modal":13,"react/addons":55}],235:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _MutablePostCredit = require('./MutablePostCredit');
 
-var _MutablePostCredit2 = _interopRequireWildcard(_MutablePostCredit);
+var _MutablePostCredit2 = _interopRequireDefault(_MutablePostCredit);
 
-var _import = require('lodash');
+var _lodash = require('lodash');
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash2 = _interopRequireDefault(_lodash);
 
-'use strict';
-
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'MutableCredit',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -42228,7 +42218,7 @@ exports['default'] = _React2['default'].createClass({
 
     handleClickRemove: function handleClickRemove(credit) {
         var credits = this.state.credits.slice(0);
-        _import2['default'].remove(credits, function (obj) {
+        _lodash2['default'].remove(credits, function (obj) {
             return obj == credit;
         });
         this.setState({
@@ -42245,24 +42235,24 @@ exports['default'] = _React2['default'].createClass({
     render: function render() {
         var _this2 = this;
 
-        var creditNodes = _import2['default'].map(this.state.credits, function (credit) {
-            return _React2['default'].createElement(_MutablePostCredit2['default'], {
+        var creditNodes = _lodash2['default'].map(this.state.credits, function (credit) {
+            return _reactAddons2['default'].createElement(_MutablePostCredit2['default'], {
                 key: credit.id,
                 id: credit.id,
                 element_id: _this2.props.element_id,
                 element_uri: _this2.props.element_uri,
                 role: credit.role,
                 name: credit.name,
-                editing: _import2['default'].has(credit, 'new_entry') ? true : false,
-                new_entry: _import2['default'].has(credit, 'new_entry') ? credit.new_entry : false,
+                editing: _lodash2['default'].has(credit, 'new_entry') ? true : false,
+                new_entry: _lodash2['default'].has(credit, 'new_entry') ? credit.new_entry : false,
                 hasError: _this2.props.hasError,
                 onClickRemove: _this2.handleClickRemove.bind(_this2, credit) });
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'form',
             { className: 'form-inline' },
             creditNodes,
-            _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '新增Credit', className: 'glyphicon glyphicon-plus', onClick: this.handleClick })
+            _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '新增Credit', className: 'glyphicon glyphicon-plus', onClick: this.handleClick })
         );
     }
 });
@@ -42271,47 +42261,46 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"./MutablePostCredit":236,"classnames":3,"lodash":4,"react/addons":55}],236:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _Router = require('react-router');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-'use strict';
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'MutablePostCredit',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     propTypes: {
-        role: _React2['default'].PropTypes.string.isRequired,
-        name: _React2['default'].PropTypes.string.isRequired
+        role: _reactAddons2['default'].PropTypes.string.isRequired,
+        name: _reactAddons2['default'].PropTypes.string.isRequired
     },
 
     getInitialState: function getInitialState() {
         return {
             editing: false,
             role: '',
-            name: '' };
+            name: ''
+        };
     },
 
     _updatePost: function _updatePost(element_id, params) {
@@ -42337,7 +42326,7 @@ exports['default'] = _React2['default'].createClass({
             } else {
                 _this2.setState({
                     editing: false,
-                    id: response.headers.location.split('/')[6]
+                    id: response.headers['location'].split('/')[6]
                 });
             }
         });
@@ -42367,9 +42356,9 @@ exports['default'] = _React2['default'].createClass({
         if (this.props.new_entry) {
             // means new entry
             var params = {
-                role: this.state.role,
-                name: this.state.name,
-                post: this.props.element_uri.replace('posts', 'admin_posts')
+                'role': this.state.role,
+                'name': this.state.name,
+                'post': this.props.element_uri.replace('posts', 'admin_posts')
             };
             this._createCredit(params);
         }
@@ -42402,62 +42391,62 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.editing) {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'div',
                 { className: 'credit' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group', style: { marginRight: '10px' } },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'label',
                         { className: 'sr-only' },
                         '職稱'
                     ),
-                    _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleRoleChange, placeholder: '職稱', value: this.state.role })
+                    _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleRoleChange, placeholder: '職稱', value: this.state.role })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'label',
                         { className: 'sr-only' },
                         '姓名'
                     ),
-                    _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleNamechange, placeholder: '姓名', value: this.state.name })
+                    _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleNamechange, placeholder: '姓名', value: this.state.name })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: this.state.role != '' && this.state.name != '' ? 'form-group' : 'form-group hidden' },
-                    _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '儲存',
+                    _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '儲存',
                         className: 'glyphicon glyphicon-ok', onClick: this.handleClickOk })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group' },
-                    _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
+                    _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
                         className: 'glyphicon glyphicon-minus', onClick: this.handleClickMinus })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'p',
                     { className: 'help-block' },
                     '複數人數請用半形逗號分隔開 (例如:Amber Chan, 小叮噹)'
                 )
             );
         } else {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'div',
                 { className: 'credit' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'label role' },
                     this.state.role
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'name' },
                     this.state.name
                 ),
-                _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
+                _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
                     className: 'glyphicon glyphicon-remove', style: { fontSize: '12px' }, onClick: this.handleClickRemove })
             );
         }
@@ -42468,41 +42457,39 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"lodash":4,"react-router":40,"react/addons":55}],237:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _Router = require('react-router');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _import = require('lodash');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-'use strict';
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'Nav',
 
     render: function render() {
         if (this.props.isSub) {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 Link,
                 { key: this.props.id, className: 'list-group-item sub', to: 'subcategory',
                     params: { categoryId: this.props.parent_id, subcategoryId: this.props.id } },
                 this.props.name
             );
         } else {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 Link,
                 { key: this.props.id, className: 'list-group-item', to: 'category', params: { categoryId: this.props.id } },
                 this.props.name
@@ -42515,70 +42502,69 @@ module.exports = exports['default'];
 },{"lodash":4,"react-router":40,"react/addons":55}],238:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
 
 var _moment = require('moment');
 
-var _moment2 = _interopRequireWildcard(_moment);
+var _moment2 = _interopRequireDefault(_moment);
 
 var _PostGallery = require('./PostGallery');
 
-var _PostGallery2 = _interopRequireWildcard(_PostGallery);
+var _PostGallery2 = _interopRequireDefault(_PostGallery);
 
-var _classNames = require('classnames');
+var _classnames = require('classnames');
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _ClickableP = require('./ClickableP');
 
-var _ClickableP2 = _interopRequireWildcard(_ClickableP);
+var _ClickableP2 = _interopRequireDefault(_ClickableP);
 
 var _ToggableIcon = require('./ToggableIcon');
 
-var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
+var _ToggableIcon2 = _interopRequireDefault(_ToggableIcon);
 
 var _DropdownSpan = require('./DropdownSpan');
 
-var _DropdownSpan2 = _interopRequireWildcard(_DropdownSpan);
+var _DropdownSpan2 = _interopRequireDefault(_DropdownSpan);
 
 var _EditableDiv = require('./EditableDiv');
 
-var _EditableDiv2 = _interopRequireWildcard(_EditableDiv);
+var _EditableDiv2 = _interopRequireDefault(_EditableDiv);
 
 var _MutableCredit = require('./MutableCredit');
 
-var _MutableCredit2 = _interopRequireWildcard(_MutableCredit);
-
-'use strict';
+var _MutableCredit2 = _interopRequireDefault(_MutableCredit);
 
 var Navigation = require('react-router').Navigation;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'PostContent',
 
     mixins: [Navigation],
 
     propTypes: {
-        id: _React2['default'].PropTypes.number.isRequired,
-        heading: _React2['default'].PropTypes.string.isRequired,
-        subheading: _React2['default'].PropTypes.string.isRequired,
-        articletext: _React2['default'].PropTypes.string,
-        imgs: _React2['default'].PropTypes.array.isRequired,
-        credits: _React2['default'].PropTypes.array,
-        created_at: _React2['default'].PropTypes.string,
-        last_modified: _React2['default'].PropTypes.string },
+        id: _reactAddons2['default'].PropTypes.number.isRequired,
+        heading: _reactAddons2['default'].PropTypes.string.isRequired,
+        subheading: _reactAddons2['default'].PropTypes.string.isRequired,
+        articletext: _reactAddons2['default'].PropTypes.string,
+        imgs: _reactAddons2['default'].PropTypes.array.isRequired,
+        credits: _reactAddons2['default'].PropTypes.array,
+        created_at: _reactAddons2['default'].PropTypes.string,
+        last_modified: _reactAddons2['default'].PropTypes.string
+    },
     getInitialState: function getInitialState() {
         return {
             overflow: false,
@@ -42588,7 +42574,7 @@ exports['default'] = _React2['default'].createClass({
     },
     _setCover: function _setCover(index) {
         var that = this;
-        _import2['default'].forEach(this.props.imgs, function (img) {
+        _lodash2['default'].forEach(this.props.imgs, function (img) {
             if (img.tag == index) that.setState({
                 cover: img
             });
@@ -42605,13 +42591,13 @@ exports['default'] = _React2['default'].createClass({
         };
         if (this.isMounted()) {
             (function () {
-                var articleContent = _React2['default'].findDOMNode(_this.refs.articleContent);
+                var articleContent = _reactAddons2['default'].findDOMNode(_this.refs.articleContent);
                 _this.setState({
                     overflow: articleContent.offsetHeight < articleContent.scrollHeight
                 });
                 setTimeout(function () {
                     var supscripts = document.getElementsByTagName('sup');
-                    _import2['default'].forEach(supscripts, function (sup) {
+                    _lodash2['default'].forEach(supscripts, function (sup) {
                         new Waypoint({
                             element: sup,
                             handler: function handler() {
@@ -42646,16 +42632,16 @@ exports['default'] = _React2['default'].createClass({
         }, 3000);
     },
     render: function render() {
-        var articleContent_class = _classNames2['default']({
+        var articleContent_class = (0, _classnames2['default'])({
             'pull-left': true,
             'article-content': true,
-            overflow: this.state.overflow
+            'overflow': this.state.overflow
         });
 
-        var alert_cls = _classNames2['default']({
-            alert: true,
+        var alert_cls = (0, _classnames2['default'])({
+            'alert': true,
             'alert-danger': true,
-            fadeout: !this.state.hasError
+            'fadeout': !this.state.hasError
         });
         var alert_style = {
             position: 'absolute',
@@ -42665,66 +42651,66 @@ exports['default'] = _React2['default'].createClass({
             zIndex: '999999',
             padding: '15px 0'
         };
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'article-box', ref: 'articleBox' },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'span',
                 { className: 'close' },
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.props.onClickOnCross })
+                _reactAddons2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.props.onClickOnCross })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'row article-header' },
-                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                _reactAddons2['default'].createElement('span', { className: 'circle-divider' }),
                 '編輯模式',
-                _React2['default'].createElement('span', { className: 'circle-divider' })
+                _reactAddons2['default'].createElement('span', { className: 'circle-divider' })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'row article' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: alert_cls, style: alert_style, role: 'alert', ref: 'alert' },
                     '發生錯誤, 請再嘗試一次'
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { id: 'articleContent', className: articleContent_class, ref: 'articleContent' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'inner-content' },
-                        _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '加入至橫幅', className: 'glyphicon glyphicon-star-empty', name: 'starred', hasError: this.hasError, element_id: this.props.id, selected: this.props.starred }),
-                        _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', hasError: this.hasError, element_id: this.props.id, selected: this.props.published }),
-                        _React2['default'].createElement('br', null),
-                        _React2['default'].createElement('br', null),
-                        _React2['default'].createElement(_DropdownSpan2['default'], { className: 'label category', name: 'category', element_id: this.props.id, content: this.props.category }),
-                        _React2['default'].createElement(_ClickableP2['default'], { className: 'title',
+                        _reactAddons2['default'].createElement(_ToggableIcon2['default'], { tooltip: '加入至橫幅', className: 'glyphicon glyphicon-star-empty', name: 'starred', hasError: this.hasError, element_id: this.props.id, selected: this.props.starred }),
+                        _reactAddons2['default'].createElement(_ToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', hasError: this.hasError, element_id: this.props.id, selected: this.props.published }),
+                        _reactAddons2['default'].createElement('br', null),
+                        _reactAddons2['default'].createElement('br', null),
+                        _reactAddons2['default'].createElement(_DropdownSpan2['default'], { className: 'label category', name: 'category', element_id: this.props.id, content: this.props.category }),
+                        _reactAddons2['default'].createElement(_ClickableP2['default'], { className: 'title',
                             element_id: this.props.id, name: 'heading',
                             content: this.props.heading, hasError: this.hasError }),
-                        _React2['default'].createElement(_ClickableP2['default'], { className: 'sub-title', element_id: this.props.id, name: 'subheading',
+                        _reactAddons2['default'].createElement(_ClickableP2['default'], { className: 'sub-title', element_id: this.props.id, name: 'subheading',
                             content: this.props.subheading, hasError: this.hasError }),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'decorations' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'span',
                                 { className: 'created_at' },
-                                _moment2['default'](this.props.created_at).format('YYYY.MM.DD')
+                                (0, _moment2['default'])(this.props.created_at).format('YYYY.MM.DD')
                             )
                         ),
-                        _React2['default'].createElement(_EditableDiv2['default'], { element_id: this.props.id, name: 'articletext', className: 'text', content: this.props.articletext, hasError: this.hasError }),
-                        _React2['default'].createElement('div', { className: 'decorations end' }),
-                        _React2['default'].createElement(_MutableCredit2['default'], { element_uri: this.props.uri, element_id: this.props.id,
+                        _reactAddons2['default'].createElement(_EditableDiv2['default'], { element_id: this.props.id, name: 'articletext', className: 'text', content: this.props.articletext, hasError: this.hasError }),
+                        _reactAddons2['default'].createElement('div', { className: 'decorations end' }),
+                        _reactAddons2['default'].createElement(_MutableCredit2['default'], { element_uri: this.props.uri, element_id: this.props.id,
                             hasError: this.hasError, credits: this.props.credits })
                     )
                 ),
-                _React2['default'].createElement(_PostGallery2['default'], {
+                _reactAddons2['default'].createElement(_PostGallery2['default'], {
                     element_id: this.props.id,
                     element_uri: this.props.uri,
                     imgs: this.props.imgs,
                     on_deck: this.state.cover }),
-                _React2['default'].createElement('div', { className: 'triangle' })
+                _reactAddons2['default'].createElement('div', { className: 'triangle' })
             )
         );
     }
@@ -42734,25 +42720,23 @@ module.exports = exports['default'];
 },{"./ClickableP":231,"./DropdownSpan":232,"./EditableDiv":233,"./MutableCredit":235,"./PostGallery":239,"./ToggableIcon":240,"classnames":3,"lodash":4,"moment":5,"react-router":40,"react/addons":55}],239:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
 
 var _EditableImg = require('./EditableImg');
 
-var _EditableImg2 = _interopRequireWildcard(_EditableImg);
-
-'use strict';
+var _EditableImg2 = _interopRequireDefault(_EditableImg);
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
@@ -42763,17 +42747,17 @@ function generate_embed(youtube_id) {
     return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + youtube_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
 };
 
-var SelectedImg = _React2['default'].createClass({
+var SelectedImg = _reactAddons2['default'].createClass({
     displayName: 'SelectedImg',
 
     render: function render() {
-        var onDeckNode = this.props.on_deck.video_id ? _React2['default'].createElement('div', { key: this.props.on_deck.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.props.on_deck.video_id) } }) : _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' });
-        return _React2['default'].createElement(
+        var onDeckNode = this.props.on_deck.video_id ? _reactAddons2['default'].createElement('div', { key: this.props.on_deck.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.props.on_deck.video_id) } }) : _reactAddons2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' });
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'on_deck' },
-            _React2['default'].createElement('span', { className: 'align-helper' }),
+            _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
             onDeckNode,
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'caption' },
                 this.props.on_deck.caption
@@ -42782,17 +42766,19 @@ var SelectedImg = _React2['default'].createClass({
     }
 });
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'PostGallery',
 
     propTypes: {
-        on_deck: _React2['default'].PropTypes.object.isRequired,
-        imgs: _React2['default'].PropTypes.array.isRequired },
+        on_deck: _reactAddons2['default'].PropTypes.object.isRequired,
+        imgs: _reactAddons2['default'].PropTypes.array.isRequired
+    },
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (this.isMounted()) {
             this.setState({
                 on_deck: nextProps.on_deck,
-                imgs: nextProps.imgs });
+                imgs: nextProps.imgs
+            });
         };
         this.forceUpdate();
     },
@@ -42800,12 +42786,12 @@ exports['default'] = _React2['default'].createClass({
         this.setState({ on_deck: image_url });
     },
     handleLeftArrow: function handleLeftArrow() {
-        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
+        $(_reactAddons2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
             scrollLeft: '-=250'
         }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
+        $(_reactAddons2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
             scrollLeft: '+=250'
         }, 200);
     },
@@ -42818,7 +42804,7 @@ exports['default'] = _React2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            on_deck: { id: '99-00-11' },
+            on_deck: { 'id': '99-00-11' },
             imgs: [],
             editing: false
         };
@@ -42833,11 +42819,11 @@ exports['default'] = _React2['default'].createClass({
     render: function render() {
         var contentNode = '';
         if (this.state.editing) {
-            contentNode = _React2['default'].createElement(
+            contentNode = _reactAddons2['default'].createElement(
                 'div',
                 { className: 'gallery-edit' },
                 this.state.imgs.map(function (image) {
-                    return _React2['default'].createElement(_EditableImg2['default'], { key: image.id,
+                    return _reactAddons2['default'].createElement(_EditableImg2['default'], { key: image.id,
                         id: image.id,
                         img: image.img,
                         caption: image.caption,
@@ -42849,48 +42835,48 @@ exports['default'] = _React2['default'].createClass({
                 }, this)
             );
         } else {
-            contentNode = _React2['default'].createElement(
+            contentNode = _reactAddons2['default'].createElement(
                 'span',
                 null,
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     TransitionGroup,
                     { transitionName: 'gallery', transitionLeave: false },
-                    _React2['default'].createElement(SelectedImg, { key: this.state.on_deck.id, on_deck: this.state.on_deck })
+                    _reactAddons2['default'].createElement(SelectedImg, { key: this.state.on_deck.id, on_deck: this.state.on_deck })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'arrow left', onClick: this.handleLeftArrow },
-                    _React2['default'].createElement('span', { className: 'align-helper' }),
-                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
+                    _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
+                    _reactAddons2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'ul',
                     { className: 'thumbnails', ref: 'thumbnailsRow' },
                     this.state.imgs.map(function (image) {
-                        var src = _import2['default'].has(image.img, 'small') ? image.img.small : '';
+                        var src = _lodash2['default'].has(image.img, 'small') ? image.img.small : '';
                         if (image.video_id) {
                             src = 'https://i.ytimg.com/vi/' + image.video_id + '/hqdefault.jpg';
                         }
-                        return _React2['default'].createElement(
+                        return _reactAddons2['default'].createElement(
                             'li',
                             { key: image.id },
-                            _React2['default'].createElement('img', { src: src,
+                            _reactAddons2['default'].createElement('img', { src: src,
                                 onClick: this.handleClick.bind(this, image) })
                         );
                     }, this)
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'arrow right', onClick: this.handlerRightArrow },
-                    _React2['default'].createElement('span', { className: 'align-helper' }),
-                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
+                    _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
+                    _reactAddons2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
                 )
             );
         }
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'pull-right gallery' },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'button',
                 { className: 'btn btn-primary',
                     style: { position: 'absolute', right: '10px', zIndex: '999' },
@@ -42906,30 +42892,28 @@ module.exports = exports['default'];
 },{"./EditableImg":234,"lodash":4,"react/addons":55,"react/lib/ReactCSSTransitionGroup":88}],240:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'ToggableIcon',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -42963,7 +42947,7 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         var icon_cls = this.state.selected ? this.props.className + ' selected' : this.props.className;
-        return _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
+        return _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
     }
 });
 module.exports = exports['default'];
@@ -42971,17 +42955,15 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":241,"classnames":3,"react/addons":55}],241:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _request = require('superagent');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _request2 = _interopRequireWildcard(_request);
+var _superagent = require('superagent');
 
-'use strict';
+var _superagent2 = _interopRequireDefault(_superagent);
 
 exports['default'] = {
 
@@ -42990,11 +42972,11 @@ exports['default'] = {
      * @param {function} cb
      */
     getCategories: function getCategories(cb) {
-        _request2['default'].get('/staff_api/v1/categories/').query('format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/staff_api/v1/categories/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     getStarred: function getStarred(cb) {
-        _request2['default'].get('/api/v1/starred/?format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/starred/?format=json').type('application/json').accept('application/json').end(cb);
     },
     /**
      * get all/categorised posts from the server
@@ -43006,23 +42988,23 @@ exports['default'] = {
         } else if (category_id) {
             qs = '&category__parent=' + category_id;
         };
-        _request2['default'].get('/api/v1/posts/').query('format=json').query('limit=50').query(qs).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/posts/').query('format=json').query('limit=50').query(qs).type('application/json').accept('application/json').end(cb);
     },
 
     getMorePosts: function getMorePosts(url, cb) {
-        _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
 
     getAlbums: function getAlbums(cb) {
-        _request2['default'].get('/api/v1/albums/').query('format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/albums/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     getMoreAlbums: function getMoreAlbums(url, cb) {
-        _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
 
     getAlbum: function getAlbum(id, cb) {
-        _request2['default'].get('/api/v1/albums/' + id + '/').query('format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/albums/' + id + '/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     /**
@@ -43031,27 +43013,27 @@ exports['default'] = {
      * @param {function} cb
      */
     getPost: function getPost(id, cb) {
-        _request2['default'].get('/api/v1/posts/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/posts/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
     },
 
     updatePost: function updatePost(id, params, cb) {
-        _request2['default'].put('/staff_api/v1/admin_posts/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].put('/staff_api/v1/admin_posts/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     createCredit: function createCredit(params, cb) {
-        _request2['default'].post('/staff_api/v1/admin_credits/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_credits/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     deleteCredit: function deleteCredit(id, cb) {
-        _request2['default'].del('/staff_api/v1/admin_credits/' + id + '/').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].del('/staff_api/v1/admin_credits/' + id + '/').type('application/json').accept('application/json').end(cb);
     },
 
     getImage: function getImage(id, cb) {
-        _request2['default'].get('/staff_api/v1/admin_images/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/staff_api/v1/admin_images/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
     },
 
     updateImage: function updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
-        if (changed) _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('post', post_uri).accept('application/json').end(cb);else {
+        if (changed) _superagent2['default'].post('/staff_api/v1/admin_images/').attach('img', img).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('post', post_uri).accept('application/json').end(cb);else {
             var params = {
                 id: id,
                 caption: caption,
@@ -43059,7 +43041,7 @@ exports['default'] = {
                 video_url: video_url,
                 post: post_id
             };
-            _request2['default'].post('/post_image/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+            _superagent2['default'].post('/post_image/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
         }
     }
 };
@@ -43132,28 +43114,26 @@ module.exports = ScrollListenerMixin;
 },{"react/lib/ViewportMetrics":172}],243:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _Router = require('react-router');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-'use strict';
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var RouteHandler = _Router2['default'].RouteHandler;
-exports['default'] = _React2['default'].createClass({
+var RouteHandler = _reactRouter2['default'].RouteHandler;
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'Application',
 
     render: function render() {
-        return _React2['default'].createElement(RouteHandler, null);
+        return _reactAddons2['default'].createElement(RouteHandler, null);
     }
 
 });
@@ -43162,48 +43142,46 @@ module.exports = exports['default'];
 },{"react-router":40,"react/addons":55}],244:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _Router = require('react-router');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _import = require('lodash');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _classNames = require('classnames');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _classnames2 = _interopRequireDefault(_classnames);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+var _mixinsScrollListenerMixin = require('../mixins/ScrollListenerMixin');
 
-var _Nav = require('../components/Nav');
+var _mixinsScrollListenerMixin2 = _interopRequireDefault(_mixinsScrollListenerMixin);
 
-var _Nav2 = _interopRequireWildcard(_Nav);
+var _componentsNav = require('../components/Nav');
 
-'use strict';
+var _componentsNav2 = _interopRequireDefault(_componentsNav);
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'IndexPage',
 
-    mixins: [_APIMixin2['default'], _ScrollListenerMixin2['default'], _Router2['default'].State],
+    mixins: [_mixinsAPIMixin2['default'], _mixinsScrollListenerMixin2['default'], _reactRouter2['default'].State],
 
     getInitialState: function getInitialState() {
         return {
@@ -43218,7 +43196,7 @@ exports['default'] = _React2['default'].createClass({
         };
     },
     onPageScroll: function onPageScroll() {
-        var bottomOffset = _React2['default'].findDOMNode(this.refs.Posts).scrollHeight - window.innerHeight - this.state.scrollTop;
+        var bottomOffset = _reactAddons2['default'].findDOMNode(this.refs.Posts).scrollHeight - window.innerHeight - this.state.scrollTop;
         if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
@@ -43237,7 +43215,8 @@ exports['default'] = _React2['default'].createClass({
                 posts: _this.state.posts.concat(new_elements),
                 next_page: next_page,
                 has_next: has_next,
-                is_loading: false });
+                is_loading: false
+            });
         });
     },
     _getCategories: function _getCategories() {
@@ -43252,10 +43231,12 @@ exports['default'] = _React2['default'].createClass({
     _getPosts: function _getPosts(categoryId, subcategoryId) {
         var _this3 = this;
 
-        var category = _import2['default'].find(this.state.categories, { id: parseInt(categoryId) });
-        if (category.children.length == 0) {
-            subcategoryId = categoryId;
-            categoryId = null;
+        var category = _lodash2['default'].find(this.state.categories, { id: parseInt(categoryId) });
+        if (_lodash2['default'].has(category, 'children')) {
+            if (category.children.length == 0) {
+                subcategoryId = categoryId;
+                categoryId = null;
+            }
         }
         this.getPosts(categoryId, subcategoryId, function (error, response) {
             var new_elements = error ? [] : response.body.objects,
@@ -43265,7 +43246,8 @@ exports['default'] = _React2['default'].createClass({
                 posts: new_elements,
                 next_page: next_page,
                 has_next: has_next,
-                is_loading: false });
+                is_loading: false
+            });
         });
     },
     componentDidMount: function componentDidMount() {
@@ -43284,67 +43266,68 @@ exports['default'] = _React2['default'].createClass({
                 next_page: null,
                 categoryId: this.getParams().categoryId,
                 subcategoryId: this.getParams().subcategoryId,
-                posts: [] });
+                posts: []
+            });
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
     },
 
     render: function render() {
         var CategoryNodes = [];
-        _import2['default'].map(this.state.categories, function (category) {
-            CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: category.id, id: category.id, name: category.name }));
-            _import2['default'].map(category.children, function (subcategory) {
-                CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: subcategory.id, parent_id: category.id, id: subcategory.id, name: subcategory.name, isSub: true }));
+        _lodash2['default'].map(this.state.categories, function (category) {
+            CategoryNodes.push(_reactAddons2['default'].createElement(_componentsNav2['default'], { key: category.id, id: category.id, name: category.name }));
+            _lodash2['default'].map(category.children, function (subcategory) {
+                CategoryNodes.push(_reactAddons2['default'].createElement(_componentsNav2['default'], { key: subcategory.id, parent_id: category.id, id: subcategory.id, name: subcategory.name, isSub: true }));
             });
         });
-        var PostNodes = _import2['default'].map(this.state.posts, function (post) {
-            return _React2['default'].createElement(
+        var PostNodes = _lodash2['default'].map(this.state.posts, function (post) {
+            return _reactAddons2['default'].createElement(
                 Link,
                 { key: post.id, className: 'list-group-item', to: 'post', params: { postId: post.id } },
                 post.heading
             );
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { style: { marginTop: '50px' } },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-lg-4 col-md-4 col-sm-4 col-sm-4 navigation', ref: 'Navigation' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel panel-default' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel-heading' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'h3',
                             { className: 'panel-title' },
                             'Categories / 類別'
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'ul',
                         { className: 'list-group' },
                         CategoryNodes
                     )
                 )
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-lg-8 col-md-8 col-sm-8 posts', ref: 'Posts' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel panel-default' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel-heading' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'h3',
                             { className: 'panel-title' },
                             'Posts / 文章'
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'ul',
                         { className: 'list-group' },
                         PostNodes
@@ -43360,29 +43343,27 @@ module.exports = exports['default'];
 },{"../components/Nav":237,"../mixins/APIMixin":241,"../mixins/ScrollListenerMixin":242,"classnames":3,"lodash":4,"react-router":40,"react/addons":55}],245:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _PostContent = require('../components/PostContent');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _PostContent2 = _interopRequireWildcard(_PostContent);
+var _componentsPostContent = require('../components/PostContent');
 
-'use strict';
+var _componentsPostContent2 = _interopRequireDefault(_componentsPostContent);
 
 var State = require('react-router').State;
 
@@ -43390,13 +43371,13 @@ var State = require('react-router').State;
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var Navigation = require('react-router').Navigation;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'PostPage',
 
-    mixins: [_APIMixin2['default'], State, Navigation],
+    mixins: [_mixinsAPIMixin2['default'], State, Navigation],
 
     propTypes: {
-        id: _React2['default'].PropTypes.number
+        id: _reactAddons2['default'].PropTypes.number
     },
 
     getInitialState: function getInitialState() {
@@ -43410,7 +43391,8 @@ exports['default'] = _React2['default'].createClass({
             created_at: '',
             last_modified: '',
             is_shooting: false,
-            uri: '' };
+            uri: ''
+        };
     },
 
     _getPost: function _getPost(Id) {
@@ -43472,10 +43454,10 @@ exports['default'] = _React2['default'].createClass({
                 </TransitionGroup>
                 )
         }*/
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             TransitionGroup,
             { transitionName: 'post' },
-            _React2['default'].createElement(_PostContent2['default'], {
+            _reactAddons2['default'].createElement(_componentsPostContent2['default'], {
                 key: this.state.id,
                 id: this.state.id,
                 heading: this.state.heading,

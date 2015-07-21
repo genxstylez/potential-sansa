@@ -14,3 +14,11 @@ def image_edit(request):
             image = form.save()
             return HttpResponse(status=204)
     return HttpResponseBadRequest()
+
+
+def image_delete(request):
+    if request.POST['id']:
+        image = Image.objects.get(id=request.POST['id'])
+        image.delete()
+        return HttpResponse()
+    return HttpResponseBadRequest()

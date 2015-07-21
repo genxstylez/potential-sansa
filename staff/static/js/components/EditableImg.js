@@ -172,7 +172,7 @@ export default React.createClass({
                         </div>
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary" style={{marginRight: "10px"}}>儲存</button>
-                            <button type="button" className="btn btn-danger" style={{marginRight: "10px"}}>刪除</button>
+                            <button type="button" className="btn btn-danger" onClick={this.handleDelete} style={{marginRight: "10px"}}>刪除</button>
                             <button type="button" className="btn btn-default" onClick={this.closeModal}>取消</button>
                         </div>
                     </form>

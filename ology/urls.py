@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^_search/', 'ology.views.search', name='search'),
     url(r'^post_image/edit/', 'posts.views.image_edit', name='post-image-edit'),
+    url(r'^post_image/delete/', 'posts.views.image_delete', name='post-image-delete'),
     url(r'^staff_api/', include(staff_api.urls)),
     url(r'^api/', include(v1_api.urls)),
     url(r'^redactor/', include('redactor.urls')),
