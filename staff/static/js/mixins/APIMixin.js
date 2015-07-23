@@ -25,7 +25,7 @@ export default {
     /**
      * get all/categorised posts from the server
      */
-    getPosts(category_id, subcategory_id, cb) {
+    getPosts(category_id, subcategory_id, query, cb) {
         var qs = '';
         if(subcategory_id) {
             qs = '&category=' + subcategory_id;
@@ -36,6 +36,7 @@ export default {
             .query('format=json')
             .query('limit=50')
             .query(qs)
+            .query(query)
             .type('application/json')
             .accept('application/json')
             .end(cb);
@@ -81,6 +82,15 @@ export default {
      */
     getPost(id, cb) {
         request.get('/api/v1/posts/' + id + '/?format=json')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    createPost(params, cb) {
+        request.post('/staff_api/v1/admin_posts/')
+            .set('X-CSRFToken', csrfToken)
+            .send(params)
             .type('application/json')
             .accept('application/json')
             .end(cb);
@@ -143,7 +153,7 @@ export default {
 
     createImage(post_uri, img, progress_cb, cb) {
         request.post('/staff_api/v1/admin_images/')
-            .attach('img', img)
+            .attach('img', img, img.name)
             .field('post', post_uri)
             .accept('application/json')
             .end(cb)
@@ -153,7 +163,7 @@ export default {
     updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
         if (changed)
             request.post('/staff_api/v1/admin_images/')
-                .attach('img', img)
+                .attach('img', img, img.name)
                 .field('id', id)
                 .field('caption', caption)
                 .field('tag', tag)

@@ -47,13 +47,15 @@ export default React.createClass({
                     that.setState({
                         files: _.rest(that.state.files)
                     });
+                    this._getImages(this.props.element_id);
                 };
                 
             });
         });
         this.setState({
-            uploading: false
+            uploading: false,
         });
+        this.toggleAddMode();
     },
     _createVideo(params) {
         this.createVideo(params, (error, response) => {
@@ -180,7 +182,7 @@ export default React.createClass({
 
                 }
                 modalNode = <div style={{height: "100%", width: "100%"}}>
-                    <Dropzone onDrop={this.handleDrop} 
+                    <Dropzone onDrop={this.handleDrop} accept="image/jpeg, image/gif, image/jpg, image/png"
                         style={{cursor: "pointer", width:"80%", height: "20%", border:"2px dashed #c8c8c8", margin: "0 auto", "color": "#c8c8c8"}}>
                         <div style={{position: "absolute", fontSize:"18px", top:"11%", left: "25%"}}>請將欲上傳圖片拖曳至此或點擊此框選取檔案</div>
                     </Dropzone>

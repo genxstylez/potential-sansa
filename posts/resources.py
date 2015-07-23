@@ -82,7 +82,7 @@ class PostResource(ModelResource):
     images = fields.ToManyField(ImageResource, lambda bundle: bundle.obj.images.order_by('id'), full=True, use_in='detail', null=True, blank=True)
     cover = fields.ToOneField(ImageResource,
                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True).first(),
-                              use_in='list', full=True)
+                              use_in='list', full=True, null=True)
 
     class Meta:
         queryset = Post.objects.order_by('-id')
@@ -91,7 +91,8 @@ class PostResource(ModelResource):
         detailed_allowed_methods = ['get', ]
         filtering = {
             'category': ALL_WITH_RELATIONS,
-            'published': ['exact']
+            'published': ['exact'],
+            'starred': ['exact']
         }
 
 

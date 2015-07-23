@@ -87,6 +87,13 @@ export default React.createClass({
             });
         }, 3000);
     },
+
+    handleClickOnCross() {
+        if(!this.goBack()) {
+            this.transitionTo('/staff/')
+        }
+    },
+
     render() {
         const articleContent_class = classNames({
             'pull-left': true,
@@ -104,13 +111,13 @@ export default React.createClass({
             width: "200px",
             right: "-4%",
             top: "-3%",
-            zIndex: "999999",
+            zIndex: "9999",
             padding: "15px 0"
         }
         return (
             <div className="article-box" ref="articleBox">
-                <span className="close">
-                    <img src={STATIC_URL + "img/cross.png"} onClick={this.props.onClickOnCross} />
+                <span className="close" style={{zIndex: "100001"}}>
+                    <img src={STATIC_URL + "img/cross.png"} onClick={this.handleClickOnCross} />
                 </span>
                 <div className="row article-header">
                     <span className="circle-divider"></span>

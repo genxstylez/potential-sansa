@@ -11,13 +11,14 @@
 .alert{
     opacity: 1;
     transition: opacity 300ms ease-in;
+    z-index: 9999;
 }
 
 .alert.fadeout {
     opacity: 0
 }
 
-.glyphicon {
+.inner-content .glyphicon {
     margin-left: 10px;
     cursor: pointer;
     font-size: 20px;

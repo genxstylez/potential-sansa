@@ -13,6 +13,7 @@ const NotFoundRoute = Router.NotFoundRoute;
 const routes = (
     <Route name="app" path="/staff/" handler={Application} ignoreScrollBehavior>
         <DefaultRoute handler={IndexPage} />
+        <Route name="home" path="/staff/" handler={IndexPage} />
         <Route name="category" path="category/:categoryId/" handler={IndexPage} />
         <Route name="subcategory" path="category/:categoryId/:subcategoryId/" handler={IndexPage} />
         <Route name="post" path="post/:postId/" handler={PostPage}/>

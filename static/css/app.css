@@ -868,10 +868,11 @@ ul.thumbnails li img {
 }
 .album-content .thumbnails-div .thumbnails {
     height: 100%;
-    width: 93%;
+    width: 94%;
     text-align: center;
     position: relative;
     bottom: none;
+    left: 10% !important;
 }
 .photo-layer {
     height: 100%;

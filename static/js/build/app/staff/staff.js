@@ -31,6 +31,7 @@ var routes = _React2['default'].createElement(
     Route,
     { name: 'app', path: '/staff/', handler: _Application2['default'], ignoreScrollBehavior: true },
     _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'home', path: '/staff/', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] })
@@ -40,7 +41,7 @@ _Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (R
     _React2['default'].render(_React2['default'].createElement(Root, null), document.querySelector('.react-container'));
 });
 
-},{"./routes/Application":244,"./routes/IndexPage":245,"./routes/PostPage":246,"react-router":41,"react/addons":56}],2:[function(require,module,exports){
+},{"./routes/Application":245,"./routes/IndexPage":246,"./routes/PostPage":247,"react-router":41,"react/addons":56}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -41744,7 +41745,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"classnames":3,"react/addons":56}],233:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],233:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -41883,7 +41884,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"classnames":3,"lodash":4,"react/addons":56}],234:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"classnames":3,"lodash":4,"react/addons":56}],234:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -41998,7 +41999,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"classnames":3,"react/addons":56}],235:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],235:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42178,7 +42179,7 @@ exports['default'] = _React2['default'].createClass({
     render: function render() {
         var src = this.state.display_img;
 
-        var onDeckNode = _React2['default'].createElement('img', { src: this.state.img });
+        var onDeckNode = _React2['default'].createElement('img', { src: this.state.display_img });
         if (this.state.video_id) {
             src = 'https://i.ytimg.com/vi/' + this.state.video_id + '/hqdefault.jpg';
             onDeckNode = _React2['default'].createElement('div', { key: this.state.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.generate_embed(this.state.video_id) } });
@@ -42216,7 +42217,7 @@ exports['default'] = _React2['default'].createClass({
                         'div',
                         { className: 'form-group' },
                         _React2['default'].createElement('img', { src: src, style: { marginBottom: '5px', width: '150px' } }),
-                        _React2['default'].createElement('input', { type: 'file', onChange: this.handleChangeImg })
+                        _React2['default'].createElement('input', { type: 'file', accept: 'image/jpeg, image/gif, image/jpg, image/png', onChange: this.handleChangeImg })
                     ),
                     _React2['default'].createElement(
                         'div',
@@ -42274,7 +42275,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"classnames":3,"lodash":4,"react-modal":14,"react/addons":56}],236:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"classnames":3,"lodash":4,"react-modal":14,"react/addons":56}],236:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42388,7 +42389,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"./MutablePostCredit":237,"classnames":3,"lodash":4,"react/addons":56}],237:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"./MutablePostCredit":237,"classnames":3,"lodash":4,"react/addons":56}],237:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42606,7 +42607,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"lodash":4,"react-router":41,"react/addons":56}],238:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"lodash":4,"react-router":41,"react/addons":56}],238:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42786,6 +42787,13 @@ exports['default'] = _React2['default'].createClass({
             });
         }, 3000);
     },
+
+    handleClickOnCross: function handleClickOnCross() {
+        if (!this.goBack()) {
+            this.transitionTo('/staff/');
+        }
+    },
+
     render: function render() {
         var articleContent_class = _classNames2['default']({
             'pull-left': true,
@@ -42803,7 +42811,7 @@ exports['default'] = _React2['default'].createClass({
             width: '200px',
             right: '-4%',
             top: '-3%',
-            zIndex: '999999',
+            zIndex: '9999',
             padding: '15px 0'
         };
         return _React2['default'].createElement(
@@ -42811,8 +42819,8 @@ exports['default'] = _React2['default'].createClass({
             { className: 'article-box', ref: 'articleBox' },
             _React2['default'].createElement(
                 'span',
-                { className: 'close' },
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.props.onClickOnCross })
+                { className: 'close', style: { zIndex: '100001' } },
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handleClickOnCross })
             ),
             _React2['default'].createElement(
                 'div',
@@ -42877,7 +42885,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./ClickableP":232,"./DropdownSpan":233,"./EditableDiv":234,"./MutableCredit":236,"./PostGallery":240,"./ToggableIcon":241,"classnames":3,"lodash":4,"moment":5,"react-router":41,"react/addons":56}],240:[function(require,module,exports){
+},{"./ClickableP":232,"./DropdownSpan":233,"./EditableDiv":234,"./MutableCredit":236,"./PostGallery":240,"./ToggableIcon":242,"classnames":3,"lodash":4,"moment":5,"react-router":41,"react/addons":56}],240:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42936,6 +42944,8 @@ exports['default'] = _React2['default'].createClass({
     },
 
     _createImages: function _createImages() {
+        var _this2 = this;
+
         var that = this;
         _import2['default'].forEach(this.state.files, function (file) {
             that.createImage(that.props.element_uri.replace('posts', 'admin_posts'), file, function (e) {
@@ -42947,22 +42957,23 @@ exports['default'] = _React2['default'].createClass({
                     that.setState({
                         files: _import2['default'].rest(that.state.files)
                     });
+                    _this2._getImages(_this2.props.element_id);
                 };
             });
         });
         this.setState({
-            uploading: false
-        });
+            uploading: false });
+        this.toggleAddMode();
     },
     _createVideo: function _createVideo(params) {
-        var _this2 = this;
+        var _this3 = this;
 
         this.createVideo(params, function (error, response) {
             if (error) {
-                _this2.props.hasError();
+                _this3.props.hasError();
             } else {
-                _this2._getImages(_this2.props.element_id);
-                _this2.toggleAddMode();
+                _this3._getImages(_this3.props.element_id);
+                _this3.toggleAddMode();
             }
         });
     },
@@ -43114,7 +43125,7 @@ exports['default'] = _React2['default'].createClass({
                 { style: { height: '100%', width: '100%' } },
                 _React2['default'].createElement(
                     Dropzone,
-                    { onDrop: this.handleDrop,
+                    { onDrop: this.handleDrop, accept: 'image/jpeg, image/gif, image/jpg, image/png',
                         style: { cursor: 'pointer', width: '80%', height: '20%', border: '2px dashed #c8c8c8', margin: '0 auto', color: '#c8c8c8' } },
                     _React2['default'].createElement(
                         'div',
@@ -43203,7 +43214,67 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"./EditableImg":235,"lodash":4,"react-dropzone":6,"react-modal":14,"react/addons":56}],241:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"./EditableImg":235,"lodash":4,"react-dropzone":6,"react-modal":14,"react/addons":56}],241:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = require('react/addons');
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _APIMixin = require('../mixins/APIMixin');
+
+var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+
+var _classNames = require('classnames');
+
+var _classNames2 = _interopRequireWildcard(_classNames);
+
+'use strict';
+
+exports['default'] = _React2['default'].createClass({
+    displayName: 'ToggableFilter',
+
+    mixins: [_APIMixin2['default']],
+
+    getInitialState: function getInitialState() {
+        return {
+            selected: false
+        };
+    },
+
+    handleClick: function handleClick() {
+        this.props.onStatus(!this.state.selected);
+        this.setState({
+            selected: !this.state.selected // toggle the state
+        });
+    },
+
+    componentDidMount: function componentDidMount() {
+        this.setState({
+            selected: this.props.selected
+        });
+    },
+
+    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        this.setState({
+            selected: nextProps.selected
+        });
+    },
+
+    render: function render() {
+        var icon_cls = this.state.selected ? this.props.className + ' selected' : this.props.className;
+        return _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
+    }
+});
+module.exports = exports['default'];
+
+},{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],242:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43263,12 +43334,12 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         var icon_cls = this.state.selected ? this.props.className + ' selected' : this.props.className;
-        return _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
+        return _React2['default'].createElement('span', { 'data-toggle': 'tooltip', style: this.props.style, 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
     }
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":242,"classnames":3,"react/addons":56}],242:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],243:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43299,14 +43370,14 @@ exports['default'] = {
     /**
      * get all/categorised posts from the server
      */
-    getPosts: function getPosts(category_id, subcategory_id, cb) {
+    getPosts: function getPosts(category_id, subcategory_id, query, cb) {
         var qs = '';
         if (subcategory_id) {
             qs = '&category=' + subcategory_id;
         } else if (category_id) {
             qs = '&category__parent=' + category_id;
         };
-        _request2['default'].get('/api/v1/posts/').query('format=json').query('limit=50').query(qs).type('application/json').accept('application/json').end(cb);
+        _request2['default'].get('/api/v1/posts/').query('format=json').query('limit=50').query(qs).query(query).type('application/json').accept('application/json').end(cb);
     },
 
     getMorePosts: function getMorePosts(url, cb) {
@@ -43332,6 +43403,10 @@ exports['default'] = {
      */
     getPost: function getPost(id, cb) {
         _request2['default'].get('/api/v1/posts/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+    },
+
+    createPost: function createPost(params, cb) {
+        _request2['default'].post('/staff_api/v1/admin_posts/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
     },
 
     updatePost: function updatePost(id, params, cb) {
@@ -43363,11 +43438,11 @@ exports['default'] = {
     },
 
     createImage: function createImage(post_uri, img, progress_cb, cb) {
-        _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img).field('post', post_uri).accept('application/json').end(cb).on('progress', progress_cb);
+        _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img, img.name).field('post', post_uri).accept('application/json').end(cb).on('progress', progress_cb);
     },
 
     updateImage: function updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
-        if (changed) _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('post', post_uri).accept('application/json').end(cb);else {
+        if (changed) _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img, img.name).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('post', post_uri).accept('application/json').end(cb);else {
             var params = {
                 id: id,
                 caption: caption,
@@ -43388,7 +43463,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"superagent":229}],243:[function(require,module,exports){
+},{"superagent":229}],244:[function(require,module,exports){
 'use strict';
 
 var win = typeof window !== 'undefined' ? window : false;
@@ -43452,7 +43527,7 @@ var ScrollListenerMixin = {
 
 module.exports = ScrollListenerMixin;
 
-},{"react/lib/ViewportMetrics":173}],244:[function(require,module,exports){
+},{"react/lib/ViewportMetrics":173}],245:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43482,7 +43557,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react-router":41,"react/addons":56}],245:[function(require,module,exports){
+},{"react-router":41,"react/addons":56}],246:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43519,6 +43594,14 @@ var _Nav = require('../components/Nav');
 
 var _Nav2 = _interopRequireWildcard(_Nav);
 
+var _ToggableFilter = require('../components/ToggableFilter');
+
+var _ToggableFilter2 = _interopRequireWildcard(_ToggableFilter);
+
+var _ToggableIcon = require('../components/ToggableIcon');
+
+var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
+
 'use strict';
 
 var Link = _Router2['default'].Link;
@@ -43526,7 +43609,7 @@ var Link = _Router2['default'].Link;
 exports['default'] = _React2['default'].createClass({
     displayName: 'IndexPage',
 
-    mixins: [_APIMixin2['default'], _ScrollListenerMixin2['default'], _Router2['default'].State],
+    mixins: [_APIMixin2['default'], _ScrollListenerMixin2['default'], _Router2['default'].State, _Router2['default'].Navigation],
 
     getInitialState: function getInitialState() {
         return {
@@ -43537,7 +43620,10 @@ exports['default'] = _React2['default'].createClass({
             subcategoryId: 0,
             next_page: null,
             has_next: false,
-            is_loading: false
+            is_loading: false,
+            starred_filter: false,
+            published_filter: false,
+            all_filter: true
         };
     },
     onPageScroll: function onPageScroll() {
@@ -43572,7 +43658,7 @@ exports['default'] = _React2['default'].createClass({
         });
     },
 
-    _getPosts: function _getPosts(categoryId, subcategoryId) {
+    _getPosts: function _getPosts(categoryId, subcategoryId, query) {
         var _this3 = this;
 
         var category = _import2['default'].find(this.state.categories, { id: parseInt(categoryId) });
@@ -43582,7 +43668,7 @@ exports['default'] = _React2['default'].createClass({
                 categoryId = null;
             }
         }
-        this.getPosts(categoryId, subcategoryId, function (error, response) {
+        this.getPosts(categoryId, subcategoryId, query, function (error, response) {
             var new_elements = error ? [] : response.body.objects,
                 next_page = response.body.meta.next,
                 has_next = response.body.meta.next != null;
@@ -43593,6 +43679,25 @@ exports['default'] = _React2['default'].createClass({
                 is_loading: false });
         });
     },
+
+    _createNewPost: function _createNewPost() {
+        var _this4 = this;
+
+        var category_uri = '/staff_api/v1/admin_categories/';
+        if (this.state.subcategoryId) category_uri += this.state.subcategoryId + '/';else if (this.state.categoryId) category_uri += this.state.categoryId + '/';else category_uri += this.state.categories[0].id + '/';
+
+        var params = {
+            heading: 'Heading',
+            subheading: 'Subheading',
+            articletext: 'Content',
+            category: category_uri
+        };
+        this.createPost(params, function (error, response) {
+            if (!error) var post_id = response.headers.location.split('/')[6];
+            _this4.transitionTo('post', params = { postId: post_id });
+        });
+    },
+
     componentDidMount: function componentDidMount() {
         this._getCategories();
         this.setState({
@@ -43609,9 +43714,54 @@ exports['default'] = _React2['default'].createClass({
                 next_page: null,
                 categoryId: this.getParams().categoryId,
                 subcategoryId: this.getParams().subcategoryId,
-                posts: [] });
+                posts: [],
+                all_filter: true,
+                starred_filter: false,
+                published_filter: false
+            });
             this._getPosts(this.getParams().categoryId, this.getParams().subcategoryId);
         }
+    },
+
+    componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
+        if (nextState.all_filter == this.state.all_filter && nextState.published_filter != this.state.published_filter || nextState.starred_filter != this.state.starred_filter) {
+            this._getPosts(this.state.categoryId, this.state.subcategoryId, 'starred=' + nextState.starred_filter + '&published=' + nextState.published_filter);
+        }
+    },
+
+    handleClickNew: function handleClickNew() {
+        this._createNewPost();
+    },
+
+    handleClickStarredButton: function handleClickStarredButton() {
+        _React2['default'].findDOMNode(this.refs.starred).click();
+    },
+
+    handleClickStarred: function handleClickStarred(bool) {
+        this.setState({
+            starred_filter: bool,
+            all_filter: false
+        });
+    },
+
+    handleClickPublised: function handleClickPublised(bool) {
+        this.setState({
+            published_filter: bool,
+            all_filter: false
+        });
+    },
+
+    handleClickAll: function handleClickAll() {
+        this.setState({
+            all_filter: !this.state.all_filter,
+            starred_filter: false,
+            published_filter: false
+        });
+        this._getPosts(this.state.categoryId, this.state.subcategoryId);
+    },
+
+    handleClickPublishedButton: function handleClickPublishedButton() {
+        _React2['default'].findDOMNode(this.refs.published).click();
     },
 
     render: function render() {
@@ -43626,7 +43776,13 @@ exports['default'] = _React2['default'].createClass({
             return _React2['default'].createElement(
                 Link,
                 { key: post.id, className: 'list-group-item', to: 'post', params: { postId: post.id } },
-                post.heading
+                post.heading,
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'pull-right' },
+                    _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '加入至橫幅', style: { marginRight: '20px' }, className: 'glyphicon glyphicon-star-empty', name: 'starred', element_id: post.id, selected: post.starred }),
+                    _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', element_id: post.id, selected: post.published })
+                )
             );
         });
         return _React2['default'].createElement(
@@ -43643,13 +43799,18 @@ exports['default'] = _React2['default'].createClass({
                         { className: 'panel-heading' },
                         _React2['default'].createElement(
                             'h3',
-                            { className: 'panel-title' },
+                            { style: { fontSize: '24px' }, className: 'panel-title' },
                             'Categories / 類別'
                         )
                     ),
                     _React2['default'].createElement(
                         'ul',
                         { className: 'list-group' },
+                        _React2['default'].createElement(
+                            Link,
+                            { className: 'list-group-item', to: 'home' },
+                            'All'
+                        ),
                         CategoryNodes
                     )
                 )
@@ -43664,9 +43825,33 @@ exports['default'] = _React2['default'].createClass({
                         'div',
                         { className: 'panel-heading' },
                         _React2['default'].createElement(
-                            'h3',
-                            { className: 'panel-title' },
+                            'span',
+                            { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
                             'Posts / 文章'
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'btn-group pull-right' },
+                            _React2['default'].createElement(
+                                'button',
+                                { className: 'btn btn-default', type: 'button', onClick: this.handleClickNew },
+                                '新文章'
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { className: this.state.all_filter ? 'btn btn-info' : 'btn btn-default', type: 'button', onClick: this.handleClickAll },
+                                'All'
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { className: 'btn btn-default', type: 'button', onClick: this.handleClickStarredButton },
+                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.starred_filter, className: 'glyphicon glyphicon-star-empty', ref: 'starred', onStatus: this.handleClickStarred })
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { className: 'btn btn-default', type: 'button', onClick: this.handleClickPublishedButton },
+                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublised })
+                            )
                         )
                     ),
                     _React2['default'].createElement(
@@ -43682,7 +43867,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Nav":238,"../mixins/APIMixin":242,"../mixins/ScrollListenerMixin":243,"classnames":3,"lodash":4,"react-router":41,"react/addons":56}],246:[function(require,module,exports){
+},{"../components/Nav":238,"../components/ToggableFilter":241,"../components/ToggableIcon":242,"../mixins/APIMixin":243,"../mixins/ScrollListenerMixin":244,"classnames":3,"lodash":4,"react-router":41,"react/addons":56}],247:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43821,4 +44006,4 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/PostContent":239,"../mixins/APIMixin":242,"lodash":4,"react-router":41,"react/addons":56,"react/lib/ReactCSSTransitionGroup":89}]},{},[1]);
+},{"../components/PostContent":239,"../mixins/APIMixin":243,"lodash":4,"react-router":41,"react/addons":56,"react/lib/ReactCSSTransitionGroup":89}]},{},[1]);

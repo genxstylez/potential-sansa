@@ -102,11 +102,11 @@ export default React.createClass({
         var file = e.target.files[0]
 
         reader.onload = function(upload) {
-          self.setState({
-            img: file,
-            display_img: upload.target.result,
-            img_changed: true
-          });
+            self.setState({
+                img: file,
+                display_img: upload.target.result,
+                img_changed: true
+            });
         }
 
         reader.readAsDataURL(file);
@@ -161,7 +161,7 @@ export default React.createClass({
     render() {
         var src = this.state.display_img;
 
-        var onDeckNode = <img src={this.state.img} />
+        var onDeckNode = <img src={this.state.display_img} />
         if (this.state.video_id) {
             src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg";
             onDeckNode = <div key={this.state.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.generate_embed(this.state.video_id)}} />;
@@ -182,7 +182,7 @@ export default React.createClass({
                     <form className="form-horizontal" onSubmit={this.handleSubmit} style={{margin: "20px auto", width: "80%"}}>
                         <div className="form-group">
                             <img src={src} style={{marginBottom: "5px", width: "150px"}} />
-                            <input type="file" onChange={this.handleChangeImg} />
+                            <input type="file" accept="image/jpeg, image/gif, image/jpg, image/png" onChange={this.handleChangeImg} />
                         </div>
                         <div className="form-group">
                             <label>註解</label>

@@ -39,7 +39,7 @@ export default React.createClass({
     render() {
         var icon_cls = this.state.selected ? this.props.className + " selected" : this.props.className
         return(
-            <span data-toggle="tooltip" data-placement="top" title={this.props.tooltip} className={icon_cls} onClick={this.handleClick} />
+            <span data-toggle="tooltip" style={this.props.style} data-placement="top" title={this.props.tooltip} className={icon_cls} onClick={this.handleClick} />
         )
     }
 });
