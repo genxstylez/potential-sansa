@@ -1,12 +1,9 @@
 'use strict';
 
 import React from 'react/addons';
-import APIMixin from '../mixins/APIMixin';
 import classNames from 'classnames';
 
 export default React.createClass({
-    mixins: [APIMixin],
-
     getInitialState() {
         return ({
             selected: false

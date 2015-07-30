@@ -9,6 +9,7 @@ import ScrollListenerMixin from '../mixins/ScrollListenerMixin';
 import Nav from '../components/Nav';
 import ToggableFilter from '../components/ToggableFilter';
 import ToggableIcon from '../components/ToggableIcon';
+var Modal = require('react-modal');
 
 const Link = Router.Link;
 
@@ -27,7 +28,10 @@ export default React.createClass({
             is_loading: false,
             starred_filter: false,
             published_filter: false,
-            all_filter: true
+            all_filter: true,
+            adding: false,
+            new_category: "",
+            selected_parent: null
         });
     },
     onPageScroll() {
@@ -104,6 +108,16 @@ export default React.createClass({
         });
     },
 
+    _createCategory(params) {
+        this.createCategory(params, (error, response) => {
+            if(!error) {
+                this.toggleAddMode();
+                this._getCategories();
+            }
+            $(React.findDOMNode(this.refs.SubmitButton)).button('loading');
+        });
+    },
+
     componentDidMount() {
         this._getCategories();
         this.setState({
@@ -134,14 +148,18 @@ export default React.createClass({
                 nextState.published_filter != this.state.published_filter || nextState.starred_filter != this.state.starred_filter) {
             this._getPosts(this.state.categoryId, 
                 this.state.subcategoryId, 'starred=' + nextState.starred_filter + '&published=' + nextState.published_filter);
-        } 
+        }
+    },
+
+    componentDidUpdate(prevProps, prevState) {
+        $('[data-toggle="tooltip"]').tooltip()
     },
 
     handleClickNew() {
         this._createNewPost();
     },
 
-    handleClickStarredButton() {
+    handleClickStarredButton(e) {
         React.findDOMNode(this.refs.starred).click()
     },
 
@@ -152,7 +170,7 @@ export default React.createClass({
         });
     },
 
-    handleClickPublised(bool) {
+    handleClickPublished(bool) {
         this.setState({
             published_filter: bool,
             all_filter: false
@@ -172,6 +190,39 @@ export default React.createClass({
         React.findDOMNode(this.refs.published).click()
     },
 
+    toggleAddMode() {
+        this.setState({
+            adding: !this.state.adding
+        });
+    },
+
+    handleChangeParent(e) {
+        this.setState({
+            selected_parent: e.target.value.replace('categories', 'admin_categories')
+        });
+    },
+
+    handleChangeCategory(e) {
+        this.setState({
+            new_category: e.target.value
+        });
+    },
+
+    handleKeyUpCategory(e) {
+        if(e.key==='Enter')
+            this.handleSubmitCategory();
+    },
+
+    handleSubmitCategory(e) {
+        e.preventDefault();
+        $(React.findDOMNode(this.refs.SubmitButton)).button('loading');
+        var params = {
+            'parent': this.state.selected_parent,
+            'name': this.state.new_category
+        }
+        this._createCategory(params);
+    },
+
     render() {
         const CategoryNodes = [];
         _.map(this.state.categories, category => {
@@ -182,13 +233,13 @@ export default React.createClass({
         });
         const PostNodes = _.map(this.state.posts, post => {
             return (
-                <Link key={post.id} className="list-group-item" to="post" params={{postId:post.id}}>
-                    {post.heading}
+                <li key={post.id} className="list-group-item">
+                    <Link to="post" params={{postId:post.id}}>{post.heading}</Link>
                     <span className="pull-right">
                         <ToggableIcon tooltip="加入至橫幅" style={{marginRight:"20px"}} className="glyphicon glyphicon-star-empty" name="starred" element_id={post.id} selected={post.starred} />
                         <ToggableIcon tooltip="發表" className="glyphicon glyphicon-ok" name="published" element_id={post.id} selected={post.published} />
                     </span>
-                </Link>
+                </li>
             );
         });
         return (
@@ -196,13 +247,20 @@ export default React.createClass({
                 <div className="col-lg-4 col-md-4 col-sm-4 col-sm-4 navigation" ref="Navigation">
                     <div className="panel panel-default">
                         <div className="panel-heading">
-                            <h3 style={{fontSize: "24px"}} className="panel-title">Categories / 類別</h3>
+                            <span style={{fontSize: "24px", margin: "0 auto" }} className="panel-title">Categories / 類別</span>
+                            <div className="btn-group pull-right">
+                                <button className="btn btn-default" type="button" onClick={this.toggleAddMode}>新類別</button>
+                            </div>
                         </div>
                         <ul className="list-group">
                         <Link className="list-group-item" to="home">All</Link>
                             {CategoryNodes}
                         </ul>
                     </div>
+
+                    <Link style={{position: "fixed", bottom: "20px", left: "20px"}} to="albums">
+                        <button className="btn-lg btn-primary">免費圖庫</button>
+                    </Link>
                 </div>
                 <div className="col-lg-8 col-md-8 col-sm-8 posts" ref="Posts">
                     <div className="panel panel-default">
@@ -215,7 +273,7 @@ export default React.createClass({
                                     <ToggableFilter selected={this.state.starred_filter} className="glyphicon glyphicon-star-empty" ref="starred" onStatus={this.handleClickStarred} />
                                 </button>
                                 <button className="btn btn-default" type="button" onClick={this.handleClickPublishedButton}>
-                                    <ToggableFilter selected={this.state.published_filter} className="glyphicon glyphicon-ok" ref="published" onStatus={this.handleClickPublised} />
+                                    <ToggableFilter selected={this.state.published_filter} className="glyphicon glyphicon-ok" ref="published" onStatus={this.handleClickPublished} />
                                 </button>
                             </div>
                         </div>
@@ -224,6 +282,29 @@ export default React.createClass({
                         </ul>
                     </div>
                 </div>
+                <Modal isOpen={this.state.adding} onRequestClose={this.toggleAddMode}>
+                    <form className="form-horizontal" onSubmit={this.handleSubmitCategory} style={{margin: "20px auto", width: "80%"}}>
+                        <div className="form-group">
+                            <label>主類別</label>
+                            <select className="form-control" name="parent_category" onChange={this.handleChangeParent}>
+                                <option>無</option>
+                                {this.state.categories.map(category => {
+                                    return(
+                                        <option value={category.resource_uri}>{category.name}</option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <div className="form-group">
+                            <label>類別名稱</label>
+                            <input className="form-control" type="text" onKeyUp={this.handleKeyUpCategory} onChange={this.handleChangeCategory} 
+                                    value={this.state.new_category} />
+                        </div> 
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-primary" ref="SubmitButton" data-loading-text="儲存中..." style={{marginRight: "10px"}}>儲存</button>
+                        </div>
+                    </form>
+                </Modal>
             </div>
         );
     }

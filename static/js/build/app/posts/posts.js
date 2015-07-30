@@ -61,7 +61,7 @@ _Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (R
     ga('send', 'pageview', { page: state.path });
 });
 
-},{"./routes/AlbumPage":261,"./routes/AlbumsPage":262,"./routes/Application":263,"./routes/IndexPage":264,"./routes/PostPage":265,"./routes/SearchPage":266,"./routes/SubscribePage":267,"react-router":45,"react/addons":60}],2:[function(require,module,exports){
+},{"./routes/AlbumPage":260,"./routes/AlbumsPage":261,"./routes/Application":262,"./routes/IndexPage":263,"./routes/PostPage":264,"./routes/SearchPage":265,"./routes/SubscribePage":266,"react-router":45,"react/addons":60}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -45128,7 +45128,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"../../routes/PostPage":265,"./BannerTile":237,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":259,"../../routes/PostPage":264,"./BannerTile":237,"html-truncate":5,"lodash":6,"react-router":45,"react/addons":60}],237:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45163,11 +45163,18 @@ exports['default'] = _React2['default'].createClass({
         heading: _React2['default'].PropTypes.string.isRequired,
         subheading: _React2['default'].PropTypes.string.isRequired,
         cover: _React2['default'].PropTypes.object.isRequired },
+    generate_embed: function generate_embed() {
+        var width = 640;
+        var height = 450;
+
+        return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + this.props.cover.video_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
+    },
     render: function render() {
+        var imgNode = this.props.cover.video_id ? _React2['default'].createElement('div', { key: this.props.cover.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.generate_embed() } }) : _React2['default'].createElement('img', { src: this.props.cover.img !== undefined ? this.props.cover.img.large : '' });
         return _React2['default'].createElement(
             'div',
             { className: 'banner-tile', onClick: this.props.onClick },
-            _React2['default'].createElement('img', { src: this.props.cover.img.large }),
+            imgNode,
             _React2['default'].createElement(
                 'div',
                 { className: 'title' },
@@ -45180,7 +45187,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"react/addons":60}],238:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":259,"html-truncate":5,"lodash":6,"react/addons":60}],238:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45219,7 +45226,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60}],239:[function(require,module,exports){
+},{"../mixins/WebAPIMixin":259,"lodash":6,"react-router":45,"react/addons":60}],239:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45457,7 +45464,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./NavItem":241,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],241:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./NavItem":241,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],241:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45538,7 +45545,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../SubNav/SubNavBar":257,"lodash":6,"react-router":45,"react/addons":60}],242:[function(require,module,exports){
+},{"../SubNav/SubNavBar":256,"lodash":6,"react-router":45,"react/addons":60}],242:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45772,7 +45779,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     onPageScroll: function onPageScroll() {
-        var bottomOffset = _React2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - this.state.scrollTop;
+        var bottomOffset = _React2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - window.innerHeight - this.state.scrollTop;
         if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
@@ -45831,7 +45838,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./AlbumTile":244,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],244:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./AlbumTile":244,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],244:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45888,7 +45895,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],245:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":259,"html-truncate":5,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],245:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -45919,7 +45926,9 @@ exports['default'] = _React2['default'].createClass({
         return {
             collapsed: true,
             content: license_text,
-            current_title: ''
+            current_title: '',
+            _license: 'License',
+            _photographer: 'Photographer'
         };
     },
     handleOnClick: function handleOnClick() {
@@ -45931,14 +45940,14 @@ exports['default'] = _React2['default'].createClass({
 
     handleOnClickTitle: function handleOnClickTitle(e) {
         switch (e.target.innerHTML) {
-            case 'License':
+            case '版權':
                 this.setState({
                     current_title: 'License',
                     content: license_text,
                     collapsed: false
                 });
                 break;
-            case 'Photographer':
+            case '攝影':
                 this.setState({
                     current_title: 'Photographer',
                     content: this.props.photographer,
@@ -45953,6 +45962,35 @@ exports['default'] = _React2['default'].createClass({
                 current_title: '',
                 content: ''
             });
+        }
+    },
+
+    handleOnMouseEnter: function handleOnMouseEnter(e) {
+        switch (e.target.innerHTML) {
+            case 'License':
+                this.setState({
+                    _license: '版權'
+                });
+                break;
+            case 'Photographer':
+                this.setState({
+                    _photographer: '攝影'
+                });
+                break;
+        }
+    },
+    handleOnMouseOut: function handleOnMouseOut(e) {
+        switch (e.target.innerHTML) {
+            case '版權':
+                this.setState({
+                    _license: 'License'
+                });
+                break;
+            case '攝影':
+                this.setState({
+                    _photographer: 'Photographer'
+                });
+                break;
         }
     },
     render: function render() {
@@ -45977,10 +46015,10 @@ exports['default'] = _React2['default'].createClass({
                 null,
                 _React2['default'].createElement(
                     'span',
-                    { onClick: this.handleOnClickTitle,
+                    { style: { width: '100px', display: 'inline-block' }, onClick: this.handleOnClickTitle,
                         onMouseEnter: this.handleOnMouseEnter,
                         onMouseOut: this.handleOnMouseOut },
-                    'Photographer'
+                    this.state._photographer
                 ),
                 _React2['default'].createElement('span', { className: 'circle-divider' })
             );
@@ -45994,10 +46032,10 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
                 _React2['default'].createElement(
                     'span',
-                    { onClick: this.handleOnClickTitle,
+                    { style: { width: '60px', display: 'inline-block' }, onClick: this.handleOnClickTitle,
                         onMouseEnter: this.handleOnMouseEnter,
                         onMouseOut: this.handleOnMouseOut },
-                    'License'
+                    this.state._license
                 ),
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
                 photographer_node
@@ -46053,7 +46091,10 @@ exports['default'] = _React2['default'].createClass({
         return {
             collapsed: true,
             content: license_text,
-            current_title: ''
+            current_title: '',
+            _license: 'License',
+            _download: 'Download',
+            _photographer: 'Photographer'
         };
     },
     handleOnClick: function handleOnClick() {
@@ -46065,7 +46106,7 @@ exports['default'] = _React2['default'].createClass({
 
     handleOnClickTitle: function handleOnClickTitle(e) {
         switch (e.target.innerHTML) {
-            case 'License':
+            case '版權':
                 this.setState({
                     current_title: 'License',
                     content: license_text,
@@ -46074,7 +46115,7 @@ exports['default'] = _React2['default'].createClass({
                 break;
             case 'Download':
                 break;
-            case 'Photographer':
+            case '攝影':
                 this.setState({
                     current_title: 'Photographer',
                     content: this.props.photographer,
@@ -46083,8 +46124,44 @@ exports['default'] = _React2['default'].createClass({
                 break;
         }
     },
-    handleOnMouseEnter: function handleOnMouseEnter(e) {},
-    handleOnMouseOut: function handleOnMouseOut(e) {},
+    handleOnMouseEnter: function handleOnMouseEnter(e) {
+        switch (e.target.innerHTML) {
+            case 'License':
+                this.setState({
+                    _license: '版權'
+                });
+                break;
+            case 'Download':
+                this.setState({
+                    _download: '下載'
+                });
+                break;
+            case 'Photographer':
+                this.setState({
+                    _photographer: '攝影'
+                });
+                break;
+        }
+    },
+    handleOnMouseOut: function handleOnMouseOut(e) {
+        switch (e.target.innerHTML) {
+            case '版權':
+                this.setState({
+                    _license: 'License'
+                });
+                break;
+            case '下載':
+                this.setState({
+                    _download: 'Download'
+                });
+                break;
+            case '攝影':
+                this.setState({
+                    _photographer: 'Photographer'
+                });
+                break;
+        }
+    },
     componetWillReceiveProps: function componetWillReceiveProps(nextProps, nextState) {
         if (nextState.collapsed) {
             this.setState({
@@ -46117,28 +46194,28 @@ exports['default'] = _React2['default'].createClass({
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
                 _React2['default'].createElement(
                     'span',
-                    { onClick: this.handleOnClickTitle,
+                    { style: { width: '60px', display: 'inline-block' }, onClick: this.handleOnClickTitle,
                         onMouseEnter: this.handleOnMouseEnter,
                         onMouseOut: this.handleOnMouseOut },
-                    'License'
+                    this.state._license
                 ),
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
                 _React2['default'].createElement(
                     'a',
-                    { href: this.props.photo.img.original,
+                    { style: { width: '80px', display: 'inline-block' }, href: this.props.photo.img.original,
                         target: '_blank',
                         onClick: this.handleOnClickTitle,
                         onMouseEnter: this.handleOnMouseEnter,
                         onMouseOut: this.handleOnMouseOut },
-                    'Download'
+                    this.state._download
                 ),
                 _React2['default'].createElement('span', { className: 'circle-divider' }),
                 _React2['default'].createElement(
                     'span',
-                    { onClick: this.handleOnClickTitle,
+                    { style: { width: '100px', display: 'inline-block' }, onClick: this.handleOnClickTitle,
                         onMouseEnter: this.handleOnMouseEnter,
                         onMouseOut: this.handleOnMouseOut },
-                    'Photographer'
+                    this.state._photographer
                 ),
                 _React2['default'].createElement('span', { className: 'circle-divider' })
             ),
@@ -46160,32 +46237,6 @@ exports['default'] = _React2['default'].createClass({
     }
 });
 module.exports = exports['default'];
-
-/*
-switch(e.target.innerHTML) {
-    case "License": 
-        e.target.innerHTML = "版權";
-        break;
-    case "Download":
-        e.target.innerHTML = "下載";
-        break;
-    case "Photographer":
-        e.target.innerHTML = "攝影";
-        break;
-} */
-
-/*
-switch(e.target.innerHTML) {
-    case "版權": 
-        e.target.innerHTML = "License";
-        break;
-    case "下載":
-        e.target.innerHTML = "Download";
-        break;
-    case "攝影":
-        e.target.innerHTML = "Photographer";
-        break;
-}*/
 
 },{"classnames":3,"react/addons":60}],247:[function(require,module,exports){
 'use strict';
@@ -46603,11 +46654,19 @@ exports['default'] = _React2['default'].createClass({
         created_at: _React2['default'].PropTypes.string.isRequired,
         last_modified: _React2['default'].PropTypes.string.isRequired,
         uri: _React2['default'].PropTypes.string },
+    generate_embed: function generate_embed() {
+        var width = $('.tile').width();
+        var height = width / 1.5;
+
+        return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + this.props.cover.video_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
+    },
+
     render: function render() {
+        var imgNode = this.props.cover.video_id ? _React2['default'].createElement('div', { key: this.props.cover.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.generate_embed() } }) : _React2['default'].createElement('img', { src: this.props.cover.img !== undefined ? this.props.cover.img.large : '' });
         return _React2['default'].createElement(
             'div',
             { className: 'tile', onClick: this.props.onClick },
-            _React2['default'].createElement('img', { src: this.props.cover.img.large }),
+            imgNode,
             _React2['default'].createElement(
                 'div',
                 { className: 'intro' },
@@ -46643,7 +46702,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/WebAPIMixin":260,"html-truncate":5,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],251:[function(require,module,exports){
+},{"../../mixins/WebAPIMixin":259,"html-truncate":5,"lodash":6,"moment":7,"react-router":45,"react/addons":60}],251:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46660,17 +46719,31 @@ var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
 
+var _classNames = require('classnames');
+
+var _classNames2 = _interopRequireWildcard(_classNames);
+
 var _PostCredit = require('../PostCredit');
 
 var _PostCredit2 = _interopRequireWildcard(_PostCredit);
 
-var _ShootingGallery = require('./ShootingGallery');
+var _ShootingCredit = require('./ShootingCredit');
 
-var _ShootingGallery2 = _interopRequireWildcard(_ShootingGallery);
+var _ShootingCredit2 = _interopRequireWildcard(_ShootingCredit);
 
 'use strict';
 
 var Navigation = require('react-router').Navigation;
+
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+
+function generate_embed(youtube_id) {
+    var width = $('.shooting_deck').width() * 0.9;
+    var height = width / 1.5;
+
+    return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + youtube_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
+};
+
 exports['default'] = _React2['default'].createClass({
     displayName: 'ShootingContent',
 
@@ -46678,7 +46751,9 @@ exports['default'] = _React2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            show_credits: false
+            show_credits: false,
+            current_image: null,
+            current_index: 0
         };
     },
     propTypes: {
@@ -46693,15 +46768,72 @@ exports['default'] = _React2['default'].createClass({
 
     handleClickOnToggle: function handleClickOnToggle() {
         this.setState({
-            show_credits: true
+            show_credits: !this.state.show_credits
         });
     },
+
+    componentDidMount: function componentDidMount() {
+        this.setState({
+            current_image: this.props.imgs[0]
+        });
+    },
+
+    handleLeftArrow: function handleLeftArrow(e) {
+        e.preventDefault();
+        var index = this.state.current_index == 0 ? this.props.imgs.length - 1 : this.state.current_index - 1;
+        this.setState({
+            current_index: index,
+            current_image: this.props.imgs[index]
+        });
+    },
+
+    handlerRightArrow: function handlerRightArrow(e) {
+        e.preventDefault();
+        var index = this.state.current_index == this.props.imgs.length - 1 ? 0 : this.state.current_index + 1;
+        this.setState({
+            current_index: index,
+            current_image: this.props.imgs[index]
+        });
+    },
+
     render: function render() {
-        var cover = {};
-        if (this.props.imgs.length > 0) cover = this.props.imgs[0];
+        var info_class = _classNames2['default']({
+            out: !this.state.show_credits,
+            'shooting-info': true
+        });
+        var creditNodes = _import2['default'].map(this.props.credits, function (credit) {
+            return _React2['default'].createElement(_ShootingCredit2['default'], { key: credit.id, role: credit.role, name: credit.name });
+        });
+        var ImgNode = '';
+        if (this.state.current_image != null) if (this.state.current_image.video_id) ImgNode = _React2['default'].createElement(
+            'span',
+            { key: this.state.current_image.id },
+            _React2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.state.current_image.video_id) } })
+        );else ImgNode = _React2['default'].createElement(
+            'span',
+            { key: this.state.current_image.id },
+            _React2['default'].createElement('img', { src: this.state.current_image.img.xxl }),
+            _React2['default'].createElement('span', { className: 'align-helper' })
+        );
+
         return _React2['default'].createElement(
             'div',
             { className: 'article-box', ref: 'articleBox' },
+            _React2['default'].createElement('img', { className: 'shooting-info-toggle', src: STATIC_URL + 'img/info.png', onClick: this.handleClickOnToggle }),
+            _React2['default'].createElement(
+                'div',
+                { className: info_class },
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'close' },
+                    _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handleClickOnToggle })
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { style: { margin: '120px 30px' } },
+                    creditNodes
+                )
+            ),
             _React2['default'].createElement(
                 'span',
                 { className: 'close' },
@@ -46717,23 +46849,28 @@ exports['default'] = _React2['default'].createClass({
             _React2['default'].createElement(
                 'div',
                 { className: 'row article' },
-                _React2['default'].createElement(_ShootingGallery2['default'], {
-                    imgs: this.props.imgs,
-                    on_deck: cover,
-                    credits: this.props.credits,
-                    show_credits: this.state.show_credits }),
                 _React2['default'].createElement(
                     'div',
-                    { className: 'shooting-info' },
+                    { className: 'shooting_deck' },
                     _React2['default'].createElement(
-                        'span',
+                        TransitionGroup,
+                        { transitionName: 'shooting-gallery', transitionLeave: false },
+                        ImgNode
+                    ),
+                    _React2['default'].createElement(
+                        'div',
                         { className: 'shooting-info-heading' },
                         this.props.heading
                     ),
                     _React2['default'].createElement(
-                        'span',
-                        { className: 'shooting-info-toggle', onClick: this.handleClickOnToggle },
-                        'Info'
+                        'a',
+                        { href: '#', onClick: this.handleLeftArrow },
+                        _React2['default'].createElement('img', { className: 'arrow left', src: STATIC_URL + 'img/banner-left.png' })
+                    ),
+                    _React2['default'].createElement(
+                        'a',
+                        { href: '#', onClick: this.handlerRightArrow },
+                        _React2['default'].createElement('img', { className: 'arrow right', src: STATIC_URL + 'img/banner-right.png' })
                     )
                 ),
                 _React2['default'].createElement('div', { className: 'triangle' })
@@ -46743,7 +46880,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../PostCredit":248,"./ShootingGallery":253,"lodash":6,"react-router":45,"react/addons":60}],252:[function(require,module,exports){
+},{"../PostCredit":248,"./ShootingCredit":252,"classnames":3,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],252:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -46788,12 +46925,12 @@ exports['default'] = _React2['default'].createClass({
             'div',
             { className: 'credit' },
             _React2['default'].createElement(
-                'span',
-                { className: 'label role' },
+                'div',
+                { className: 'role' },
                 this.props.role
             ),
             _React2['default'].createElement(
-                'span',
+                'div',
                 { className: 'name' },
                 names
             )
@@ -46803,169 +46940,6 @@ exports['default'] = _React2['default'].createClass({
 module.exports = exports['default'];
 
 },{"lodash":6,"react-router":45,"react/addons":60}],253:[function(require,module,exports){
-'use strict';
-
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _React = require('react/addons');
-
-var _React2 = _interopRequireWildcard(_React);
-
-var _import = require('lodash');
-
-var _import2 = _interopRequireWildcard(_import);
-
-var _ShootingCredit = require('./ShootingCredit');
-
-var _ShootingCredit2 = _interopRequireWildcard(_ShootingCredit);
-
-'use strict';
-
-var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-
-function generate_embed(youtube_id) {
-    var width = $('.on_deck').width();
-    var height = width / 1.5;
-
-    return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + youtube_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
-};
-
-var SelectedImg = _React2['default'].createClass({
-    displayName: 'SelectedImg',
-
-    render: function render() {
-        var creditNodes = _import2['default'].map(this.props.credits, function (credit) {
-            return _React2['default'].createElement(_ShootingCredit2['default'], { key: credit.id, role: credit.role, name: credit.name });
-        });
-        if (this.props.show_credits) {
-            return _React2['default'].createElement(
-                'div',
-                { className: 'on_deck shooting-credits' },
-                _React2['default'].createElement(
-                    'div',
-                    { className: 'shooting-credits-inner' },
-                    creditNodes
-                )
-            );
-        }
-        var onDeckNode = this.props.on_deck.video_id ? _React2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.props.on_deck.video_id) } }) : _React2['default'].createElement('img', { src: this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : '' });
-
-        return _React2['default'].createElement(
-            'div',
-            { className: 'on_deck' },
-            _React2['default'].createElement('span', { className: 'align-helper' }),
-            onDeckNode
-        );
-    }
-});
-
-exports['default'] = _React2['default'].createClass({
-    displayName: 'ShootingGallery',
-
-    propTypes: {
-        on_deck: _React2['default'].PropTypes.object.isRequired,
-        imgs: _React2['default'].PropTypes.array.isRequired,
-        credits: _React2['default'].PropTypes.array,
-        show_credits: _React2['default'].PropTypes.bool.isRequired
-    },
-    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        if (this.isMounted()) {
-            this.setState({
-                on_deck: nextProps.show_credits ? { id: 'unique-string-credits' } : nextProps.on_deck,
-                imgs: nextProps.imgs,
-                show_credits: nextProps.show_credits,
-                credits: nextProps.credits
-            });
-        };
-        this.forceUpdate();
-    },
-    handleClick: function handleClick(image_url) {
-        this.setState({
-            on_deck: image_url,
-            show_credits: false
-        });
-    },
-    handleLeftArrow: function handleLeftArrow() {
-        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
-            scrollLeft: '-=250'
-        }, 200);
-    },
-    handlerRightArrow: function handlerRightArrow() {
-        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
-            scrollLeft: '+=250'
-        }, 200);
-    },
-
-    getInitialState: function getInitialState() {
-        return {
-            on_deck: {},
-            imgs: [],
-            show_credits: false,
-            credits: {}
-        };
-    },
-
-    componentDidMount: function componentDidMount() {
-        this.setState({
-            on_deck: this.props.on_deck,
-            imgs: this.props.imgs });
-    },
-    render: function render() {
-        return _React2['default'].createElement(
-            'div',
-            { className: 'gallery shooting' },
-            _React2['default'].createElement(
-                TransitionGroup,
-                { transitionName: 'gallery' },
-                _React2['default'].createElement(SelectedImg, {
-                    key: this.state.on_deck.id,
-                    on_deck: this.state.on_deck,
-                    show_credits: this.state.show_credits,
-                    credits: this.state.credits })
-            ),
-            _React2['default'].createElement(
-                'div',
-                { className: 'arrow left', onClick: this.handleLeftArrow },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
-            ),
-            _React2['default'].createElement(
-                'ul',
-                { className: 'thumbnails', ref: 'thumbnailsRow' },
-                this.state.imgs.map(function (image) {
-                    if (image.video_id) {
-                        return _React2['default'].createElement(
-                            'li',
-                            { key: image.id },
-                            _React2['default'].createElement('img', { src: 'https://i.ytimg.com/vi/' + image.video_id + '/hqdefault.jpg',
-                                onClick: this.handleClick.bind(this, image) })
-                        );
-                    } else {
-                        return _React2['default'].createElement(
-                            'li',
-                            { key: image.id },
-                            _React2['default'].createElement('img', { src: image.img.small,
-                                onClick: this.handleClick.bind(this, image) })
-                        );
-                    }
-                }, this)
-            ),
-            _React2['default'].createElement(
-                'div',
-                { className: 'arrow right', onClick: this.handlerRightArrow },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
-            )
-        );
-    }
-});
-module.exports = exports['default'];
-
-},{"./ShootingCredit":252,"lodash":6,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],254:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47178,7 +47152,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"../routes/PostPage":265,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],255:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":258,"../mixins/WebAPIMixin":259,"../routes/PostPage":264,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],254:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47359,7 +47333,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/ScrollListenerMixin":259,"../mixins/WebAPIMixin":260,"../routes/PostPage":265,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
+},{"../mixins/ScrollListenerMixin":258,"../mixins/WebAPIMixin":259,"../routes/PostPage":264,"./Post/PostTile":250,"lodash":6,"react-masonry-mixin":8,"react-router":45,"react/addons":60}],255:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47479,7 +47453,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../../mixins/ScrollListenerMixin":259,"../../mixins/WebAPIMixin":260,"./SubNavItem":258,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],257:[function(require,module,exports){
+},{"../../mixins/ScrollListenerMixin":258,"../../mixins/WebAPIMixin":259,"./SubNavItem":257,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],256:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47569,7 +47543,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./SubNavItem":258,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],258:[function(require,module,exports){
+},{"./SubNavItem":257,"classnames":3,"lodash":6,"react-router":45,"react/addons":60}],257:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47641,7 +47615,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"lodash":6,"react-router":45,"react/addons":60}],259:[function(require,module,exports){
+},{"lodash":6,"react-router":45,"react/addons":60}],258:[function(require,module,exports){
 'use strict';
 
 var win = typeof window !== 'undefined' ? window : false;
@@ -47705,7 +47679,7 @@ var ScrollListenerMixin = {
 
 module.exports = ScrollListenerMixin;
 
-},{"react/lib/ViewportMetrics":177}],260:[function(require,module,exports){
+},{"react/lib/ViewportMetrics":177}],259:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47787,7 +47761,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"superagent":233}],261:[function(require,module,exports){
+},{"superagent":233}],260:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47867,7 +47841,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Photo/AlbumContent":242,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60}],262:[function(require,module,exports){
+},{"../components/Photo/AlbumContent":242,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":259,"lodash":6,"react-router":45,"react/addons":60}],261:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47950,7 +47924,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],263:[function(require,module,exports){
+},{"../components/MainNav/NavBar":240,"../components/Photo/AlbumList":243,"../components/Photo/LicenseFooter":245,"../mixins/WebAPIMixin":259,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],262:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -47980,7 +47954,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react-router":45,"react/addons":60}],264:[function(require,module,exports){
+},{"react-router":45,"react/addons":60}],263:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -48061,7 +48035,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":254,"../mixins/WebAPIMixin":260,"lodash":6,"react/addons":60}],265:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/PostList":253,"../mixins/WebAPIMixin":259,"lodash":6,"react/addons":60}],264:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -48196,7 +48170,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Post/PostContent":247,"../components/Post/Shooting/ShootingContent":251,"../mixins/WebAPIMixin":260,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],266:[function(require,module,exports){
+},{"../components/Post/PostContent":247,"../components/Post/Shooting/ShootingContent":251,"../mixins/WebAPIMixin":259,"lodash":6,"react-router":45,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],265:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -48373,7 +48347,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/SearchPostList":255,"../components/SubNav/SearchSubNavBar":256,"classnames":3,"lodash":6,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],267:[function(require,module,exports){
+},{"../components/Banner/BannerList":236,"../components/Footer":238,"../components/Logo":239,"../components/MainNav/NavBar":240,"../components/SearchPostList":254,"../components/SubNav/SearchSubNavBar":255,"classnames":3,"lodash":6,"react/addons":60,"react/lib/ReactCSSTransitionGroup":93}],266:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -48482,4 +48456,4 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/WebAPIMixin":260,"lodash":6,"react/addons":60}]},{},[1]);
+},{"../mixins/WebAPIMixin":259,"lodash":6,"react/addons":60}]},{},[1]);

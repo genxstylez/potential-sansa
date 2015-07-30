@@ -20,7 +20,10 @@ export default React.createClass({
         return({
             collapsed: true,
             content: license_text,
-            current_title: ""
+            current_title: "",
+            _license: "License",
+            _download: "Download",
+            _photographer: "Photographer"
         })
     },
     handleOnClick() {
@@ -33,7 +36,7 @@ export default React.createClass({
 
     handleOnClickTitle(e) {
         switch(e.target.innerHTML) {
-            case "License":
+            case "版權":
                 this.setState({
                     current_title: "License",
                     content: license_text,
@@ -42,7 +45,7 @@ export default React.createClass({
                 break;
             case "Download":
                 break;
-            case "Photographer":
+            case "攝影":
                 this.setState({
                     current_title: "Photographer",
                     content: this.props.photographer,
@@ -52,33 +55,43 @@ export default React.createClass({
         }
     },
     handleOnMouseEnter(e) {
-        /*
         switch(e.target.innerHTML) {
             case "License": 
-                e.target.innerHTML = "版權";
+                this.setState({
+                    _license: "版權"
+                });
                 break;
             case "Download":
-                e.target.innerHTML = "下載";
+                this.setState({
+                    _download: "下載"
+                });
                 break;
             case "Photographer":
-                e.target.innerHTML = "攝影";
+                this.setState({
+                    _photographer: "攝影"
+                })
                 break;
-        } */
+        }
 
     },
     handleOnMouseOut(e) {
-        /*
         switch(e.target.innerHTML) {
             case "版權": 
-                e.target.innerHTML = "License";
+                this.setState({
+                    _license: "License"
+                });
                 break;
             case "下載":
-                e.target.innerHTML = "Download";
+                this.setState({
+                    _download: "Download"
+                });
                 break;
             case "攝影":
-                e.target.innerHTML = "Photographer";
+                this.setState({
+                    _photographer: "Photographer"
+                })
                 break;
-        }*/
+        }
     },
     componetWillReceiveProps(nextProps, nextState) {
         if(nextState.collapsed) {
@@ -107,19 +120,19 @@ export default React.createClass({
             <div className={cls} onClick={this.handleOnClick}>
                 <div className={title_cls}>
                     <span className="circle-divider" />
-                    <span onClick={this.handleOnClickTitle}
+                    <span style={{width: "60px", display: "inline-block"}} onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}
-                        onMouseOut={this.handleOnMouseOut}>License</span>
+                        onMouseOut={this.handleOnMouseOut}>{this.state._license}</span>
                     <span className="circle-divider" />
-                    <a href={this.props.photo.img.original} 
+                    <a style={{width: "80px", display: "inline-block"}} href={this.props.photo.img.original} 
                         target="_blank"
                         onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}
-                        onMouseOut={this.handleOnMouseOut}>Download</a>
+                        onMouseOut={this.handleOnMouseOut}>{this.state._download}</a>
                     <span className="circle-divider" />
-                    <span onClick={this.handleOnClickTitle}
+                    <span style={{width: "100px", display: "inline-block"}} onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}
-                        onMouseOut={this.handleOnMouseOut}>Photographer</span>
+                        onMouseOut={this.handleOnMouseOut}>{this.state._photographer}</span>
                     <span className="circle-divider" />
                 </div>
                 <div className={current_title_cls}>

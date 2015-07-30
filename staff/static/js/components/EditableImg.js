@@ -30,7 +30,7 @@ export default React.createClass({
     _getImage(id) {
         this.getImage(id, (error, response) => {
             if(error) {
-                alert('Please try again!')
+                alert('Please try again!');
             } else {
                 this.setState({
                     img_changed: false,
@@ -52,7 +52,9 @@ export default React.createClass({
                     img_changed: false
                 });
             } else {
-                this._getImage(id)
+                this._getImage(id);
+                this.props.refreshImage(this.props.post_id);
+                this.closeModal();
             }
         });
     },
@@ -63,6 +65,13 @@ export default React.createClass({
                 this.props.refreshImage(this.props.post_id);
                 this.closeModal();
             }
+        });
+    },
+
+    _setCover(id) {
+        this.setCover(id, this.props.post_id, (error, response) => {
+            if(!error)
+                this.props.refreshImage(this.props.post_id);
         });
     },
 
@@ -136,6 +145,10 @@ export default React.createClass({
             this.handleOnBlur();
     },
 
+    handleClickCover() {
+        this._setCover(this.state.id);
+    },
+
     generate_embed(youtube_id) {
         var width = $('.on_deck').width();
         var height = width / 1.5;
@@ -154,7 +167,22 @@ export default React.createClass({
             caption: this.props.image.caption,
             tag: this.props.image.tag,
             video_id: this.props.image.video_id,
-            video_url: this.props.image.video_url
+            video_url: this.props.image.video_url,
+            is_cover: this.props.image.is_cover
+        });
+    },
+
+    componentWillReceiveProps(nextProps) {
+        var img = _.has(nextProps.image.img, 'original') ? nextProps.image.img.original: "";
+        this.setState({
+            id: nextProps.image.id,
+            img: img,
+            display_img: img,
+            caption: nextProps.image.caption,
+            tag: nextProps.image.tag,
+            video_id: nextProps.image.video_id,
+            video_url: nextProps.image.video_url,
+            is_cover: nextProps.image.is_cover
         });
     },
 
@@ -168,6 +196,9 @@ export default React.createClass({
         }
         return (
             <div>
+                <button className={this.state.is_cover ? "btn btn-info disabled" : "btn btn-info"}
+                    style={{position:"absolute", left:"40%", zIndex: "999", top: "-25px"}} 
+                    onClick={this.handleClickCover}>{this.state.is_cover ? "此為封面圖片" : "設定為封面圖片"}</button>
                 <button className="btn btn-primary" 
                     style={{position:"absolute", right:"10px", zIndex: "999", top: "-25px"}} 
                     onClick={this.handleClickTile}>編輯圖片</button>

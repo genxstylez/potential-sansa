@@ -30,7 +30,8 @@ export default React.createClass({
         this.getImages(post_id, (error, response) => {
             if(!error)
                 this.setState({
-                    imgs:response.body.objects
+                    imgs:response.body.objects,
+                    on_deck: response.body.objects[0]
                 });
         });
     },
@@ -179,7 +180,6 @@ export default React.createClass({
                         }, this)}
                         </div>
                     </div>
-
                 }
                 modalNode = <div style={{height: "100%", width: "100%"}}>
                     <Dropzone onDrop={this.handleDrop} accept="image/jpeg, image/gif, image/jpg, image/png"

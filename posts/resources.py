@@ -13,7 +13,7 @@ from ology.resources import MultipartResource
 class ImageResource(ModelResource):
 
     class Meta:
-        queryset = Image.objects.order_by('id')
+        queryset = Image.objects.order_by('-is_cover')
         resource_name = 'images'
 
     def dehydrate_img(self, bundle):
@@ -79,7 +79,7 @@ class PostResource(ModelResource):
     category = fields.ForeignKey(SubCategoryResource, 'category', full=True, null=True, blank=True)
     credits = fields.ToManyField(CreditResource, lambda bundle: bundle.obj.credits.order_by('id'), full=True, use_in='detail', null=True, blank=True)
     tags = fields.ToManyField(TagResource, lambda bundle: bundle.obj.tags.all(), use_in='detail', full=True, null=True, blank=True)
-    images = fields.ToManyField(ImageResource, lambda bundle: bundle.obj.images.order_by('id'), full=True, use_in='detail', null=True, blank=True)
+    images = fields.ToManyField(ImageResource, lambda bundle: bundle.obj.images.order_by('-is_cover'), full=True, use_in='detail', null=True, blank=True)
     cover = fields.ToOneField(ImageResource,
                               lambda bundle: Image.objects.filter(post=bundle.obj, is_cover=True).first(),
                               use_in='list', full=True, null=True)
@@ -110,6 +110,7 @@ class AdminCategoryResource(ModelResource):
 
 
 class ExtraAdminCategoryResource(ModelResource):
+    parent = fields.ForeignKey('self', 'parent', null=True, blank=True, full=True)
 
     class Meta:
         queryset = Category.objects.all()
@@ -148,7 +149,7 @@ class AdminImageResource(MultipartResource, ModelResource):
     post = fields.ForeignKey(AdminPostResource, 'post', full=True, null=True, blank=True)
 
     class Meta:
-        queryset = Image.objects.all()
+        queryset = Image.objects.order_by('-is_cover')
         resource_name = 'admin_images'
         list_allowed_methods = ['get', 'post']
         detailed_allowed_methods = ['get', 'post', 'put', 'delete', 'patch']

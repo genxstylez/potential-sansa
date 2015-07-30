@@ -19,7 +19,9 @@ export default React.createClass({
         return({
             collapsed: true,
             content: license_text,
-            current_title: ""
+            current_title: "",
+            _license: "License",
+            _photographer: "Photographer"
         })
     },
     handleOnClick() {
@@ -32,14 +34,14 @@ export default React.createClass({
 
     handleOnClickTitle(e) {
         switch(e.target.innerHTML) {
-            case "License":
+            case "版權":
                 this.setState({
                     current_title: "License",
                     content: license_text,
                     collapsed: false
                 });
                 break;
-            case "Photographer":
+            case "攝影":
                 this.setState({
                     current_title: "Photographer",
                     content: this.props.photographer,
@@ -54,6 +56,36 @@ export default React.createClass({
                 current_title: "",
                 content: ""
             });
+        }
+    },
+
+    handleOnMouseEnter(e) {
+        switch(e.target.innerHTML) {
+            case "License": 
+                this.setState({
+                    _license: "版權"
+                });
+                break;
+            case "Photographer":
+                this.setState({
+                    _photographer: "攝影"
+                })
+                break;
+        }
+
+    },
+    handleOnMouseOut(e) {
+        switch(e.target.innerHTML) {
+            case "版權": 
+                this.setState({
+                    _license: "License"
+                });
+                break;
+            case "攝影":
+                this.setState({
+                    _photographer: "Photographer"
+                })
+                break;
         }
     },
     render() {
@@ -74,9 +106,9 @@ export default React.createClass({
         var photographer_node = "";
         if (this.props.photographer) {
              photographer_node = <span>
-                    <span onClick={this.handleOnClickTitle}
+                    <span style={{width: "100px", display: "inline-block"}} onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}
-                        onMouseOut={this.handleOnMouseOut}>Photographer</span>
+                        onMouseOut={this.handleOnMouseOut}>{this.state._photographer}</span>
                     <span className="circle-divider" />
                 </span>
         };
@@ -84,9 +116,9 @@ export default React.createClass({
             <div className={cls} onClick={this.handleOnClick}>
                 <div className={title_cls}>
                     <span className="circle-divider" />
-                    <span onClick={this.handleOnClickTitle}
+                    <span style={{width: "60px", display: "inline-block"}} onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}
-                        onMouseOut={this.handleOnMouseOut}>License</span>
+                        onMouseOut={this.handleOnMouseOut}>{this.state._license}</span>
                     <span className="circle-divider" />
                     {photographer_node}
                 </div>

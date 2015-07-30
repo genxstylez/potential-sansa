@@ -46,8 +46,9 @@ export default React.createClass({
     },
 
     handleChange(e) {
+        var value = e.target.value != "" ? e.target.value: this.props.content;
         this.setState({
-            value: e.target.value
+            value: value
         });
     },
 

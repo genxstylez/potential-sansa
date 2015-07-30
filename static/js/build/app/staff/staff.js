@@ -23,6 +23,14 @@ var _PostPage = require('./routes/PostPage');
 
 var _PostPage2 = _interopRequireWildcard(_PostPage);
 
+var _AlbumsPage = require('./routes/AlbumsPage');
+
+var _AlbumsPage2 = _interopRequireWildcard(_AlbumsPage);
+
+var _AlbumPage = require('./routes/AlbumPage');
+
+var _AlbumPage2 = _interopRequireWildcard(_AlbumPage);
+
 var Route = _Router2['default'].Route;
 var DefaultRoute = _Router2['default'].DefaultRoute;
 var NotFoundRoute = _Router2['default'].NotFoundRoute;
@@ -34,14 +42,16 @@ var routes = _React2['default'].createElement(
     _React2['default'].createElement(Route, { name: 'home', path: '/staff/', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _IndexPage2['default'] }),
     _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] })
+    _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'albums', path: 'albums/', handler: _AlbumsPage2['default'] }),
+    _React2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId/', handler: _AlbumPage2['default'] })
 );
 
 _Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Root, state) {
     _React2['default'].render(_React2['default'].createElement(Root, null), document.querySelector('.react-container'));
 });
 
-},{"./routes/Application":245,"./routes/IndexPage":246,"./routes/PostPage":247,"react-router":41,"react/addons":56}],2:[function(require,module,exports){
+},{"./routes/AlbumPage":245,"./routes/AlbumsPage":246,"./routes/Application":247,"./routes/IndexPage":248,"./routes/PostPage":249,"react-router":41,"react/addons":56}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -41706,8 +41716,9 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleChange: function handleChange(e) {
+        var value = e.target.value != '' ? e.target.value : this.props.content;
         this.setState({
-            value: e.target.value
+            value: value
         });
     },
 
@@ -42081,6 +42092,8 @@ exports['default'] = _React2['default'].createClass({
                 });
             } else {
                 _this2._getImage(id);
+                _this2.props.refreshImage(_this2.props.post_id);
+                _this2.closeModal();
             }
         });
     },
@@ -42093,6 +42106,14 @@ exports['default'] = _React2['default'].createClass({
                 _this3.props.refreshImage(_this3.props.post_id);
                 _this3.closeModal();
             }
+        });
+    },
+
+    _setCover: function _setCover(id) {
+        var _this4 = this;
+
+        this.setCover(id, this.props.post_id, function (error, response) {
+            if (!error) _this4.props.refreshImage(_this4.props.post_id);
         });
     },
 
@@ -42156,6 +42177,10 @@ exports['default'] = _React2['default'].createClass({
         if (e.key === 'Enter') this.handleOnBlur();
     },
 
+    handleClickCover: function handleClickCover() {
+        this._setCover(this.state.id);
+    },
+
     generate_embed: function generate_embed(youtube_id) {
         var width = $('.on_deck').width();
         var height = width / 1.5;
@@ -42172,7 +42197,22 @@ exports['default'] = _React2['default'].createClass({
             caption: this.props.image.caption,
             tag: this.props.image.tag,
             video_id: this.props.image.video_id,
-            video_url: this.props.image.video_url
+            video_url: this.props.image.video_url,
+            is_cover: this.props.image.is_cover
+        });
+    },
+
+    componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+        var img = _import2['default'].has(nextProps.image.img, 'original') ? nextProps.image.img.original : '';
+        this.setState({
+            id: nextProps.image.id,
+            img: img,
+            display_img: img,
+            caption: nextProps.image.caption,
+            tag: nextProps.image.tag,
+            video_id: nextProps.image.video_id,
+            video_url: nextProps.image.video_url,
+            is_cover: nextProps.image.is_cover
         });
     },
 
@@ -42187,6 +42227,13 @@ exports['default'] = _React2['default'].createClass({
         return _React2['default'].createElement(
             'div',
             null,
+            _React2['default'].createElement(
+                'button',
+                { className: this.state.is_cover ? 'btn btn-info disabled' : 'btn btn-info',
+                    style: { position: 'absolute', left: '40%', zIndex: '999', top: '-25px' },
+                    onClick: this.handleClickCover },
+                this.state.is_cover ? '此為封面圖片' : '設定為封面圖片'
+            ),
             _React2['default'].createElement(
                 'button',
                 { className: 'btn btn-primary',
@@ -42703,14 +42750,17 @@ var _MutableCredit = require('./MutableCredit');
 
 var _MutableCredit2 = _interopRequireWildcard(_MutableCredit);
 
+var _APIMixin = require('../mixins/APIMixin');
+
+var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+
 'use strict';
 
 var Navigation = require('react-router').Navigation;
-
 exports['default'] = _React2['default'].createClass({
     displayName: 'PostContent',
 
-    mixins: [Navigation],
+    mixins: [Navigation, _APIMixin2['default']],
 
     propTypes: {
         id: _React2['default'].PropTypes.number.isRequired,
@@ -42730,14 +42780,26 @@ exports['default'] = _React2['default'].createClass({
     },
     _setCover: function _setCover(index) {
         var that = this;
+
         _import2['default'].forEach(this.props.imgs, function (img) {
-            if (img.tag == index) that.setState({
+            if (img.is_cover == index) that.setState({
                 cover: img
             });
         });
     },
-    componentDidMount: function componentDidMount() {
+
+    _deletePost: function _deletePost(id) {
         var _this = this;
+
+        this.deletePost(id, function (error, response) {
+            if (!error) if (!_this.goBack()) {
+                _this.transitionTo('/staff/');
+            }
+        });
+    },
+
+    componentDidMount: function componentDidMount() {
+        var _this2 = this;
 
         var that = this;
         if (this.props.imgs.length > 0) {
@@ -42747,8 +42809,8 @@ exports['default'] = _React2['default'].createClass({
         };
         if (this.isMounted()) {
             (function () {
-                var articleContent = _React2['default'].findDOMNode(_this.refs.articleContent);
-                _this.setState({
+                var articleContent = _React2['default'].findDOMNode(_this2.refs.articleContent);
+                _this2.setState({
                     overflow: articleContent.offsetHeight < articleContent.scrollHeight
                 });
                 setTimeout(function () {
@@ -42776,13 +42838,13 @@ exports['default'] = _React2['default'].createClass({
     },
 
     hasError: function hasError() {
-        var _this2 = this;
+        var _this3 = this;
 
         this.setState({
             hasError: true
         });
         setTimeout(function () {
-            _this2.setState({
+            _this3.setState({
                 hasError: false
             });
         }, 3000);
@@ -42792,6 +42854,11 @@ exports['default'] = _React2['default'].createClass({
         if (!this.goBack()) {
             this.transitionTo('/staff/');
         }
+    },
+
+    handleClickDelete: function handleClickDelete() {
+        var r = confirm('確定要刪除此文章？');
+        if (r) this._deletePost(this.props.id);
     },
 
     render: function render() {
@@ -42836,6 +42903,11 @@ exports['default'] = _React2['default'].createClass({
                     'div',
                     { className: alert_cls, style: alert_style, role: 'alert', ref: 'alert' },
                     '發生錯誤, 請再嘗試一次'
+                ),
+                _React2['default'].createElement(
+                    'button',
+                    { type: 'button', onClick: this.handleClickDelete, className: 'btn btn-danger', style: { top: '20px', position: 'absolute', left: '40px' } },
+                    '刪除'
                 ),
                 _React2['default'].createElement(
                     'div',
@@ -42885,7 +42957,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"./ClickableP":232,"./DropdownSpan":233,"./EditableDiv":234,"./MutableCredit":236,"./PostGallery":240,"./ToggableIcon":242,"classnames":3,"lodash":4,"moment":5,"react-router":41,"react/addons":56}],240:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"./ClickableP":232,"./DropdownSpan":233,"./EditableDiv":234,"./MutableCredit":236,"./PostGallery":240,"./ToggableIcon":242,"classnames":3,"lodash":4,"moment":5,"react-router":41,"react/addons":56}],240:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -42938,7 +43010,8 @@ exports['default'] = _React2['default'].createClass({
 
         this.getImages(post_id, function (error, response) {
             if (!error) _this.setState({
-                imgs: response.body.objects
+                imgs: response.body.objects,
+                on_deck: response.body.objects[0]
             });
         });
     },
@@ -43227,10 +43300,6 @@ var _React = require('react/addons');
 
 var _React2 = _interopRequireWildcard(_React);
 
-var _APIMixin = require('../mixins/APIMixin');
-
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
-
 var _classNames = require('classnames');
 
 var _classNames2 = _interopRequireWildcard(_classNames);
@@ -43239,8 +43308,6 @@ var _classNames2 = _interopRequireWildcard(_classNames);
 
 exports['default'] = _React2['default'].createClass({
     displayName: 'ToggableFilter',
-
-    mixins: [_APIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -43274,7 +43341,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],242:[function(require,module,exports){
+},{"classnames":3,"react/addons":56}],242:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43364,6 +43431,10 @@ exports['default'] = {
         _request2['default'].get('/staff_api/v1/categories/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
+    createCategory: function createCategory(params, cb) {
+        _request2['default'].post('/staff_api/v1/admin_categories/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
+    },
+
     getStarred: function getStarred(cb) {
         _request2['default'].get('/api/v1/starred/?format=json').type('application/json').accept('application/json').end(cb);
     },
@@ -43384,8 +43455,8 @@ exports['default'] = {
         _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
 
-    getAlbums: function getAlbums(cb) {
-        _request2['default'].get('/api/v1/albums/').query('format=json').type('application/json').accept('application/json').end(cb);
+    getAlbums: function getAlbums(query, cb) {
+        _request2['default'].get('/api/v1/albums/').query('format=json').query(query).type('application/json').accept('application/json').end(cb);
     },
 
     getMoreAlbums: function getMoreAlbums(url, cb) {
@@ -43411,6 +43482,10 @@ exports['default'] = {
 
     updatePost: function updatePost(id, params, cb) {
         _request2['default'].put('/staff_api/v1/admin_posts/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
+    },
+
+    deletePost: function deletePost(id, cb) {
+        _request2['default'].del('/staff_api/v1/admin_posts/' + id + '/').type('application/json').accept('application/json').end(cb);
     },
 
     createCredit: function createCredit(params, cb) {
@@ -43454,13 +43529,53 @@ exports['default'] = {
         }
     },
 
+    setCover: function setCover(id, post_id, cb) {
+        var params = {
+            id: id,
+            post_id: post_id,
+            is_cover: true
+        };
+        _request2['default'].post('/post_image/cover/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+    },
+
     deleteImage: function deleteImage(id, cb) {
         var params = {
             id: id
         };
         _request2['default'].post('/post_image/delete/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
-    }
-};
+    },
+
+    createAlbum: function createAlbum(params, cb) {
+        _request2['default'].post('/staff_api/v1/admin_albums/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
+    },
+
+    updateAlbum: function updateAlbum(id, params, cb) {
+        _request2['default'].put('/staff_api/v1/admin_albums/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
+    },
+
+    deleteAlbum: function deleteAlbum(id, cb) {
+        _request2['default'].del('/staff_api/v1/admin_albums/' + id + '/').type('application/json').accept('application/json').end(cb);
+    },
+
+    createPhoto: function createPhoto(album_uri, img, cb) {
+        _request2['default'].post('/staff_api/v1/admin_photos/').attach('img', img, img.name).field('album', album_uri).accept('application/json').end(cb);
+    },
+
+    updatePhoto: function updatePhoto(id, img, caption, album_uri, changed, cb) {
+        if (changed) _request2['default'].post('/staff_api/v1/admin_photos/').attach('img', img, img.name).field('id', id).field('album', album_uri).field('caption', caption).accept('application/json').end(cb);else {
+            var params = {
+                id: id,
+                caption: caption };
+            _request2['default'].post('/photo/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+        }
+    },
+
+    deletePhoto: function deletePhoto(id, cb) {
+        var params = {
+            id: id
+        };
+        _request2['default'].post('/photo/delete/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+    } };
 module.exports = exports['default'];
 
 },{"superagent":229}],244:[function(require,module,exports){
@@ -43540,6 +43655,775 @@ var _React = require('react/addons');
 
 var _React2 = _interopRequireWildcard(_React);
 
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
+var _APIMixin = require('../mixins/APIMixin');
+
+var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+
+'use strict';
+
+var State = require('react-router').State;
+var Navigation = require('react-router').Navigation;
+var Dropzone = require('react-dropzone');
+var Modal = require('react-modal');
+
+exports['default'] = _React2['default'].createClass({
+    displayName: 'AlbumPage',
+
+    mixins: [_APIMixin2['default'], State, Navigation],
+
+    getInitialState: function getInitialState() {
+        return {
+            id: 0,
+            name: '',
+            zh_name: '',
+            photos: [],
+            adding: false,
+            selected_photo: null,
+            files: [],
+            resource_uri: '',
+            redactor_inited: false,
+            display_img: null,
+            img_changed: false
+        };
+    },
+
+    _getAlbum: function _getAlbum(id) {
+        var _this = this;
+
+        this.getAlbum(id, function (error, response) {
+            if (response.body) _this.setState({
+                id: response.body.id,
+                photos: _this.state.photos.concat(response.body.photos),
+                name: response.body.name,
+                zh_name: response.body.zh_name,
+                photographer: response.body.photographer,
+                resource_uri: response.body.resource_uri
+            });
+        });
+    },
+
+    refreshAlbum: function refreshAlbum(id) {
+        var _this2 = this;
+
+        this.getAlbum(id, function (error, response) {
+            if (response.body) _this2.setState({
+                id: response.body.id,
+                photos: response.body.photos,
+                name: response.body.name,
+                zh_name: response.body.zh_name,
+                photographer: response.body.photographer,
+                resource_uri: response.body.resource_uri
+            });
+        });
+    },
+
+    _updateAlbum: function _updateAlbum(id, params) {
+        var _this3 = this;
+
+        this.updateAlbum(id, params, function (error, response) {
+            if (!error) {
+                $(_React2['default'].findDOMNode(_this3.refs.SubmitButton)).button('reset');
+            }
+        });
+    },
+
+    _updatePhoto: function _updatePhoto(id, img, caption) {
+        var _this4 = this;
+
+        this.updatePhoto(id, img, caption, this.state.resource_uri.replace('albums', 'admin_albums'), this.state.img_changed, function (error, response) {
+            if (!error) {
+                _this4.setState({
+                    img_changed: false
+                });
+                _this4.refreshAlbum(_this4.state.id);
+                _this4.closeEditModal();
+            }
+        });
+    },
+    _deletePhoto: function _deletePhoto(id) {
+        var _this5 = this;
+
+        this.deletePhoto(id, function (error, response) {
+            if (!error) {
+                _this5.refreshAlbum(_this5.state.id);
+                _this5.closeEditModal();
+            }
+        });
+    },
+
+    _deleteAlbum: function _deleteAlbum(id) {
+        var _this6 = this;
+
+        this.deleteAlbum(id, function (error, response) {
+            if (!error) {
+                _this6.handleClickOnCross();
+            }
+        });
+    },
+
+    _createPhotos: function _createPhotos() {
+        var _this7 = this;
+
+        var that = this;
+        _import2['default'].forEach(this.state.files, function (file) {
+            that.createPhoto(that.state.resource_uri.replace('albums', 'admin_albums'), file, function (error, response) {
+                if (!error) {
+                    that.setState({
+                        files: _import2['default'].rest(that.state.files)
+                    });
+                    _this7.refreshAlbum(_this7.state.id);
+                };
+            });
+        });
+        this.toggleAddMode();
+    },
+
+    componentDidMount: function componentDidMount() {
+        this._getAlbum(this.getParams().albumId);
+        $('.collapse').collapse();
+    },
+
+    handleClickOnPhoto: function handleClickOnPhoto(photo) {
+        this.setState({
+            selected_photo: photo,
+            display_img: photo.img.small
+        });
+    },
+
+    toggleAddMode: function toggleAddMode() {
+        this.setState({
+            adding: !this.state.adding
+        });
+    },
+
+    handleDrop: function handleDrop(files) {
+        this.setState({
+            files: this.state.files.concat(files)
+        });
+    },
+
+    handleUpload: function handleUpload() {
+        this._createPhotos();
+    },
+
+    handleChangeEN: function handleChangeEN(e) {
+        var value = e.target.value != '' ? e.target.value : this.state.name;
+        this.setState({
+            name: value
+        });
+    },
+
+    handleKeyUpEN: function handleKeyUpEN(e) {
+        if (e.key === 'Enter') this.handleSubmit();
+    },
+
+    handleChangeZH: function handleChangeZH(e) {
+        var value = e.target.value != '' ? e.target.value : this.state.zh_name;
+        this.setState({
+            zh_name: value
+        });
+    },
+
+    handleKeyUpZH: function handleKeyUpZH(e) {
+        if (e.key === 'Enter') this.handleSubmit();
+    },
+
+    changePhotographer: function changePhotographer(value) {
+        var val = value != '' ? value : this.state.photographer;
+        this.setState({
+            photographer: val
+        });
+    },
+
+    handleSubmit: function handleSubmit(e) {
+        $(_React2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
+        this._updateAlbum(this.state.id, {
+            name: this.state.name,
+            zh_name: this.state.zh_name,
+            photographer: this.state.photographer
+        });
+    },
+
+    handleClickOnCross: function handleClickOnCross() {
+        if (!this.goBack()) {
+            this.transitionTo('/staff/albums/');
+        }
+    },
+
+    handleChangeCaption: function handleChangeCaption(e) {
+        this.setState({
+            selected_photo: {
+                id: this.state.selected_photo.id,
+                img: this.state.selected_photo.img,
+                caption: e.target.value
+            }
+        });
+    },
+
+    handleChangeImg: function handleChangeImg(e) {
+        var self = this;
+        var reader = new FileReader();
+        var file = e.target.files[0];
+        reader.onload = function (upload) {
+            self.setState({
+                selected_photo: {
+                    id: self.state.selected_photo.id,
+                    img: file,
+                    caption: self.state.selected_photo.caption
+                },
+                display_img: upload.target.result,
+                img_changed: true
+            });
+        };
+
+        reader.readAsDataURL(file);
+    },
+
+    handleDeletePhoto: function handleDeletePhoto() {
+        var res = confirm('確定要刪除此圖片？');
+        if (res) this._deletePhoto(this.state.selected_photo.id);
+    },
+
+    handleDeleteAlbum: function handleDeleteAlbum() {
+        var res = confirm('確定要刪除此相簿？');
+        if (res) this._deleteAlbum(this.state.id);
+    },
+
+    handleSubmitPhoto: function handleSubmitPhoto(e) {
+        e.preventDefault();
+        this._updatePhoto(this.state.selected_photo.id, this.state.selected_photo.img, this.state.selected_photo.caption);
+    },
+
+    closeEditModal: function closeEditModal() {
+        this.setState({
+            selected_photo: null
+        });
+    },
+
+    componentDidUpdate: function componentDidUpdate() {
+        if (!this.state.redactor_inited) {
+            var that = this;
+            $(_React2['default'].findDOMNode(this.refs.TextArea)).redactor({
+                lang: 'zh_tw',
+                minHeight: '300px',
+                buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                plugins: ['scriptbuttons', 'fullscreen'],
+                changeCallback: function changeCallback() {
+                    that.changePhotographer(this.code.get());
+                },
+                initCallback: function initCallback() {
+                    that.setState({
+                        redactor_inited: true
+                    });
+                }
+            });
+        }
+    },
+
+    render: function render() {
+        var _this8 = this;
+
+        var fileNode = '';
+        if (this.state.files.length > 0) {
+            fileNode = _React2['default'].createElement(
+                'div',
+                { style: { width: '80%', margin: '50px auto' } },
+                _React2['default'].createElement(
+                    'button',
+                    { onClick: this.handleUpload, type: 'button', className: 'btn btn-primary', style: { marginBottom: '10px', marginTop: '-52px' } },
+                    '上傳'
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'progress', style: { display: this.state.uploading ? 'block' : 'none' } },
+                    _React2['default'].createElement('div', { className: 'progress-bar', role: 'progressbar', style: { width: this.state.percentage + '%' } })
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'list-group' },
+                    this.state.files.map(function (file) {
+                        return _React2['default'].createElement(
+                            'a',
+                            { href: '#', key: file.name, className: 'list-group-item' },
+                            file.name
+                        );
+                    }, this)
+                )
+            );
+        }
+        var PhotosNode = _import2['default'].map(this.state.photos, function (photo) {
+            return _React2['default'].createElement(
+                'div',
+                { key: photo.id },
+                _React2['default'].createElement('img', { src: photo.img.small,
+                    onClick: _this8.handleClickOnPhoto.bind(_this8, photo) })
+            );
+        });
+        return _React2['default'].createElement(
+            'div',
+            { style: { marginTop: '50px' } },
+            _React2['default'].createElement(
+                'span',
+                { className: 'close', style: { margin: '-40px 20px ' } },
+                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handleClickOnCross })
+            ),
+            _React2['default'].createElement(
+                'div',
+                { className: 'col-lg-offset-2 col-md-offset-md-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8 albums', ref: 'Album' },
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'panel-group', role: 'tablist', 'aria-multiselectable': 'true' },
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'panel panel-default' },
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'panel-heading', role: 'tab', id: 'ENname' },
+                            _React2['default'].createElement(
+                                'span',
+                                { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
+                                '編輯',
+                                this.state.name
+                            ),
+                            _React2['default'].createElement(
+                                'div',
+                                { className: 'btn-group pull-right' },
+                                _React2['default'].createElement(
+                                    'button',
+                                    { type: 'button', className: 'btn btn-danger', onClick: this.handleDeleteAlbum, style: { marginRight: '10px' } },
+                                    '刪除'
+                                )
+                            )
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'panel-body' },
+                            _React2['default'].createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _React2['default'].createElement(
+                                    'label',
+                                    { className: 'form-label' },
+                                    '英文標題'
+                                ),
+                                _React2['default'].createElement('input', {
+                                    name: 'zh_name',
+                                    style: { margin: '10px 0' },
+                                    className: 'form-control',
+                                    type: 'text',
+                                    value: this.state.name,
+                                    onChange: this.handleChangeEN,
+                                    onKeyUp: this.handleKeyUpEN })
+                            ),
+                            _React2['default'].createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _React2['default'].createElement(
+                                    'label',
+                                    { className: 'form-label' },
+                                    '中文標題'
+                                ),
+                                _React2['default'].createElement('input', {
+                                    name: 'zh_name',
+                                    style: { margin: '10px 0' },
+                                    className: 'form-control',
+                                    type: 'text',
+                                    value: this.state.zh_name,
+                                    onChange: this.handleChangeZH,
+                                    onKeyUp: this.handleKeyUpZH })
+                            ),
+                            _React2['default'].createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _React2['default'].createElement(
+                                    'label',
+                                    { className: 'form-label' },
+                                    '攝影'
+                                ),
+                                _React2['default'].createElement(
+                                    'span',
+                                    null,
+                                    _React2['default'].createElement('textarea', {
+                                        ref: 'TextArea',
+                                        name: 'photographer',
+                                        defaultValue: '關於攝影師',
+                                        value: this.state.photographer }),
+                                    _React2['default'].createElement(
+                                        'p',
+                                        { className: 'help-block' },
+                                        '若要換行請輸入shift+enter, 分段落請輸入enter'
+                                    )
+                                )
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { onClick: this.handleSubmit,
+                                    ref: 'SubmitButton',
+                                    className: 'btn btn-primary', 'data-loading-text': '儲存中...', type: 'submit' },
+                                '儲存'
+                            )
+                        )
+                    )
+                ),
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'panel-group', id: 'accordion', role: 'tablist', 'aria-multiselectable': 'true' },
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'panel panel-default' },
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'panel-heading', role: 'tab', id: 'photos' },
+                            _React2['default'].createElement(
+                                'h4',
+                                { className: 'panel-title' },
+                                _React2['default'].createElement(
+                                    'a',
+                                    { role: 'button', 'data-toggle': 'collapse', 'data-parent': '#accordion', href: '#collapsePhotos', 'aria-expanded': 'true', 'aria-controls': 'collapseOne' },
+                                    '圖片'
+                                )
+                            )
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { id: 'collapsePhotos', className: 'panel-collapse collapse in', role: 'tabpanel', 'aria-labelledby': 'photos' },
+                            _React2['default'].createElement(
+                                'div',
+                                { className: 'panel-body' },
+                                _React2['default'].createElement(
+                                    'div',
+                                    { className: 'flex-box' },
+                                    PhotosNode
+                                ),
+                                _React2['default'].createElement(
+                                    'button',
+                                    { className: 'btn btn-info', type: 'button', onClick: this.toggleAddMode },
+                                    '新增圖片'
+                                )
+                            )
+                        )
+                    )
+                ),
+                _React2['default'].createElement(
+                    Modal,
+                    { isOpen: this.state.adding, onRequestClose: this.toggleAddMode },
+                    _React2['default'].createElement(
+                        Dropzone,
+                        { onDrop: this.handleDrop, accept: 'image/jpeg, image/gif, image/jpg, image/png',
+                            style: { cursor: 'pointer', width: '80%', height: '200px', border: '2px dashed #c8c8c8', margin: '0 auto', color: '#c8c8c8' } },
+                        _React2['default'].createElement(
+                            'div',
+                            { style: { fontSize: '18px', marginTop: '80px', textAlign: 'center' } },
+                            '請將欲上傳圖片拖曳至此或點擊此框選取檔案'
+                        )
+                    ),
+                    fileNode
+                ),
+                _React2['default'].createElement(
+                    Modal,
+                    { isOpen: this.state.selected_photo != null,
+                        onRequestClose: this.closeEditModal },
+                    _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeEditModal }),
+                    _React2['default'].createElement(
+                        'form',
+                        { className: 'form-horizontal', onSubmit: this.handleSubmitPhoto, style: { margin: '20px auto', width: '80%' } },
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'form-group' },
+                            _React2['default'].createElement('img', { src: this.state.display_img, style: { marginBottom: '5px', width: '150px' } }),
+                            _React2['default'].createElement('input', { type: 'file', accept: 'image/jpeg, image/gif, image/jpg, image/png', onChange: this.handleChangeImg })
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'form-group' },
+                            _React2['default'].createElement(
+                                'label',
+                                null,
+                                '註解'
+                            ),
+                            _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption,
+                                value: _import2['default'].has(this.state.selected_photo, 'caption') ? this.state.selected_photo.caption : '' })
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'form-group' },
+                            _React2['default'].createElement(
+                                'button',
+                                { type: 'submit', className: 'btn btn-primary', style: { marginRight: '10px' } },
+                                '儲存'
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { type: 'button', className: 'btn btn-danger', onClick: this.handleDeletePhoto, style: { marginRight: '10px' } },
+                                '刪除'
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { type: 'button', className: 'btn btn-default', onClick: this.closeEditModal },
+                                '取消'
+                            )
+                        )
+                    )
+                )
+            )
+        );
+    }
+
+});
+module.exports = exports['default'];
+
+},{"../mixins/APIMixin":243,"lodash":4,"react-dropzone":6,"react-modal":14,"react-router":41,"react/addons":56}],246:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = require('react/addons');
+
+var _React2 = _interopRequireWildcard(_React);
+
+var _import = require('lodash');
+
+var _import2 = _interopRequireWildcard(_import);
+
+var _Router = require('react-router');
+
+var _Router2 = _interopRequireWildcard(_Router);
+
+var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
+
+var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+
+var _APIMixin = require('../mixins/APIMixin');
+
+var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+
+var _ToggableFilter = require('../components/ToggableFilter');
+
+var _ToggableFilter2 = _interopRequireWildcard(_ToggableFilter);
+
+var _ToggableIcon = require('../components/ToggableIcon');
+
+var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
+
+'use strict';
+
+var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var Navigation = require('react-router').Navigation;
+
+var Link = _Router2['default'].Link;
+
+exports['default'] = _React2['default'].createClass({
+    displayName: 'AlbumsPage',
+
+    mixins: [_APIMixin2['default'], Navigation, _ScrollListenerMixin2['default']],
+
+    getInitialState: function getInitialState() {
+        return {
+            albums: [],
+            next_page: null,
+            has_next: false,
+            is_loading: false,
+            all_filter: true,
+            published_filter: false
+        };
+    },
+
+    onPageScroll: function onPageScroll() {
+        var bottomOffset = _React2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - window.innerHeight - this.state.scrollTop;
+        if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
+            this.setState({
+                is_loading: true
+            });
+            this._getMoreAlbums(this.state.next_page);
+        }
+    },
+
+    processResponse: function processResponse(error, response) {
+        var new_elements = error ? [] : response.body.objects,
+            next_page = response.body.meta.next,
+            has_next = response.body.meta.next != null;
+        this.setState({
+            albums: this.state.albums.concat(new_elements),
+            next_page: next_page,
+            has_next: has_next,
+            is_loading: false });
+    },
+
+    _getMoreAlbums: function _getMoreAlbums(url) {
+        var _this = this;
+
+        this.getMoreAlbums(url, function (error, response) {
+            _this.processResponse(error, response);
+        });
+    },
+
+    _getAlbums: function _getAlbums(query) {
+        var _this2 = this;
+
+        this.getAlbums(query, function (error, response) {
+            _this2.processResponse(error, response);
+        });
+    },
+
+    componentDidMount: function componentDidMount() {
+        this._getAlbums(null);
+    },
+
+    _createNewAlbum: function _createNewAlbum() {
+        var _this3 = this;
+
+        var params = {
+            name: 'English Heading',
+            zh_name: 'Chinese Heading' };
+        this.createAlbum(params, function (error, response) {
+            if (!error) var album_id = response.headers.location.split('/')[6];
+            _this3.transitionTo('album', params = { albumId: album_id });
+        });
+    },
+
+    handleClickPublished: function handleClickPublished(bool) {
+        this.setState({
+            published_filter: bool,
+            all_filter: false,
+            albums: []
+        });
+        this._getAlbums('&published=' + bool);
+    },
+
+    handleClickPublishedButton: function handleClickPublishedButton() {
+        _React2['default'].findDOMNode(this.refs.published).click();
+    },
+
+    handleClickAll: function handleClickAll() {
+        this.setState({
+            all_filter: !this.state.all_filter,
+            albums: []
+        });
+        this._getAlbums(null);
+    },
+
+    handleClickNew: function handleClickNew() {
+        this._createNewAlbum();
+    },
+
+    componentDidUpdate: function componentDidUpdate() {
+        $('[data-toggle="tooltip"]').tooltip();
+    },
+
+    handeClickOnCross: function handeClickOnCross() {
+        if (!this.goBack()) {
+            this.transitionTo('/');
+        }
+    },
+    render: function render() {
+        var AlbumNodes = _import2['default'].map(this.state.albums, function (album) {
+            var imgNode = '';
+            if (album.cover != null) imgNode = _React2['default'].createElement('img', { src: album.cover.img.small, style: { height: '80px', marginRight: '20px' } });
+            return _React2['default'].createElement(
+                'li',
+                { key: album.id, className: 'list-group-item' },
+                _React2['default'].createElement(
+                    Link,
+                    { to: 'album', params: { albumId: album.id } },
+                    imgNode,
+                    album.name,
+                    ' ',
+                    album.zh_name != '' ? '/ ' + album.zh_name : ''
+                ),
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'pull-right' },
+                    _React2['default'].createElement('span', { style: { display: 'inline-block', height: '85%', verticalAlign: 'middle' } }),
+                    _React2['default'].createElement(_ToggableIcon2['default'], {
+                        tooltip: '發表',
+                        style: { lineHeight: album.cover != null ? '70px' : 'auto' },
+                        className: 'glyphicon glyphicon-ok',
+                        name: 'published',
+                        element_id: album.id,
+                        selected: album.published })
+                )
+            );
+        });
+        return _React2['default'].createElement(
+            'div',
+            { style: { marginTop: '50px' } },
+            _React2['default'].createElement(
+                Link,
+                { style: { position: 'fixed', bottom: '20px', left: '20px' }, to: 'home' },
+                _React2['default'].createElement(
+                    'button',
+                    { className: 'btn-lg btn-primary' },
+                    '文章列表'
+                )
+            ),
+            _React2['default'].createElement(
+                'div',
+                { className: 'col-lg-offset-2 col-md-offset-md-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8 albums', ref: 'Albums' },
+                _React2['default'].createElement(
+                    'div',
+                    { className: 'panel panel-default' },
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'panel-heading' },
+                        _React2['default'].createElement(
+                            'span',
+                            { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
+                            'Albums / 相簿'
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'btn-group pull-right' },
+                            _React2['default'].createElement(
+                                'button',
+                                { className: 'btn btn-default', type: 'button', onClick: this.handleClickNew },
+                                '新相簿'
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { className: this.state.all_filter ? 'btn btn-info' : 'btn btn-default', type: 'button', onClick: this.handleClickAll },
+                                'All'
+                            ),
+                            _React2['default'].createElement(
+                                'button',
+                                { className: 'btn btn-default', type: 'button', onClick: this.handleClickPublishedButton },
+                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublished })
+                            )
+                        )
+                    ),
+                    _React2['default'].createElement(
+                        'ul',
+                        { className: 'list-group' },
+                        AlbumNodes
+                    )
+                )
+            )
+        );
+    }
+
+});
+module.exports = exports['default'];
+
+},{"../components/ToggableFilter":241,"../components/ToggableIcon":242,"../mixins/APIMixin":243,"../mixins/ScrollListenerMixin":244,"lodash":4,"react-router":41,"react/addons":56,"react/lib/ReactCSSTransitionGroup":89}],247:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+Object.defineProperty(exports, '__esModule', {
+    value: true
+});
+
+var _React = require('react/addons');
+
+var _React2 = _interopRequireWildcard(_React);
+
 var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
@@ -43557,7 +44441,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"react-router":41,"react/addons":56}],246:[function(require,module,exports){
+},{"react-router":41,"react/addons":56}],248:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43604,6 +44488,8 @@ var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
 
 'use strict';
 
+var Modal = require('react-modal');
+
 var Link = _Router2['default'].Link;
 
 exports['default'] = _React2['default'].createClass({
@@ -43623,7 +44509,10 @@ exports['default'] = _React2['default'].createClass({
             is_loading: false,
             starred_filter: false,
             published_filter: false,
-            all_filter: true
+            all_filter: true,
+            adding: false,
+            new_category: '',
+            selected_parent: null
         };
     },
     onPageScroll: function onPageScroll() {
@@ -43698,6 +44587,18 @@ exports['default'] = _React2['default'].createClass({
         });
     },
 
+    _createCategory: function _createCategory(params) {
+        var _this5 = this;
+
+        this.createCategory(params, function (error, response) {
+            if (!error) {
+                _this5.toggleAddMode();
+                _this5._getCategories();
+            }
+            $(_React2['default'].findDOMNode(_this5.refs.SubmitButton)).button('loading');
+        });
+    },
+
     componentDidMount: function componentDidMount() {
         this._getCategories();
         this.setState({
@@ -43729,11 +44630,15 @@ exports['default'] = _React2['default'].createClass({
         }
     },
 
+    componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+        $('[data-toggle="tooltip"]').tooltip();
+    },
+
     handleClickNew: function handleClickNew() {
         this._createNewPost();
     },
 
-    handleClickStarredButton: function handleClickStarredButton() {
+    handleClickStarredButton: function handleClickStarredButton(e) {
         _React2['default'].findDOMNode(this.refs.starred).click();
     },
 
@@ -43744,7 +44649,7 @@ exports['default'] = _React2['default'].createClass({
         });
     },
 
-    handleClickPublised: function handleClickPublised(bool) {
+    handleClickPublished: function handleClickPublished(bool) {
         this.setState({
             published_filter: bool,
             all_filter: false
@@ -43764,6 +44669,38 @@ exports['default'] = _React2['default'].createClass({
         _React2['default'].findDOMNode(this.refs.published).click();
     },
 
+    toggleAddMode: function toggleAddMode() {
+        this.setState({
+            adding: !this.state.adding
+        });
+    },
+
+    handleChangeParent: function handleChangeParent(e) {
+        this.setState({
+            selected_parent: e.target.value.replace('categories', 'admin_categories')
+        });
+    },
+
+    handleChangeCategory: function handleChangeCategory(e) {
+        this.setState({
+            new_category: e.target.value
+        });
+    },
+
+    handleKeyUpCategory: function handleKeyUpCategory(e) {
+        if (e.key === 'Enter') this.handleSubmitCategory();
+    },
+
+    handleSubmitCategory: function handleSubmitCategory(e) {
+        e.preventDefault();
+        $(_React2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
+        var params = {
+            parent: this.state.selected_parent,
+            name: this.state.new_category
+        };
+        this._createCategory(params);
+    },
+
     render: function render() {
         var CategoryNodes = [];
         _import2['default'].map(this.state.categories, function (category) {
@@ -43774,9 +44711,13 @@ exports['default'] = _React2['default'].createClass({
         });
         var PostNodes = _import2['default'].map(this.state.posts, function (post) {
             return _React2['default'].createElement(
-                Link,
-                { key: post.id, className: 'list-group-item', to: 'post', params: { postId: post.id } },
-                post.heading,
+                'li',
+                { key: post.id, className: 'list-group-item' },
+                _React2['default'].createElement(
+                    Link,
+                    { to: 'post', params: { postId: post.id } },
+                    post.heading
+                ),
                 _React2['default'].createElement(
                     'span',
                     { className: 'pull-right' },
@@ -43798,9 +44739,18 @@ exports['default'] = _React2['default'].createClass({
                         'div',
                         { className: 'panel-heading' },
                         _React2['default'].createElement(
-                            'h3',
-                            { style: { fontSize: '24px' }, className: 'panel-title' },
+                            'span',
+                            { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
                             'Categories / 類別'
+                        ),
+                        _React2['default'].createElement(
+                            'div',
+                            { className: 'btn-group pull-right' },
+                            _React2['default'].createElement(
+                                'button',
+                                { className: 'btn btn-default', type: 'button', onClick: this.toggleAddMode },
+                                '新類別'
+                            )
                         )
                     ),
                     _React2['default'].createElement(
@@ -43812,6 +44762,15 @@ exports['default'] = _React2['default'].createClass({
                             'All'
                         ),
                         CategoryNodes
+                    )
+                ),
+                _React2['default'].createElement(
+                    Link,
+                    { style: { position: 'fixed', bottom: '20px', left: '20px' }, to: 'albums' },
+                    _React2['default'].createElement(
+                        'button',
+                        { className: 'btn-lg btn-primary' },
+                        '免費圖庫'
                     )
                 )
             ),
@@ -43850,7 +44809,7 @@ exports['default'] = _React2['default'].createClass({
                             _React2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.handleClickPublishedButton },
-                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublised })
+                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublished })
                             )
                         )
                     ),
@@ -43860,6 +44819,59 @@ exports['default'] = _React2['default'].createClass({
                         PostNodes
                     )
                 )
+            ),
+            _React2['default'].createElement(
+                Modal,
+                { isOpen: this.state.adding, onRequestClose: this.toggleAddMode },
+                _React2['default'].createElement(
+                    'form',
+                    { className: 'form-horizontal', onSubmit: this.handleSubmitCategory, style: { margin: '20px auto', width: '80%' } },
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _React2['default'].createElement(
+                            'label',
+                            null,
+                            '主類別'
+                        ),
+                        _React2['default'].createElement(
+                            'select',
+                            { className: 'form-control', name: 'parent_category', onChange: this.handleChangeParent },
+                            _React2['default'].createElement(
+                                'option',
+                                null,
+                                '無'
+                            ),
+                            this.state.categories.map(function (category) {
+                                return _React2['default'].createElement(
+                                    'option',
+                                    { value: category.resource_uri },
+                                    category.name
+                                );
+                            })
+                        )
+                    ),
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _React2['default'].createElement(
+                            'label',
+                            null,
+                            '類別名稱'
+                        ),
+                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onKeyUp: this.handleKeyUpCategory, onChange: this.handleChangeCategory,
+                            value: this.state.new_category })
+                    ),
+                    _React2['default'].createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _React2['default'].createElement(
+                            'button',
+                            { type: 'submit', className: 'btn btn-primary', ref: 'SubmitButton', 'data-loading-text': '儲存中...', style: { marginRight: '10px' } },
+                            '儲存'
+                        )
+                    )
+                )
             )
         );
     }
@@ -43867,7 +44879,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Nav":238,"../components/ToggableFilter":241,"../components/ToggableIcon":242,"../mixins/APIMixin":243,"../mixins/ScrollListenerMixin":244,"classnames":3,"lodash":4,"react-router":41,"react/addons":56}],247:[function(require,module,exports){
+},{"../components/Nav":238,"../components/ToggableFilter":241,"../components/ToggableIcon":242,"../mixins/APIMixin":243,"../mixins/ScrollListenerMixin":244,"classnames":3,"lodash":4,"react-modal":14,"react-router":41,"react/addons":56}],249:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };

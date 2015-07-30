@@ -7,7 +7,7 @@ from tastypie.api import Api
 from posts.resources import CategoryResource, PostResource, StarredResource, ImageResource
 from posts.resources import AdminCategoryResource, AdminPostResource, ExtraAdminCategoryResource
 from posts.resources import AdminCreditResource, AdminImageResource
-from photos.resources import AlbumResource
+from photos.resources import AlbumResource, AdminAlbumResource, AdminPhotoResource
 from subscriptions.resources import SubscriberResource
 
 v1_api = Api(api_name='v1')
@@ -24,6 +24,8 @@ staff_api.register(ExtraAdminCategoryResource())
 staff_api.register(AdminPostResource())
 staff_api.register(AdminCreditResource())
 staff_api.register(AdminImageResource())
+staff_api.register(AdminAlbumResource())
+staff_api.register(AdminPhotoResource())
 
 urlpatterns = [
     # Examples:
@@ -33,6 +35,9 @@ urlpatterns = [
     url(r'^_search/', 'ology.views.search', name='search'),
     url(r'^post_image/edit/', 'posts.views.image_edit', name='post-image-edit'),
     url(r'^post_image/delete/', 'posts.views.image_delete', name='post-image-delete'),
+    url(r'^post_image/cover/', 'posts.views.set_cover', name='post-image-cover'),
+    url(r'^photo/edit/', 'photos.views.photo_edit', name='photo-photo-edit'),
+    url(r'^photo/delete/', 'photos.views.photo_delete', name='photo-photo-delete'),
     url(r'^staff_api/', include(staff_api.urls)),
     url(r'^api/', include(v1_api.urls)),
     url(r'^redactor/', include('redactor.urls')),

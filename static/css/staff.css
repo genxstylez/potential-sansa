@@ -23,6 +23,9 @@
     cursor: pointer;
     font-size: 20px;
 }
+.glyphicon {
+    cursor: pointer;
+}
 
 .glyphicon:hover {
     opacity: 0.6;
@@ -77,7 +80,7 @@
 }
 
 .ReactModal__Overlay--after-open {
-    z-index: 9;
+    z-index: 999;
 }
 
 .ReactModal__Content {
@@ -88,4 +91,20 @@
 .dropzone.active {
     border-color: #000000 !important;
     color: #000000 !important;
+}
+.flex-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.flex-box div {
+    margin: 5px;
+    border: 1px solid #c8c8c8;
+    cursor: pointer;
+}
+
+.flex-box div:hover {
+    opacity: 0.8;
 }

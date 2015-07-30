@@ -20,8 +20,8 @@ export default React.createClass({
         });
         return (
             <div className="credit">
-                <span className="label role">{this.props.role}</span>
-                <span className="name">{names}</span>
+                <div className="role">{this.props.role}</div>
+                <div className="name">{names}</div>
             </div>
         );
     }

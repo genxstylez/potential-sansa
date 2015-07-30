@@ -15,7 +15,16 @@ export default {
             .accept('application/json')
             .end(cb);
     },
-    
+
+    createCategory(params, cb) {
+        request.post('/staff_api/v1/admin_categories/')
+            .set('X-CSRFToken', csrfToken)
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb); 
+    },
+
     getStarred(cb) {
         request.get('/api/v1/starred/?format=json')
             .type('application/json')
@@ -49,11 +58,10 @@ export default {
             .end(cb);
     },
 
-
-
-    getAlbums(cb) {
+    getAlbums(query, cb) {
         request.get('/api/v1/albums/')
             .query('format=json')
+            .query(query)
             .type('application/json')
             .accept('application/json')
             .end(cb);
@@ -104,6 +112,13 @@ export default {
             .end(cb);
     },
 
+    deletePost(id, cb) {
+        request.del('/staff_api/v1/admin_posts/' + id + '/')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
     createCredit(params, cb) {
         request.post('/staff_api/v1/admin_credits/')
             .send(params)
@@ -111,6 +126,7 @@ export default {
             .accept('application/json')
             .end(cb);
     },
+
 
     updateCredit(id, params, cb){
         request.put('/staff_api/v1/admin_credits/' + id + '/')
@@ -189,6 +205,20 @@ export default {
 
     },
 
+    setCover(id, post_id, cb) {
+        var params = {
+            id: id,
+            post_id,
+            is_cover: true
+        };
+        request.post('/post_image/cover/')
+            .set('X-CSRFToken', csrfToken)
+            .type('form')
+            .send(params)
+            .accept('application/json')
+            .end(cb);
+    },
+
     deleteImage(id, cb) {
         var params = {
             id: id
@@ -200,5 +230,73 @@ export default {
             .accept('application/json')
             .end(cb);
         
-    }
+    },
+
+    createAlbum(params, cb) {
+        request.post('/staff_api/v1/admin_albums/')
+            .set('X-CSRFToken', csrfToken)
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    updateAlbum(id, params, cb) {
+        request.put('/staff_api/v1/admin_albums/' + id + '/')
+            .send(params)
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    deleteAlbum(id, cb) {
+        request.del('/staff_api/v1/admin_albums/' + id + '/')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
+    createPhoto(album_uri, img, cb) {
+        request.post('/staff_api/v1/admin_photos/')
+            .attach('img', img, img.name)
+            .field('album', album_uri)
+            .accept('application/json')
+            .end(cb)
+    },
+
+    updatePhoto(id, img, caption, album_uri, changed, cb) {
+        if (changed)
+            request.post('/staff_api/v1/admin_photos/')
+                .attach('img', img, img.name)
+                .field('id', id)
+                .field('album', album_uri)
+                .field('caption', caption)
+                .accept('application/json')
+                .end(cb);
+        else {
+            var params = {
+                id: id,
+                caption: caption,
+            };
+            request.post('/photo/edit/')
+                .set('X-CSRFToken', csrfToken)
+                .type('form')
+                .send(params)
+                .accept('application/json')
+                .end(cb);
+        }
+    },
+
+    deletePhoto(id, cb) {
+        var params = {
+            id: id
+        };
+        request.post('/photo/delete/')
+            .set('X-CSRFToken', csrfToken)
+            .type('form')
+            .send(params)
+            .accept('application/json')
+            .end(cb);
+        
+    },
 };

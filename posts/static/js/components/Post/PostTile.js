@@ -18,10 +18,22 @@ export default React.createClass({
         last_modified: React.PropTypes.string.isRequired,
         uri: React.PropTypes.string,
     },
+    generate_embed() {
+        var width = $('.tile').width();
+        var height = width / 1.5;
+
+        return '<iframe width="' + width + '" height="' + height + '" ' +
+                'src="https://www.youtube.com/embed/' + this.props.cover.video_id + '" ' +
+                'frameborder="0" allowfullscreen></iframe>';
+    },
+
     render() {
+        var imgNode = this.props.cover.video_id ? 
+            <div key={this.props.cover.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.generate_embed()}} /> :  
+            <img src={this.props.cover.img !== undefined ? this.props.cover.img.large : ''} />
         return (
             <div className="tile" onClick={this.props.onClick}>
-                <img src={this.props.cover.img.large} ></img>
+                {imgNode}
                 <div className="intro">
                     <div className="info">
                         { this.props.category} | {moment(this.props.created_at).format("YYYY.MM.DD")}

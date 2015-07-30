@@ -16,6 +16,16 @@ def image_edit(request):
     return HttpResponseBadRequest()
 
 
+def set_cover(request):
+    if all(key in request.POST for key in ['id', 'post_id']):
+        image = Image.objects.get(id=request.POST['id'])
+        Image.objects.filter(post=request.POST['post_id']).exclude(id=request.POST['id']).update(is_cover=False)
+        image.is_cover = True
+        image.save()
+        return HttpResponse(status=204)
+    return HttpResponseBadRequest()
+
+
 def image_delete(request):
     if request.POST['id']:
         image = Image.objects.get(id=request.POST['id'])

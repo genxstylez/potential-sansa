@@ -11,9 +11,10 @@ import DropdownSpan from './DropdownSpan';
 import EditableDiv from './EditableDiv';
 import MutableCredit from './MutableCredit';
 var Navigation = require('react-router').Navigation;
+import APIMixin from '../mixins/APIMixin';
 
 export default React.createClass({
-    mixins: [Navigation],
+    mixins: [Navigation, APIMixin],
 
     propTypes: {
         id: React.PropTypes.number.isRequired,
@@ -34,13 +35,24 @@ export default React.createClass({
     },
     _setCover(index) {
         const that = this;
+        
         _.forEach(this.props.imgs, function(img){
-            if(img.tag == index)
+            if(img.is_cover == index)
                 that.setState({
                     cover: img
                 });
         });
     },
+
+    _deletePost(id) {
+        this.deletePost(id, (error, response) => {
+            if(!error)
+                if(!this.goBack()) {
+                    this.transitionTo('/staff/');
+                }
+        });
+    },
+
     componentDidMount() {
         const that = this;
         if (this.props.imgs.length > 0) {
@@ -94,6 +106,12 @@ export default React.createClass({
         }
     },
 
+    handleClickDelete() {
+        var r = confirm("確定要刪除此文章？");
+        if(r)
+            this._deletePost(this.props.id);
+    },
+
     render() {
         const articleContent_class = classNames({
             'pull-left': true,
@@ -128,6 +146,9 @@ export default React.createClass({
                     <div className={alert_cls} style={alert_style} role="alert" ref="alert">
                         發生錯誤, 請再嘗試一次
                     </div>
+                    <button type="button" onClick={this.handleClickDelete} className="btn btn-danger" style={{top: "20px", position: "absolute", left: "40px"}}>
+                        刪除
+                    </button>
                     <div id="articleContent" className={articleContent_class} ref="articleContent">
                         <div className="inner-content">
                             <ToggableIcon tooltip="加入至橫幅" className="glyphicon glyphicon-star-empty" name="starred" hasError={this.hasError} element_id={this.props.id} selected={this.props.starred} />

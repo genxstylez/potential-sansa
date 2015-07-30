@@ -397,6 +397,35 @@ div.logo img {
     overflow: hidden;
     z-index: 3;
 }
+.article-box .shooting-info.out {
+    max-width: 0px;
+    height: 100%;
+    z-index: 1;
+    position: fixed;
+    color: white;
+    opacity: 0;
+}
+.article-box .shooting-info {
+    max-width: 1000px;
+    background-color: black;
+    height: 100%;
+    z-index: 1;
+    position: fixed;
+    color: white;
+    opacity: 1;
+    transition: opacity 300ms, max-width 300ms ease-in;
+}
+.article-box .shooting-info-toggle {
+    top: 50%;
+    position: absolute;
+    left: 20px;
+    cursor: pointer;
+}
+
+.article-box .shooting-info-toggle:hover {
+    opacity: 0.7;
+}
+
 .article-box .close {
     position: absolute;
     right: 2%;
@@ -616,47 +645,67 @@ ul.thumbnails li img {
     height: 100%;
 }
 
-.article-box .article .shooting-info {
-    height: 5%;
-    position: absolute;
-    bottom: 5px;
-    text-align: center;
-    width: 100%;
-    left: 0;
-}
-
-.shooting-info .shooting-info-heading {
+.shooting_deck .shooting-info-heading {
     font-size: 20px;
     letter-spacing: 0.075em;
-}
-
-.shooting-info .shooting-info-toggle {
-    color: #6e6e6e;
-    font-size: 14px;
-    letter-spacing: 0.075em;
     position: absolute;
-    right: 35px;
-    cursor: pointer;
+    bottom: 30px;
+    width: 90%
 }
 
-.article-box .shooting-credits .shooting-credits-inner .role {
-    font-size: 15px;
-    letter-spacing: 0.15em;
-    border-radius: 0px;
-    background-color: transparent;
-    color: #6e6e6e;
-    text-align: right;
-    width: 45%;
+.shooting_deck {
+    text-align: center;
+    vertical-align: middle;
+    height: 100%;
+    white-space: nowrap;
+    width: 90%;
+    margin: 0 auto;
 }
-.article-box .shooting-credits .shooting-credits-inner .name {
-    font-size: 15px;
-    letter-spacing: 0.075em;
-    margin-left: 13px;
-    color: #c8c8c8;
+
+.shooting_deck .align-helper {
+    height: 100%;
+}
+
+.shooting_deck img.arrow.left {
+    left: 5%;
+    position: absolute;
+    top: 50%;
+}
+
+.shooting_deck img.arrow.right {
+    right: 5%;
+    position: absolute;
+    top: 50%;
+}
+
+.shooting_deck img.arrow:hover {
+    opacity: 0.5;
+}
+
+.shooting_deck img {
+    max-width: 100%;
     display: inline-block;
-    text-align: left;
-    width: 50%;
+    vertical-align: middle;
+    height: auto;
+    max-height: 100%
 }
+
+.shooting-info .role {
+    font-size: 13px !important;
+    background: none !important;
+    border-radius: 0px !important;
+}
+
+.shooting-info .name {
+    font-size: 13px !important;
+    text-decoration: underline;
+
+}
+
+.shooting-info .name a {
+    color: #ffffff !important;
+}
+
 
 .article-box .article .gallery .item.active {
     display: flex;
@@ -691,6 +740,14 @@ ul.thumbnails li img {
 }
 .article-box .credit a, .articl-box .shooting-credits-info a {
     color: #c8c8c8;
+}
+
+.shooting-info .credit {
+    margin-bottom: 15px !important;
+}
+
+.shooting-info .close {
+    right: 4%;
 }
 
 .search-layer {
@@ -968,6 +1025,24 @@ ul.thumbnails li img {
 }
 
 .gallery-leave.gallery-leave-active {
+    opacity: 0.01;
+}
+
+.shooting-gallery-enter {
+    opacity: 0.01;
+    transition: opacity .3s ease-in;
+}
+
+.shooting-gallery-enter.shooting-gallery-enter-active {
+    opacity: 1;
+}
+
+.shooting-gallery-leave {
+    opacity: 1;
+    transition: opacity .3s ease-in;
+}
+
+.shooting-gallery-leave.shooting-gallery-leave-active {
     opacity: 0.01;
 }
 
