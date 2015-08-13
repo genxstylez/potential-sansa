@@ -18,6 +18,14 @@ body {
 .react-container {
     height: 100%;
 }
+.close {
+    opacity: 1;
+}
+
+.close:hover {
+    opacity: .5;
+}
+
 div .top-black-bar {
     height: 17px;
     background: #000000;
@@ -406,7 +414,7 @@ div.logo img {
     opacity: 0;
 }
 .article-box .shooting-info {
-    max-width: 400px;
+    max-width: 25%;
     background-color: black;
     height: 100%;
     z-index: 1;
@@ -416,7 +424,7 @@ div.logo img {
     transition: opacity 300ms, max-width 300ms ease-in;
 }
 .article-box .shooting-info-toggle {
-    top: 50%;
+    top: 49.5%;
     position: absolute;
     left: 20px;
     cursor: pointer;
@@ -668,6 +676,7 @@ ul.thumbnails li img {
     position: absolute;
     width: 90%;
     height: 90%;
+    top: 10px;
 } 
 
 .shooting_deck .align-helper {

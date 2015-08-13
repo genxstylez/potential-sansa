@@ -9,10 +9,11 @@ import BannerList from '../components/Banner/BannerList';
 import SearchSubNavBar from '../components/SubNav/SearchSubNavBar';
 import SearchPostList from '../components/SearchPostList';
 import Footer from '../components/Footer';
+import WebAPIMixin from '../mixins/WebAPIMixin';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 
 export default React.createClass({
-    mixins: [], 
+    mixins: [WebAPIMixin], 
 
     _getCategories() {
         this.getCategories((error, response) => {

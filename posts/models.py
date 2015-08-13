@@ -72,7 +72,26 @@ class Post(models.Model):
         return image
 
     def to_json(self):
-        cover_image = self.images.filter(is_cover=True).first()
+        cover_image = self.images.filter(is_cover=True).first() or self.images.order_by('id')[0]
+        if cover_image.video_id != '':
+            image_dict = dict(
+                original="https://i.ytimg.com/vi/" + cover_image.video_id + "/hqdefault.jpg",
+                small="https://i.ytimg.com/vi/" + cover_image.video_id + "/hqdefault.jpg",
+                medium="https://i.ytimg.com/vi/" + cover_image.video_id + "/hqdefault.jpg",
+                large="https://i.ytimg.com/vi/" + cover_image.video_id + "/hqdefault.jpg",
+                xl="https://i.ytimg.com/vi/" + cover_image.video_id + "/hqdefault.jpg",
+                xxl="https://i.ytimg.com/vi/" + cover_image.video_id + "/hqdefault.jpg",
+            )
+        else:
+            image_dict = dict(
+                original=cover_image.img.url,
+                small=cover_image.img['small'].url,
+                medium=cover_image.img['medium'].url,
+                large=cover_image.img['large'].url,
+                xl=cover_image.img['xl'].url,
+                xxl=cover_image.img['xxl'].url
+            )
+
         return dict(
             id=self.id,
             slug=self.slug,
@@ -84,16 +103,7 @@ class Post(models.Model):
             created_at=str(self.created_at),
             credits=[credit.to_json() for credit in self.credits.all()],
             images=[image.to_json() for image in self.images.all()],
-            cover=dict(
-                img=dict(
-                    original=cover_image.img.url,
-                    small=cover_image.img['small'].url,
-                    medium=cover_image.img['medium'].url,
-                    large=cover_image.img['large'].url,
-                    xl=cover_image.img['xl'].url,
-                    xxl=cover_image.img['xxl'].url
-                )
-            )
+            cover=dict(img=image_dict)
         )
 
 

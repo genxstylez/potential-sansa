@@ -48911,6 +48911,10 @@ var _Footer = require('../components/Footer');
 
 var _Footer2 = _interopRequireWildcard(_Footer);
 
+var _WebAPIMixin = require('../mixins/WebAPIMixin');
+
+var _WebAPIMixin2 = _interopRequireWildcard(_WebAPIMixin);
+
 'use strict';
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
@@ -48918,7 +48922,7 @@ var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 exports['default'] = _React2['default'].createClass({
     displayName: 'SearchPage',
 
-    mixins: [],
+    mixins: [_WebAPIMixin2['default']],
 
     _getCategories: function _getCategories() {
         var _this = this;
@@ -49043,7 +49047,7 @@ exports['default'] = _React2['default'].createClass({
 });
 module.exports = exports['default'];
 
-},{"../components/Banner/BannerList":246,"../components/Footer":248,"../components/Logo":249,"../components/MainNav/NavBar":250,"../components/SearchPostList":264,"../components/SubNav/SearchSubNavBar":265,"classnames":3,"lodash":6,"react/addons":70,"react/lib/ReactCSSTransitionGroup":103}],276:[function(require,module,exports){
+},{"../components/Banner/BannerList":246,"../components/Footer":248,"../components/Logo":249,"../components/MainNav/NavBar":250,"../components/SearchPostList":264,"../components/SubNav/SearchSubNavBar":265,"../mixins/WebAPIMixin":269,"classnames":3,"lodash":6,"react/addons":70,"react/lib/ReactCSSTransitionGroup":103}],276:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
