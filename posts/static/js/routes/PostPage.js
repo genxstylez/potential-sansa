@@ -27,6 +27,7 @@ export default React.createClass({
             created_at: '',
             last_modified: '',
             is_shooting: false,
+            is_select: false,
             uri: '',
         }
     },
@@ -45,7 +46,8 @@ export default React.createClass({
                 last_modified: post.last_modified,
                 category: post.category.name,
                 uri: post.resource_uri,
-                is_shooting: post.is_shooting
+                is_shooting: post.is_shooting,
+                is_select: post.is_select
             });
         });
     },
@@ -65,7 +67,7 @@ export default React.createClass({
     },
 
     render() {
-        if(this.state.is_shooting) {
+        if(this.state.is_shooting || this.state.is_select) {
             return (
                 <TransitionGroup transitionName="post">
                     <ShootingContent 

@@ -27,7 +27,8 @@ export default React.createClass({
                     photos: this.state.photos.concat(response.body.photos),
                     name: response.body.name,
                     zh_name: response.body.zh_name,
-                    photographer: response.body.photographer
+                    photographer: response.body.photographer,
+                    concept: response.body.concept
                 });
         });
     },
@@ -43,8 +44,11 @@ export default React.createClass({
                     name={this.state.name}
                     zh_name={this.state.zh_name}
                     photos={this.state.photos} 
-                    photographer={this.state.photographer} />
-                <LicenseFooter photographer={this.state.photographer} />
+                    photographer={this.state.photographer}
+                    concept={this.state.concept} />
+                <LicenseFooter 
+                    photographer={this.state.photographer}
+                    concept={this.state.concept} />
             </div>
         );
     }

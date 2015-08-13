@@ -25,6 +25,13 @@ export default {
             .end(cb); 
     },
 
+    deleteCategory(id, cb) {
+        request.del('/staff_api/v1/admin_categories/' + id + '/')
+            .type('application/json')
+            .accept('application/json')
+            .end(cb);
+    },
+
     getStarred(cb) {
         request.get('/api/v1/starred/?format=json')
             .type('application/json')

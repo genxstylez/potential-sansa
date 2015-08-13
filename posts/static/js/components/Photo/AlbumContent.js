@@ -84,9 +84,12 @@ export default React.createClass({
                 <div className="caption">{this.state.current_photo.caption}</div>
                 <div className="photo-content">
                     <span className="align-helper" />
-                    <img src={this.state.current_photo.img.xxl} />
+                    <img src={this.state.current_photo.img.original} />
                 </div>
-                <PhotoFooter photo={this.state.current_photo} photographer={this.props.photographer} />
+                <PhotoFooter 
+                    photo={this.state.current_photo} 
+                    photographer={this.props.photographer} 
+                    concept={this.props.concept} />
             </div>
         }
 

@@ -21,7 +21,8 @@ export default React.createClass({
             content: license_text,
             current_title: "",
             _license: "License",
-            _photographer: "Photographer"
+            _photographer: "Photographer",
+            _concept: "Concept"
         })
     },
     handleOnClick() {
@@ -48,6 +49,13 @@ export default React.createClass({
                     collapsed: false
                 });
                 break;
+            case "概念":
+                this.setState({
+                    current_title: "Concept",
+                    content: this.props.concept,
+                    collapsed: false
+                });
+                break;
         }
     },
     componetWillReceiveProps(nextProps, nextState) {
@@ -69,7 +77,12 @@ export default React.createClass({
             case "Photographer":
                 this.setState({
                     _photographer: "攝影"
-                })
+                });
+                break;
+            case "Concept":
+                this.setState({
+                    _concept: "概念"
+                });
                 break;
         }
 
@@ -85,6 +98,11 @@ export default React.createClass({
                 this.setState({
                     _photographer: "Photographer"
                 })
+                break;
+            case "概念":
+                this.setState({
+                    _concept: "Concept"
+                });
                 break;
         }
     },
@@ -105,10 +123,19 @@ export default React.createClass({
         });
         var photographer_node = "";
         if (this.props.photographer) {
-             photographer_node = <span>
+            photographer_node = <span>
                     <span style={{width: "100px", display: "inline-block"}} onClick={this.handleOnClickTitle}
                         onMouseEnter={this.handleOnMouseEnter}
                         onMouseOut={this.handleOnMouseOut}>{this.state._photographer}</span>
+                    <span className="circle-divider" />
+                </span>
+        };
+        var concept_node = "";
+        if (this.props.concept) {
+            concept_node =  <span>
+                    <span style={{width: "70px", display: "inline-block"}} onClick={this.handleOnClickTitle}
+                        onMouseEnter={this.handleOnMouseEnter}
+                        onMouseOut={this.handleOnMouseOut}>{this.state._concept}</span>
                     <span className="circle-divider" />
                 </span>
         };
@@ -121,6 +148,7 @@ export default React.createClass({
                         onMouseOut={this.handleOnMouseOut}>{this.state._license}</span>
                     <span className="circle-divider" />
                     {photographer_node}
+                    {concept_node}
                 </div>
                 <div className={current_title_cls}>
                     <span className="circle-divider" />

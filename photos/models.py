@@ -10,7 +10,8 @@ from easy_thumbnails import fields
 class Album(models.Model):
     name = models.CharField('英文標題', max_length=20)
     zh_name = models.CharField('中文標題', max_length=20, blank=True)
-    photographer = models.TextField('攝影', blank=True)
+    photographer = models.TextField('攝影', blank=True, null=True)
+    concept = models.TextField('概念', blank=True, null=True)
     last_modified = models.DateTimeField('最後更改', auto_now=True)
     created_at = models.DateTimeField('建立時間', auto_now_add=True)
     published = models.BooleanField('發表', default=False)

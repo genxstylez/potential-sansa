@@ -3,7 +3,10 @@
 import React from 'react/addons';
 import _ from 'lodash';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-
+var Modal = require('react-modal');
+var appElement = document.querySelector('.react-container');
+Modal.setAppElement(appElement);
+Modal.injectCSS();
 
 function generate_embed(youtube_id) {
     var width = $('.on_deck').width();
@@ -18,7 +21,7 @@ var SelectedImg = React.createClass({
     render() {
         var onDeckNode = this.props.on_deck.video_id ? 
             <div key={this.props.on_deck.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: generate_embed(this.props.on_deck.video_id)}} /> :  
-            <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} />
+            <img src={this.props.on_deck.img !== undefined ? this.props.on_deck.img.large : ''} onClick={this.props.toggle} />
         return (
             <div className="on_deck">
                 <span className="align-helper" />
@@ -59,7 +62,8 @@ export default React.createClass({
     getInitialState() {
         return {
             on_deck: {'id': '99-00-11'},
-            imgs: []
+            imgs: [],
+            show_image: false,
         }
     },
     componentDidMount() {
@@ -68,11 +72,16 @@ export default React.createClass({
             imgs: this.props.imgs
         });
     },
+    toggleImageMode() {
+        this.setState({
+            show_image: !this.state.show_image
+        });
+    },
     render() {
         return (
           <div className="pull-right gallery">
             <TransitionGroup transitionName="gallery" transitionLeave={false}>
-                <SelectedImg key={this.state.on_deck.id} on_deck={this.state.on_deck} />
+                <SelectedImg key={this.state.on_deck.id} on_deck={this.state.on_deck} toggle={this.toggleImageMode} />
             </TransitionGroup>
             <div className="arrow left" onClick={this.handleLeftArrow}>
                 <span className="align-helper" />
@@ -96,6 +105,15 @@ export default React.createClass({
                 <span className="align-helper" />
                 <img src={STATIC_URL + "img/right-arrow.png"} />
             </div>
+            <Modal isOpen={this.state.show_image} onRequestClose={this.toggleImageMode} overlayClassName="imageModal" className="imageContent">
+                <span className="close" onClick={this.toggleImageMode}>
+                    <img src={STATIC_URL + "img/circle-cross.png"} />
+                </span>
+                <img src={_.has(this.state.on_deck, 'img') ? 
+                    _.has(this.state.on_deck.img, 'original') ? this.state.on_deck.img.original : ''
+                    : ''} />
+                <span className="align-helper" />
+            </Modal>
           </div>
         );
     }

@@ -36,6 +36,7 @@ export default React.createClass({
                     name: response.body.name,
                     zh_name: response.body.zh_name,
                     photographer: response.body.photographer,
+                    concept: response.body.concept,
                     resource_uri: response.body.resource_uri
                 });
         });
@@ -50,6 +51,7 @@ export default React.createClass({
                     name: response.body.name,
                     zh_name: response.body.zh_name,
                     photographer: response.body.photographer,
+                    concept: response.body.concept,
                     resource_uri: response.body.resource_uri
                 });
         });
@@ -167,12 +169,20 @@ export default React.createClass({
         });
     },
 
+    changeConcept(value) {
+        var val = value != "" ? value: this.state.concept;
+        this.setState({
+            concept: val
+        });
+    },
+
     handleSubmit(e) {
         $(React.findDOMNode(this.refs.SubmitButton)).button('loading');
         this._updateAlbum(this.state.id, {
             "name": this.state.name,
             "zh_name": this.state.zh_name,
-            "photographer": this.state.photographer
+            "photographer": this.state.photographer,
+            "concept": this.state.concept
         });
     },
 
@@ -237,13 +247,28 @@ export default React.createClass({
     componentDidUpdate() {
         if(!this.state.redactor_inited) {
             var that = this;
-            $(React.findDOMNode(this.refs.TextArea)).redactor({
+            $(React.findDOMNode(this.refs.Photographer)).redactor({
                 'lang': 'zh_tw',
                 'minHeight': '300px',
                 'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
                 'plugins': ['scriptbuttons', 'fullscreen'],
                 'changeCallback': function() {
                     that.changePhotographer(this.code.get());
+                },
+                initCallback: function() {
+                    that.setState({
+                        redactor_inited: true
+                    });
+                }
+            });
+
+            $(React.findDOMNode(this.refs.Concept)).redactor({
+                'lang': 'zh_tw',
+                'minHeight': '300px',
+                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                'plugins': ['scriptbuttons', 'fullscreen'],
+                'changeCallback': function() {
+                    that.changeConcept(this.code.get());
                 },
                 initCallback: function() {
                     that.setState({
@@ -318,10 +343,21 @@ export default React.createClass({
                                     <label className="form-label">攝影</label>
                                     <span>
                                         <textarea
-                                            ref="TextArea"
+                                            ref="Photographer"
                                             name="photographer"
                                             defaultValue="關於攝影師"
                                             value={this.state.photographer} />
+                                        <p className="help-block">若要換行請輸入shift+enter, 分段落請輸入enter</p>
+                                    </span>
+                                </div>
+                                 <div className="form-group">
+                                    <label className="form-label">概念</label>
+                                    <span>
+                                        <textarea
+                                            ref="Concept"
+                                            name="concept"
+                                            defaultValue="概念"
+                                            value={this.state.concept} />
                                         <p className="help-block">若要換行請輸入shift+enter, 分段落請輸入enter</p>
                                     </span>
                                 </div>

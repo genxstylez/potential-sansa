@@ -7,6 +7,7 @@ var Navigation = require('react-router').Navigation;
 import PostCredit from '../PostCredit';
 import ShootingCredit from './ShootingCredit';
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
+var Modal = require('react-modal');
 
 function generate_embed(youtube_id) {
     var width = $('.shooting_deck').width() * 0.9;
@@ -23,8 +24,9 @@ export default React.createClass({
     getInitialState() {
         return {
             show_credits: false,
-            current_image: null,
-            current_index: 0
+            current_image: {id: 'initial_id'},
+            current_index: 0,
+            show_image: false
         }
     },
     propTypes: {
@@ -42,6 +44,12 @@ export default React.createClass({
     handleClickOnToggle() {
         this.setState({
             show_credits: !this.state.show_credits
+        });
+    },
+
+    toggleImageMode() {
+        this.setState({
+            show_image: !this.state.show_image
         });
     },
 
@@ -80,26 +88,18 @@ export default React.createClass({
                     <ShootingCredit key={credit.id} role={credit.role} name={credit.name}/>
                 );
             });
-        var ImgNode = "";
-        if(this.state.current_image != null)
-            if(this.state.current_image.video_id) 
-                ImgNode = <span key={this.state.current_image.id}>
-                        <div className="video-embed" dangerouslySetInnerHTML={{__html: generate_embed(this.state.current_image.video_id)}} />
-                    </span>
-            else
-               ImgNode = <span key={this.state.current_image.id}>
-                        <img src={this.state.current_image.img.xxl} />
-                        <span className="align-helper" />
-                    </span>
-
+        var ImgNode = this.state.current_image.video_id ?
+                <div className="video-embed" dangerouslySetInnerHTML={{__html: generate_embed(this.state.current_image.video_id)}} /> :
+               <img onClick={this.toggleImageMode} src={this.state.current_image.img !== undefined ? this.state.current_image.img.xxl: ''} />
         return (
             <div className="article-box" ref="articleBox">
                 <img className="shooting-info-toggle" src={STATIC_URL + "img/info.png"} onClick={this.handleClickOnToggle} />
                 <div className={info_class}>
                     <span className="close">
-                        <img src={STATIC_URL + "img/cross.png"} onClick={this.handleClickOnToggle} />
+                        <img src={STATIC_URL + "img/wcross.png"} onClick={this.handleClickOnToggle} />
                     </span>
                     <div style={{margin: "120px 30px"}}>
+                        <div style={{overflow: "hidden"}} dangerouslySetInnerHTML={{__html: this.props.articletext}} />
                         {creditNodes}
                     </div>
                 </div>
@@ -113,8 +113,11 @@ export default React.createClass({
                 </div>
                 <div className="row article">
                     <div className="shooting_deck">
-                        <TransitionGroup transitionName="shooting-gallery" transitionLeave={false}>
-                            {ImgNode}
+                        <TransitionGroup transitionName="gallery" transitionLeave={false}>
+                            <span className="inner_deck" key={this.state.current_image.id}>
+                                {ImgNode}
+                                <span className="align-helper" />
+                            </span>
                         </TransitionGroup>
                         <div className="shooting-info-heading">{this.props.heading}</div>
                         <a href="#" onClick={this.handleLeftArrow}><img className="arrow left" src={STATIC_URL + "img/banner-left.png"} /></a>
@@ -122,6 +125,15 @@ export default React.createClass({
                     </div>
                     <div className="triangle"></div>
                 </div>
+                <Modal isOpen={this.state.show_image} onRequestClose={this.toggleImageMode} overlayClassName="imageModal" className="imageContent">
+                    <span className="close" onClick={this.toggleImageMode}>
+                        <img src={STATIC_URL + "img/circle-cross.png"} />
+                    </span>
+                    <img src={_.has(this.state.current_image, 'img') ? 
+                        _.has(this.state.current_image.img, 'original') ? this.state.current_image.img.original : ''
+                        : ''} />
+                    <span className="align-helper" />
+                </Modal>
             </div>
         );
     }

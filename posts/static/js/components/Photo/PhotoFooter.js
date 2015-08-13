@@ -23,7 +23,8 @@ export default React.createClass({
             current_title: "",
             _license: "License",
             _download: "Download",
-            _photographer: "Photographer"
+            _photographer: "Photographer",
+            _concept: "Concept"
         })
     },
     handleOnClick() {
@@ -52,6 +53,13 @@ export default React.createClass({
                     collapsed: false
                 });
                 break;
+            case "概念":
+                this.setState({
+                    current_title: "Concept",
+                    content: this.props.concept,
+                    collapsed: false
+                });
+                break;
         }
     },
     handleOnMouseEnter(e) {
@@ -70,6 +78,11 @@ export default React.createClass({
                 this.setState({
                     _photographer: "攝影"
                 })
+                break;
+            case "Concept":
+                this.setState({
+                    _concept: "概念"
+                });
                 break;
         }
 
@@ -91,6 +104,12 @@ export default React.createClass({
                     _photographer: "Photographer"
                 })
                 break;
+             case "概念":
+                this.setState({
+                    _concept: "Concept"
+                });
+                break;
+
         }
     },
     componetWillReceiveProps(nextProps, nextState) {
@@ -116,6 +135,15 @@ export default React.createClass({
             'current-title': true,
             'hidden': this.state.collapsed
         });
+        var concept_node = "";
+        if (this.props.concept) {
+            concept_node =  <span>
+                    <span style={{width: "70px", display: "inline-block"}} onClick={this.handleOnClickTitle}
+                        onMouseEnter={this.handleOnMouseEnter}
+                        onMouseOut={this.handleOnMouseOut}>{this.state._concept}</span>
+                    <span className="circle-divider" />
+                </span>
+        };
         return (
             <div className={cls} onClick={this.handleOnClick}>
                 <div className={title_cls}>
@@ -134,6 +162,7 @@ export default React.createClass({
                         onMouseEnter={this.handleOnMouseEnter}
                         onMouseOut={this.handleOnMouseOut}>{this.state._photographer}</span>
                     <span className="circle-divider" />
+                    {concept_node}
                 </div>
                 <div className={current_title_cls}>
                     <span className="circle-divider" />

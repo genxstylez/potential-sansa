@@ -42671,6 +42671,10 @@ var _Router = require('react-router');
 
 var _Router2 = _interopRequireWildcard(_Router);
 
+var _APIMixin = require('../mixins/APIMixin');
+
+var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+
 var _import = require('lodash');
 
 var _import2 = _interopRequireWildcard(_import);
@@ -42682,26 +42686,58 @@ var Link = _Router2['default'].Link;
 exports['default'] = _React2['default'].createClass({
     displayName: 'Nav',
 
+    mixins: [_APIMixin2['default']],
+
+    _deleteCategory: function _deleteCategory(id) {
+        var _this = this;
+
+        this.deleteCategory(id, function (error, response) {
+            if (!error) _this.props.refreshCategory();
+        });
+    },
+
+    ClickMinus: function ClickMinus() {
+        var r = confirm('確定要刪除此類別？');
+        if (r) this._deleteCategory(this.props.id);
+    },
+
     render: function render() {
         if (this.props.isSub) {
             return _React2['default'].createElement(
-                Link,
-                { key: this.props.id, className: 'list-group-item sub', to: 'subcategory',
-                    params: { categoryId: this.props.parent_id, subcategoryId: this.props.id } },
-                this.props.name
+                'li',
+                { key: this.props.id, className: 'list-group-item sub' },
+                _React2['default'].createElement(
+                    Link,
+                    { to: 'subcategory', params: { categoryId: this.props.parent_id, subcategoryId: this.props.id } },
+                    this.props.name
+                ),
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'pull-right' },
+                    _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove', onClick: this.ClickMinus })
+                )
             );
         } else {
             return _React2['default'].createElement(
-                Link,
-                { key: this.props.id, className: 'list-group-item', to: 'category', params: { categoryId: this.props.id } },
-                this.props.name
+                'li',
+                { key: this.props.id, className: 'list-group-item' },
+                _React2['default'].createElement(
+                    Link,
+                    { to: 'category', params: { categoryId: this.props.id } },
+                    this.props.name
+                ),
+                _React2['default'].createElement(
+                    'span',
+                    { className: 'pull-right' },
+                    _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove', onClick: this.ClickMinus })
+                )
             );
         }
     }
 });
 module.exports = exports['default'];
 
-},{"lodash":4,"react-router":41,"react/addons":56}],239:[function(require,module,exports){
+},{"../mixins/APIMixin":243,"lodash":4,"react-router":41,"react/addons":56}],239:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -43435,6 +43471,10 @@ exports['default'] = {
         _request2['default'].post('/staff_api/v1/admin_categories/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
     },
 
+    deleteCategory: function deleteCategory(id, cb) {
+        _request2['default'].del('/staff_api/v1/admin_categories/' + id + '/').type('application/json').accept('application/json').end(cb);
+    },
+
     getStarred: function getStarred(cb) {
         _request2['default'].get('/api/v1/starred/?format=json').type('application/json').accept('application/json').end(cb);
     },
@@ -43701,6 +43741,7 @@ exports['default'] = _React2['default'].createClass({
                 name: response.body.name,
                 zh_name: response.body.zh_name,
                 photographer: response.body.photographer,
+                concept: response.body.concept,
                 resource_uri: response.body.resource_uri
             });
         });
@@ -43716,6 +43757,7 @@ exports['default'] = _React2['default'].createClass({
                 name: response.body.name,
                 zh_name: response.body.zh_name,
                 photographer: response.body.photographer,
+                concept: response.body.concept,
                 resource_uri: response.body.resource_uri
             });
         });
@@ -43839,12 +43881,20 @@ exports['default'] = _React2['default'].createClass({
         });
     },
 
+    changeConcept: function changeConcept(value) {
+        var val = value != '' ? value : this.state.concept;
+        this.setState({
+            concept: val
+        });
+    },
+
     handleSubmit: function handleSubmit(e) {
         $(_React2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
         this._updateAlbum(this.state.id, {
             name: this.state.name,
             zh_name: this.state.zh_name,
-            photographer: this.state.photographer
+            photographer: this.state.photographer,
+            concept: this.state.concept
         });
     },
 
@@ -43907,13 +43957,28 @@ exports['default'] = _React2['default'].createClass({
     componentDidUpdate: function componentDidUpdate() {
         if (!this.state.redactor_inited) {
             var that = this;
-            $(_React2['default'].findDOMNode(this.refs.TextArea)).redactor({
+            $(_React2['default'].findDOMNode(this.refs.Photographer)).redactor({
                 lang: 'zh_tw',
                 minHeight: '300px',
                 buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
                 plugins: ['scriptbuttons', 'fullscreen'],
                 changeCallback: function changeCallback() {
                     that.changePhotographer(this.code.get());
+                },
+                initCallback: function initCallback() {
+                    that.setState({
+                        redactor_inited: true
+                    });
+                }
+            });
+
+            $(_React2['default'].findDOMNode(this.refs.Concept)).redactor({
+                lang: 'zh_tw',
+                minHeight: '300px',
+                buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                plugins: ['scriptbuttons', 'fullscreen'],
+                changeCallback: function changeCallback() {
+                    that.changeConcept(this.code.get());
                 },
                 initCallback: function initCallback() {
                     that.setState({
@@ -43968,7 +44033,7 @@ exports['default'] = _React2['default'].createClass({
             { style: { marginTop: '50px' } },
             _React2['default'].createElement(
                 'span',
-                { className: 'close', style: { margin: '-40px 20px ' } },
+                { className: 'close', style: { margin: '-40px 20px' } },
                 _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handleClickOnCross })
             ),
             _React2['default'].createElement(
@@ -44048,10 +44113,33 @@ exports['default'] = _React2['default'].createClass({
                                     'span',
                                     null,
                                     _React2['default'].createElement('textarea', {
-                                        ref: 'TextArea',
+                                        ref: 'Photographer',
                                         name: 'photographer',
                                         defaultValue: '關於攝影師',
                                         value: this.state.photographer }),
+                                    _React2['default'].createElement(
+                                        'p',
+                                        { className: 'help-block' },
+                                        '若要換行請輸入shift+enter, 分段落請輸入enter'
+                                    )
+                                )
+                            ),
+                            _React2['default'].createElement(
+                                'div',
+                                { className: 'form-group' },
+                                _React2['default'].createElement(
+                                    'label',
+                                    { className: 'form-label' },
+                                    '概念'
+                                ),
+                                _React2['default'].createElement(
+                                    'span',
+                                    null,
+                                    _React2['default'].createElement('textarea', {
+                                        ref: 'Concept',
+                                        name: 'concept',
+                                        defaultValue: '概念',
+                                        value: this.state.concept }),
                                     _React2['default'].createElement(
                                         'p',
                                         { className: 'help-block' },
@@ -44702,11 +44790,14 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
+        var _this6 = this;
+
         var CategoryNodes = [];
         _import2['default'].map(this.state.categories, function (category) {
-            CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: category.id, id: category.id, name: category.name }));
+            CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: category.id, id: category.id, name: category.name, refreshCategory: _this6._getCategories }));
             _import2['default'].map(category.children, function (subcategory) {
-                CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: subcategory.id, parent_id: category.id, id: subcategory.id, name: subcategory.name, isSub: true }));
+                CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: subcategory.id, parent_id: category.id, id: subcategory.id, name: subcategory.name, isSub: true,
+                    refreshCategory: _this6._getCategories }));
             });
         });
         var PostNodes = _import2['default'].map(this.state.posts, function (post) {

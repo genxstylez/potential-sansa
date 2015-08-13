@@ -52,6 +52,7 @@ class Post(models.Model):
     order = models.PositiveIntegerField(db_index=True, default=0)
     tags = TaggableManager(help_text='請用逗號(半形)在tag之間做區隔', blank=True)
     is_shooting = models.BooleanField(default=False, db_index=True)
+    is_select = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
         if self.subheading:
@@ -63,6 +64,7 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         self.is_shooting = self.category.name.lower() in ['shooting']
+        self.is_select = self.category.name.lower() in ['select']
         super(Post, self).save(*args, **kwargs)
 
     def get_cover(self):

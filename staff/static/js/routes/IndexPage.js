@@ -226,9 +226,10 @@ export default React.createClass({
     render() {
         const CategoryNodes = [];
         _.map(this.state.categories, category => {
-            CategoryNodes.push(<Nav key={category.id} id={category.id} name={category.name} />);
+            CategoryNodes.push(<Nav key={category.id} id={category.id} name={category.name} refreshCategory={this._getCategories} />);
             _.map(category.children, subcategory => {
-                CategoryNodes.push(<Nav key={subcategory.id} parent_id={category.id} id={subcategory.id} name={subcategory.name} isSub={true} /> )
+                CategoryNodes.push(<Nav key={subcategory.id} parent_id={category.id} id={subcategory.id} name={subcategory.name} isSub={true} 
+                     refreshCategory={this._getCategories} /> )
             });
         });
         const PostNodes = _.map(this.state.posts, post => {

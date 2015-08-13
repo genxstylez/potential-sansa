@@ -9,6 +9,7 @@ import SearchPage from './routes/SearchPage';
 import SubscribePage from './routes/SubscribePage';
 import AlbumsPage from './routes/AlbumsPage';
 import AlbumPage from './routes/AlbumPage';
+var Modal = require('react-modal');
 
 const Route = Router.Route;
 const DefaultRoute = Router.DefaultRoute;
@@ -31,3 +32,7 @@ Router.run(routes, Router.HistoryLocation, (Root, state) => {
     React.render(<Root />, document.querySelector('.react-container'));
     ga('send', 'pageview', {'page': state.path})
 });
+
+var appElement = document.querySelector('.react-container');
+Modal.setAppElement(appElement);
+Modal.injectCSS();
