@@ -1,4 +1,4 @@
-FROM python:2.7.10
+FROM python:2.7.8
 
 MAINTAINER Sam Liu 
 
