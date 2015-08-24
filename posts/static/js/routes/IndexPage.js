@@ -26,6 +26,7 @@ export default React.createClass({
 
     componentDidMount() {
         this._getCategories();
+        $('.react-container').removeClass('modal-open');
     },
 
     render() {

@@ -27,7 +27,7 @@ export default React.createClass({
         if (this.props.isSub) {
             return(
                 <li key={this.props.id} className="list-group-item sub">
-                    <Link to="subcategory" params={{categoryId: this.props.parent_id, subcategoryId: this.props.id}}>{this.props.name}</Link>
+                    <Link to="subcategory" params={{categoryId: this.props.parent_id, subcategoryId: this.props.id}}>{this.props.name} / {this.props.zh_name}</Link>
                     <span className="pull-right">
                         <span className="glyphicon glyphicon-remove" onClick={this.ClickMinus}></span>
                     </span>
@@ -36,7 +36,7 @@ export default React.createClass({
         } else {
             return (
                 <li key={this.props.id} className="list-group-item">
-                    <Link to="category" params={{categoryId: this.props.id}}>{this.props.name}</Link>
+                    <Link to="category" params={{categoryId: this.props.id}}>{this.props.name} / {this.props.zh_name}</Link>
                     <span className="pull-right">
                         <span className="glyphicon glyphicon-remove" onClick={this.ClickMinus}></span>
                     </span>

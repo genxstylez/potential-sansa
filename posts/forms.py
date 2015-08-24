@@ -27,4 +27,4 @@ class ImageForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['id', 'post', 'caption', 'tag', 'video_url']
+        fields = ['id', 'post', 'caption', 'tag', 'video_url', 'select_text']

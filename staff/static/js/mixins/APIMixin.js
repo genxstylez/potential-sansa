@@ -183,7 +183,7 @@ export default {
             .on('progress', progress_cb)
     },
 
-    updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
+    updateImage(id, img, caption, tag, video_url, select_text, post_uri, post_id, changed, cb) {
         if (changed)
             request.post('/staff_api/v1/admin_images/')
                 .attach('img', img, img.name)
@@ -191,6 +191,7 @@ export default {
                 .field('caption', caption)
                 .field('tag', tag)
                 .field('video_url', video_url)
+                .field('select_text', select_text)
                 .field('post', post_uri)
                 .accept('application/json')
                 .end(cb);
@@ -200,6 +201,7 @@ export default {
                 caption: caption,
                 tag: tag,
                 video_url: video_url,
+                select_text: select_text,
                 post: post_id
             };
             request.post('/post_image/edit/')

@@ -1,54 +1,54 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React = require('react/addons');
+var _reactAddons = require('react/addons');
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router = require('react-router');
+var _reactRouter = require('react-router');
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _Application = require('./routes/Application');
+var _routesApplication = require('./routes/Application');
 
-var _Application2 = _interopRequireWildcard(_Application);
+var _routesApplication2 = _interopRequireDefault(_routesApplication);
 
-var _IndexPage = require('./routes/IndexPage');
+var _routesIndexPage = require('./routes/IndexPage');
 
-var _IndexPage2 = _interopRequireWildcard(_IndexPage);
+var _routesIndexPage2 = _interopRequireDefault(_routesIndexPage);
 
-var _PostPage = require('./routes/PostPage');
+var _routesPostPage = require('./routes/PostPage');
 
-var _PostPage2 = _interopRequireWildcard(_PostPage);
+var _routesPostPage2 = _interopRequireDefault(_routesPostPage);
 
-var _AlbumsPage = require('./routes/AlbumsPage');
+var _routesAlbumsPage = require('./routes/AlbumsPage');
 
-var _AlbumsPage2 = _interopRequireWildcard(_AlbumsPage);
+var _routesAlbumsPage2 = _interopRequireDefault(_routesAlbumsPage);
 
-var _AlbumPage = require('./routes/AlbumPage');
+var _routesAlbumPage = require('./routes/AlbumPage');
 
-var _AlbumPage2 = _interopRequireWildcard(_AlbumPage);
+var _routesAlbumPage2 = _interopRequireDefault(_routesAlbumPage);
 
-var Route = _Router2['default'].Route;
-var DefaultRoute = _Router2['default'].DefaultRoute;
-var NotFoundRoute = _Router2['default'].NotFoundRoute;
+var Route = _reactRouter2['default'].Route;
+var DefaultRoute = _reactRouter2['default'].DefaultRoute;
+var NotFoundRoute = _reactRouter2['default'].NotFoundRoute;
 
-var routes = _React2['default'].createElement(
+var routes = _reactAddons2['default'].createElement(
     Route,
-    { name: 'app', path: '/staff/', handler: _Application2['default'], ignoreScrollBehavior: true },
-    _React2['default'].createElement(DefaultRoute, { handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'home', path: '/staff/', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _IndexPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _PostPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'albums', path: 'albums/', handler: _AlbumsPage2['default'] }),
-    _React2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId/', handler: _AlbumPage2['default'] })
+    { name: 'app', path: '/staff/', handler: _routesApplication2['default'], ignoreScrollBehavior: true },
+    _reactAddons2['default'].createElement(DefaultRoute, { handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'home', path: '/staff/', handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'category', path: 'category/:categoryId/', handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'subcategory', path: 'category/:categoryId/:subcategoryId/', handler: _routesIndexPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'post', path: 'post/:postId/', handler: _routesPostPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'albums', path: 'albums/', handler: _routesAlbumsPage2['default'] }),
+    _reactAddons2['default'].createElement(Route, { name: 'album', path: 'albums/:albumId/', handler: _routesAlbumPage2['default'] })
 );
 
-_Router2['default'].run(routes, _Router2['default'].HistoryLocation, function (Root, state) {
-    _React2['default'].render(_React2['default'].createElement(Root, null), document.querySelector('.react-container'));
+_reactRouter2['default'].run(routes, _reactRouter2['default'].HistoryLocation, function (Root, state) {
+    _reactAddons2['default'].render(_reactAddons2['default'].createElement(Root, null), document.querySelector('.react-container'));
 });
 
 },{"./routes/AlbumPage":245,"./routes/AlbumsPage":246,"./routes/Application":247,"./routes/IndexPage":248,"./routes/PostPage":249,"react-router":41,"react/addons":56}],2:[function(require,module,exports){
@@ -15742,6 +15742,13 @@ ElementClass.prototype.has = function(className) {
   if (!el) return
   var classes = el.className.split(' ')
   return indexOf(classes, className) > -1
+}
+
+ElementClass.prototype.toggle = function(className) {
+  var el = this.el
+  if (!el) return
+  if (this.has(className)) this.remove(className)
+  else this.add(className)
 }
 
 },{}],17:[function(require,module,exports){
@@ -41650,36 +41657,34 @@ module.exports = function(arr, fn, initial){
 },{}],232:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'ClickableP',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
             editing: false,
-            value: '',
-            db_value: ''
+            value: "",
+            db_value: ""
         };
     },
 
@@ -41716,7 +41721,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleChange: function handleChange(e) {
-        var value = e.target.value != '' ? e.target.value : this.props.content;
+        var value = e.target.value != "" ? e.target.value : this.props.content;
         this.setState({
             value: value
         });
@@ -41735,9 +41740,9 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.editing) {
-            return _React2['default'].createElement('input', {
+            return _reactAddons2['default'].createElement('input', {
                 name: this.props.name,
-                style: { margin: '10px 0' },
+                style: { margin: "10px 0" },
                 className: 'form-control',
                 type: 'text',
                 value: this.state.value,
@@ -41745,7 +41750,7 @@ exports['default'] = _React2['default'].createClass({
                 onChange: this.handleChange,
                 onKeyUp: this.handleKeyUp });
         } else {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'p',
                 { className: this.props.className,
                     onClick: this.handleOnClick },
@@ -41759,40 +41764,38 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],233:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'DropdownSpan',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
             categories: [],
-            value: '',
-            db_value: ''
+            value: "",
+            db_value: ""
         };
     },
 
@@ -41824,7 +41827,7 @@ exports['default'] = _React2['default'].createClass({
     handleClick: function handleClick(category) {
         var params = {};
         // HACK for tastypie
-        var url = '/staff_api/v1/admin_categories/' + category.id + '/';
+        var url = "/staff_api/v1/admin_categories/" + category.id + "/";
         params[this.props.name] = url;
         this._updatePost(this.props.element_id, params);
         this.setState({
@@ -41844,31 +41847,31 @@ exports['default'] = _React2['default'].createClass({
         var _this3 = this;
 
         var CategoryNodes = [];
-        _import2['default'].map(this.state.categories, function (category) {
-            CategoryNodes.push(_React2['default'].createElement(
+        _lodash2['default'].map(this.state.categories, function (category) {
+            CategoryNodes.push(_reactAddons2['default'].createElement(
                 'li',
                 {
-                    className: _this3.props.content == category.name ? 'active' : '',
+                    className: _this3.props.content == category.name ? "active" : "",
                     key: category.id,
                     id: category.id,
                     onClick: _this3.handleClick.bind(_this3, category) },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'a',
                     { href: '#' },
                     category.name
                 )
             ));
-            _import2['default'].map(category.children, function (subcategory) {
-                CategoryNodes.push(_React2['default'].createElement(
+            _lodash2['default'].map(category.children, function (subcategory) {
+                CategoryNodes.push(_reactAddons2['default'].createElement(
                     'li',
                     {
-                        className: _this3.props.content == subcategory.name ? 'active' : '',
+                        className: _this3.props.content == subcategory.name ? "active" : "",
                         key: subcategory.id,
                         parent_id: category.id,
                         id: subcategory.id,
-                        style: { textIndent: '15px' },
+                        style: { textIndent: "15px" },
                         onClick: _this3.handleClick.bind(_this3, subcategory) },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'a',
                         { href: '#' },
                         subcategory.name
@@ -41876,16 +41879,16 @@ exports['default'] = _React2['default'].createClass({
                 ));
             });
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'btn-group' },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'span',
                 { 'data-toggle': 'dropdown', className: this.props.className },
                 this.state.value,
-                _React2['default'].createElement('span', { className: 'caret' })
+                _reactAddons2['default'].createElement('span', { className: 'caret' })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'ul',
                 { className: 'dropdown-menu' },
                 CategoryNodes
@@ -41898,36 +41901,34 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"classnames":3,"lodash":4,"react/addons":56}],234:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'EditableDiv',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
             editing: false,
-            value: '',
-            db_value: ''
+            value: "",
+            db_value: ""
         };
     },
 
@@ -41944,7 +41945,7 @@ exports['default'] = _React2['default'].createClass({
                 _this.setState({
                     db_value: _this.state.value
                 });
-                $(_React2['default'].findDOMNode(_this.refs.TextArea)).redactor('core.destroy');
+                $(_reactAddons2['default'].findDOMNode(_this.refs.TextArea)).redactor('core.destroy');
             }
         });
     },
@@ -41974,13 +41975,13 @@ exports['default'] = _React2['default'].createClass({
 
     componentDidUpdate: function componentDidUpdate() {
         var that = this;
-        $(_React2['default'].findDOMNode(this.refs.TextArea)).redactor({
-            lang: 'zh_tw',
-            focus: 'true',
-            minHeight: '500',
-            buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
-            plugins: ['scriptbuttons', 'fullscreen'],
-            blurCallback: function blurCallback() {
+        $(_reactAddons2['default'].findDOMNode(this.refs.TextArea)).redactor({
+            'lang': 'zh_tw',
+            'focus': 'true',
+            'minHeight': '500',
+            'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+            'plugins': ['scriptbuttons', 'fullscreen'],
+            'blurCallback': function blurCallback() {
                 that.handleBlur(this.code.get());
             }
         });
@@ -41988,21 +41989,21 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.editing) {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'span',
                 null,
-                _React2['default'].createElement('textarea', {
+                _reactAddons2['default'].createElement('textarea', {
                     ref: 'TextArea',
                     name: this.props.name,
                     defaultValue: this.state.value }),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'p',
                     { className: 'help-block' },
                     '若要換行請輸入shift+enter, 分段落請輸入enter'
                 )
             );
         } else {
-            return _React2['default'].createElement('div', { className: this.props.className,
+            return _reactAddons2['default'].createElement('div', { className: this.props.className,
                 onClick: this.handleClick,
                 dangerouslySetInnerHTML: { __html: this.state.value } });
         }
@@ -42013,29 +42014,27 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],235:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _import = require('lodash');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _classNames = require('classnames');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var Modal = require('react-modal');
 
@@ -42043,22 +42042,24 @@ var appElement = document.querySelector('.react-container');
 Modal.setAppElement(appElement);
 Modal.injectCSS();
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'EditableImg',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
             editing: false,
             id: 0,
-            img: '',
-            caption: '',
-            tag: '',
-            video_id: '',
-            video_url: '',
+            img: "",
+            caption: "",
+            tag: "",
+            video_id: "",
+            video_url: "",
+            select_text: "",
             img_changed: false,
-            display_img: ''
+            display_img: "",
+            redactor_inited: false
         };
     },
 
@@ -42081,10 +42082,10 @@ exports['default'] = _React2['default'].createClass({
             }
         });
     },
-    _updateImage: function _updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed) {
+    _updateImage: function _updateImage(id, img, caption, tag, video_url, select_text, post_uri, post_id, changed) {
         var _this2 = this;
 
-        this.updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, function (error, response) {
+        this.updateImage(id, img, caption, tag, video_url, select_text, post_uri, post_id, changed, function (error, response) {
             if (error) {
                 _this2.props.hasError();
                 _this2.setState({
@@ -42170,7 +42171,7 @@ exports['default'] = _React2['default'].createClass({
 
     handleSubmit: function handleSubmit(e) {
         e.preventDefault();
-        this._updateImage(this.state.id, this.state.img, this.state.caption, this.state.tag, this.state.video_url, this.props.post_uri.replace('posts', 'admin_posts'), this.props.post_id, this.state.img_changed);
+        this._updateImage(this.state.id, this.state.img, this.state.caption, this.state.tag, this.state.video_url, this.state.select_text, this.props.post_uri.replace("posts", "admin_posts"), this.props.post_id, this.state.img_changed);
     },
 
     handleKeyUp: function handleKeyUp(e) {
@@ -42188,8 +42189,14 @@ exports['default'] = _React2['default'].createClass({
         return '<iframe width="' + width + '" height="' + height + '" ' + 'src="https://www.youtube.com/embed/' + youtube_id + '" ' + 'frameborder="0" allowfullscreen></iframe>';
     },
 
+    handleChangeSelectText: function handleChangeSelectText(value) {
+        this.setState({
+            select_text: value
+        });
+    },
+
     componentDidMount: function componentDidMount() {
-        var img = _import2['default'].has(this.props.image.img, 'original') ? this.props.image.img.original : '';
+        var img = _lodash2['default'].has(this.props.image.img, 'original') ? this.props.image.img.original : "";
         this.setState({
             id: this.props.image.id,
             img: img,
@@ -42198,12 +42205,13 @@ exports['default'] = _React2['default'].createClass({
             tag: this.props.image.tag,
             video_id: this.props.image.video_id,
             video_url: this.props.image.video_url,
-            is_cover: this.props.image.is_cover
+            is_cover: this.props.image.is_cover,
+            select_text: this.props.image.select_text
         });
     },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-        var img = _import2['default'].has(nextProps.image.img, 'original') ? nextProps.image.img.original : '';
+        var img = _lodash2['default'].has(nextProps.image.img, 'original') ? nextProps.image.img.original : "";
         this.setState({
             id: nextProps.image.id,
             img: img,
@@ -42212,104 +42220,153 @@ exports['default'] = _React2['default'].createClass({
             tag: nextProps.image.tag,
             video_id: nextProps.image.video_id,
             video_url: nextProps.image.video_url,
+            select_text: nextProps.image.select_text,
             is_cover: nextProps.image.is_cover
         });
+    },
+
+    componentDidUpdate: function componentDidUpdate() {
+        var _this5 = this;
+
+        if (!this.state.redactor_inited) {
+            setTimeout(function () {
+                var that = _this5;
+                $(_reactAddons2['default'].findDOMNode(_this5.refs.TextArea)).redactor({
+                    'lang': 'zh_tw',
+                    'focus': 'true',
+                    'minHeight': '300px',
+                    'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                    'plugins': ['scriptbuttons', 'fullscreen'],
+                    'blurCallback': function blurCallback() {
+                        that.handleChangeSelectText(this.code.get());
+                    },
+                    initCallback: function initCallback() {
+                        that.setState({
+                            redactor_inited: true
+                        });
+                    }
+                });
+            }, 500);
+        }
     },
 
     render: function render() {
         var src = this.state.display_img;
 
-        var onDeckNode = _React2['default'].createElement('img', { src: this.state.display_img });
+        var onDeckNode = _reactAddons2['default'].createElement('img', { src: this.state.display_img });
         if (this.state.video_id) {
-            src = 'https://i.ytimg.com/vi/' + this.state.video_id + '/hqdefault.jpg';
-            onDeckNode = _React2['default'].createElement('div', { key: this.state.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.generate_embed(this.state.video_id) } });
+            src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg";
+            onDeckNode = _reactAddons2['default'].createElement('div', { key: this.state.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.generate_embed(this.state.video_id) } });
         }
-        return _React2['default'].createElement(
+        console.log(this.state.select_text);
+        return _reactAddons2['default'].createElement(
             'div',
             null,
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'button',
-                { className: this.state.is_cover ? 'btn btn-info disabled' : 'btn btn-info',
-                    style: { position: 'absolute', left: '40%', zIndex: '999', top: '-25px' },
+                { className: this.state.is_cover ? "btn btn-info disabled" : "btn btn-info",
+                    style: { position: "absolute", left: "40%", zIndex: "999", top: "-25px" },
                     onClick: this.handleClickCover },
-                this.state.is_cover ? '此為封面圖片' : '設定為封面圖片'
+                this.state.is_cover ? "此為封面圖片" : "設定為封面圖片"
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'button',
                 { className: 'btn btn-primary',
-                    style: { position: 'absolute', right: '10px', zIndex: '999', top: '-25px' },
+                    style: { position: "absolute", right: "10px", zIndex: "999", top: "-25px" },
                     onClick: this.handleClickTile },
                 '編輯圖片'
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'on_deck' },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
+                _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
                 onDeckNode,
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'caption' },
                     this.state.caption
                 )
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 Modal,
                 { isOpen: this.state.editing,
                     onRequestClose: this.closeModal },
-                _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeModal }),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeModal }),
+                _reactAddons2['default'].createElement(
                     'form',
-                    { className: 'form-horizontal', onSubmit: this.handleSubmit, style: { margin: '20px auto', width: '80%' } },
-                    _React2['default'].createElement(
+                    { className: 'form-horizontal', onSubmit: this.handleSubmit, style: { margin: "20px auto", width: "80%" } },
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement('img', { src: src, style: { marginBottom: '5px', width: '150px' } }),
-                        _React2['default'].createElement('input', { type: 'file', accept: 'image/jpeg, image/gif, image/jpg, image/png', onChange: this.handleChangeImg })
+                        _reactAddons2['default'].createElement('img', { src: src, style: { marginBottom: "5px", width: "150px" } }),
+                        _reactAddons2['default'].createElement('input', { type: 'file', accept: 'image/jpeg, image/gif, image/jpg, image/png', onChange: this.handleChangeImg })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             '註解'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption, value: this.state.caption })
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption, value: this.state.caption })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             '書籤位置'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeTag, value: this.state.tag })
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeTag, value: this.state.tag })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             'Youtube 網址'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeVideo, value: this.state.video_url })
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeVideo, value: this.state.video_url })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
+                            'label',
+                            null,
+                            '單品敘述'
+                        ),
+                        _reactAddons2['default'].createElement(
+                            'span',
+                            null,
+                            _reactAddons2['default'].createElement('textarea', {
+                                ref: 'TextArea',
+                                name: 'select_text',
+                                defaultValue: this.state.select_text }),
+                            _reactAddons2['default'].createElement(
+                                'p',
+                                { className: 'help-block' },
+                                '若要換行請輸入shift+enter, 分段落請輸入enter'
+                            )
+                        )
+                    ),
+                    _reactAddons2['default'].createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _reactAddons2['default'].createElement(
                             'button',
-                            { type: 'submit', className: 'btn btn-primary', style: { marginRight: '10px' } },
+                            { type: 'submit', className: 'btn btn-primary', style: { marginRight: "10px" } },
                             '儲存'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'button',
-                            { type: 'button', className: 'btn btn-danger', onClick: this.handleDelete, style: { marginRight: '10px' } },
+                            { type: 'button', className: 'btn btn-danger', onClick: this.handleDelete, style: { marginRight: "10px" } },
                             '刪除'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'button',
                             { type: 'button', className: 'btn btn-default', onClick: this.closeModal },
                             '取消'
@@ -42325,38 +42382,36 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"classnames":3,"lodash":4,"react-modal":14,"react/addons":56}],236:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _MutablePostCredit = require('./MutablePostCredit');
 
-var _MutablePostCredit2 = _interopRequireWildcard(_MutablePostCredit);
+var _MutablePostCredit2 = _interopRequireDefault(_MutablePostCredit);
 
-var _import = require('lodash');
+var _lodash = require('lodash');
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash2 = _interopRequireDefault(_lodash);
 
-'use strict';
-
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'MutableCredit',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -42387,8 +42442,8 @@ exports['default'] = _React2['default'].createClass({
         this.setState({
             credits: this.state.credits.concat([{
                 id: unique_key,
-                role: '',
-                name: '',
+                role: "",
+                name: "",
                 new_entry: true
             }])
         });
@@ -42396,7 +42451,7 @@ exports['default'] = _React2['default'].createClass({
 
     handleClickRemove: function handleClickRemove(credit) {
         var credits = this.state.credits.slice(0);
-        _import2['default'].remove(credits, function (obj) {
+        _lodash2['default'].remove(credits, function (obj) {
             return obj == credit;
         });
         this.setState({
@@ -42413,24 +42468,24 @@ exports['default'] = _React2['default'].createClass({
     render: function render() {
         var _this2 = this;
 
-        var creditNodes = _import2['default'].map(this.state.credits, function (credit) {
-            return _React2['default'].createElement(_MutablePostCredit2['default'], {
+        var creditNodes = _lodash2['default'].map(this.state.credits, function (credit) {
+            return _reactAddons2['default'].createElement(_MutablePostCredit2['default'], {
                 key: credit.id,
                 id: credit.id,
                 element_id: _this2.props.element_id,
                 element_uri: _this2.props.element_uri,
                 role: credit.role,
                 name: credit.name,
-                editing: _import2['default'].has(credit, 'new_entry') ? true : false,
-                new_entry: _import2['default'].has(credit, 'new_entry') ? credit.new_entry : false,
+                editing: _lodash2['default'].has(credit, 'new_entry') ? true : false,
+                new_entry: _lodash2['default'].has(credit, 'new_entry') ? credit.new_entry : false,
                 hasError: _this2.props.hasError,
                 onClickRemove: _this2.handleClickRemove.bind(_this2, credit) });
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'form',
             { className: 'form-inline' },
             creditNodes,
-            _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '新增Credit', className: 'glyphicon glyphicon-plus', onClick: this.handleClick })
+            _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '新增Credit', className: 'glyphicon glyphicon-plus', onClick: this.handleClick })
         );
     }
 });
@@ -42439,47 +42494,46 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"./MutablePostCredit":237,"classnames":3,"lodash":4,"react/addons":56}],237:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _Router = require('react-router');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-'use strict';
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'MutablePostCredit',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     propTypes: {
-        role: _React2['default'].PropTypes.string.isRequired,
-        name: _React2['default'].PropTypes.string.isRequired
+        role: _reactAddons2['default'].PropTypes.string.isRequired,
+        name: _reactAddons2['default'].PropTypes.string.isRequired
     },
 
     getInitialState: function getInitialState() {
         return {
             editing: false,
-            role: '',
-            name: '' };
+            role: "",
+            name: ""
+        };
     },
 
     _updatePost: function _updatePost(element_id, params) {
@@ -42505,7 +42559,7 @@ exports['default'] = _React2['default'].createClass({
             } else {
                 _this2.setState({
                     editing: false,
-                    id: response.headers.location.split('/')[6]
+                    id: response.headers['location'].split('/')[6]
                 });
             }
         });
@@ -42531,7 +42585,8 @@ exports['default'] = _React2['default'].createClass({
                 _this4.props.hasError();
             } else {
                 _this4.setState({
-                    editing: false });
+                    editing: false
+                });
             }
         });
     },
@@ -42546,9 +42601,9 @@ exports['default'] = _React2['default'].createClass({
 
     handleClickOk: function handleClickOk() {
         var params = {
-            role: this.state.role,
-            name: this.state.name,
-            post: this.props.element_uri.replace('posts', 'admin_posts')
+            'role': this.state.role,
+            'name': this.state.name,
+            'post': this.props.element_uri.replace("posts", "admin_posts")
         };
         if (this.props.new_entry) {
             // means new entry
@@ -42591,63 +42646,63 @@ exports['default'] = _React2['default'].createClass({
 
     render: function render() {
         if (this.state.editing) {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'div',
                 { className: 'credit' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
-                    { className: 'form-group', style: { marginRight: '10px' } },
-                    _React2['default'].createElement(
+                    { className: 'form-group', style: { marginRight: "10px" } },
+                    _reactAddons2['default'].createElement(
                         'label',
                         { className: 'sr-only' },
                         '職稱'
                     ),
-                    _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleRoleChange, placeholder: '職稱', value: this.state.role })
+                    _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleRoleChange, placeholder: '職稱', value: this.state.role })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'label',
                         { className: 'sr-only' },
                         '姓名'
                     ),
-                    _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleNamechange, placeholder: '姓名', value: this.state.name })
+                    _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleNamechange, placeholder: '姓名', value: this.state.name })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
-                    { className: this.state.role != '' && this.state.name != '' ? 'form-group' : 'form-group hidden' },
-                    _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '儲存',
+                    { className: this.state.role != "" && this.state.name != "" ? "form-group" : "form-group hidden" },
+                    _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '儲存',
                         className: 'glyphicon glyphicon-ok', onClick: this.handleClickOk })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group' },
-                    _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
+                    _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
                         className: 'glyphicon glyphicon-minus', onClick: this.handleClickMinus })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'p',
                     { className: 'help-block' },
                     '複數人數請用半形逗號分隔開 (例如:Amber Chan, 小叮噹)'
                 )
             );
         } else {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'div',
                 { className: 'credit' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'label role', onClick: this.handleClick },
                     this.state.role
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'name', onClick: this.handleClick },
                     this.state.name
                 ),
-                _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
-                    className: 'glyphicon glyphicon-remove', style: { fontSize: '12px' }, onClick: this.handleClickRemove })
+                _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '移除',
+                    className: 'glyphicon glyphicon-remove', style: { fontSize: "12px" }, onClick: this.handleClickRemove })
             );
         }
     }
@@ -42657,36 +42712,34 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"lodash":4,"react-router":41,"react/addons":56}],238:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _Router = require('react-router');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _import = require('lodash');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-'use strict';
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'Nav',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     _deleteCategory: function _deleteCategory(id) {
         var _this = this;
@@ -42697,39 +42750,43 @@ exports['default'] = _React2['default'].createClass({
     },
 
     ClickMinus: function ClickMinus() {
-        var r = confirm('確定要刪除此類別？');
+        var r = confirm("確定要刪除此類別？");
         if (r) this._deleteCategory(this.props.id);
     },
 
     render: function render() {
         if (this.props.isSub) {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'li',
                 { key: this.props.id, className: 'list-group-item sub' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Link,
                     { to: 'subcategory', params: { categoryId: this.props.parent_id, subcategoryId: this.props.id } },
-                    this.props.name
+                    this.props.name,
+                    ' / ',
+                    this.props.zh_name
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'pull-right' },
-                    _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove', onClick: this.ClickMinus })
+                    _reactAddons2['default'].createElement('span', { className: 'glyphicon glyphicon-remove', onClick: this.ClickMinus })
                 )
             );
         } else {
-            return _React2['default'].createElement(
+            return _reactAddons2['default'].createElement(
                 'li',
                 { key: this.props.id, className: 'list-group-item' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Link,
                     { to: 'category', params: { categoryId: this.props.id } },
-                    this.props.name
+                    this.props.name,
+                    ' / ',
+                    this.props.zh_name
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'pull-right' },
-                    _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove', onClick: this.ClickMinus })
+                    _reactAddons2['default'].createElement('span', { className: 'glyphicon glyphicon-remove', onClick: this.ClickMinus })
                 )
             );
         }
@@ -42740,73 +42797,72 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"lodash":4,"react-router":41,"react/addons":56}],239:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
 
 var _moment = require('moment');
 
-var _moment2 = _interopRequireWildcard(_moment);
+var _moment2 = _interopRequireDefault(_moment);
 
 var _PostGallery = require('./PostGallery');
 
-var _PostGallery2 = _interopRequireWildcard(_PostGallery);
+var _PostGallery2 = _interopRequireDefault(_PostGallery);
 
-var _classNames = require('classnames');
+var _classnames = require('classnames');
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _ClickableP = require('./ClickableP');
 
-var _ClickableP2 = _interopRequireWildcard(_ClickableP);
+var _ClickableP2 = _interopRequireDefault(_ClickableP);
 
 var _ToggableIcon = require('./ToggableIcon');
 
-var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
+var _ToggableIcon2 = _interopRequireDefault(_ToggableIcon);
 
 var _DropdownSpan = require('./DropdownSpan');
 
-var _DropdownSpan2 = _interopRequireWildcard(_DropdownSpan);
+var _DropdownSpan2 = _interopRequireDefault(_DropdownSpan);
 
 var _EditableDiv = require('./EditableDiv');
 
-var _EditableDiv2 = _interopRequireWildcard(_EditableDiv);
+var _EditableDiv2 = _interopRequireDefault(_EditableDiv);
 
 var _MutableCredit = require('./MutableCredit');
 
-var _MutableCredit2 = _interopRequireWildcard(_MutableCredit);
+var _MutableCredit2 = _interopRequireDefault(_MutableCredit);
 
-var _APIMixin = require('../mixins/APIMixin');
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
-
-'use strict';
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
 var Navigation = require('react-router').Navigation;
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'PostContent',
 
-    mixins: [Navigation, _APIMixin2['default']],
+    mixins: [Navigation, _mixinsAPIMixin2['default']],
 
     propTypes: {
-        id: _React2['default'].PropTypes.number.isRequired,
-        heading: _React2['default'].PropTypes.string.isRequired,
-        subheading: _React2['default'].PropTypes.string.isRequired,
-        articletext: _React2['default'].PropTypes.string,
-        imgs: _React2['default'].PropTypes.array.isRequired,
-        credits: _React2['default'].PropTypes.array,
-        created_at: _React2['default'].PropTypes.string,
-        last_modified: _React2['default'].PropTypes.string },
+        id: _reactAddons2['default'].PropTypes.number.isRequired,
+        heading: _reactAddons2['default'].PropTypes.string.isRequired,
+        subheading: _reactAddons2['default'].PropTypes.string.isRequired,
+        articletext: _reactAddons2['default'].PropTypes.string,
+        imgs: _reactAddons2['default'].PropTypes.array.isRequired,
+        credits: _reactAddons2['default'].PropTypes.array,
+        created_at: _reactAddons2['default'].PropTypes.string,
+        last_modified: _reactAddons2['default'].PropTypes.string
+    },
     getInitialState: function getInitialState() {
         return {
             overflow: false,
@@ -42817,7 +42873,7 @@ exports['default'] = _React2['default'].createClass({
     _setCover: function _setCover(index) {
         var that = this;
 
-        _import2['default'].forEach(this.props.imgs, function (img) {
+        _lodash2['default'].forEach(this.props.imgs, function (img) {
             if (img.is_cover == index) that.setState({
                 cover: img
             });
@@ -42845,13 +42901,13 @@ exports['default'] = _React2['default'].createClass({
         };
         if (this.isMounted()) {
             (function () {
-                var articleContent = _React2['default'].findDOMNode(_this2.refs.articleContent);
+                var articleContent = _reactAddons2['default'].findDOMNode(_this2.refs.articleContent);
                 _this2.setState({
                     overflow: articleContent.offsetHeight < articleContent.scrollHeight
                 });
                 setTimeout(function () {
                     var supscripts = document.getElementsByTagName('sup');
-                    _import2['default'].forEach(supscripts, function (sup) {
+                    _lodash2['default'].forEach(supscripts, function (sup) {
                         new Waypoint({
                             element: sup,
                             handler: function handler() {
@@ -42893,100 +42949,100 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleClickDelete: function handleClickDelete() {
-        var r = confirm('確定要刪除此文章？');
+        var r = confirm("確定要刪除此文章？");
         if (r) this._deletePost(this.props.id);
     },
 
     render: function render() {
-        var articleContent_class = _classNames2['default']({
+        var articleContent_class = (0, _classnames2['default'])({
             'pull-left': true,
             'article-content': true,
-            overflow: this.state.overflow
+            'overflow': this.state.overflow
         });
 
-        var alert_cls = _classNames2['default']({
-            alert: true,
+        var alert_cls = (0, _classnames2['default'])({
+            'alert': true,
             'alert-danger': true,
-            fadeout: !this.state.hasError
+            'fadeout': !this.state.hasError
         });
         var alert_style = {
-            position: 'absolute',
-            width: '200px',
-            right: '-4%',
-            top: '-3%',
-            zIndex: '9999',
-            padding: '15px 0'
+            position: "absolute",
+            width: "200px",
+            right: "-4%",
+            top: "-3%",
+            zIndex: "9999",
+            padding: "15px 0"
         };
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'article-box', ref: 'articleBox' },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'span',
-                { className: 'close', style: { zIndex: '100001' } },
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handleClickOnCross })
+                { className: 'close', style: { zIndex: "100001" } },
+                _reactAddons2['default'].createElement('img', { src: STATIC_URL + "img/cross.png", onClick: this.handleClickOnCross })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'row article-header' },
-                _React2['default'].createElement('span', { className: 'circle-divider' }),
+                _reactAddons2['default'].createElement('span', { className: 'circle-divider' }),
                 '編輯模式',
-                _React2['default'].createElement('span', { className: 'circle-divider' })
+                _reactAddons2['default'].createElement('span', { className: 'circle-divider' })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'row article' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: alert_cls, style: alert_style, role: 'alert', ref: 'alert' },
                     '發生錯誤, 請再嘗試一次'
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'button',
-                    { type: 'button', onClick: this.handleClickDelete, className: 'btn btn-danger', style: { top: '20px', position: 'absolute', left: '40px' } },
+                    { type: 'button', onClick: this.handleClickDelete, className: 'btn btn-danger', style: { top: "20px", position: "absolute", left: "40px" } },
                     '刪除'
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { id: 'articleContent', className: articleContent_class, ref: 'articleContent' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'inner-content' },
-                        _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '加入至橫幅', className: 'glyphicon glyphicon-star-empty', name: 'starred', hasError: this.hasError, element_id: this.props.id, selected: this.props.starred }),
-                        _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', hasError: this.hasError, element_id: this.props.id, selected: this.props.published }),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(_ToggableIcon2['default'], { tooltip: '加入至橫幅', className: 'glyphicon glyphicon-star-empty', name: 'starred', hasError: this.hasError, element_id: this.props.id, selected: this.props.starred }),
+                        _reactAddons2['default'].createElement(_ToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', hasError: this.hasError, element_id: this.props.id, selected: this.props.published }),
+                        _reactAddons2['default'].createElement(
                             'a',
-                            { target: '_blank', href: '/post/' + this.props.id + '/' },
-                            _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '預覽', className: 'glyphicon glyphicon-eye-open' })
+                            { target: '_blank', href: "/post/" + this.props.id + "/" },
+                            _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: '預覽', className: 'glyphicon glyphicon-eye-open' })
                         ),
-                        _React2['default'].createElement('br', null),
-                        _React2['default'].createElement('br', null),
-                        _React2['default'].createElement(_DropdownSpan2['default'], { className: 'label category', name: 'category', element_id: this.props.id, content: this.props.category }),
-                        _React2['default'].createElement(_ClickableP2['default'], { className: 'title',
+                        _reactAddons2['default'].createElement('br', null),
+                        _reactAddons2['default'].createElement('br', null),
+                        _reactAddons2['default'].createElement(_DropdownSpan2['default'], { className: 'label category', name: 'category', element_id: this.props.id, content: this.props.category }),
+                        _reactAddons2['default'].createElement(_ClickableP2['default'], { className: 'title',
                             element_id: this.props.id, name: 'heading',
                             content: this.props.heading, hasError: this.hasError }),
-                        _React2['default'].createElement(_ClickableP2['default'], { className: 'sub-title', element_id: this.props.id, name: 'subheading',
+                        _reactAddons2['default'].createElement(_ClickableP2['default'], { className: 'sub-title', element_id: this.props.id, name: 'subheading',
                             content: this.props.subheading, hasError: this.hasError }),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'decorations' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'span',
                                 { className: 'created_at' },
-                                _moment2['default'](this.props.created_at).format('YYYY.MM.DD')
+                                (0, _moment2['default'])(this.props.created_at).format("YYYY.MM.DD")
                             )
                         ),
-                        _React2['default'].createElement(_EditableDiv2['default'], { element_id: this.props.id, name: 'articletext', className: 'text', content: this.props.articletext, hasError: this.hasError }),
-                        _React2['default'].createElement('div', { className: 'decorations end' }),
-                        _React2['default'].createElement(_MutableCredit2['default'], { element_uri: this.props.uri, element_id: this.props.id,
+                        _reactAddons2['default'].createElement(_EditableDiv2['default'], { element_id: this.props.id, name: 'articletext', className: 'text', content: this.props.articletext, hasError: this.hasError }),
+                        _reactAddons2['default'].createElement('div', { className: 'decorations end' }),
+                        _reactAddons2['default'].createElement(_MutableCredit2['default'], { element_uri: this.props.uri, element_id: this.props.id,
                             hasError: this.hasError, credits: this.props.credits })
                     )
                 ),
-                _React2['default'].createElement(_PostGallery2['default'], {
+                _reactAddons2['default'].createElement(_PostGallery2['default'], {
                     element_id: this.props.id,
                     element_uri: this.props.uri,
                     imgs: this.props.imgs,
                     on_deck: this.state.cover }),
-                _React2['default'].createElement('div', { className: 'triangle' })
+                _reactAddons2['default'].createElement('div', { className: 'triangle' })
             )
         );
     }
@@ -42996,47 +43052,47 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"./ClickableP":232,"./DropdownSpan":233,"./EditableDiv":234,"./MutableCredit":236,"./PostGallery":240,"./ToggableIcon":242,"classnames":3,"lodash":4,"moment":5,"react-router":41,"react/addons":56}],240:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
+
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
 var _EditableImg = require('./EditableImg');
 
-var _EditableImg2 = _interopRequireWildcard(_EditableImg);
-
-'use strict';
+var _EditableImg2 = _interopRequireDefault(_EditableImg);
 
 var Modal = require('react-modal');
 var Dropzone = require('react-dropzone');
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'PostGallery',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     propTypes: {
-        on_deck: _React2['default'].PropTypes.object.isRequired,
-        imgs: _React2['default'].PropTypes.array.isRequired },
+        on_deck: _reactAddons2['default'].PropTypes.object.isRequired,
+        imgs: _reactAddons2['default'].PropTypes.array.isRequired
+    },
 
     componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
         if (this.isMounted()) {
             this.setState({
                 on_deck: nextProps.on_deck,
-                imgs: nextProps.imgs });
+                imgs: nextProps.imgs
+            });
         };
         this.forceUpdate();
     },
@@ -43056,22 +43112,23 @@ exports['default'] = _React2['default'].createClass({
         var _this2 = this;
 
         var that = this;
-        _import2['default'].forEach(this.state.files, function (file) {
-            that.createImage(that.props.element_uri.replace('posts', 'admin_posts'), file, function (e) {
+        _lodash2['default'].forEach(this.state.files, function (file) {
+            that.createImage(that.props.element_uri.replace("posts", "admin_posts"), file, function (e) {
                 that.setState({
                     percentage: e.percent
                 });
             }, function (error, response) {
                 if (response.ok) {
                     that.setState({
-                        files: _import2['default'].rest(that.state.files)
+                        files: _lodash2['default'].rest(that.state.files)
                     });
                     _this2._getImages(_this2.props.element_id);
                 };
             });
         });
         this.setState({
-            uploading: false });
+            uploading: false
+        });
         this.toggleAddMode();
     },
     _createVideo: function _createVideo(params) {
@@ -43091,13 +43148,13 @@ exports['default'] = _React2['default'].createClass({
         this.setState({ on_deck: image_url });
     },
     handleLeftArrow: function handleLeftArrow() {
-        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
-            scrollLeft: '-=250'
+        $(_reactAddons2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
+            scrollLeft: "-=250"
         }, 200);
     },
     handlerRightArrow: function handlerRightArrow() {
-        $(_React2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
-            scrollLeft: '+=250'
+        $(_reactAddons2['default'].findDOMNode(this.refs.thumbnailsRow)).animate({
+            scrollLeft: "+=250"
         }, 200);
     },
 
@@ -43109,7 +43166,8 @@ exports['default'] = _React2['default'].createClass({
 
     handleUpload: function handleUpload() {
         this.setState({
-            uploading: true });
+            uploading: true
+        });
         this._createImages();
     },
 
@@ -43117,7 +43175,7 @@ exports['default'] = _React2['default'].createClass({
         e.preventDefault();
         this.toggleAddMode();
         this.setState({
-            add_type: 'image'
+            add_type: "image"
         });
     },
 
@@ -43125,7 +43183,7 @@ exports['default'] = _React2['default'].createClass({
         e.preventDefault();
         this.toggleAddMode();
         this.setState({
-            add_type: 'video'
+            add_type: "video"
         });
     },
 
@@ -43139,7 +43197,7 @@ exports['default'] = _React2['default'].createClass({
         e.preventDefault();
         var params = {
             video_url: this.state.video_url,
-            post: this.props.element_uri.replace('posts', 'admin_posts')
+            post: this.props.element_uri.replace("posts", "admin_posts")
         };
         this._createVideo(params);
     },
@@ -43152,11 +43210,11 @@ exports['default'] = _React2['default'].createClass({
 
     getInitialState: function getInitialState() {
         return {
-            on_deck: { id: '99-00-11' },
+            on_deck: { 'id': '99-00-11' },
             imgs: [],
             adding: false,
-            add_type: '',
-            video_url: '',
+            add_type: "",
+            video_url: "",
             files: [],
             uploading: false,
             percentage: 0
@@ -43170,30 +43228,30 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
-        var modalNode = '';
-        if (this.state.add_type == 'video') {
-            modalNode = _React2['default'].createElement(
+        var modalNode = "";
+        if (this.state.add_type == "video") {
+            modalNode = _reactAddons2['default'].createElement(
                 'form',
-                { className: 'form-horizontal', onSubmit: this.handleSubmitVideo, style: { margin: '20px auto', width: '80%' } },
-                _React2['default'].createElement(
+                { className: 'form-horizontal', onSubmit: this.handleSubmitVideo, style: { margin: "20px auto", width: "80%" } },
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'label',
                         null,
                         'Youtube 網址'
                     ),
-                    _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeVideo, value: this.state.video_url })
+                    _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeVideo, value: this.state.video_url })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'form-group' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'button',
-                        { type: 'submit', className: 'btn btn-primary', style: { marginRight: '10px' } },
+                        { type: 'submit', className: 'btn btn-primary', style: { marginRight: "10px" } },
                         '新增'
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'button',
                         { type: 'button', className: 'btn btn-default', onClick: this.toggleAddMode },
                         '取消'
@@ -43201,26 +43259,26 @@ exports['default'] = _React2['default'].createClass({
                 )
             );
         } else {
-            if (this.state.add_type == 'image') var fileNode = '';
+            if (this.state.add_type == "image") var fileNode = "";
             if (this.state.files.length > 0) {
-                fileNode = _React2['default'].createElement(
+                fileNode = _reactAddons2['default'].createElement(
                     'div',
-                    { style: { width: '80%', margin: '50px auto' } },
-                    _React2['default'].createElement(
+                    { style: { width: "80%", margin: "50px auto" } },
+                    _reactAddons2['default'].createElement(
                         'button',
-                        { onClick: this.handleUpload, type: 'button', className: 'btn btn-primary', style: { marginBottom: '10px', marginTop: '-52px' } },
+                        { onClick: this.handleUpload, type: 'button', className: 'btn btn-primary', style: { marginBottom: "10px", marginTop: "-52px" } },
                         '上傳'
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
-                        { className: 'progress', style: { display: this.state.uploading ? 'block' : 'none' } },
-                        _React2['default'].createElement('div', { className: 'progress-bar', role: 'progressbar', style: { width: this.state.percentage + '%' } })
+                        { className: 'progress', style: { display: this.state.uploading ? "block" : "none" } },
+                        _reactAddons2['default'].createElement('div', { className: 'progress-bar', role: 'progressbar', style: { width: this.state.percentage + "%" } })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'list-group' },
                         this.state.files.map(function (file) {
-                            return _React2['default'].createElement(
+                            return _reactAddons2['default'].createElement(
                                 'a',
                                 { href: '#', key: file.name, className: 'list-group-item' },
                                 file.name
@@ -43229,16 +43287,16 @@ exports['default'] = _React2['default'].createClass({
                     )
                 );
             }
-            modalNode = _React2['default'].createElement(
+            modalNode = _reactAddons2['default'].createElement(
                 'div',
-                { style: { height: '100%', width: '100%' } },
-                _React2['default'].createElement(
+                { style: { height: "100%", width: "100%" } },
+                _reactAddons2['default'].createElement(
                     Dropzone,
                     { onDrop: this.handleDrop, accept: 'image/jpeg, image/gif, image/jpg, image/png',
-                        style: { cursor: 'pointer', width: '80%', height: '20%', border: '2px dashed #c8c8c8', margin: '0 auto', color: '#c8c8c8' } },
-                    _React2['default'].createElement(
+                        style: { cursor: "pointer", width: "80%", height: "20%", border: "2px dashed #c8c8c8", margin: "0 auto", "color": "#c8c8c8" } },
+                    _reactAddons2['default'].createElement(
                         'div',
-                        { style: { position: 'absolute', fontSize: '18px', top: '11%', left: '25%' } },
+                        { style: { position: "absolute", fontSize: "18px", top: "11%", left: "25%" } },
                         '請將欲上傳圖片拖曳至此或點擊此框選取檔案'
                     )
                 ),
@@ -43246,33 +43304,33 @@ exports['default'] = _React2['default'].createClass({
             );
         }
 
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
             { className: 'pull-right gallery' },
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
-                { className: 'btn-group', style: { position: 'absolute', left: '10px', zIndex: '999', top: '-25px' } },
-                _React2['default'].createElement(
+                { className: 'btn-group', style: { position: "absolute", left: "10px", zIndex: "999", top: "-25px" } },
+                _reactAddons2['default'].createElement(
                     'button',
                     { className: 'btn btn-default dropdown-toggle', 'data-toggle': 'dropdown' },
                     '新增'
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'ul',
                     { className: 'dropdown-menu' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'li',
                         null,
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'a',
                             { href: '#', onClick: this.handleClickAddImage },
                             '圖片'
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'li',
                         null,
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'a',
                             { href: '#', onClick: this.handleClickAddVideo },
                             '影片'
@@ -43280,40 +43338,40 @@ exports['default'] = _React2['default'].createClass({
                     )
                 )
             ),
-            _React2['default'].createElement(_EditableImg2['default'], { key: this.state.on_deck.id,
+            _reactAddons2['default'].createElement(_EditableImg2['default'], { key: this.state.on_deck.id,
                 image: this.state.on_deck,
                 post_id: this.props.element_id,
                 post_uri: this.props.element_uri,
                 refreshImage: this._getImages }),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'arrow left', onClick: this.handleLeftArrow },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/left-arrow.png' })
+                _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
+                _reactAddons2['default'].createElement('img', { src: STATIC_URL + "img/left-arrow.png" })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'ul',
                 { className: 'thumbnails', ref: 'thumbnailsRow' },
                 this.state.imgs.map(function (image) {
-                    var src = _import2['default'].has(image.img, 'small') ? image.img.small : '';
+                    var src = _lodash2['default'].has(image.img, 'small') ? image.img.small : "";
                     if (image.video_id) {
-                        src = 'https://i.ytimg.com/vi/' + image.video_id + '/hqdefault.jpg';
+                        src = "https://i.ytimg.com/vi/" + image.video_id + "/hqdefault.jpg";
                     }
-                    return _React2['default'].createElement(
+                    return _reactAddons2['default'].createElement(
                         'li',
                         { key: image.id },
-                        _React2['default'].createElement('img', { src: src,
+                        _reactAddons2['default'].createElement('img', { src: src,
                             onClick: this.handleClick.bind(this, image) })
                     );
                 }, this)
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'arrow right', onClick: this.handlerRightArrow },
-                _React2['default'].createElement('span', { className: 'align-helper' }),
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/right-arrow.png' })
+                _reactAddons2['default'].createElement('span', { className: 'align-helper' }),
+                _reactAddons2['default'].createElement('img', { src: STATIC_URL + "img/right-arrow.png" })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 Modal,
                 { isOpen: this.state.adding, onRequestClose: this.toggleAddMode },
                 modalNode
@@ -43326,23 +43384,21 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"./EditableImg":235,"lodash":4,"react-dropzone":6,"react-modal":14,"react/addons":56}],241:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _classNames = require('classnames');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'ToggableFilter',
 
     getInitialState: function getInitialState() {
@@ -43371,8 +43427,8 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
-        var icon_cls = this.state.selected ? this.props.className + ' selected' : this.props.className;
-        return _React2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
+        var icon_cls = this.state.selected ? this.props.className + " selected" : this.props.className;
+        return _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
     }
 });
 module.exports = exports['default'];
@@ -43380,30 +43436,28 @@ module.exports = exports['default'];
 },{"classnames":3,"react/addons":56}],242:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _classNames = require('classnames');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-'use strict';
+var _classnames2 = _interopRequireDefault(_classnames);
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'ToggableIcon',
 
-    mixins: [_APIMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -43436,8 +43490,8 @@ exports['default'] = _React2['default'].createClass({
     },
 
     render: function render() {
-        var icon_cls = this.state.selected ? this.props.className + ' selected' : this.props.className;
-        return _React2['default'].createElement('span', { 'data-toggle': 'tooltip', style: this.props.style, 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
+        var icon_cls = this.state.selected ? this.props.className + " selected" : this.props.className;
+        return _reactAddons2['default'].createElement('span', { 'data-toggle': 'tooltip', style: this.props.style, 'data-placement': 'top', title: this.props.tooltip, className: icon_cls, onClick: this.handleClick });
     }
 });
 module.exports = exports['default'];
@@ -43445,17 +43499,15 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"classnames":3,"react/addons":56}],243:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _request = require('superagent');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _request2 = _interopRequireWildcard(_request);
+var _superagent = require('superagent');
 
-'use strict';
+var _superagent2 = _interopRequireDefault(_superagent);
 
 exports['default'] = {
 
@@ -43464,19 +43516,19 @@ exports['default'] = {
      * @param {function} cb
      */
     getCategories: function getCategories(cb) {
-        _request2['default'].get('/staff_api/v1/categories/').query('format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/staff_api/v1/categories/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     createCategory: function createCategory(params, cb) {
-        _request2['default'].post('/staff_api/v1/admin_categories/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_categories/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
     },
 
     deleteCategory: function deleteCategory(id, cb) {
-        _request2['default'].del('/staff_api/v1/admin_categories/' + id + '/').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].del('/staff_api/v1/admin_categories/' + id + '/').type('application/json').accept('application/json').end(cb);
     },
 
     getStarred: function getStarred(cb) {
-        _request2['default'].get('/api/v1/starred/?format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/starred/?format=json').type('application/json').accept('application/json').end(cb);
     },
     /**
      * get all/categorised posts from the server
@@ -43488,23 +43540,23 @@ exports['default'] = {
         } else if (category_id) {
             qs = '&category__parent=' + category_id;
         };
-        _request2['default'].get('/api/v1/posts/').query('format=json').query('limit=50').query(qs).query(query).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/posts/').query('format=json').query('limit=50').query(qs).query(query).type('application/json').accept('application/json').end(cb);
     },
 
     getMorePosts: function getMorePosts(url, cb) {
-        _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
 
     getAlbums: function getAlbums(query, cb) {
-        _request2['default'].get('/api/v1/albums/').query('format=json').query(query).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/albums/').query('format=json').query(query).type('application/json').accept('application/json').end(cb);
     },
 
     getMoreAlbums: function getMoreAlbums(url, cb) {
-        _request2['default'].get(url).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get(url).type('application/json').accept('application/json').end(cb);
     },
 
     getAlbum: function getAlbum(id, cb) {
-        _request2['default'].get('/api/v1/albums/' + id + '/').query('format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/albums/' + id + '/').query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     /**
@@ -43513,59 +43565,60 @@ exports['default'] = {
      * @param {function} cb
      */
     getPost: function getPost(id, cb) {
-        _request2['default'].get('/api/v1/posts/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/api/v1/posts/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
     },
 
     createPost: function createPost(params, cb) {
-        _request2['default'].post('/staff_api/v1/admin_posts/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_posts/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
     },
 
     updatePost: function updatePost(id, params, cb) {
-        _request2['default'].put('/staff_api/v1/admin_posts/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].put('/staff_api/v1/admin_posts/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     deletePost: function deletePost(id, cb) {
-        _request2['default'].del('/staff_api/v1/admin_posts/' + id + '/').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].del('/staff_api/v1/admin_posts/' + id + '/').type('application/json').accept('application/json').end(cb);
     },
 
     createCredit: function createCredit(params, cb) {
-        _request2['default'].post('/staff_api/v1/admin_credits/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_credits/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     updateCredit: function updateCredit(id, params, cb) {
-        _request2['default'].put('/staff_api/v1/admin_credits/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].put('/staff_api/v1/admin_credits/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     deleteCredit: function deleteCredit(id, cb) {
-        _request2['default'].del('/staff_api/v1/admin_credits/' + id + '/').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].del('/staff_api/v1/admin_credits/' + id + '/').type('application/json').accept('application/json').end(cb);
     },
 
     createVideo: function createVideo(params, cb) {
-        _request2['default'].post('/staff_api/v1/admin_images/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_images/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     getImages: function getImages(post_id, cb) {
-        _request2['default'].get('/staff_api/v1/admin_images/').query('post=' + post_id).query('format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/staff_api/v1/admin_images/').query('post=' + post_id).query('format=json').type('application/json').accept('application/json').end(cb);
     },
 
     getImage: function getImage(id, cb) {
-        _request2['default'].get('/staff_api/v1/admin_images/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].get('/staff_api/v1/admin_images/' + id + '/?format=json').type('application/json').accept('application/json').end(cb);
     },
 
     createImage: function createImage(post_uri, img, progress_cb, cb) {
-        _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img, img.name).field('post', post_uri).accept('application/json').end(cb).on('progress', progress_cb);
+        _superagent2['default'].post('/staff_api/v1/admin_images/').attach('img', img, img.name).field('post', post_uri).accept('application/json').end(cb).on('progress', progress_cb);
     },
 
-    updateImage: function updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, cb) {
-        if (changed) _request2['default'].post('/staff_api/v1/admin_images/').attach('img', img, img.name).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('post', post_uri).accept('application/json').end(cb);else {
+    updateImage: function updateImage(id, img, caption, tag, video_url, select_text, post_uri, post_id, changed, cb) {
+        if (changed) _superagent2['default'].post('/staff_api/v1/admin_images/').attach('img', img, img.name).field('id', id).field('caption', caption).field('tag', tag).field('video_url', video_url).field('select_text', select_text).field('post', post_uri).accept('application/json').end(cb);else {
             var params = {
                 id: id,
                 caption: caption,
                 tag: tag,
                 video_url: video_url,
+                select_text: select_text,
                 post: post_id
             };
-            _request2['default'].post('/post_image/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+            _superagent2['default'].post('/post_image/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
         }
     },
 
@@ -43575,38 +43628,39 @@ exports['default'] = {
             post_id: post_id,
             is_cover: true
         };
-        _request2['default'].post('/post_image/cover/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+        _superagent2['default'].post('/post_image/cover/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
     },
 
     deleteImage: function deleteImage(id, cb) {
         var params = {
             id: id
         };
-        _request2['default'].post('/post_image/delete/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+        _superagent2['default'].post('/post_image/delete/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
     },
 
     createAlbum: function createAlbum(params, cb) {
-        _request2['default'].post('/staff_api/v1/admin_albums/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_albums/').set('X-CSRFToken', csrfToken).send(params).type('application/json').accept('application/json').end(cb);
     },
 
     updateAlbum: function updateAlbum(id, params, cb) {
-        _request2['default'].put('/staff_api/v1/admin_albums/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].put('/staff_api/v1/admin_albums/' + id + '/').send(params).type('application/json').accept('application/json').end(cb);
     },
 
     deleteAlbum: function deleteAlbum(id, cb) {
-        _request2['default'].del('/staff_api/v1/admin_albums/' + id + '/').type('application/json').accept('application/json').end(cb);
+        _superagent2['default'].del('/staff_api/v1/admin_albums/' + id + '/').type('application/json').accept('application/json').end(cb);
     },
 
     createPhoto: function createPhoto(album_uri, img, cb) {
-        _request2['default'].post('/staff_api/v1/admin_photos/').attach('img', img, img.name).field('album', album_uri).accept('application/json').end(cb);
+        _superagent2['default'].post('/staff_api/v1/admin_photos/').attach('img', img, img.name).field('album', album_uri).accept('application/json').end(cb);
     },
 
     updatePhoto: function updatePhoto(id, img, caption, album_uri, changed, cb) {
-        if (changed) _request2['default'].post('/staff_api/v1/admin_photos/').attach('img', img, img.name).field('id', id).field('album', album_uri).field('caption', caption).accept('application/json').end(cb);else {
+        if (changed) _superagent2['default'].post('/staff_api/v1/admin_photos/').attach('img', img, img.name).field('id', id).field('album', album_uri).field('caption', caption).accept('application/json').end(cb);else {
             var params = {
                 id: id,
-                caption: caption };
-            _request2['default'].post('/photo/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+                caption: caption
+            };
+            _superagent2['default'].post('/photo/edit/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
         }
     },
 
@@ -43614,8 +43668,9 @@ exports['default'] = {
         var params = {
             id: id
         };
-        _request2['default'].post('/photo/delete/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
-    } };
+        _superagent2['default'].post('/photo/delete/').set('X-CSRFToken', csrfToken).type('form').send(params).accept('application/json').end(cb);
+    }
+};
 module.exports = exports['default'];
 
 },{"superagent":229}],244:[function(require,module,exports){
@@ -43685,35 +43740,33 @@ module.exports = ScrollListenerMixin;
 },{"react/lib/ViewportMetrics":173}],245:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-'use strict';
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
 var State = require('react-router').State;
 var Navigation = require('react-router').Navigation;
 var Dropzone = require('react-dropzone');
 var Modal = require('react-modal');
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'AlbumPage',
 
-    mixins: [_APIMixin2['default'], State, Navigation],
+    mixins: [_mixinsAPIMixin2['default'], State, Navigation],
 
     getInitialState: function getInitialState() {
         return {
@@ -43724,7 +43777,7 @@ exports['default'] = _React2['default'].createClass({
             adding: false,
             selected_photo: null,
             files: [],
-            resource_uri: '',
+            resource_uri: "",
             redactor_inited: false,
             display_img: null,
             img_changed: false
@@ -43768,7 +43821,7 @@ exports['default'] = _React2['default'].createClass({
 
         this.updateAlbum(id, params, function (error, response) {
             if (!error) {
-                $(_React2['default'].findDOMNode(_this3.refs.SubmitButton)).button('reset');
+                $(_reactAddons2['default'].findDOMNode(_this3.refs.SubmitButton)).button('reset');
             }
         });
     },
@@ -43776,7 +43829,7 @@ exports['default'] = _React2['default'].createClass({
     _updatePhoto: function _updatePhoto(id, img, caption) {
         var _this4 = this;
 
-        this.updatePhoto(id, img, caption, this.state.resource_uri.replace('albums', 'admin_albums'), this.state.img_changed, function (error, response) {
+        this.updatePhoto(id, img, caption, this.state.resource_uri.replace("albums", "admin_albums"), this.state.img_changed, function (error, response) {
             if (!error) {
                 _this4.setState({
                     img_changed: false
@@ -43811,11 +43864,11 @@ exports['default'] = _React2['default'].createClass({
         var _this7 = this;
 
         var that = this;
-        _import2['default'].forEach(this.state.files, function (file) {
-            that.createPhoto(that.state.resource_uri.replace('albums', 'admin_albums'), file, function (error, response) {
+        _lodash2['default'].forEach(this.state.files, function (file) {
+            that.createPhoto(that.state.resource_uri.replace("albums", "admin_albums"), file, function (error, response) {
                 if (!error) {
                     that.setState({
-                        files: _import2['default'].rest(that.state.files)
+                        files: _lodash2['default'].rest(that.state.files)
                     });
                     _this7.refreshAlbum(_this7.state.id);
                 };
@@ -43853,7 +43906,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleChangeEN: function handleChangeEN(e) {
-        var value = e.target.value != '' ? e.target.value : this.state.name;
+        var value = e.target.value != "" ? e.target.value : this.state.name;
         this.setState({
             name: value
         });
@@ -43864,7 +43917,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleChangeZH: function handleChangeZH(e) {
-        var value = e.target.value != '' ? e.target.value : this.state.zh_name;
+        var value = e.target.value != "" ? e.target.value : this.state.zh_name;
         this.setState({
             zh_name: value
         });
@@ -43875,26 +43928,26 @@ exports['default'] = _React2['default'].createClass({
     },
 
     changePhotographer: function changePhotographer(value) {
-        var val = value != '' ? value : this.state.photographer;
+        var val = value != "" ? value : this.state.photographer;
         this.setState({
             photographer: val
         });
     },
 
     changeConcept: function changeConcept(value) {
-        var val = value != '' ? value : this.state.concept;
+        var val = value != "" ? value : this.state.concept;
         this.setState({
             concept: val
         });
     },
 
     handleSubmit: function handleSubmit(e) {
-        $(_React2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
+        $(_reactAddons2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
         this._updateAlbum(this.state.id, {
-            name: this.state.name,
-            zh_name: this.state.zh_name,
-            photographer: this.state.photographer,
-            concept: this.state.concept
+            "name": this.state.name,
+            "zh_name": this.state.zh_name,
+            "photographer": this.state.photographer,
+            "concept": this.state.concept
         });
     },
 
@@ -43957,12 +44010,12 @@ exports['default'] = _React2['default'].createClass({
     componentDidUpdate: function componentDidUpdate() {
         if (!this.state.redactor_inited) {
             var that = this;
-            $(_React2['default'].findDOMNode(this.refs.Photographer)).redactor({
-                lang: 'zh_tw',
-                minHeight: '300px',
-                buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
-                plugins: ['scriptbuttons', 'fullscreen'],
-                changeCallback: function changeCallback() {
+            $(_reactAddons2['default'].findDOMNode(this.refs.Photographer)).redactor({
+                'lang': 'zh_tw',
+                'minHeight': '300px',
+                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                'plugins': ['scriptbuttons', 'fullscreen'],
+                'changeCallback': function changeCallback() {
                     that.changePhotographer(this.code.get());
                 },
                 initCallback: function initCallback() {
@@ -43972,12 +44025,12 @@ exports['default'] = _React2['default'].createClass({
                 }
             });
 
-            $(_React2['default'].findDOMNode(this.refs.Concept)).redactor({
-                lang: 'zh_tw',
-                minHeight: '300px',
-                buttons: ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
-                plugins: ['scriptbuttons', 'fullscreen'],
-                changeCallback: function changeCallback() {
+            $(_reactAddons2['default'].findDOMNode(this.refs.Concept)).redactor({
+                'lang': 'zh_tw',
+                'minHeight': '300px',
+                'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                'plugins': ['scriptbuttons', 'fullscreen'],
+                'changeCallback': function changeCallback() {
                     that.changeConcept(this.code.get());
                 },
                 initCallback: function initCallback() {
@@ -43992,26 +44045,26 @@ exports['default'] = _React2['default'].createClass({
     render: function render() {
         var _this8 = this;
 
-        var fileNode = '';
+        var fileNode = "";
         if (this.state.files.length > 0) {
-            fileNode = _React2['default'].createElement(
+            fileNode = _reactAddons2['default'].createElement(
                 'div',
-                { style: { width: '80%', margin: '50px auto' } },
-                _React2['default'].createElement(
+                { style: { width: "80%", margin: "50px auto" } },
+                _reactAddons2['default'].createElement(
                     'button',
-                    { onClick: this.handleUpload, type: 'button', className: 'btn btn-primary', style: { marginBottom: '10px', marginTop: '-52px' } },
+                    { onClick: this.handleUpload, type: 'button', className: 'btn btn-primary', style: { marginBottom: "10px", marginTop: "-52px" } },
                     '上傳'
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
-                    { className: 'progress', style: { display: this.state.uploading ? 'block' : 'none' } },
-                    _React2['default'].createElement('div', { className: 'progress-bar', role: 'progressbar', style: { width: this.state.percentage + '%' } })
+                    { className: 'progress', style: { display: this.state.uploading ? "block" : "none" } },
+                    _reactAddons2['default'].createElement('div', { className: 'progress-bar', role: 'progressbar', style: { width: this.state.percentage + "%" } })
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'list-group' },
                     this.state.files.map(function (file) {
-                        return _React2['default'].createElement(
+                        return _reactAddons2['default'].createElement(
                             'a',
                             { href: '#', key: file.name, className: 'list-group-item' },
                             file.name
@@ -44020,134 +44073,134 @@ exports['default'] = _React2['default'].createClass({
                 )
             );
         }
-        var PhotosNode = _import2['default'].map(this.state.photos, function (photo) {
-            return _React2['default'].createElement(
+        var PhotosNode = _lodash2['default'].map(this.state.photos, function (photo) {
+            return _reactAddons2['default'].createElement(
                 'div',
                 { key: photo.id },
-                _React2['default'].createElement('img', { src: photo.img.small,
+                _reactAddons2['default'].createElement('img', { src: photo.img.small,
                     onClick: _this8.handleClickOnPhoto.bind(_this8, photo) })
             );
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
-            { style: { marginTop: '50px' } },
-            _React2['default'].createElement(
+            { style: { marginTop: "50px" } },
+            _reactAddons2['default'].createElement(
                 'span',
-                { className: 'close', style: { margin: '-40px 20px' } },
-                _React2['default'].createElement('img', { src: STATIC_URL + 'img/cross.png', onClick: this.handleClickOnCross })
+                { className: 'close', style: { margin: "-40px 20px" } },
+                _reactAddons2['default'].createElement('img', { src: STATIC_URL + "img/cross.png", onClick: this.handleClickOnCross })
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-lg-offset-2 col-md-offset-md-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8 albums', ref: 'Album' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel-group', role: 'tablist', 'aria-multiselectable': 'true' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel panel-default' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'panel-heading', role: 'tab', id: 'ENname' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'span',
-                                { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
+                                { style: { fontSize: "24px", margin: "0 auto" }, className: 'panel-title' },
                                 '編輯',
                                 this.state.name
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'div',
                                 { className: 'btn-group pull-right' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'button',
-                                    { type: 'button', className: 'btn btn-danger', onClick: this.handleDeleteAlbum, style: { marginRight: '10px' } },
+                                    { type: 'button', className: 'btn btn-danger', onClick: this.handleDeleteAlbum, style: { marginRight: "10px" } },
                                     '刪除'
                                 )
                             )
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'panel-body' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'div',
                                 { className: 'form-group' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'label',
                                     { className: 'form-label' },
                                     '英文標題'
                                 ),
-                                _React2['default'].createElement('input', {
+                                _reactAddons2['default'].createElement('input', {
                                     name: 'zh_name',
-                                    style: { margin: '10px 0' },
+                                    style: { margin: "10px 0" },
                                     className: 'form-control',
                                     type: 'text',
                                     value: this.state.name,
                                     onChange: this.handleChangeEN,
                                     onKeyUp: this.handleKeyUpEN })
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'div',
                                 { className: 'form-group' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'label',
                                     { className: 'form-label' },
                                     '中文標題'
                                 ),
-                                _React2['default'].createElement('input', {
+                                _reactAddons2['default'].createElement('input', {
                                     name: 'zh_name',
-                                    style: { margin: '10px 0' },
+                                    style: { margin: "10px 0" },
                                     className: 'form-control',
                                     type: 'text',
                                     value: this.state.zh_name,
                                     onChange: this.handleChangeZH,
                                     onKeyUp: this.handleKeyUpZH })
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'div',
                                 { className: 'form-group' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'label',
                                     { className: 'form-label' },
                                     '攝影'
                                 ),
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'span',
                                     null,
-                                    _React2['default'].createElement('textarea', {
+                                    _reactAddons2['default'].createElement('textarea', {
                                         ref: 'Photographer',
                                         name: 'photographer',
                                         defaultValue: '關於攝影師',
                                         value: this.state.photographer }),
-                                    _React2['default'].createElement(
+                                    _reactAddons2['default'].createElement(
                                         'p',
                                         { className: 'help-block' },
                                         '若要換行請輸入shift+enter, 分段落請輸入enter'
                                     )
                                 )
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'div',
                                 { className: 'form-group' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'label',
                                     { className: 'form-label' },
                                     '概念'
                                 ),
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'span',
                                     null,
-                                    _React2['default'].createElement('textarea', {
+                                    _reactAddons2['default'].createElement('textarea', {
                                         ref: 'Concept',
                                         name: 'concept',
                                         defaultValue: '概念',
                                         value: this.state.concept }),
-                                    _React2['default'].createElement(
+                                    _reactAddons2['default'].createElement(
                                         'p',
                                         { className: 'help-block' },
                                         '若要換行請輸入shift+enter, 分段落請輸入enter'
                                     )
                                 )
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { onClick: this.handleSubmit,
                                     ref: 'SubmitButton',
@@ -44157,37 +44210,37 @@ exports['default'] = _React2['default'].createClass({
                         )
                     )
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel-group', id: 'accordion', role: 'tablist', 'aria-multiselectable': 'true' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel panel-default' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'panel-heading', role: 'tab', id: 'photos' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'h4',
                                 { className: 'panel-title' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'a',
                                     { role: 'button', 'data-toggle': 'collapse', 'data-parent': '#accordion', href: '#collapsePhotos', 'aria-expanded': 'true', 'aria-controls': 'collapseOne' },
                                     '圖片'
                                 )
                             )
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { id: 'collapsePhotos', className: 'panel-collapse collapse in', role: 'tabpanel', 'aria-labelledby': 'photos' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'div',
                                 { className: 'panel-body' },
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'div',
                                     { className: 'flex-box' },
                                     PhotosNode
                                 ),
-                                _React2['default'].createElement(
+                                _reactAddons2['default'].createElement(
                                     'button',
                                     { className: 'btn btn-info', type: 'button', onClick: this.toggleAddMode },
                                     '新增圖片'
@@ -44196,60 +44249,60 @@ exports['default'] = _React2['default'].createClass({
                         )
                     )
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Modal,
                     { isOpen: this.state.adding, onRequestClose: this.toggleAddMode },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         Dropzone,
                         { onDrop: this.handleDrop, accept: 'image/jpeg, image/gif, image/jpg, image/png',
-                            style: { cursor: 'pointer', width: '80%', height: '200px', border: '2px dashed #c8c8c8', margin: '0 auto', color: '#c8c8c8' } },
-                        _React2['default'].createElement(
+                            style: { cursor: "pointer", width: "80%", height: "200px", border: "2px dashed #c8c8c8", margin: "0 auto", "color": "#c8c8c8" } },
+                        _reactAddons2['default'].createElement(
                             'div',
-                            { style: { fontSize: '18px', marginTop: '80px', textAlign: 'center' } },
+                            { style: { fontSize: "18px", marginTop: "80px", textAlign: "center" } },
                             '請將欲上傳圖片拖曳至此或點擊此框選取檔案'
                         )
                     ),
                     fileNode
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Modal,
                     { isOpen: this.state.selected_photo != null,
                         onRequestClose: this.closeEditModal },
-                    _React2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeEditModal }),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement('span', { className: 'glyphicon glyphicon-remove close', onClick: this.closeEditModal }),
+                    _reactAddons2['default'].createElement(
                         'form',
-                        { className: 'form-horizontal', onSubmit: this.handleSubmitPhoto, style: { margin: '20px auto', width: '80%' } },
-                        _React2['default'].createElement(
+                        { className: 'form-horizontal', onSubmit: this.handleSubmitPhoto, style: { margin: "20px auto", width: "80%" } },
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'form-group' },
-                            _React2['default'].createElement('img', { src: this.state.display_img, style: { marginBottom: '5px', width: '150px' } }),
-                            _React2['default'].createElement('input', { type: 'file', accept: 'image/jpeg, image/gif, image/jpg, image/png', onChange: this.handleChangeImg })
+                            _reactAddons2['default'].createElement('img', { src: this.state.display_img, style: { marginBottom: "5px", width: "150px" } }),
+                            _reactAddons2['default'].createElement('input', { type: 'file', accept: 'image/jpeg, image/gif, image/jpg, image/png', onChange: this.handleChangeImg })
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'form-group' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'label',
                                 null,
                                 '註解'
                             ),
-                            _React2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption,
-                                value: _import2['default'].has(this.state.selected_photo, 'caption') ? this.state.selected_photo.caption : '' })
+                            _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onChange: this.handleChangeCaption,
+                                value: _lodash2['default'].has(this.state.selected_photo, 'caption') ? this.state.selected_photo.caption : "" })
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'form-group' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
-                                { type: 'submit', className: 'btn btn-primary', style: { marginRight: '10px' } },
+                                { type: 'submit', className: 'btn btn-primary', style: { marginRight: "10px" } },
                                 '儲存'
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
-                                { type: 'button', className: 'btn btn-danger', onClick: this.handleDeletePhoto, style: { marginRight: '10px' } },
+                                { type: 'button', className: 'btn btn-danger', onClick: this.handleDeletePhoto, style: { marginRight: "10px" } },
                                 '刪除'
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { type: 'button', className: 'btn btn-default', onClick: this.closeEditModal },
                                 '取消'
@@ -44267,51 +44320,49 @@ module.exports = exports['default'];
 },{"../mixins/APIMixin":243,"lodash":4,"react-dropzone":6,"react-modal":14,"react-router":41,"react/addons":56}],246:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _Router = require('react-router');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+var _mixinsScrollListenerMixin = require('../mixins/ScrollListenerMixin');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _mixinsScrollListenerMixin2 = _interopRequireDefault(_mixinsScrollListenerMixin);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _ToggableFilter = require('../components/ToggableFilter');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _ToggableFilter2 = _interopRequireWildcard(_ToggableFilter);
+var _componentsToggableFilter = require('../components/ToggableFilter');
 
-var _ToggableIcon = require('../components/ToggableIcon');
+var _componentsToggableFilter2 = _interopRequireDefault(_componentsToggableFilter);
 
-var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
+var _componentsToggableIcon = require('../components/ToggableIcon');
 
-'use strict';
+var _componentsToggableIcon2 = _interopRequireDefault(_componentsToggableIcon);
 
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var Navigation = require('react-router').Navigation;
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'AlbumsPage',
 
-    mixins: [_APIMixin2['default'], Navigation, _ScrollListenerMixin2['default']],
+    mixins: [_mixinsAPIMixin2['default'], Navigation, _mixinsScrollListenerMixin2['default']],
 
     getInitialState: function getInitialState() {
         return {
@@ -44325,7 +44376,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     onPageScroll: function onPageScroll() {
-        var bottomOffset = _React2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - window.innerHeight - this.state.scrollTop;
+        var bottomOffset = _reactAddons2['default'].findDOMNode(this.refs.mansonryContainer).scrollHeight - window.innerHeight - this.state.scrollTop;
         if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
@@ -44342,7 +44393,8 @@ exports['default'] = _React2['default'].createClass({
             albums: this.state.albums.concat(new_elements),
             next_page: next_page,
             has_next: has_next,
-            is_loading: false });
+            is_loading: false
+        });
     },
 
     _getMoreAlbums: function _getMoreAlbums(url) {
@@ -44369,11 +44421,12 @@ exports['default'] = _React2['default'].createClass({
         var _this3 = this;
 
         var params = {
-            name: 'English Heading',
-            zh_name: 'Chinese Heading' };
+            name: "English Heading",
+            zh_name: "Chinese Heading"
+        };
         this.createAlbum(params, function (error, response) {
-            if (!error) var album_id = response.headers.location.split('/')[6];
-            _this3.transitionTo('album', params = { albumId: album_id });
+            if (!error) var album_id = response.headers['location'].split('/')[6];
+            _this3.transitionTo("album", params = { albumId: album_id });
         });
     },
 
@@ -44387,7 +44440,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleClickPublishedButton: function handleClickPublishedButton() {
-        _React2['default'].findDOMNode(this.refs.published).click();
+        _reactAddons2['default'].findDOMNode(this.refs.published).click();
     },
 
     handleClickAll: function handleClickAll() {
@@ -44412,27 +44465,27 @@ exports['default'] = _React2['default'].createClass({
         }
     },
     render: function render() {
-        var AlbumNodes = _import2['default'].map(this.state.albums, function (album) {
-            var imgNode = '';
-            if (album.cover != null) imgNode = _React2['default'].createElement('img', { src: album.cover.img.small, style: { height: '80px', marginRight: '20px' } });
-            return _React2['default'].createElement(
+        var AlbumNodes = _lodash2['default'].map(this.state.albums, function (album) {
+            var imgNode = "";
+            if (album.cover != null) imgNode = _reactAddons2['default'].createElement('img', { src: album.cover.img.small, style: { height: "80px", marginRight: "20px" } });
+            return _reactAddons2['default'].createElement(
                 'li',
                 { key: album.id, className: 'list-group-item' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Link,
                     { to: 'album', params: { albumId: album.id } },
                     imgNode,
                     album.name,
                     ' ',
-                    album.zh_name != '' ? '/ ' + album.zh_name : ''
+                    album.zh_name != "" ? "/ " + album.zh_name : ""
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'pull-right' },
-                    _React2['default'].createElement('span', { style: { display: 'inline-block', height: '85%', verticalAlign: 'middle' } }),
-                    _React2['default'].createElement(_ToggableIcon2['default'], {
+                    _reactAddons2['default'].createElement('span', { style: { display: "inline-block", height: "85%", verticalAlign: "middle" } }),
+                    _reactAddons2['default'].createElement(_componentsToggableIcon2['default'], {
                         tooltip: '發表',
-                        style: { lineHeight: album.cover != null ? '70px' : 'auto' },
+                        style: { lineHeight: album.cover != null ? "70px" : "auto" },
                         className: 'glyphicon glyphicon-ok',
                         name: 'published',
                         element_id: album.id,
@@ -44440,53 +44493,53 @@ exports['default'] = _React2['default'].createClass({
                 )
             );
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
-            { style: { marginTop: '50px' } },
-            _React2['default'].createElement(
+            { style: { marginTop: "50px" } },
+            _reactAddons2['default'].createElement(
                 Link,
-                { style: { position: 'fixed', bottom: '20px', left: '20px' }, to: 'home' },
-                _React2['default'].createElement(
+                { style: { position: "fixed", bottom: "20px", left: "20px" }, to: 'home' },
+                _reactAddons2['default'].createElement(
                     'button',
                     { className: 'btn-lg btn-primary' },
                     '文章列表'
                 )
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-lg-offset-2 col-md-offset-md-2 col-sm-offset-2 col-lg-8 col-md-8 col-sm-8 albums', ref: 'Albums' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel panel-default' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel-heading' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'span',
-                            { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
+                            { style: { fontSize: "24px", margin: "0 auto" }, className: 'panel-title' },
                             'Albums / 相簿'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'btn-group pull-right' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.handleClickNew },
                                 '新相簿'
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
-                                { className: this.state.all_filter ? 'btn btn-info' : 'btn btn-default', type: 'button', onClick: this.handleClickAll },
+                                { className: this.state.all_filter ? "btn btn-info" : "btn btn-default", type: 'button', onClick: this.handleClickAll },
                                 'All'
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.handleClickPublishedButton },
-                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublished })
+                                _reactAddons2['default'].createElement(_componentsToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublished })
                             )
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'ul',
                         { className: 'list-group' },
                         AlbumNodes
@@ -44502,28 +44555,26 @@ module.exports = exports['default'];
 },{"../components/ToggableFilter":241,"../components/ToggableIcon":242,"../mixins/APIMixin":243,"../mixins/ScrollListenerMixin":244,"lodash":4,"react-router":41,"react/addons":56,"react/lib/ReactCSSTransitionGroup":89}],247:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _Router = require('react-router');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-'use strict';
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var RouteHandler = _Router2['default'].RouteHandler;
-exports['default'] = _React2['default'].createClass({
+var RouteHandler = _reactRouter2['default'].RouteHandler;
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'Application',
 
     render: function render() {
-        return _React2['default'].createElement(RouteHandler, null);
+        return _reactAddons2['default'].createElement(RouteHandler, null);
     }
 
 });
@@ -44532,58 +44583,56 @@ module.exports = exports['default'];
 },{"react-router":41,"react/addons":56}],248:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _Router = require('react-router');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _Router2 = _interopRequireWildcard(_Router);
+var _reactRouter = require('react-router');
 
-var _import = require('lodash');
+var _reactRouter2 = _interopRequireDefault(_reactRouter);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _classNames = require('classnames');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _classNames2 = _interopRequireWildcard(_classNames);
+var _classnames = require('classnames');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _classnames2 = _interopRequireDefault(_classnames);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _ScrollListenerMixin = require('../mixins/ScrollListenerMixin');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _ScrollListenerMixin2 = _interopRequireWildcard(_ScrollListenerMixin);
+var _mixinsScrollListenerMixin = require('../mixins/ScrollListenerMixin');
 
-var _Nav = require('../components/Nav');
+var _mixinsScrollListenerMixin2 = _interopRequireDefault(_mixinsScrollListenerMixin);
 
-var _Nav2 = _interopRequireWildcard(_Nav);
+var _componentsNav = require('../components/Nav');
 
-var _ToggableFilter = require('../components/ToggableFilter');
+var _componentsNav2 = _interopRequireDefault(_componentsNav);
 
-var _ToggableFilter2 = _interopRequireWildcard(_ToggableFilter);
+var _componentsToggableFilter = require('../components/ToggableFilter');
 
-var _ToggableIcon = require('../components/ToggableIcon');
+var _componentsToggableFilter2 = _interopRequireDefault(_componentsToggableFilter);
 
-var _ToggableIcon2 = _interopRequireWildcard(_ToggableIcon);
+var _componentsToggableIcon = require('../components/ToggableIcon');
 
-'use strict';
+var _componentsToggableIcon2 = _interopRequireDefault(_componentsToggableIcon);
 
 var Modal = require('react-modal');
 
-var Link = _Router2['default'].Link;
+var Link = _reactRouter2['default'].Link;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'IndexPage',
 
-    mixins: [_APIMixin2['default'], _ScrollListenerMixin2['default'], _Router2['default'].State, _Router2['default'].Navigation],
+    mixins: [_mixinsAPIMixin2['default'], _mixinsScrollListenerMixin2['default'], _reactRouter2['default'].State, _reactRouter2['default'].Navigation],
 
     getInitialState: function getInitialState() {
         return {
@@ -44599,12 +44648,13 @@ exports['default'] = _React2['default'].createClass({
             published_filter: false,
             all_filter: true,
             adding: false,
-            new_category: '',
+            new_category: "",
+            new_category_zh: "",
             selected_parent: null
         };
     },
     onPageScroll: function onPageScroll() {
-        var bottomOffset = _React2['default'].findDOMNode(this.refs.Posts).scrollHeight - window.innerHeight - this.state.scrollTop;
+        var bottomOffset = _reactAddons2['default'].findDOMNode(this.refs.Posts).scrollHeight - window.innerHeight - this.state.scrollTop;
         if (bottomOffset < 300 && !this.state.is_loading && this.state.has_next) {
             this.setState({
                 is_loading: true
@@ -44623,7 +44673,8 @@ exports['default'] = _React2['default'].createClass({
                 posts: _this.state.posts.concat(new_elements),
                 next_page: next_page,
                 has_next: has_next,
-                is_loading: false });
+                is_loading: false
+            });
         });
     },
     _getCategories: function _getCategories() {
@@ -44638,8 +44689,8 @@ exports['default'] = _React2['default'].createClass({
     _getPosts: function _getPosts(categoryId, subcategoryId, query) {
         var _this3 = this;
 
-        var category = _import2['default'].find(this.state.categories, { id: parseInt(categoryId) });
-        if (_import2['default'].has(category, 'children')) {
+        var category = _lodash2['default'].find(this.state.categories, { id: parseInt(categoryId) });
+        if (_lodash2['default'].has(category, 'children')) {
             if (category.children.length == 0) {
                 subcategoryId = categoryId;
                 categoryId = null;
@@ -44653,25 +44704,26 @@ exports['default'] = _React2['default'].createClass({
                 posts: new_elements,
                 next_page: next_page,
                 has_next: has_next,
-                is_loading: false });
+                is_loading: false
+            });
         });
     },
 
     _createNewPost: function _createNewPost() {
         var _this4 = this;
 
-        var category_uri = '/staff_api/v1/admin_categories/';
-        if (this.state.subcategoryId) category_uri += this.state.subcategoryId + '/';else if (this.state.categoryId) category_uri += this.state.categoryId + '/';else category_uri += this.state.categories[0].id + '/';
+        var category_uri = "/staff_api/v1/admin_categories/";
+        if (this.state.subcategoryId) category_uri += this.state.subcategoryId + "/";else if (this.state.categoryId) category_uri += this.state.categoryId + "/";else category_uri += this.state.categories[0].id + "/";
 
         var params = {
-            heading: 'Heading',
-            subheading: 'Subheading',
-            articletext: 'Content',
+            heading: "Heading",
+            subheading: "Subheading",
+            articletext: "Content",
             category: category_uri
         };
         this.createPost(params, function (error, response) {
-            if (!error) var post_id = response.headers.location.split('/')[6];
-            _this4.transitionTo('post', params = { postId: post_id });
+            if (!error) var post_id = response.headers['location'].split('/')[6];
+            _this4.transitionTo("post", params = { postId: post_id });
         });
     },
 
@@ -44683,7 +44735,7 @@ exports['default'] = _React2['default'].createClass({
                 _this5.toggleAddMode();
                 _this5._getCategories();
             }
-            $(_React2['default'].findDOMNode(_this5.refs.SubmitButton)).button('loading');
+            $(_reactAddons2['default'].findDOMNode(_this5.refs.SubmitButton)).button('loading');
         });
     },
 
@@ -44727,7 +44779,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleClickStarredButton: function handleClickStarredButton(e) {
-        _React2['default'].findDOMNode(this.refs.starred).click();
+        _reactAddons2['default'].findDOMNode(this.refs.starred).click();
     },
 
     handleClickStarred: function handleClickStarred(bool) {
@@ -44754,7 +44806,7 @@ exports['default'] = _React2['default'].createClass({
     },
 
     handleClickPublishedButton: function handleClickPublishedButton() {
-        _React2['default'].findDOMNode(this.refs.published).click();
+        _reactAddons2['default'].findDOMNode(this.refs.published).click();
     },
 
     toggleAddMode: function toggleAddMode() {
@@ -44779,12 +44831,23 @@ exports['default'] = _React2['default'].createClass({
         if (e.key === 'Enter') this.handleSubmitCategory();
     },
 
+    handleChangeZhCategory: function handleChangeZhCategory(e) {
+        this.setState({
+            new_category_zh: e.target.value
+        });
+    },
+
+    handleKeyUpZhCategory: function handleKeyUpZhCategory(e) {
+        if (e.key === 'Enter') this.handleSubmitCategory();
+    },
+
     handleSubmitCategory: function handleSubmitCategory(e) {
         e.preventDefault();
-        $(_React2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
+        $(_reactAddons2['default'].findDOMNode(this.refs.SubmitButton)).button('loading');
         var params = {
-            parent: this.state.selected_parent,
-            name: this.state.new_category
+            'parent': this.state.selected_parent,
+            'name': this.state.new_category,
+            'zh_name': this.state.new_category_zh
         };
         this._createCategory(params);
     },
@@ -44793,61 +44856,62 @@ exports['default'] = _React2['default'].createClass({
         var _this6 = this;
 
         var CategoryNodes = [];
-        _import2['default'].map(this.state.categories, function (category) {
-            CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: category.id, id: category.id, name: category.name, refreshCategory: _this6._getCategories }));
-            _import2['default'].map(category.children, function (subcategory) {
-                CategoryNodes.push(_React2['default'].createElement(_Nav2['default'], { key: subcategory.id, parent_id: category.id, id: subcategory.id, name: subcategory.name, isSub: true,
+        _lodash2['default'].map(this.state.categories, function (category) {
+            CategoryNodes.push(_reactAddons2['default'].createElement(_componentsNav2['default'], { key: category.id, id: category.id, name: category.name, zh_name: category.zh_name, refreshCategory: _this6._getCategories }));
+            _lodash2['default'].map(category.children, function (subcategory) {
+                CategoryNodes.push(_reactAddons2['default'].createElement(_componentsNav2['default'], { key: subcategory.id, parent_id: category.id, id: subcategory.id, zh_name: subcategory.zh_name,
+                    name: subcategory.name, isSub: true,
                     refreshCategory: _this6._getCategories }));
             });
         });
-        var PostNodes = _import2['default'].map(this.state.posts, function (post) {
-            return _React2['default'].createElement(
+        var PostNodes = _lodash2['default'].map(this.state.posts, function (post) {
+            return _reactAddons2['default'].createElement(
                 'li',
                 { key: post.id, className: 'list-group-item' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Link,
                     { to: 'post', params: { postId: post.id } },
                     post.heading
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'span',
                     { className: 'pull-right' },
-                    _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '加入至橫幅', style: { marginRight: '20px' }, className: 'glyphicon glyphicon-star-empty', name: 'starred', element_id: post.id, selected: post.starred }),
-                    _React2['default'].createElement(_ToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', element_id: post.id, selected: post.published })
+                    _reactAddons2['default'].createElement(_componentsToggableIcon2['default'], { tooltip: '加入至橫幅', style: { marginRight: "20px" }, className: 'glyphicon glyphicon-star-empty', name: 'starred', element_id: post.id, selected: post.starred }),
+                    _reactAddons2['default'].createElement(_componentsToggableIcon2['default'], { tooltip: '發表', className: 'glyphicon glyphicon-ok', name: 'published', element_id: post.id, selected: post.published })
                 )
             );
         });
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             'div',
-            { style: { marginTop: '50px' } },
-            _React2['default'].createElement(
+            { style: { marginTop: "50px" } },
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-lg-4 col-md-4 col-sm-4 col-sm-4 navigation', ref: 'Navigation' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel panel-default' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel-heading' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'span',
-                            { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
+                            { style: { fontSize: "24px", margin: "0 auto" }, className: 'panel-title' },
                             'Categories / 類別'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'btn-group pull-right' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.toggleAddMode },
                                 '新類別'
                             )
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'ul',
                         { className: 'list-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             Link,
                             { className: 'list-group-item', to: 'home' },
                             'All'
@@ -44855,86 +44919,86 @@ exports['default'] = _React2['default'].createClass({
                         CategoryNodes
                     )
                 ),
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     Link,
-                    { style: { position: 'fixed', bottom: '20px', left: '20px' }, to: 'albums' },
-                    _React2['default'].createElement(
+                    { style: { position: "fixed", bottom: "20px", left: "20px" }, to: 'albums' },
+                    _reactAddons2['default'].createElement(
                         'button',
                         { className: 'btn-lg btn-primary' },
                         '免費圖庫'
                     )
                 )
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 'div',
                 { className: 'col-lg-8 col-md-8 col-sm-8 posts', ref: 'Posts' },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'div',
                     { className: 'panel panel-default' },
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'panel-heading' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'span',
-                            { style: { fontSize: '24px', margin: '0 auto' }, className: 'panel-title' },
+                            { style: { fontSize: "24px", margin: "0 auto" }, className: 'panel-title' },
                             'Posts / 文章'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'div',
                             { className: 'btn-group pull-right' },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.handleClickNew },
                                 '新文章'
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
-                                { className: this.state.all_filter ? 'btn btn-info' : 'btn btn-default', type: 'button', onClick: this.handleClickAll },
+                                { className: this.state.all_filter ? "btn btn-info" : "btn btn-default", type: 'button', onClick: this.handleClickAll },
                                 'All'
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.handleClickStarredButton },
-                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.starred_filter, className: 'glyphicon glyphicon-star-empty', ref: 'starred', onStatus: this.handleClickStarred })
+                                _reactAddons2['default'].createElement(_componentsToggableFilter2['default'], { selected: this.state.starred_filter, className: 'glyphicon glyphicon-star-empty', ref: 'starred', onStatus: this.handleClickStarred })
                             ),
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'button',
                                 { className: 'btn btn-default', type: 'button', onClick: this.handleClickPublishedButton },
-                                _React2['default'].createElement(_ToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublished })
+                                _reactAddons2['default'].createElement(_componentsToggableFilter2['default'], { selected: this.state.published_filter, className: 'glyphicon glyphicon-ok', ref: 'published', onStatus: this.handleClickPublished })
                             )
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'ul',
                         { className: 'list-group' },
                         PostNodes
                     )
                 )
             ),
-            _React2['default'].createElement(
+            _reactAddons2['default'].createElement(
                 Modal,
                 { isOpen: this.state.adding, onRequestClose: this.toggleAddMode },
-                _React2['default'].createElement(
+                _reactAddons2['default'].createElement(
                     'form',
-                    { className: 'form-horizontal', onSubmit: this.handleSubmitCategory, style: { margin: '20px auto', width: '80%' } },
-                    _React2['default'].createElement(
+                    { className: 'form-horizontal', onSubmit: this.handleSubmitCategory, style: { margin: "20px auto", width: "80%" } },
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
                             '主類別'
                         ),
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'select',
                             { className: 'form-control', name: 'parent_category', onChange: this.handleChangeParent },
-                            _React2['default'].createElement(
+                            _reactAddons2['default'].createElement(
                                 'option',
                                 null,
                                 '無'
                             ),
                             this.state.categories.map(function (category) {
-                                return _React2['default'].createElement(
+                                return _reactAddons2['default'].createElement(
                                     'option',
                                     { value: category.resource_uri },
                                     category.name
@@ -44942,23 +45006,34 @@ exports['default'] = _React2['default'].createClass({
                             })
                         )
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
                             'label',
                             null,
-                            '類別名稱'
+                            '類別名稱 (英)'
                         ),
-                        _React2['default'].createElement('input', { className: 'form-control', type: 'text', onKeyUp: this.handleKeyUpCategory, onChange: this.handleChangeCategory,
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onKeyUp: this.handleKeyUpCategory, onChange: this.handleChangeCategory,
                             value: this.state.new_category })
                     ),
-                    _React2['default'].createElement(
+                    _reactAddons2['default'].createElement(
                         'div',
                         { className: 'form-group' },
-                        _React2['default'].createElement(
+                        _reactAddons2['default'].createElement(
+                            'label',
+                            null,
+                            '類別名稱 (中)'
+                        ),
+                        _reactAddons2['default'].createElement('input', { className: 'form-control', type: 'text', onKeyUp: this.handleKeyUpZhCategory, onChange: this.handleChangeZhCategory,
+                            value: this.state.new_category_zh })
+                    ),
+                    _reactAddons2['default'].createElement(
+                        'div',
+                        { className: 'form-group' },
+                        _reactAddons2['default'].createElement(
                             'button',
-                            { type: 'submit', className: 'btn btn-primary', ref: 'SubmitButton', 'data-loading-text': '儲存中...', style: { marginRight: '10px' } },
+                            { type: 'submit', className: 'btn btn-primary', ref: 'SubmitButton', 'data-loading-text': '儲存中...', style: { marginRight: "10px" } },
                             '儲存'
                         )
                     )
@@ -44973,43 +45048,41 @@ module.exports = exports['default'];
 },{"../components/Nav":238,"../components/ToggableFilter":241,"../components/ToggableIcon":242,"../mixins/APIMixin":243,"../mixins/ScrollListenerMixin":244,"classnames":3,"lodash":4,"react-modal":14,"react-router":41,"react/addons":56}],249:[function(require,module,exports){
 'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
-
 Object.defineProperty(exports, '__esModule', {
     value: true
 });
 
-var _React = require('react/addons');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _React2 = _interopRequireWildcard(_React);
+var _reactAddons = require('react/addons');
 
-var _import = require('lodash');
+var _reactAddons2 = _interopRequireDefault(_reactAddons);
 
-var _import2 = _interopRequireWildcard(_import);
+var _lodash = require('lodash');
 
-var _APIMixin = require('../mixins/APIMixin');
+var _lodash2 = _interopRequireDefault(_lodash);
 
-var _APIMixin2 = _interopRequireWildcard(_APIMixin);
+var _mixinsAPIMixin = require('../mixins/APIMixin');
 
-var _PostContent = require('../components/PostContent');
+var _mixinsAPIMixin2 = _interopRequireDefault(_mixinsAPIMixin);
 
-var _PostContent2 = _interopRequireWildcard(_PostContent);
+var _componentsPostContent = require('../components/PostContent');
 
-'use strict';
-
-var State = require('react-router').State;
+var _componentsPostContent2 = _interopRequireDefault(_componentsPostContent);
 
 //import ShootingContent from '../components/Post/Shooting/ShootingContent';
+
+var State = require('react-router').State;
 var TransitionGroup = require('react/lib/ReactCSSTransitionGroup');
 var Navigation = require('react-router').Navigation;
 
-exports['default'] = _React2['default'].createClass({
+exports['default'] = _reactAddons2['default'].createClass({
     displayName: 'PostPage',
 
-    mixins: [_APIMixin2['default'], State, Navigation],
+    mixins: [_mixinsAPIMixin2['default'], State, Navigation],
 
     propTypes: {
-        id: _React2['default'].PropTypes.number
+        id: _reactAddons2['default'].PropTypes.number
     },
 
     getInitialState: function getInitialState() {
@@ -45023,7 +45096,8 @@ exports['default'] = _React2['default'].createClass({
             created_at: '',
             last_modified: '',
             is_shooting: false,
-            uri: '' };
+            uri: ''
+        };
     },
 
     _getPost: function _getPost(Id) {
@@ -45085,10 +45159,10 @@ exports['default'] = _React2['default'].createClass({
                 </TransitionGroup>
                 )
         }*/
-        return _React2['default'].createElement(
+        return _reactAddons2['default'].createElement(
             TransitionGroup,
             { transitionName: 'post' },
-            _React2['default'].createElement(_PostContent2['default'], {
+            _reactAddons2['default'].createElement(_componentsPostContent2['default'], {
                 key: this.state.id,
                 id: this.state.id,
                 heading: this.state.heading,

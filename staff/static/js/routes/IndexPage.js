@@ -31,6 +31,7 @@ export default React.createClass({
             all_filter: true,
             adding: false,
             new_category: "",
+            new_category_zh: "",
             selected_parent: null
         });
     },
@@ -213,12 +214,24 @@ export default React.createClass({
             this.handleSubmitCategory();
     },
 
+    handleChangeZhCategory(e) {
+        this.setState({
+            new_category_zh: e.target.value
+        });
+    },
+
+    handleKeyUpZhCategory(e) {
+        if(e.key==='Enter')
+            this.handleSubmitCategory();
+    },
+
     handleSubmitCategory(e) {
         e.preventDefault();
         $(React.findDOMNode(this.refs.SubmitButton)).button('loading');
         var params = {
             'parent': this.state.selected_parent,
-            'name': this.state.new_category
+            'name': this.state.new_category,
+            'zh_name': this.state.new_category_zh
         }
         this._createCategory(params);
     },
@@ -226,9 +239,10 @@ export default React.createClass({
     render() {
         const CategoryNodes = [];
         _.map(this.state.categories, category => {
-            CategoryNodes.push(<Nav key={category.id} id={category.id} name={category.name} refreshCategory={this._getCategories} />);
+            CategoryNodes.push(<Nav key={category.id} id={category.id} name={category.name} zh_name={category.zh_name} refreshCategory={this._getCategories} />);
             _.map(category.children, subcategory => {
-                CategoryNodes.push(<Nav key={subcategory.id} parent_id={category.id} id={subcategory.id} name={subcategory.name} isSub={true} 
+                CategoryNodes.push(<Nav key={subcategory.id} parent_id={category.id} id={subcategory.id} zh_name={subcategory.zh_name} 
+                        name={subcategory.name} isSub={true} 
                      refreshCategory={this._getCategories} /> )
             });
         });
@@ -297,10 +311,15 @@ export default React.createClass({
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>類別名稱</label>
+                            <label>類別名稱 (英)</label>
                             <input className="form-control" type="text" onKeyUp={this.handleKeyUpCategory} onChange={this.handleChangeCategory} 
                                     value={this.state.new_category} />
-                        </div> 
+                        </div>
+                        <div className="form-group">
+                            <label>類別名稱 (中)</label>
+                            <input className="form-control" type="text" onKeyUp={this.handleKeyUpZhCategory} onChange={this.handleChangeZhCategory} 
+                                    value={this.state.new_category_zh} />
+                        </div>  
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary" ref="SubmitButton" data-loading-text="儲存中..." style={{marginRight: "10px"}}>儲存</button>
                         </div>

@@ -22,8 +22,10 @@ export default React.createClass({
             tag: "",
             video_id: "",
             video_url: "",
+            select_text: "",
             img_changed: false,
-            display_img: ""
+            display_img: "",
+            redactor_inited: false
         });
     },
 
@@ -44,8 +46,8 @@ export default React.createClass({
             }
         })
     },
-    _updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed) {
-        this.updateImage(id, img, caption, tag, video_url, post_uri, post_id, changed, (error, response) => {
+    _updateImage(id, img, caption, tag, video_url, select_text, post_uri, post_id, changed) {
+        this.updateImage(id, img, caption, tag, video_url, select_text, post_uri, post_id, changed, (error, response) => {
             if(error) {
                 this.props.hasError(); 
                 this.setState({
@@ -132,8 +134,9 @@ export default React.createClass({
         this._updateImage(this.state.id,
             this.state.img,
             this.state.caption, 
-            this.state.tag, 
+            this.state.tag,
             this.state.video_url, 
+            this.state.select_text,
             this.props.post_uri.replace("posts", "admin_posts"),
             this.props.post_id,
             this.state.img_changed
@@ -158,6 +161,12 @@ export default React.createClass({
                 'frameborder="0" allowfullscreen></iframe>';
     },
 
+    handleChangeSelectText(value) {
+        this.setState({
+            select_text: value
+        });
+    },
+
     componentDidMount() {
         var img = _.has(this.props.image.img, 'original') ? this.props.image.img.original: "";
         this.setState({
@@ -168,7 +177,8 @@ export default React.createClass({
             tag: this.props.image.tag,
             video_id: this.props.image.video_id,
             video_url: this.props.image.video_url,
-            is_cover: this.props.image.is_cover
+            is_cover: this.props.image.is_cover,
+            select_text: this.props.image.select_text
         });
     },
 
@@ -182,8 +192,32 @@ export default React.createClass({
             tag: nextProps.image.tag,
             video_id: nextProps.image.video_id,
             video_url: nextProps.image.video_url,
+            select_text: nextProps.image.select_text,
             is_cover: nextProps.image.is_cover
         });
+    },
+
+    componentDidUpdate() {
+        if(!this.state.redactor_inited) {
+            setTimeout(() => {
+                var that = this;
+                $(React.findDOMNode(this.refs.TextArea)).redactor({
+                    'lang': 'zh_tw',
+                    'focus': 'true',
+                    'minHeight': '300px',
+                    'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
+                    'plugins': ['scriptbuttons', 'fullscreen'],
+                    'blurCallback': function() {
+                        that.handleChangeSelectText(this.code.get());
+                    },
+                    initCallback: function() {
+                        that.setState({
+                            redactor_inited: true
+                        });
+                    }
+                });
+            }, 500);
+        }
     },
 
     render() {
@@ -194,6 +228,7 @@ export default React.createClass({
             src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg";
             onDeckNode = <div key={this.state.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.generate_embed(this.state.video_id)}} />;
         }
+        console.log(this.state.select_text);
         return (
             <div>
                 <button className={this.state.is_cover ? "btn btn-info disabled" : "btn btn-info"}
@@ -226,6 +261,16 @@ export default React.createClass({
                         <div className="form-group">
                             <label>Youtube 網址</label>
                             <input className="form-control" type="text" onChange={this.handleChangeVideo} value={this.state.video_url} />
+                        </div>
+                        <div className="form-group">
+                            <label>單品敘述</label>
+                            <span>
+                                <textarea
+                                    ref="TextArea"
+                                    name="select_text"
+                                    defaultValue={this.state.select_text} />
+                                <p className="help-block">若要換行請輸入shift+enter, 分段落請輸入enter</p>
+                            </span>
                         </div>
                         <div className="form-group">
                             <button type="submit" className="btn btn-primary" style={{marginRight: "10px"}}>儲存</button>

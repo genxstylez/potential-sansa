@@ -14,7 +14,8 @@ export default React.createClass({
         const name_array = this.props.name.split(',');
         const names = [];
         _.forEach(name_array, (name, key) => {
-            names.push(<Link key={key} to="search" query={{q: name}}>{name}</Link>);
+            names.push(<a href={"/search/?q=" + name }>{name}</a>);
+            // names.push(<Link key={key} to="search" query={{q: name}}>{name}</Link>);
             if (key < name_array.length -1) 
                 names.push(', ')
         });

@@ -81,6 +81,8 @@ export default React.createClass({
                         created_at={this.state.created_at}
                         last_modified={this.state.last_modified}
                         category={this.state.category}
+                        is_select={this.state.is_select}
+                        select_text={this.state.select_text}
                         onClickOnCross={this.handleClickOnCross} />
                 </TransitionGroup>
                 )

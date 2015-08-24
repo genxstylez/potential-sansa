@@ -42,6 +42,7 @@ export default React.createClass({
             q: this.context.router.getCurrentQuery().q
         });
         this._getCategories();
+        $('.react-container').removeClass('modal-open');
     },
     componentWillReceiveProps(){
         this.setState({
@@ -75,6 +76,13 @@ export default React.createClass({
     handleOnClickPage() {
         React.findDOMNode(this.refs.query_input).focus();
     },
+
+    clearQ() {
+        this.setState({
+            q: ''
+        });
+    },
+
     render() {
         var search_layer_class = classnames({
             'search-layer': true,
@@ -103,7 +111,7 @@ export default React.createClass({
                     <NavBar categories={this.state.categories} />
                     <BannerList />
                     <SearchSubNavBar query={this.state.q}/>
-                    <SearchPostList ref="postlist" query={this.state.q} />
+                    <SearchPostList ref="postlist" query={this.state.q} clearQ={this.clearQ}/>
                     <Footer /> 
                 </div>
             </TransitionGroup>

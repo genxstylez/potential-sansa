@@ -1,18 +1,6 @@
-FROM python:2.7.8
+FROM python:2.7-onbuild
 
-MAINTAINER Sam Liu 
-
-RUN mkdir -p /usr/src/app
-
-WORKDIR /usr/src/app
-
-RUN pip install -U pip
-
-COPY requirements.txt /usr/src/app/
-
-RUN pip install -r requirements.txt
-
-ADD . /usr/src/app
+MAINTAINER Sam Liu
 
 EXPOSE 8000
 

@@ -133,7 +133,7 @@ export default React.createClass({
             modal:false,
             postId: 0,
         });
-        history.pushState(null, "O'logy", '/');
+        history.back();
         ga('send', 'pageview', {'page': '/'});
         $('.react-container').removeClass('modal-open'); 
         $.scrollTo(this.state.last_scrollTop, 500);

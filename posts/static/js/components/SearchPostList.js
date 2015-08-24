@@ -25,7 +25,8 @@ export default React.createClass({
             posts: [],
             next_page : null,
             has_next: false,
-            is_loading: false
+            is_loading: false,
+            modal: false
         }
     },
 
@@ -59,17 +60,21 @@ export default React.createClass({
         if (nextProps.query != this.props.query){
             // if category changes, start with a new list of posts
             this.setState({
-                posts: []
+                posts: [],
             });
             this._getSearchPosts(null, nextProps.query);
         }
+        this.setState({
+            modal:false
+        });
+        $('.react-container').removeClass('modal-open');
 
     },
     componentDidMount() {
         this._getSearchPosts(null, this.props.query);
         setTimeout( () => {
             $.scrollTo('620px', 500);
-        }, 50)
+        }, 50);
     },
 
     componentWillUpdate(nextProps, nextState) {
@@ -94,7 +99,7 @@ export default React.createClass({
             modal:false,
             postId: 0,
         });
-        history.pushState(null, "O'logy", '/');
+        history.back();
         ga('send', 'pageview', {'page': '/'});
         $('.react-container').removeClass('modal-open'); 
         $.scrollTo(this.state.last_scrollTop, 500);
@@ -126,7 +131,7 @@ export default React.createClass({
         }
         return (
             <div>
-                <div className="no-results">
+                <div className="no-results" style={{display: this.state.modal ? "none" : "block"}}>
                     <span className="circle-divider" />
                     {results_string + this.props.query} 
                     <span className="circle-divider" />

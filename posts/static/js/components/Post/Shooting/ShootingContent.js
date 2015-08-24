@@ -31,6 +31,7 @@ export default React.createClass({
     },
     propTypes: {
         id: React.PropTypes.number.isRequired,
+        is_select: React.PropTypes.bool.isRequired,
         heading: React.PropTypes.string.isRequired,
         subheading: React.PropTypes.string.isRequired,
         articletext: React.PropTypes.string,
@@ -77,6 +78,19 @@ export default React.createClass({
         });
     },
 
+    enterOverlay(e) {
+        if(this.props.is_select) {
+            var width = $('#CurrentImg img').width();
+            var bottom = $('.overlay_text').height();
+            $('.overlay_text').css({bottom: bottom - 1 + 'px', width: width + 'px'});
+            $('.overlay_text').animate({'opacity': 1});
+        }
+    },
+
+    leaveOverlay(e) {
+        if(this.props.is_select)
+            $('.overlay_text').animate({'opacity': 0});
+    },
 
     render() {
         var info_class = classNames({
@@ -90,7 +104,10 @@ export default React.createClass({
             });
         var ImgNode = this.state.current_image.video_id ?
                 <div className="video-embed" dangerouslySetInnerHTML={{__html: generate_embed(this.state.current_image.video_id)}} /> :
-               <img onClick={this.toggleImageMode} src={this.state.current_image.img !== undefined ? this.state.current_image.img.xxl: ''} />
+                <img onClick={this.toggleImageMode}
+                    onMouseEnter={this.enterOverlay}
+                    onMouseLeave={this.leaveOverlay}
+                    src={this.state.current_image.img !== undefined ? this.state.current_image.img.xxl: ''} />
         return (
             <div className="article-box" ref="articleBox">
                 <img className="shooting-info-toggle" src={STATIC_URL + "img/info.png"} onClick={this.handleClickOnToggle} />
@@ -114,10 +131,16 @@ export default React.createClass({
                 <div className="row article">
                     <div className="shooting_deck">
                         <TransitionGroup transitionName="gallery" transitionLeave={false}>
-                            <span className="inner_deck" key={this.state.current_image.id}>
-                                {ImgNode}
+                            <div className="inner_deck" key={this.state.current_image.id}>
+                                <div id="CurrentImg">
+                                    {ImgNode}
+                                    <div onMouseEnter={this.enterOverlay}
+                                        onMouseLeave={this.leaveOverlay}
+                                        className="overlay_text"
+                                        dangerouslySetInnerHTML={{__html: this.state.current_image != undefined ? this.state.current_image.select_text: ""}} />
+                                </div>
                                 <span className="align-helper" />
-                            </span>
+                            </div>
                         </TransitionGroup>
                         <div className="shooting-info-heading">{this.props.heading}</div>
                         <a href="#" onClick={this.handleLeftArrow}><img className="arrow left" src={STATIC_URL + "img/banner-left.png"} /></a>

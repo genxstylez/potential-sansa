@@ -128,6 +128,7 @@ class Image(models.Model):
     is_cover = models.BooleanField('封面照片', default=False)
     caption = models.CharField('註解', blank=True, max_length=50)
     tag = models.CharField('書籤位置', blank=True, max_length=50)
+    select_text = models.TextField('單品敘述', blank=True, null=True)
     img = fields.ThumbnailerImageField('圖片', upload_to=post_image_path, null=True, blank=True,
                                        help_text='橫幅照片尺寸為 640x450')
     video_url = models.CharField('Youtube 網址', max_length=255, blank=True, default='')
