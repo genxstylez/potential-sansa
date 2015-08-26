@@ -679,10 +679,6 @@ ul.thumbnails li img {
     top: 15px;
 } 
 
-.shooting_deck .overlay_text {
-    background: rgba(0, 0, 0, 0.6);
-}
-
 .shooting_deck .align-helper {
     height: 100%;
 }
@@ -727,6 +723,7 @@ ul.thumbnails li img {
 }
 
 .shooting_deck .overlay_text {
+    background: rgba(0, 0, 0, 0.6);
     position: relative;
     opacity: 0;
     text-align: center;
@@ -734,6 +731,9 @@ ul.thumbnails li img {
     font-size: 14px;
     margin: 0 auto;
     word-wrap: break-word;
+    white-space: normal;
+    padding: 17px 15px;
+    overflow: auto;
 }
 
 .shooting-info .role {
@@ -1121,6 +1121,8 @@ ul.thumbnails li img {
     border-radius: 10px;
     background: #d5d5d5;
 }
+
+
 ::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(213,213,213,0.4); 
 }

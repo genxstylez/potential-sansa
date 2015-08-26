@@ -81,8 +81,9 @@ export default React.createClass({
     enterOverlay(e) {
         if(this.props.is_select) {
             var width = $('#CurrentImg img').width();
-            var bottom = $('.overlay_text').height();
-            $('.overlay_text').css({bottom: bottom - 1 + 'px', width: width + 'px'});
+            $('.overlay_text').css('width', width + 'px');
+            var bottom = $('.overlay_text').outerHeight();
+            $('.overlay_text').css({bottom: bottom - 1 + 'px'});
             $('.overlay_text').animate({'opacity': 1});
         }
     },
@@ -106,7 +107,6 @@ export default React.createClass({
                 <div className="video-embed" dangerouslySetInnerHTML={{__html: generate_embed(this.state.current_image.video_id)}} /> :
                 <img onClick={this.toggleImageMode}
                     onMouseEnter={this.enterOverlay}
-                    onMouseLeave={this.leaveOverlay}
                     src={this.state.current_image.img !== undefined ? this.state.current_image.img.xxl: ''} />
         return (
             <div className="article-box" ref="articleBox">
@@ -134,8 +134,7 @@ export default React.createClass({
                             <div className="inner_deck" key={this.state.current_image.id}>
                                 <div id="CurrentImg">
                                     {ImgNode}
-                                    <div onMouseEnter={this.enterOverlay}
-                                        onMouseLeave={this.leaveOverlay}
+                                    <div onMouseLeave={this.leaveOverlay}
                                         className="overlay_text"
                                         dangerouslySetInnerHTML={{__html: this.state.current_image != undefined ? this.state.current_image.select_text: ""}} />
                                 </div>

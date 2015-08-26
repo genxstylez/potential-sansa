@@ -42246,7 +42246,7 @@ exports['default'] = _reactAddons2['default'].createClass({
                         });
                     }
                 });
-            }, 500);
+            }, 1000);
         }
     },
 
@@ -42258,7 +42258,6 @@ exports['default'] = _reactAddons2['default'].createClass({
             src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg";
             onDeckNode = _reactAddons2['default'].createElement('div', { key: this.state.video_id, className: 'video-embed', dangerouslySetInnerHTML: { __html: this.generate_embed(this.state.video_id) } });
         }
-        console.log(this.state.select_text);
         return _reactAddons2['default'].createElement(
             'div',
             null,

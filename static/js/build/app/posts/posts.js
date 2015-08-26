@@ -47481,8 +47481,9 @@ exports['default'] = _reactAddons2['default'].createClass({
     enterOverlay: function enterOverlay(e) {
         if (this.props.is_select) {
             var width = $('#CurrentImg img').width();
-            var bottom = $('.overlay_text').height();
-            $('.overlay_text').css({ bottom: bottom - 1 + 'px', width: width + 'px' });
+            $('.overlay_text').css('width', width + 'px');
+            var bottom = $('.overlay_text').outerHeight();
+            $('.overlay_text').css({ bottom: bottom - 1 + 'px' });
             $('.overlay_text').animate({ 'opacity': 1 });
         }
     },
@@ -47501,7 +47502,6 @@ exports['default'] = _reactAddons2['default'].createClass({
         });
         var ImgNode = this.state.current_image.video_id ? _reactAddons2['default'].createElement('div', { className: 'video-embed', dangerouslySetInnerHTML: { __html: generate_embed(this.state.current_image.video_id) } }) : _reactAddons2['default'].createElement('img', { onClick: this.toggleImageMode,
             onMouseEnter: this.enterOverlay,
-            onMouseLeave: this.leaveOverlay,
             src: this.state.current_image.img !== undefined ? this.state.current_image.img.xxl : '' });
         return _reactAddons2['default'].createElement(
             'div',
@@ -47550,8 +47550,7 @@ exports['default'] = _reactAddons2['default'].createClass({
                                 'div',
                                 { id: 'CurrentImg' },
                                 ImgNode,
-                                _reactAddons2['default'].createElement('div', { onMouseEnter: this.enterOverlay,
-                                    onMouseLeave: this.leaveOverlay,
+                                _reactAddons2['default'].createElement('div', { onMouseLeave: this.leaveOverlay,
                                     className: 'overlay_text',
                                     dangerouslySetInnerHTML: { __html: this.state.current_image != undefined ? this.state.current_image.select_text : "" } })
                             ),

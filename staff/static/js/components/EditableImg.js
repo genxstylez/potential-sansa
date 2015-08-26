@@ -216,7 +216,7 @@ export default React.createClass({
                         });
                     }
                 });
-            }, 500);
+            }, 1000);
         }
     },
 
@@ -228,7 +228,6 @@ export default React.createClass({
             src = "https://i.ytimg.com/vi/" + this.state.video_id + "/hqdefault.jpg";
             onDeckNode = <div key={this.state.video_id} className="video-embed" dangerouslySetInnerHTML={{__html: this.generate_embed(this.state.video_id)}} />;
         }
-        console.log(this.state.select_text);
         return (
             <div>
                 <button className={this.state.is_cover ? "btn btn-info disabled" : "btn btn-info"}
