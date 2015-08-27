@@ -722,10 +722,14 @@ ul.thumbnails li img {
     height: 100%;
 }
 
+.shooting_deck .overlay {
+    position: absolute;
+    display: none;
+}
+
 .shooting_deck .overlay_text {
     background: rgba(0, 0, 0, 0.6);
-    position: relative;
-    opacity: 0;
+    position: absolute;
     text-align: center;
     color: white;
     font-size: 14px;
@@ -734,6 +738,8 @@ ul.thumbnails li img {
     white-space: normal;
     padding: 17px 15px;
     overflow: auto;
+    bottom: 0px;
+    width: 100%;
 }
 
 .shooting-info .role {

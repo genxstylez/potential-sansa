@@ -1,18 +1,4 @@
-FROM python:2.7.8
-
-MAINTAINER Sam Liu 
-
-RUN mkdir -p /usr/src/app
-
-WORKDIR /usr/src/app
-
-RUN pip install -U pip
-
-COPY requirements.txt /usr/src/app/
-
-RUN pip install -r requirements.txt
-
-ADD . /usr/src/app
+FROM python:2.7.8-onbuild
 
 EXPOSE 8000
 

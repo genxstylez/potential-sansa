@@ -81,16 +81,24 @@ export default React.createClass({
     enterOverlay(e) {
         if(this.props.is_select) {
             var width = $('#CurrentImg img').width();
-            $('.overlay_text').css('width', width + 'px');
-            var bottom = $('.overlay_text').outerHeight();
-            $('.overlay_text').css({bottom: bottom - 1 + 'px'});
-            $('.overlay_text').animate({'opacity': 1});
+            var height = $('#CurrentImg img').height();
+            var position = $('#CurrentImg img').position();
+            $('.overlay').css({
+                width: width + 1 + 'px',
+                height: height + 'px',
+                top: position.top + 'px', 
+                left: position.left + 'px'
+            });
+            $('.overlay').fadeIn();
         }
     },
 
     leaveOverlay(e) {
-        if(this.props.is_select)
-            $('.overlay_text').animate({'opacity': 0});
+        if(this.props.is_select) {
+            $('.overlay').fadeOut(function() {
+                $(this).css({top: '0px', left: '0px'});
+            })
+        }
     },
 
     render() {
@@ -134,9 +142,11 @@ export default React.createClass({
                             <div className="inner_deck" key={this.state.current_image.id}>
                                 <div id="CurrentImg">
                                     {ImgNode}
-                                    <div onMouseLeave={this.leaveOverlay}
-                                        className="overlay_text"
-                                        dangerouslySetInnerHTML={{__html: this.state.current_image != undefined ? this.state.current_image.select_text: ""}} />
+                                    <div onMouseLeave={this.leaveOverlay} className="overlay">
+                                        <div 
+                                            className="overlay_text"
+                                            dangerouslySetInnerHTML={{__html: this.state.current_image != undefined ? this.state.current_image.select_text: ""}} />
+                                    </div>
                                 </div>
                                 <span className="align-helper" />
                             </div>

@@ -108,7 +108,7 @@ class Post(models.Model):
 
 
 def post_image_path(instance, filename):
-    return '{post}/{filename}.{ext}'.format(post=instance.post, filename=str(uuid.uuid4())[:8], ext=filename.split('.')[-1])
+    return '{post}/{filename}.{ext}'.format(post=instance.post.id, filename=str(uuid.uuid4())[:8], ext=filename.split('.')[-1])
 
 
 class Credit(models.Model):
