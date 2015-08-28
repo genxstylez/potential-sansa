@@ -1,4 +1,4 @@
-FROM python:2.7.8-onbuild
+FROM python:2.7-onbuild
 
 EXPOSE 8000
 
