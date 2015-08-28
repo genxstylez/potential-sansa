@@ -41979,8 +41979,10 @@ exports['default'] = _reactAddons2['default'].createClass({
             'lang': 'zh_tw',
             'focus': 'true',
             'minHeight': '500',
-            'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting'],
-            'plugins': ['scriptbuttons', 'fullscreen'],
+            'buttons': ['bold', 'italic', 'link', 'underline', 'fontcolor', 'formatting', 'image'],
+            imageUpload: '/insert_post_images/',
+            imageManagerJson: '/post_images.json',
+            plugins: ['imagemanager', 'scriptbuttons', 'fullscreen'],
             'blurCallback': function blurCallback() {
                 that.handleBlur(this.code.get());
             }

@@ -504,8 +504,10 @@ div.logo img {
     padding: 52px;
 }
 
-.article-box .article .article-content.jspScrollable .inner-content {
+.inner-content .text img {
+    width: 100%;
 }
+
 .article-box .article .category {
   color: #ffffff;
   height: 17px;

@@ -38,6 +38,8 @@ urlpatterns = [
     url(r'^post_image/cover/', 'posts.views.set_cover', name='post-image-cover'),
     url(r'^photo/edit/', 'photos.views.photo_edit', name='photo-photo-edit'),
     url(r'^photo/delete/', 'photos.views.photo_delete', name='photo-photo-delete'),
+    url(r'^post_images.json', 'posts.views.post_image_list', name='post-images-list'),
+    url(r'^insert_post_images', 'posts.views.insert_post_images', name='insert-post-images'),
     url(r'^staff_api/', include(staff_api.urls)),
     url(r'^api/', include(v1_api.urls)),
     url(r'^redactor/', include('redactor.urls')),
