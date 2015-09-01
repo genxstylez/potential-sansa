@@ -56,10 +56,15 @@ def insert_post_images(request):
 
 def post_image_list(request):
     image_list = default_storage.listdir('post_images')[1]
-    image_list = filter(None, image_list)
+    # image_list = filter(None, image_list)
+
+    for image in image_list:
+        if 'crop' in image or image == None:
+            image_list.remove(image)
+
     images = [{
-        'thumb' : get_thumbnailer('post_images/' + image).get_thumbnail({'crop': True, 'size': (100, 75)}, save=True).url, 
-        'image': default_storage.url('post_images/' + image), 
+        'thumb' : get_thumbnailer('post_images/' + image).get_thumbnail({'crop': True, 'size': (100, 75)}, save=True).url,
+        'image': default_storage.url('post_images/' + image),
         'title': os.path.basename(image)} for image in image_list]
     return JsonResponse(images, safe=False)
 
