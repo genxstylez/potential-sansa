@@ -59,7 +59,7 @@ def post_image_list(request):
     # image_list = filter(None, image_list)
 
     for image in image_list:
-        if 'crop' in image or image == None:
+        if 'crop' in image or image == None or image == '':
             image_list.remove(image)
 
     images = [{

@@ -10,6 +10,9 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 THUMBNAIL_DEFAULT_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
+# DEFAULT_FILE_STORAGE = 'ology.storage.DefaultStorage'
+# THUMBNAIL_DEFAULT_STORAGE = 'ology.storage.DefaultStorage'
+
 
 INSTALLED_APPS += (
     'debug_toolbar',
