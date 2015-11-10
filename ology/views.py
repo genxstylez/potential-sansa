@@ -4,6 +4,7 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import render
 from ology.utils import reverse
+from django.shortcuts import get_object_or_404
 import watson
 
 from posts.models import Image, Post, Credit, Category
@@ -22,7 +23,7 @@ def index(request, category_id=None, subcategory_id=None):
 
 
 def post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     share_url = 'https://www.facebook.com/sharer/sharer.php?u' + request.build_absolute_uri() + '&title' + post.heading
     return render(request, 'post.html', {'post': post, 'share_url': share_url})
 
