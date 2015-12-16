@@ -1,14 +1,42 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "genxstylez/potential-sansa:latest",
-    "Update": "true"
-  },
-  "Ports": [
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
     {
-      "ContainerPort": "8000"
+      "name": "nginx-config",
+      "host": {
+        "sourcePath": "/var/app/current/nginx/nginx.conf"
+      }
     }
   ],
-  "Volumes": [ {"ContainerDirectory": "/var/app", "HostDirectory": "/var/app" } ],
-  "Logging": "/var/log"
+  "containerDefinitions": [
+    {
+      "name": "web",
+      "image": "genxstylez/potential-sansa:latest",
+      "essential": true,
+      "memory": 512
+    },
+    {
+      "name": "nginx",
+      "image": "nginx",
+      "essential": true,
+      "memory": 256,
+      "portMappings": [
+        { "hostPort": 80, "containerPort": 80 }
+      ],
+      "links": [
+        "web"
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "nginx-config",
+          "containerPath": "/etc/nginx/nginx.conf",
+          "readOnly": true
+        },
+        {
+          "sourceVolume": "awseb-logs-nginx",
+          "containerPath": "/var/log/nginx"
+        }
+      ]
+    }
+  ]
 }

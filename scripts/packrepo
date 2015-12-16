@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm *.zip
+
 VERSION=`git describe --always`
 
-zip $VERSION.zip -r Dockerrun.aws.json .ebextensions/
+zip $VERSION.zip -r Dockerrun.aws.json nginx
