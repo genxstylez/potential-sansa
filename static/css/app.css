@@ -179,7 +179,7 @@ div.logo img {
 }
 
 .banner-inner-container {
-    width: 12800px;
+    width: 3840px;
     white-space: nowrap;
 }
 .banner-inner-container .banner-tile {
@@ -190,8 +190,8 @@ div.logo img {
     /* width: 640px; */
 }
 .banner-inner-container .banner-tile img {
-    height: auto;
-    width: auto;
+    height: 440px;
+    width: 640px;
 }
 .banner-inner-container .banner-tile .title {
     height: 60px;
