@@ -181,6 +181,8 @@ div.logo img {
 .banner-inner-container {
     width: 3840px;
     white-space: nowrap;
+    overflow: hidden;
+    height: 450px;
 }
 .banner-inner-container .banner-tile {
     float: left;

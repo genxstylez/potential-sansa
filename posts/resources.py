@@ -70,7 +70,7 @@ class StarredResource(ModelResource):
                               use_in='list', full=True)
 
     class Meta:
-        queryset = Post.objects.filter(starred=True, published=True).order_by('order')
+        queryset = Post.objects.filter(starred=True, published=True).order_by('order')[:6]
         resource_name = 'starred'
         ordering = ['order', ]
 
